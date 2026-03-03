@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Angular Material overrides & base resets */
+@layer base {
+  :root {
+    /* Primary Pink: hsl(324, 91%, 50%) -> #f20db9 approx */
+    --color-primary: 242 13 185; 
+    /* Secondary Cyan: hsl(185, 90%, 50%) -> #0df2f2 approx */
+    --color-secondary: 13 242 242; 
+    
+    /* Base Glass Values */
+    --glass-bg: rgba(30, 41, 59, 0.6); /* Equivalent to slate-800/60 */
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Space Grotesk', Roboto, "Helvetica Neue", sans-serif;
+    @apply bg-slate-900 text-slate-50 transition-colors duration-300;
+    /* Optional atmospheric dark gradient as seen on Stitch */
+    background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 100%);
+    background-attachment: fixed;
+  }
+}

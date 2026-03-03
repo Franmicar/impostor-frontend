@@ -1,0 +1,392 @@
+import { Component, inject, OnInit, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import { GameEngineService, Player } from '../../core/services/game-engine/game-engine';
+import { TimerService } from '../../core/services/timer/timer.service';
+
+@Component({
+  selector: 'app-vote',
+  standalone: true,
+  imports: [CommonModule, FormsModule, TranslateModule],
+  template: `
+    <div class="min-h-screen bg-transparent text-slate-50 flex flex-col items-center justify-start p-6 relative">
+      
+      <!-- IMPOSTOR ELIMINATED MODAL -->
+      @if (showImpostorEliminatedModal) {
+        <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 backdrop-blur-sm">
+            <div class="bg-glass backdrop-blur-2xl border-2 border-primary rounded-3xl p-8 max-w-sm w-full shadow-[0_0_30px_rgba(242,13,185,0.3)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+                <div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10 text-pink-500">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-black text-pink-400 mb-2 uppercase tracking-widest">{{ 'VOTE.IMPOSTOR_CAUGHT' | translate }}</h3>
+                <p class="text-slate-300 text-lg mb-8" [innerHTML]="'VOTE.IMPOSTOR_CAUGHT_DESC' | translate: { name: '<span class=\\'font-bold text-primary drop-shadow-md\\'>' + eliminatedImpostorName + '</span>' }">
+                </p>
+                <button (click)="closeImpostorModal()" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
+                    {{ 'VOTE.CONTINUE' | translate }}
+                </button>
+            </div>
+        </div>
+      }
+      
+      <!-- INNOCENT ELIMINATED MODAL -->
+      @if (showCivilianEliminatedModal) {
+        <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 backdrop-blur-sm">
+            <div class="bg-glass backdrop-blur-2xl border border-glass-border rounded-3xl p-8 max-w-sm w-full shadow-[0_0_30px_rgba(255,255,255,0.05)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+                <div class="w-20 h-20 bg-secondary/20 rounded-full flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10 text-secondary">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-black text-white mb-2 uppercase tracking-widest drop-shadow-sm">{{ 'VOTE.ELIMINATED' | translate }}</h3>
+                <div class="text-slate-300 text-lg mb-8 text-center">
+                   @if (eliminationReason === 'guess') {
+                       <span [innerHTML]="'VOTE.DETECTIVE_FAILED' | translate: { name: '<span class=\\'font-bold text-secondary\\'>' + eliminatedCivilianName + '</span>' }"></span>
+                   } @else {
+                       <span [innerHTML]="'VOTE.CIVIL_ELIMINATED' | translate: { name: '<span class=\\'font-bold text-secondary\\'>' + eliminatedCivilianName + '</span>' }"></span>
+                   }
+                </div>
+                <button (click)="closeModal()" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
+                    {{ 'VOTE.CONTINUE' | translate }}
+                </button>
+            </div>
+        </div>
+      }
+
+      <!-- DETECTIVE GUESS MODAL -->
+      @if (showDetectiveModal) {
+        <div class="fixed inset-0 bg-black/60 z-50 flex flex-col items-center justify-center p-6 backdrop-blur-sm">
+            <div class="bg-glass backdrop-blur-2xl border border-indigo-500/50 rounded-3xl p-8 max-w-sm w-full shadow-[0_0_30px_rgba(99,102,241,0.3)] flex flex-col items-center animate-in fade-in zoom-in duration-300">
+                <h3 class="text-2xl font-black text-indigo-400 mb-4 uppercase tracking-widest text-center drop-shadow-sm">{{ 'VOTE.SOLVE_MYSTERY' | translate }}</h3>
+                
+                @if (aliveDetectives().length > 1) {
+                    <select [(ngModel)]="selectedDetectiveId" class="w-full bg-black/30 border border-glass-border rounded-lg p-3 text-white outline-none focus:border-indigo-500 mb-4 backdrop-blur">
+                        <option [ngValue]="null" disabled selected>{{ 'VOTE.WHICH_DETECTIVE' | translate }}</option>
+                        @for (det of aliveDetectives(); track det.id) {
+                            <option [ngValue]="det.id">{{ det.name }}</option>
+                        }
+                    </select>
+                }
+
+                <div class="relative w-full mb-6">
+                    <input type="text" [(ngModel)]="detectiveGuess" list="packWordsModal" [placeholder]="'VOTE.SECRET_WORD_PH' | translate" class="w-full bg-black/30 border border-glass-border rounded-lg p-3 text-white outline-none focus:border-indigo-500 backdrop-blur" [disabled]="aliveDetectives().length > 1 && !selectedDetectiveId">
+                    <datalist id="packWordsModal">
+                        @for (w of engine.currentSettings()?.words; track w.word) {
+                            <option [value]="w.word">{{ w.word }}</option>
+                        }
+                    </datalist>
+                </div>
+
+                <div class="flex flex-col w-full gap-3">
+                    <button 
+                        (click)="submitDetectiveGuess()"
+                        [disabled]="(aliveDetectives().length > 1 && !selectedDetectiveId) || !detectiveGuess.trim()"
+                        class="w-full py-4 bg-indigo-600/80 hover:bg-indigo-500 border border-indigo-500/50 text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(99,102,241,0.4)] active:scale-95 uppercase disabled:opacity-50 disabled:grayscale disabled:scale-100 disabled:cursor-not-allowed cursor-pointer">
+                        {{ 'VOTE.GUESS_BTN' | translate }}
+                    </button>
+                    <button (click)="closeDetectiveModal()" class="w-full py-3 bg-transparent text-slate-400 hover:text-white rounded-xl font-bold transition-colors uppercase cursor-pointer">
+                        {{ 'VOTE.CANCEL' | translate }}
+                    </button>
+                </div>
+            </div>
+            
+            <p class="mt-6 text-sm text-center text-slate-400 max-w-xs font-medium">{{ 'VOTE.DETECTIVE_FAIL_WARN' | translate }}</p>
+        </div>
+      }
+
+      <!-- HEADER & TIMER -->
+      <header class="w-full max-w-md flex flex-col items-center mt-4 mb-8">
+        <h2 class="text-2xl font-black text-slate-200 uppercase tracking-widest mb-4 drop-shadow-md">{{ 'VOTE.TITLE' | translate }}</h2>
+        
+        @if (timer.isActive() || timer.timeLeftInSeconds() > 0) {
+          <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
+               [class.border-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
+               [class.text-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
+               [class.border-red-500]="timer.timeLeftInSeconds() === 0"
+               [class.text-red-500]="timer.timeLeftInSeconds() === 0">
+            <span class="text-5xl font-black font-mono tracking-wider drop-shadow-md">{{ timer.formattedTime() }}</span>
+            <span class="text-xs uppercase tracking-widest font-bold mt-1 text-slate-500">{{ 'VOTE.TIME_REMAINING' | translate }}</span>
+            
+            <div class="flex gap-4 mt-4">
+               <button *ngIf="timer.isActive()" (click)="timer.pause()" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition backdrop-blur text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" /></svg>
+               </button>
+               <button *ngIf="!timer.isActive() && timer.timeLeftInSeconds() > 0" (click)="timer.resume()" class="w-10 h-10 rounded-full bg-secondary/20 border border-secondary flex items-center justify-center hover:bg-secondary/40 transition backdrop-blur text-secondary">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>
+               </button>
+            </div>
+          </div>
+        } @else {
+          <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] text-center">
+            <span class="text-xl font-bold text-slate-300 drop-shadow-sm">{{ 'VOTE.NO_TIME_LIMIT' | translate }}</span>
+          </div>
+        }
+      </header>
+
+      <!-- ALIVE PLAYERS TO VOTE -->
+      <main class="w-full max-w-md flex-1 overflow-y-auto pb-36">
+        <!-- VOTE_INSTRUCTION is omitted from dictionary but fine omitted here temporarily or replaced with general terms -->
+        
+        <div class="grid grid-cols-2 gap-4">
+          @for (player of engine.alivePlayers(); track player.id) {
+            <div 
+              (click)="selectedPlayerId = player.id"
+              class="bg-glass backdrop-blur-md border rounded-2xl p-4 flex flex-col items-center gap-3 transition-all shadow-lg cursor-pointer hover:shadow-[0_0_20px_rgba(242,13,185,0.3)] hover:-translate-y-1"
+              [class.border-primary]="selectedPlayerId === player.id"
+              [class.bg-white/10]="selectedPlayerId === player.id"
+              [class.shadow-[0_0_25px_rgba(242,13,185,0.5)]]="selectedPlayerId === player.id"
+              [class.border-glass-border]="selectedPlayerId !== player.id"
+              [class.hover:border-white/20]="selectedPlayerId !== player.id">
+              <div class="w-14 h-14 rounded-full flex items-center justify-center border transition-all"
+                   [class.bg-primary/20]="selectedPlayerId === player.id"
+                   [class.border-primary]="selectedPlayerId === player.id"
+                   [class.bg-white/5]="selectedPlayerId !== player.id"
+                   [class.border-white/10]="selectedPlayerId !== player.id">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transition-colors"
+                     [class.text-primary]="selectedPlayerId === player.id"
+                     [class.text-slate-400]="selectedPlayerId !== player.id">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+              </div>
+              <span class="font-bold text-slate-200">{{ player.name }}</span>
+            </div>
+          }
+        </div>
+      </main>
+
+      <!-- BOTTOM ACTIONS -->
+      <footer class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent pt-12 flex flex-col gap-3 items-center">
+        <!-- Votar button -->
+        <button 
+            (click)="eliminate()"
+            [disabled]="!selectedPlayerId"
+            class="w-full max-w-md py-4 bg-gradient-to-r from-red-600 to-rose-500 hover:from-red-500 hover:to-rose-400 text-white rounded-full font-bold text-xl shadow-[0_0_20px_rgba(225,29,72,0.4)] active:scale-95 transition-all text-center disabled:opacity-50 disabled:shadow-none disabled:grayscale disabled:scale-100 disabled:cursor-not-allowed cursor-pointer uppercase tracking-widest">
+            {{ 'VOTE.ELIMINATE' | translate }}
+        </button>
+
+        <!-- Detective Guess Block -->
+        @if (engine.currentSettings()?.modeId === 'detective' && aliveDetectives().length > 0) {
+           <button 
+              (click)="openDetectiveModal()"
+              class="w-full max-w-md py-4 bg-glass backdrop-blur-md text-indigo-400 border border-indigo-400/50 rounded-full font-bold hover:bg-white/10 active:scale-95 transition-all text-center mt-2 cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.2)] tracking-widest uppercase">
+              {{ 'VOTE.DETECTIVE_WANTS_GUESS' | translate }}
+          </button>
+        }
+      </footer>
+
+    </div>
+  `,
+  styles: `
+    :host {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  `
+})
+export class Vote implements OnInit {
+  engine = inject(GameEngineService);
+  timer = inject(TimerService);
+  router = inject(Router);
+
+  selectedPlayerId: number | null = null;
+
+  showCivilianEliminatedModal = false;
+  showDetectiveModal = false;
+  showImpostorEliminatedModal = false;
+  eliminatedCivilianName = '';
+  eliminatedImpostorName = '';
+  eliminationReason: 'vote' | 'guess' = 'vote';
+  wasTimerActiveBeforeModal = false;
+
+  selectedDetectiveId: number | null = null;
+  detectiveGuess: string = '';
+
+  aliveDetectives = computed(() => {
+    return this.engine.alivePlayers().filter(p => p.isDetective);
+  });
+
+  ngOnInit() {
+    // Start timer only if it's the first time visiting the vote screen, or read from settings
+    if (!this.timer.isActive() && this.timer.timeLeftInSeconds() === 0) {
+      const durationStr = this.engine.currentSettings()?.duration || '5';
+      const durationNum = parseInt(durationStr, 10);
+      if (durationNum > 0) {
+        this.timer.start(durationNum);
+      }
+    }
+  }
+
+  eliminate() {
+    if (!this.selectedPlayerId) return;
+
+    const player = this.engine.alivePlayers().find(p => p.id === this.selectedPlayerId);
+    if (!player) return;
+
+    this.engine.eliminatePlayer(player.id);
+    this.selectedPlayerId = null; // Reset selection
+
+    const gameEnded = this.checkWinConditions();
+
+    if (!gameEnded && this.engine.currentSettings()?.modeId === 'fast') {
+      // In fast mode, if the game didn't end implies the impostor was NOT voted out. Fast mode is sudden death.
+      this.timer.stop();
+      this.router.navigate(['/results'], { queryParams: { winner: 'impostors' } });
+      return;
+    }
+
+    if (!gameEnded) {
+      if (!player.isImpostor) {
+        this.eliminatedCivilianName = player.name;
+        this.eliminationReason = 'vote';
+        this.showCivilianEliminatedModal = true;
+      } else {
+        this.eliminatedImpostorName = player.name;
+        this.showImpostorEliminatedModal = true;
+      }
+      this.wasTimerActiveBeforeModal = this.timer.isActive();
+      if (this.wasTimerActiveBeforeModal) {
+        this.timer.pause();
+      }
+    }
+  }
+
+  closeModal() {
+    this.showCivilianEliminatedModal = false;
+    if (this.wasTimerActiveBeforeModal && this.timer.timeLeftInSeconds() > 0) {
+      this.timer.resume();
+    }
+  }
+
+  closeImpostorModal() {
+    this.showImpostorEliminatedModal = false;
+    if (this.wasTimerActiveBeforeModal && this.timer.timeLeftInSeconds() > 0) {
+      this.timer.resume();
+    }
+  }
+
+  openDetectiveModal() {
+    this.wasTimerActiveBeforeModal = this.timer.isActive();
+    if (this.wasTimerActiveBeforeModal) {
+      this.timer.pause();
+    }
+    this.showDetectiveModal = true;
+  }
+
+  closeDetectiveModal() {
+    this.showDetectiveModal = false;
+    this.detectiveGuess = '';
+    this.selectedDetectiveId = null;
+    if (this.wasTimerActiveBeforeModal && this.timer.timeLeftInSeconds() > 0) {
+      this.timer.resume();
+    }
+  }
+
+  submitDetectiveGuess() {
+    if (!this.detectiveGuess.trim()) return;
+
+    const detId = this.selectedDetectiveId || this.aliveDetectives()[0]?.id;
+    const det = this.aliveDetectives().find(d => d.id === detId);
+    if (!det) return;
+
+    const secretWord = this.engine.secretWord()?.word;
+    if (!secretWord) return;
+
+    const guessCorrect = this.detectiveGuess.trim().toLowerCase() === secretWord.toLowerCase();
+
+    if (guessCorrect) {
+      this.timer.stop();
+      this.router.navigate(['/results'], { queryParams: { winner: 'town', reason: 'guess', guess: this.detectiveGuess.trim(), detectiveId: det.id } });
+    } else {
+      // Fails: Eliminate detective
+      this.engine.eliminatePlayer(det.id);
+      this.showDetectiveModal = false;
+      this.detectiveGuess = '';
+      this.selectedDetectiveId = null;
+
+      const gameEnded = this.checkWinConditions();
+      if (!gameEnded) {
+        this.eliminatedCivilianName = det.name;
+        this.eliminationReason = 'guess';
+        // Give feedback immediately so players know why he was eliminated
+        this.showCivilianEliminatedModal = true;
+        // Note: timer state is handled by the civilian elimination modal
+      }
+    }
+  }
+
+  checkWinConditions(): boolean {
+    const alivePlayers = this.engine.alivePlayers();
+    const aliveImpostors = alivePlayers.filter(p => p.isImpostor).length;
+    const aliveTownies = alivePlayers.length - aliveImpostors;
+    const originalImpostors = this.engine.players().filter(p => p.isImpostor).length;
+    const aliveDetectives = alivePlayers.filter(p => p.isDetective).length;
+
+    const modeId = this.engine.currentSettings()?.modeId;
+    const totalOriginalPlayers = this.engine.players().length;
+    const eliminations = this.engine.eliminationsCount();
+
+    if (modeId === 'chaos') {
+      if (originalImpostors === 0) {
+        if (eliminations >= 1) {
+          this.timer.stop();
+          this.router.navigate(['/results'], { queryParams: { winner: 'town' } });
+          return true;
+        }
+        return false;
+      }
+
+      if (originalImpostors === totalOriginalPlayers) {
+        if (eliminations >= 2) {
+          this.timer.stop();
+          this.router.navigate(['/results'], { queryParams: { winner: 'impostors' } });
+          return true;
+        }
+        return false;
+      }
+
+      // Any other chaos combination plays out normally but ignoring the "impostors >= townies" rule
+      if (aliveImpostors === 0) {
+        this.timer.stop();
+        this.router.navigate(['/results'], { queryParams: { winner: 'town' } });
+        return true;
+      }
+      if (aliveTownies === 0) {
+        this.timer.stop();
+        this.router.navigate(['/results'], { queryParams: { winner: 'impostors' } });
+        return true;
+      }
+
+      // Do NOT end game just because aliveImpostors >= aliveTownies in chaos mode. Force them to play all out!
+      return false;
+    }
+
+    if (originalImpostors === 0) {
+      // If there are exactly 0 impostors, civilians just need to survive until detectives eliminate themselves or are voted out.
+      if (aliveDetectives === 0) {
+        this.timer.stop();
+        this.router.navigate(['/results'], { queryParams: { winner: 'town' } });
+        return true;
+      }
+      return false;
+    }
+
+    if (aliveImpostors === 0) {
+      this.timer.stop();
+      // Pueblo gana
+      this.router.navigate(['/results'], { queryParams: { winner: 'town' } });
+      return true;
+    } else if (aliveImpostors >= aliveTownies) {
+      this.timer.stop();
+      // Impostor(es) ganan por paridad
+      this.router.navigate(['/results'], { queryParams: { winner: 'impostors' } });
+      return true;
+    } else {
+      // Continue game
+      return false;
+    }
+  }
+}
