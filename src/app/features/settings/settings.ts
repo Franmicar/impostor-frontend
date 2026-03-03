@@ -8,11 +8,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     standalone: true,
     imports: [CommonModule, TranslateModule],
     template: `
-    <div class="flex flex-col min-h-screen bg-transparent text-slate-50 p-6 overflow-y-auto w-full max-w-lg mx-auto">
+    <div class="flex flex-col min-h-screen bg-transparent text-slate-50 p-6 overflow-y-auto">
       
       <!-- HEADER -->
       <header class="flex items-center justify-between mb-8 pt-4">
-        <button (click)="goBack()" class="w-10 h-10 flex flex-shrink-0 items-center justify-center rounded-full bg-glass border border-glass-border backdrop-blur-md text-slate-300 hover:text-white transition-colors active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+        <button (click)="goBack()" class="w-10 h-10 flex flex-shrink-0 items-center justify-center rounded-full bg-glass border border-glass-border backdrop-blur-md text-slate-300 hover:text-white transition-colors active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)] cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>

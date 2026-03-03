@@ -8,13 +8,14 @@ import { TranslateModule } from '@ngx-translate/core';
     imports: [TranslateModule],
     template: `
     <div class="flex flex-col min-h-screen bg-transparent text-slate-50 p-6 overflow-y-auto">
-      <header class="flex items-center mb-8 pt-4">
-        <button (click)="goBack()" class="w-10 h-10 flex flex-shrink-0 items-center justify-center rounded-full bg-glass border border-glass-border backdrop-blur-md text-slate-300 hover:text-white transition-colors active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+      <header class="flex items-center justify-between mb-8 pt-4 shrink-0">
+        <button (click)="goBack()" class="w-10 h-10 flex flex-shrink-0 items-center justify-center rounded-full bg-glass border border-glass-border backdrop-blur-md text-slate-300 hover:text-white transition-colors active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)] relative z-10 cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
         </button>
-        <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] flex-1 text-center -ml-10">{{ 'RULES.TITLE' | translate }}</h2>
+        <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] flex-1 text-center">{{ 'RULES.TITLE' | translate }}</h2>
+        <div class="w-10 h-10 invisible shrink-0"></div> <!-- Spacer -->
       </header>
 
       <div class="w-full max-w-lg mx-auto space-y-6 pb-12">
