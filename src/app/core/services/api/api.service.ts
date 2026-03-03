@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, isDevMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,7 +18,7 @@ export interface Package {
 export class ApiService {
     private http = inject(HttpClient);
     private translate = inject(TranslateService);
-    private apiUrl = 'http://localhost:3000/api';
+    private apiUrl = isDevMode() ? 'http://localhost:3000/api' : 'https://impostor-backend-eight.vercel.app/api';
 
     // Signals para state management simple y robusto (Zoneless compliant)
     packages = signal<Package[]>([]);
