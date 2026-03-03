@@ -4,7 +4,8 @@
         "SUBTITLE": "Descubre la palabra secreta",
         "PLAY_LOCAL": "Jugar en local",
         "PLAY_ONLINE": "Jugar en línea",
-        "COMING_SOON": "Próximamente"
+        "COMING_SOON": "Próximamente",
+        "LOADING": "CARGANDO..."
     },
     "RULES": {
         "TITLE": "Reglas del Juego",

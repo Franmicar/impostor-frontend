@@ -1,1 +1,26 @@
 <router-outlet></router-outlet>
+
+<!-- GLOBAL LOADING OVERLAY -->
+@if (apiService.isLoading()) {
+<div
+    class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-900/90 backdrop-blur-md transition-opacity duration-300">
+    <div class="relative flex items-center justify-center mb-8">
+        <!-- Spinning outline -->
+        <div
+            class="absolute w-32 h-32 rounded-full border-t-4 border-r-4 border-primary animate-spin shadow-[0_0_30px_rgba(242,13,185,0.5)]">
+        </div>
+        <div
+            class="absolute w-24 h-24 rounded-full border-b-4 border-l-4 border-secondary animate-[spin_2s_linear_reverse] shadow-[0_0_20px_rgba(13,242,242,0.4)]">
+        </div>
+        <!-- Inner glowing dot -->
+        <div
+            class="w-12 h-12 rounded-full bg-white shadow-[0_0_20px_rgba(255,255,255,1)] animate-pulse flex items-center justify-center">
+            <div class="w-4 h-4 rounded-full bg-primary/50 animate-ping"></div>
+        </div>
+    </div>
+    <p
+        class="text-xl font-black tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] animate-pulse uppercase">
+        {{ 'HOME.LOADING' | translate }}
+    </p>
+</div>
+}

@@ -4,7 +4,8 @@
         "SUBTITLE": "Descobreix la paraula secreta",
         "PLAY_LOCAL": "Jugar en local",
         "PLAY_ONLINE": "Jugar en línia",
-        "COMING_SOON": "Pròximament"
+        "COMING_SOON": "Pròximament",
+        "LOADING": "CARGANT..."
     },
     "RULES": {
         "TITLE": "Regles del Joc",

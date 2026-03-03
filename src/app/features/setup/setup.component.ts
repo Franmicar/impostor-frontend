@@ -218,16 +218,10 @@ export interface PlayerConfig {
 
             <button 
                 (click)="startGame()"
-                [disabled]="!canStart() || apiService.isLoading() || isStarting()"
+                [disabled]="!canStart() || apiService.isLoading()"
                 class="w-full relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgba(242,13,185,0.4)] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2">
                 <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
                 <span class="relative z-10 drop-shadow-md tracking-wider">{{ 'SETUP.START_GAME' | translate }}</span>
-                @if (isStarting()) {
-                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                }
             </button>
           </footer>
         }
@@ -310,7 +304,6 @@ export class SetupComponent implements OnInit {
   duration = signal<string>('5'); // en minutos, '0' = Sin tiempo
 
   selectedPackages = signal<string[]>([]);
-  isStarting = signal<boolean>(false);
 
   // Custom Select States
   isHintsOpen = signal<boolean>(false);
@@ -440,20 +433,17 @@ export class SetupComponent implements OnInit {
 
     this.saveState();
 
-    this.isStarting.set(true);
     try {
-      // Concatenate words from all selected packages (simplification for MVP)
-      let allWords: { word: string, hint: string, fakeWord?: string }[] = [];
       const packageIds = this.selectedPackages();
 
-      for (const id of packageIds) {
-        const words = await this.apiService.getWordsByPackage(id);
-        allWords = [...allWords, ...words];
-      }
+      // Fetch all packages in parallel for maximum speed
+      const wordPromises = packageIds.map(id => this.apiService.getWordsByPackage(id));
+      const wordsArrays = await Promise.all(wordPromises);
+
+      const allWords = wordsArrays.flat();
 
       if (allWords.length === 0) {
         alert('Los paquetes seleccionados no tienen palabras válidas.');
-        this.isStarting.set(false);
         return;
       }
 
@@ -475,8 +465,6 @@ export class SetupComponent implements OnInit {
     } catch (e) {
       console.error('Failed to start game', e);
       alert('Hubo un error al iniciar la partida. Revisa conexión.');
-    } finally {
-      this.isStarting.set(false);
     }
   }
 

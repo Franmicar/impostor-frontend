@@ -4,7 +4,8 @@
         "SUBTITLE": "Find out the secret word",
         "PLAY_LOCAL": "Play Local",
         "PLAY_ONLINE": "Play Online",
-        "COMING_SOON": "Coming soon"
+        "COMING_SOON": "Coming soon",
+        "LOADING": "LOADING..."
     },
     "RULES": {
         "TITLE": "Game Rules",

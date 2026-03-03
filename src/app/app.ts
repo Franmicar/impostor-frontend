@@ -1,14 +1,16 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { ApiService } from './core/services/api/api.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, TranslateModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
+  apiService = inject(ApiService);
   protected readonly title = signal('impostor-frontend');
 
   constructor() {

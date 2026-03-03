@@ -1,4 +1,4 @@
-import { Injectable, inject, signal, isDevMode } from '@angular/core';
+import { Injectable, inject, signal, computed, isDevMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -21,18 +21,30 @@ export class ApiService {
     private apiUrl = isDevMode() ? 'http://localhost:3000/api' : 'https://impostor-backend-eight.vercel.app/api';
 
     // Signals para state management simple y robusto (Zoneless compliant)
+    // Signals para state management simple y robusto
     packages = signal<Package[]>([]);
-    isLoading = signal<boolean>(false);
+
+    private pendingRequests = signal<number>(0);
+    isLoading = computed(() => this.pendingRequests() > 0);
+
     error = signal<string | null>(null);
+
+    private startRequest() {
+        this.pendingRequests.update(v => v + 1);
+    }
+
+    private endRequest() {
+        this.pendingRequests.update(v => Math.max(0, v - 1));
+    }
 
     /**
      * Obtiene la lista de paquetes funcionales desde la API
      */
     async fetchPackages() {
-        this.isLoading.set(true);
+        this.startRequest();
         this.error.set(null);
         try {
-            const currentLang = this.translate.currentLang || this.translate.defaultLang || 'es';
+            const currentLang = this.translate.getCurrentLang() || this.translate.getFallbackLang() || 'es';
             const response = await firstValueFrom(
                 this.http.get<{ success: boolean, data: Package[] }>(`${this.apiUrl}/packages?lang=${currentLang}`)
             );
@@ -50,7 +62,7 @@ export class ApiService {
             ]);
             this.error.set('Modo Local (Sin Backend)');
         } finally {
-            this.isLoading.set(false);
+            this.endRequest();
         }
     }
 
@@ -58,7 +70,7 @@ export class ApiService {
      * Obtiene la lista de palabras de un paquete especifico
      */
     async getWordsByPackage(packageId: string): Promise<{ word: string, hint: string, fakeWord: string }[]> {
-        this.isLoading.set(true);
+        this.startRequest();
         this.error.set(null);
         try {
             const currentLang = this.translate.currentLang || this.translate.defaultLang || 'es';
@@ -110,7 +122,7 @@ export class ApiService {
             ];
             return [{ word: 'Palabra genérica', hint: 'Pista', fakeWord: 'Falsa' }];
         } finally {
-            this.isLoading.set(false);
+            this.endRequest();
         }
     }
 }
