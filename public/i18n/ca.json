@@ -63,7 +63,14 @@
         "TIME_MINS": "Minuts",
         "TIME_MIN": "Minut",
         "PACKAGES": "Paquets",
-        "START_GAME": "CREAR PARTIDA"
+        "START_GAME": "CREAR PARTIDA",
+        "SAVE": "Desar"
+    },
+    "SETUP_PLAYERS": {
+        "TITLE": "Jugadors",
+        "P_NAME": "Nom del jugador",
+        "ADD_PLAYER": "+ Afegir jugador",
+        "MIN_WARNING": "Afegeix almenys 3 jugadors per començar."
     },
     "SETUP_PACKAGES": {
         "TITLE": "Paquets",
@@ -72,11 +79,6 @@
         "NONE_SELECTED": "Cap",
         "ONE_SELECTED": "1 Seleccionat",
         "N_SELECTED": "{{count}} Seleccionats"
-    },
-    "SETUP_PLAYERS": {
-        "ADD_PLAYER": "Afegir jugador",
-        "P_NAME": "Jugador",
-        "MIN_WARNING": "Afegeix almenys 3 jugadors per començar."
     },
     "SETUP_MODES": {
         "TITLE": "Mode de joc",

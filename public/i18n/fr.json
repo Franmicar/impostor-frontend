@@ -63,7 +63,14 @@
         "TIME_MINS": "Minutes",
         "TIME_MIN": "Minute",
         "PACKAGES": "Forfaits",
-        "START_GAME": "CRÉER PARTIE"
+        "START_GAME": "CRÉER PARTIE",
+        "SAVE": "Sauvegarder"
+    },
+    "SETUP_PLAYERS": {
+        "TITLE": "Joueurs",
+        "P_NAME": "Nom du joueur",
+        "ADD_PLAYER": "+ Ajouter un joueur",
+        "MIN_WARNING": "Ajoutez au moins 3 joueurs pour commencer."
     },
     "SETUP_PACKAGES": {
         "TITLE": "Forfaits",
@@ -72,11 +79,6 @@
         "NONE_SELECTED": "Aucun",
         "ONE_SELECTED": "1 Sélectionné",
         "N_SELECTED": "{{count}} Sélectionnés"
-    },
-    "SETUP_PLAYERS": {
-        "ADD_PLAYER": "Ajouter un joueur",
-        "P_NAME": "Joueur",
-        "MIN_WARNING": "Ajoutez au moins 3 joueurs pour commencer."
     },
     "SETUP_MODES": {
         "TITLE": "Mode de jeu",

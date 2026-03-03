@@ -13,7 +13,7 @@ import { Package } from '../../../core/services/api/api.service';
       <!-- HEADER -->
       <header class="flex items-center justify-between mb-6 pt-4 shrink-0">
         <button 
-          (click)="onBack.emit()" 
+          (click)="goBack()" 
           class="w-10 h-10 flex items-center justify-center bg-glass border border-glass-border backdrop-blur-md hover:bg-white/10 rounded-full transition-colors active:scale-95 cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.1)]">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -64,6 +64,16 @@ import { Package } from '../../../core/services/api/api.service';
           }
         </div>
       </div>
+      
+      <!-- FIXED FOOTER -->
+      <footer class="fixed bottom-0 left-0 right-0 p-6 bg-slate-900/80 backdrop-blur-md border-t border-slate-700/50 z-50">
+        <button 
+          (click)="save()"
+          class="w-full relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgba(242,13,185,0.4)] transition-all active:scale-95 flex items-center justify-center gap-2">
+          <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
+          <span class="relative z-10 drop-shadow-md tracking-wider">{{ 'SETUP.SAVE' | translate }}</span>
+        </button>
+      </footer>
 
     </div>
   `,
@@ -93,8 +103,16 @@ export class SetupPackages {
     } else {
       this.localSelectedIds.splice(index, 1);
     }
-    // Emit changes immediately
+  }
+
+  save() {
+    // Only emit when clicking Save
     this.onChange.emit(this.localSelectedIds);
+    this.onBack.emit();
+  }
+
+  goBack() {
+    this.onBack.emit();
   }
 
   getPackageImage(pkg: Package): string {

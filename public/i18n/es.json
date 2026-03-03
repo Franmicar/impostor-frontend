@@ -63,7 +63,14 @@
         "TIME_MINS": "Minutos",
         "TIME_MIN": "Minuto",
         "PACKAGES": "Paquetes",
-        "START_GAME": "CREAR PARTIDA"
+        "START_GAME": "CREAR PARTIDA",
+        "SAVE": "Guardar"
+    },
+    "SETUP_PLAYERS": {
+        "TITLE": "Jugadores",
+        "P_NAME": "Nombre del jugador",
+        "ADD_PLAYER": "+ Añadir jugador",
+        "MIN_WARNING": "Añade al menos 3 jugadores para empezar."
     },
     "SETUP_PACKAGES": {
         "TITLE": "Paquetes",
@@ -72,11 +79,6 @@
         "NONE_SELECTED": "Ninguno",
         "ONE_SELECTED": "1 Seleccionado",
         "N_SELECTED": "{{count}} Seleccionados"
-    },
-    "SETUP_PLAYERS": {
-        "ADD_PLAYER": "Añadir jugador",
-        "P_NAME": "Jugador",
-        "MIN_WARNING": "Añade al menos 3 jugadores para empezar."
     },
     "SETUP_MODES": {
         "TITLE": "Modo de juego",

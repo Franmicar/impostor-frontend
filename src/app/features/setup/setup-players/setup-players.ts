@@ -15,7 +15,7 @@ import { PlayerConfig } from '../setup.component';
       <!-- HEADER -->
       <header class="flex items-center justify-between mb-8 pt-4">
         <button 
-          (click)="onBack.emit()" 
+          (click)="goBack()" 
           class="w-10 h-10 flex items-center justify-center bg-glass border border-glass-border backdrop-blur-md hover:bg-white/10 rounded-full transition-colors active:scale-95 cursor-pointer shrink-0 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -68,23 +68,23 @@ import { PlayerConfig } from '../setup.component';
       </div>
 
       <!-- FOOTER ACTIONS -->
-      <div class="flex flex-col items-center gap-4 mt-auto">
+      <footer class="fixed bottom-0 left-0 right-0 p-6 bg-slate-900/80 backdrop-blur-md border-t border-slate-700/50 z-50 flex flex-col gap-4">
+        
         <!-- ADD BUTTON -->
         <button 
             (click)="addPlayer()"
-            class="w-14 h-14 bg-white/10 hover:bg-white/20 border border-glass-border backdrop-blur-md text-white rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all active:scale-95 cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
+            class="w-full relative py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all active:scale-95">
+            <span>{{ 'SETUP_PLAYERS.ADD_PLAYER' | translate }}</span>
         </button>
 
         <!-- SAVE BUTTON -->
         <button 
-           (click)="save()"
-           class="bg-gradient-to-r from-primary to-secondary text-white font-bold py-3 px-8 rounded-full shadow-[0_0_20px_rgba(242,13,185,0.3)] cursor-pointer transition-transform active:scale-95 tracking-wide">
-           <span class="uppercase">{{ 'VOTE.CONTINUE' | translate }}</span>
+          (click)="save()"
+          class="w-full relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgba(242,13,185,0.4)] transition-all active:scale-95 flex items-center justify-center gap-2">
+          <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
+          <span class="relative z-10 drop-shadow-md tracking-wider">{{ 'SETUP.SAVE' | translate }}</span>
         </button>
-      </div>
+      </footer>
 
     </div>
   `,
@@ -109,8 +109,11 @@ import { PlayerConfig } from '../setup.component';
   `]
 })
 export class SetupPlayers {
+  private initialPlayersBackup: PlayerConfig[] = [];
+
   @Input() set currentPlayers(players: PlayerConfig[]) {
     // Deep clone to avoid mutating parent until saved
+    this.initialPlayersBackup = JSON.parse(JSON.stringify(players));
     this.localPlayers = JSON.parse(JSON.stringify(players));
   }
 
@@ -132,6 +135,11 @@ export class SetupPlayers {
     if (this.localPlayers.length > 3) {
       this.localPlayers.splice(index, 1);
     }
+  }
+
+  goBack() {
+    this.localPlayers = JSON.parse(JSON.stringify(this.initialPlayersBackup));
+    this.onBack.emit();
   }
 
   save() {
