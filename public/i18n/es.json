@@ -62,7 +62,7 @@
         "TIME_MINS": "Minutos",
         "TIME_MIN": "Minuto",
         "PACKAGES": "Paquetes",
-        "START_GAME": "EMPEZAR PARTIDA"
+        "START_GAME": "CREAR PARTIDA"
     },
     "SETUP_PACKAGES": {
         "TITLE": "Paquetes",
@@ -95,19 +95,19 @@
         "DECIDING_TURN": "Decidiendo quién empieza...",
         "ALL_ROLES_SEEN": "Todos los jugadores han visto su rol",
         "STARTS": "Empieza a hablar:",
-        "PLAY_BTN": "Comenzar Votaciones",
+        "PLAY_BTN": "JUGAR",
         "NO_ACTIVE_GAME": "No hay un juego activo en curso.",
         "BACK_TO_SETUP": "Volver a la configuración",
         "PLAYER_N_OF_M": "Jugador {{n}} de {{m}}",
         "SWIPE_TO_REVEAL": "Desliza para revelar",
         "WAITING_SECRET": "Esperando secreto...",
         "NEXT_PLAYER": "Siguiente jugador",
-        "START_PLAY": "¡Comenzar Votaciones!",
+        "START_PLAY": "Empezar partida",
         "PLAYER_TURN": "Es el turno de",
         "PASS_DEVICE": "Pásale el dispositivo para que vea su rol."
     },
     "VOTE": {
-        "TITLE": "Votación",
+        "TITLE": "Discusión",
         "TIME_REMAINING": "Tiempo Restante",
         "NO_TIME_LIMIT": "Sin límite de tiempo",
         "ELIMINATE": "Votar",

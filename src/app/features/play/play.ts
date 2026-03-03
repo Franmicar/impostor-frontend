@@ -94,7 +94,7 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
                 
                 <!-- Slide Cover -->
                 <div 
-                    class="absolute inset-0 w-full h-full bg-glass backdrop-blur-2xl border border-glass-border rounded-3xl p-8 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.05)] cursor-grab active:cursor-grabbing z-10 transition-transform select-none"
+                    class="absolute inset-0 w-full h-full bg-slate-900 border border-slate-700 rounded-3xl p-8 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.05)] cursor-grab active:cursor-grabbing z-10 transition-transform select-none"
                     [style.transform]="slideTransform()"
                     [class.duration-300]="!isDragging()"
                     (mousedown)="onDragStart($event)"

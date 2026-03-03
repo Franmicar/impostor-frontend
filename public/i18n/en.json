@@ -62,7 +62,7 @@
         "TIME_MINS": "Minutes",
         "TIME_MIN": "Minute",
         "PACKAGES": "Packages",
-        "START_GAME": "START GAME"
+        "START_GAME": "CREATE GAME"
     },
     "SETUP_PACKAGES": {
         "TITLE": "Packages",
@@ -95,19 +95,19 @@
         "DECIDING_TURN": "Deciding who starts...",
         "ALL_ROLES_SEEN": "All players have seen their role",
         "STARTS": "Starts speaking:",
-        "PLAY_BTN": "Start Voting",
+        "PLAY_BTN": "PLAY",
         "NO_ACTIVE_GAME": "There is no active game right now.",
         "BACK_TO_SETUP": "Back to setup",
         "PLAYER_N_OF_M": "Player {{n}} of {{m}}",
         "SWIPE_TO_REVEAL": "Swipe to reveal",
         "WAITING_SECRET": "Waiting for secret...",
         "NEXT_PLAYER": "Next player",
-        "START_PLAY": "Start Voting!",
+        "START_PLAY": "Start game",
         "PLAYER_TURN": "It's the turn of",
         "PASS_DEVICE": "Pass the device to them to see their role."
     },
     "VOTE": {
-        "TITLE": "Voting",
+        "TITLE": "Discussion",
         "TIME_REMAINING": "Time Remaining",
         "NO_TIME_LIMIT": "No time limit",
         "ELIMINATE": "Vote",

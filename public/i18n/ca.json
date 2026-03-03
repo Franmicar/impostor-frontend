@@ -62,7 +62,7 @@
         "TIME_MINS": "Minuts",
         "TIME_MIN": "Minut",
         "PACKAGES": "Paquets",
-        "START_GAME": "COMENÇAR PARTIDA"
+        "START_GAME": "CREAR PARTIDA"
     },
     "SETUP_PACKAGES": {
         "TITLE": "Paquets",
@@ -95,19 +95,19 @@
         "DECIDING_TURN": "Decidint qui comença...",
         "ALL_ROLES_SEEN": "Tots els jugadors han vist el seu rol",
         "STARTS": "Comença a parlar:",
-        "PLAY_BTN": "Començar Votacions",
+        "PLAY_BTN": "JUGAR",
         "NO_ACTIVE_GAME": "No hi ha cap joc actiu en aquest moment.",
         "BACK_TO_SETUP": "Tornar a la configuració",
         "PLAYER_N_OF_M": "Jugador {{n}} de {{m}}",
         "SWIPE_TO_REVEAL": "Llisca per revelar",
         "WAITING_SECRET": "Esperant el secret...",
         "NEXT_PLAYER": "Següent jugador",
-        "START_PLAY": "Començar Votacions!",
+        "START_PLAY": "Començar partida",
         "PLAYER_TURN": "És el torn de",
         "PASS_DEVICE": "Passa-li el dispositiu perquè vegi el seu rol."
     },
     "VOTE": {
-        "TITLE": "Votació",
+        "TITLE": "Discussió",
         "TIME_REMAINING": "Temps Restant",
         "NO_TIME_LIMIT": "Sense límit de temps",
         "ELIMINATE": "Votar",

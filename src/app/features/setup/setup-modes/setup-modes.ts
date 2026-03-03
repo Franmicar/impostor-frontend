@@ -14,7 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
         </button>
-        <h2 class="text-xl font-bold flex-1 text-center text-slate-200 drop-shadow-sm">{{ 'SETUP_MODES.TITLE' | translate }}</h2>
+        <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] flex-1 text-center">{{ 'SETUP_MODES.TITLE' | translate }}</h2>
         <div class="w-10 h-10 invisible shrink-0"></div> <!-- Spacer -->
       </header>
 

@@ -62,7 +62,7 @@
         "TIME_MINS": "Minutes",
         "TIME_MIN": "Minute",
         "PACKAGES": "Forfaits",
-        "START_GAME": "COMMENCER"
+        "START_GAME": "CRÉER PARTIE"
     },
     "SETUP_PACKAGES": {
         "TITLE": "Forfaits",
@@ -95,19 +95,19 @@
         "DECIDING_TURN": "Décider qui commence...",
         "ALL_ROLES_SEEN": "Tous les joueurs ont vu leur rôle",
         "STARTS": "Commence à parler :",
-        "PLAY_BTN": "Commencer les votes",
+        "PLAY_BTN": "JOUER",
         "NO_ACTIVE_GAME": "Aucun jeu actif n'est en cours.",
         "BACK_TO_SETUP": "Retourner à la configuration",
         "PLAYER_N_OF_M": "Joueur {{n}} sur {{m}}",
         "SWIPE_TO_REVEAL": "Glissez pour révéler",
         "WAITING_SECRET": "En attente du secret...",
         "NEXT_PLAYER": "Joueur suivant",
-        "START_PLAY": "Jouer!",
+        "START_PLAY": "Commencer la partie",
         "PLAYER_TURN": "C'est au tour de",
         "PASS_DEVICE": "Passez-lui l'appareil pour qu'il voie son rôle."
     },
     "VOTE": {
-        "TITLE": "Vote",
+        "TITLE": "Discussion",
         "TIME_REMAINING": "Temps restant",
         "NO_TIME_LIMIT": "Pas de limite de temps",
         "ELIMINATE": "Voter",

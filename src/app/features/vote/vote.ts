@@ -99,7 +99,7 @@ import { TimerService } from '../../core/services/timer/timer.service';
 
       <!-- HEADER & TIMER -->
       <header class="w-full max-w-md flex flex-col items-center mt-4 mb-8">
-        <h2 class="text-2xl font-black text-slate-200 uppercase tracking-widest mb-4 drop-shadow-md">{{ 'VOTE.TITLE' | translate }}</h2>
+        <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] mb-4 text-center">{{ 'VOTE.TITLE' | translate }}</h2>
         
         @if (timer.isActive() || timer.timeLeftInSeconds() > 0) {
           <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
@@ -130,7 +130,7 @@ import { TimerService } from '../../core/services/timer/timer.service';
       <main class="w-full max-w-md flex-1 overflow-y-auto pb-36">
         <!-- VOTE_INSTRUCTION is omitted from dictionary but fine omitted here temporarily or replaced with general terms -->
         
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-2 gap-4 pt-4 px-2">
           @for (player of engine.alivePlayers(); track player.id) {
             <div 
               (click)="selectedPlayerId = player.id"
