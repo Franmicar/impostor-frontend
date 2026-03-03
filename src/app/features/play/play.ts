@@ -16,25 +16,50 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
       } @else if (engine.isRevealPhaseFinished()) {
         <!-- Transition to Voting/Timer with Roulette -->
         <div class="flex flex-col items-center justify-center w-full max-w-sm flex-1">
-          @if (isRouletteSpinning()) {
-             <h2 class="text-xl font-bold text-slate-300 mb-6 tracking-widest uppercase text-center drop-shadow-md">{{ 'PLAY.DECIDING_TURN' | translate }}</h2>
-             <div class="w-full bg-glass backdrop-blur-xl border-2 border-secondary rounded-3xl py-12 shadow-[0_0_30px_rgba(13,242,242,0.4)] flex justify-center items-center">
-                <h3 class="text-4xl font-black text-white px-4 text-center truncate drop-shadow-lg">{{ currentRouletteName() }}</h3>
-             </div>
-          } @else {
-             <h2 class="text-3xl font-bold mb-2 text-center text-slate-200 drop-shadow-md">{{ 'PLAY.ALL_ROLES_SEEN' | translate }}</h2>
-             
-             <div class="w-full bg-glass backdrop-blur-xl rounded-3xl p-8 border-2 border-primary my-8 flex flex-col items-center shadow-[0_0_40px_rgba(242,13,185,0.3)]">
-                 <span class="text-slate-300 uppercase tracking-widest text-xs font-bold mb-4">{{ 'PLAY.STARTS' | translate }}</span>
-                 <h2 class="text-4xl font-black text-secondary text-center drop-shadow-[0_0_15px_rgba(13,242,242,0.6)]">{{ winnerName() }}</h2>
-             </div>
-             
-             <button 
-               (click)="goToVote()" 
-               class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-bold text-xl shadow-[0_0_20px_rgba(242,13,185,0.4)] hover:shadow-[0_0_30px_rgba(13,242,242,0.5)] active:scale-95 transition-all text-center">
-               {{ 'PLAY.PLAY_BTN' | translate }}
-             </button>
-          }
+           <h2 class="text-2xl font-bold text-slate-100 mb-6 tracking-widest uppercase text-center drop-shadow-md">
+               {{ (isRouletteSpinning() ? 'PLAY.DECIDING_TURN' : 'PLAY.STARTS') | translate }}
+           </h2>
+           
+           <!-- ROULETTE WHEEL (Always visible after reveal phase) -->
+           <!-- Enlarged from max-w-[280px] to max-w-[340px] for better name visibility -->
+           <div class="relative flex justify-center items-center w-full max-w-[340px] md:max-w-[400px] aspect-square mx-auto mb-8">
+              <!-- The Wheel -->
+              <div class="w-full h-full rounded-full overflow-hidden border-[8px] border-slate-800 shadow-[0_0_40px_rgba(242,13,185,0.5)]"
+                   [style.transform]="'rotate(' + currentWheelRotation() + 'deg)'"
+                   [style.transition-property]="'transform'"
+                   [style.transition-duration]="spinDuration() + 'ms'"
+                   [style.transition-timing-function]="'cubic-bezier(0.15, 0.85, 0.15, 1)'"
+                   [style.background]="wheelGradient()">
+                  @for (p of engine.players(); track p.id; let i = $index) {
+                     <div class="absolute top-[calc(50%-14px)] left-1/2 w-1/2 h-[28px] origin-left flex items-center justify-end pr-6 text-white font-bold tracking-wider drop-shadow-md z-10"
+                          [style.transform]="'rotate(' + ((i + 0.5) * (360 / engine.players().length) - 90) + 'deg)'">
+                         <span class="truncate max-w-[140px]" style="font-size: 1.6rem;">{{ p.name }}</span>
+                     </div>
+                  }
+              </div>
+              
+              <!-- Center dot -->
+              <div class="absolute w-12 h-12 inset-0 m-auto bg-slate-800 rounded-full border-[4px] border-slate-600 shadow-2xl z-20 flex justify-center items-center">
+                  <div class="w-5 h-5 rounded-full bg-slate-900 shadow-inner"></div>
+              </div>
+              
+              <!-- Pointer at RIGHT edge pointing LEFT -->
+              <div class="absolute right-[-20px] inset-y-0 my-auto w-0 h-0 border-y-[20px] border-y-transparent border-r-[40px] border-r-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)] z-30 pointer-events-none"></div>
+           </div>
+           
+           <!-- Continue Form Only When Stopped -->
+           <div class="w-full flex flex-col items-center min-h-[100px] justify-center transition-opacity duration-500 delay-300" [class.opacity-0]="isRouletteSpinning()" [class.pointer-events-none]="isRouletteSpinning()">
+              
+              <!-- Added the Starts Speaking layout above the name -->
+              <span class="text-slate-300 uppercase tracking-widest text-xs font-bold mb-2">{{ 'PLAY.STARTS' | translate }}</span>
+              <h2 class="text-4xl font-black text-secondary text-center mb-6 drop-shadow-[0_0_15px_rgba(13,242,242,0.6)]">{{ winnerName() }}</h2>
+              
+              <button 
+                (click)="goToVote()" 
+                class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-bold text-xl shadow-[0_0_20px_rgba(242,13,185,0.4)] hover:shadow-[0_0_30px_rgba(13,242,242,0.5)] active:scale-95 transition-all text-center">
+                {{ 'PLAY.PLAY_BTN' | translate }}
+              </button>
+           </div>
         </div>
       } @else {
         <!-- Pass and Play -->
@@ -148,8 +173,30 @@ export class Play implements OnInit {
 
   // Roulette state
   isRouletteSpinning = signal<boolean>(true);
-  currentRouletteName = signal<string>('...');
+  currentWheelRotation = signal<number>(0);
+  spinDuration = signal<number>(0);
   winnerName = signal<string>('');
+
+  wheelGradient = computed(() => {
+    const players = this.engine.players();
+    const n = players.length;
+    if (n === 0) return '';
+    const sliceAngle = 360 / n;
+    // Cool, vibrant UI palette matching the app (pink, cyan, purple, orange, green, blue)
+    const colors = ['#ec4899', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#14b8a6', '#d946ef'];
+
+    let gradient = 'conic-gradient(';
+    for (let i = 0; i < n; i++) {
+      const color = colors[i % colors.length];
+      const start = i * sliceAngle;
+      const end = (i + 1) * sliceAngle;
+      // Adding a slight border hack in the gradient isn't trivial, but simple blocks works perfectly
+      gradient += `${color} ${start}deg ${end}deg`;
+      if (i < n - 1) gradient += ', ';
+    }
+    gradient += ')';
+    return gradient;
+  });
 
   isLastPlayer = computed(() => {
     return this.engine.currentPlayerIndex() === this.engine.players().length - 1;
@@ -224,34 +271,30 @@ export class Play implements OnInit {
 
     this.isRouletteSpinning.set(true);
     const startingId = this.engine.startingPlayerId();
-    const winnerIndex = players.findIndex(p => p.id === startingId);
-    if (winnerIndex !== -1) {
-      this.winnerName.set(players[winnerIndex].name);
-    } else {
-      // Fallback
-      const randomFallback = Math.floor(Math.random() * players.length);
-      this.winnerName.set(players[randomFallback].name);
-    }
+    const winnerIndex = Math.max(0, players.findIndex(p => p.id === startingId));
+    this.winnerName.set(players[winnerIndex].name);
 
-    let spins = 0;
-    const maxSpins = 25; // number of random names shown before stopping
+    // Normalize rotation without animation
+    const currentNorm = this.currentWheelRotation() % 360;
+    this.spinDuration.set(0);
+    this.currentWheelRotation.set(currentNorm);
 
-    const spin = () => {
-      const randIdx = Math.floor(Math.random() * players.length);
-      this.currentRouletteName.set(players[randIdx].name);
-      spins++;
+    // Give DOM a frame to snap to 0-360 before applying the huge transition
+    setTimeout(() => {
+      const sliceAngle = 360 / players.length;
+      // Pointer is at RIGHT (which is 90 from top). Align winner's slice center to pointer.
+      const baseTarget = 90 - (winnerIndex + 0.5) * sliceAngle;
 
-      if (spins < maxSpins) {
-        // As spins increases, the timeout duration increases (slows down)
-        setTimeout(spin, 40 + (spins * 6));
-      } else {
-        // Finish
-        this.currentRouletteName.set(this.winnerName());
+      // Final spin adds 5 full rotations (1800 deg)
+      const finalSpin = baseTarget + 360 * 5;
+
+      this.spinDuration.set(4000); // 4 seconds spin
+      this.currentWheelRotation.set(finalSpin);
+
+      setTimeout(() => {
         this.isRouletteSpinning.set(false);
-      }
-    };
-
-    spin();
+      }, 4200); // Add 200ms padding
+    }, 50);
   }
 
   goToVote() {

@@ -192,7 +192,7 @@ export interface PlayerConfig {
                   
                   @if (isDurationOpen()) {
                     <div class="fixed inset-0 z-40" (click)="isDurationOpen.set(false)"></div>
-                    <div class="absolute right-0 top-full mt-1 w-full z-50 bg-slate-900 rounded-2xl border border-secondary shadow-[0_0_20px_rgba(13,242,242,0.3)] p-2 flex flex-col gap-1 max-h-60 overflow-y-auto overflow-x-hidden custom-scrollbar">
+                    <div class="absolute right-0 bottom-full mb-1 w-full z-50 bg-slate-900 rounded-2xl border border-secondary shadow-[0_0_20px_rgba(13,242,242,0.3)] p-2 flex flex-col gap-1 max-h-60 overflow-y-auto overflow-x-hidden custom-scrollbar">
                       @for (time of ['0','1','3','5','8','10','12','15','20']; track time) {
                         <div (click)="duration.set(time); isDurationOpen.set(false)" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-colors text-slate-100 text-sm font-medium cursor-pointer">
                           @if(time === '0') { {{ 'SETUP.TIME_NONE' | translate }} }
