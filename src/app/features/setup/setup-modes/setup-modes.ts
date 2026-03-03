@@ -18,7 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
         <div class="w-10 h-10 invisible shrink-0"></div> <!-- Spacer -->
       </header>
 
-      <div class="flex-1 overflow-y-auto pb-20 grid grid-cols-2 gap-4 place-content-start">
+      <div class="flex-1 overflow-y-auto pb-32 grid grid-cols-2 gap-4 place-content-start">
         @for (mode of availableModes; track mode.id) {
           <div 
             (click)="selectMode(mode)"

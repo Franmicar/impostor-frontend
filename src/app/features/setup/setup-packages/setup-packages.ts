@@ -29,7 +29,7 @@ import { Package } from '../../../core/services/api/api.service';
       </p>
 
       <!-- PACKAGES GRID -->
-      <div class="flex-1 overflow-y-auto pb-6">
+      <div class="flex-1 overflow-y-auto pb-32 px-1 custom-scrollbar">
         <div class="grid grid-cols-2 gap-4 auto-rows-max">
           
           @for (pkg of apiPackages; track pkg.id) {

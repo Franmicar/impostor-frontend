@@ -13,24 +13,27 @@ import { PlayerConfig } from '../setup.component';
     <div class="h-full flex flex-col bg-transparent text-white p-6">
       
       <!-- HEADER -->
-      <header class="flex items-center justify-between mb-8 pt-4">
+      <header class="flex items-center gap-4 mb-6 relative z-10">
         <button 
-          (click)="goBack()" 
-          class="w-10 h-10 flex items-center justify-center bg-glass border border-glass-border backdrop-blur-md hover:bg-white/10 rounded-full transition-colors active:scale-95 cursor-pointer shrink-0 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+          (click)="goBack()"
+          class="w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full flex items-center justify-center transition-all active:scale-90">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-white drop-shadow-md">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
         </button>
-        <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] flex-1 text-center">{{ 'SETUP.PLAYERS' | translate }}</h2>
-        <div class="w-10 h-10 invisible shrink-0"></div> <!-- Spacer -->
+
+        <h1 class="text-3xl font-black text-white px-2 py-1 tracking-wider uppercase drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]" style="font-size: 1.5rem; font-weight: 700;">
+            {{ 'SETUP.PLAYERS' | translate }}
+        </h1>
       </header>
 
-      <!-- PLAYERS LIST -->
-      <div class="flex-1 overflow-y-auto pb-6">
+      <!-- Scrollable Area - Added pb-40 to clear the custom double-button footer -->
+      <div 
+        cdkDropList 
+        (cdkDropListDropped)="drop($event)"
+        class="flex-1 overflow-y-auto pb-44 px-2 custom-scrollbar">
         <div 
-          cdkDropList 
-          class="space-y-3" 
-          (cdkDropListDropped)="drop($event)">
+          class="space-y-3">
           
           @for (player of localPlayers; track player.id; let i = $index) {
             <div 
