@@ -29,18 +29,16 @@ import { Package } from '../../../core/services/api/api.service';
       </p>
 
       <!-- PACKAGES GRID -->
-      <div class="flex-1 overflow-y-auto pb-32 px-1 custom-scrollbar">
-        <div class="grid grid-cols-2 gap-4 auto-rows-max">
-          
+      <div class="flex-1 overflow-y-auto pb-32 flex flex-col gap-4 place-content-start">
           @for (pkg of apiPackages; track pkg.id) {
             <div 
               (click)="togglePackage(pkg.id)"
-              class="relative bg-glass backdrop-blur-md rounded-2xl p-4 border-2 transition-all cursor-pointer flex flex-col items-center shadow-xl active:scale-95"
+              class="relative rounded-2xl border-2 overflow-hidden cursor-pointer transition-all duration-300 bg-glass backdrop-blur-md flex flex-row items-center p-4 min-h-[8rem]"
               [ngClass]="isSelected(pkg.id) ? 'border-primary shadow-[0_0_20px_rgba(242,13,185,0.4)]' : 'border-glass-border hover:border-white/20 hover:bg-white/5'">
               
               <!-- Checkmark icon for selected -->
               @if (isSelected(pkg.id)) {
-                <div class="absolute top-2 right-2 text-primary bg-black/40 backdrop-blur border border-primary rounded-full p-0.5 shadow-md">
+                <div class="absolute top-2 right-2 text-primary bg-black/40 backdrop-blur border border-primary rounded-full p-0.5 shadow-md z-20">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                     <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
                   </svg>
@@ -48,21 +46,21 @@ import { Package } from '../../../core/services/api/api.service';
               }
 
               <!-- Image placeholder -->
-              <div class="h-24 w-24 mb-3 mt-2 select-none filter drop-shadow-md rounded-xl overflow-hidden bg-slate-700/50 flex items-center justify-center">
+              <div class="flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden border border-white/10 shadow-lg shadow-black/50 bg-black/40" style="width: 72px; height: 72px;">
                  <img [src]="getPackageImage(pkg)" [alt]="pkg.name" class="w-full h-full object-cover">
               </div>
               
               <!-- Name and Details -->
-              <h3 class="font-bold text-center text-slate-100 text-sm leading-tight mb-1 select-none">
-                {{ pkg.name }}
-              </h3>
-              
-              <p class="text-xs text-slate-400 text-center select-none font-medium mt-auto">
-                {{ pkg.wordCount || 0 }} {{ 'SETUP_PACKAGES.WORDS' | translate }}
-              </p>
+              <div class="flex flex-col flex-1 justify-center">
+                <h3 class="font-bold text-lg mb-1 text-slate-100 select-none">
+                  {{ pkg.name }}
+                </h3>
+                <p class="text-sm text-slate-400 select-none">
+                  {{ pkg.wordCount || 0 }} {{ 'SETUP_PACKAGES.WORDS' | translate }}
+                </p>
+              </div>
             </div>
           }
-        </div>
       </div>
       
       <!-- FIXED FOOTER -->

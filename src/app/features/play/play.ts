@@ -17,7 +17,7 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
         <!-- Transition to Voting/Timer with Roulette -->
         <div class="flex flex-col items-center justify-center w-full max-w-sm flex-1">
            <h2 class="text-2xl font-bold text-slate-100 mb-6 tracking-widest uppercase text-center drop-shadow-md">
-               {{ (isRouletteSpinning() ? 'PLAY.DECIDING_TURN' : 'PLAY.STARTS') | translate }}
+               {{ (isRouletteSpinning() ? 'PLAY.DECIDING_TURN' : (engine.currentSettings()?.gameTypeId === 'draw' ? 'PLAY.STARTS_DRAW' : 'PLAY.STARTS')) | translate }}
            </h2>
            
            <!-- ROULETTE WHEEL (Always visible after reveal phase) -->
@@ -51,13 +51,17 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
            <div class="w-full flex flex-col items-center min-h-[100px] justify-center transition-opacity duration-500 delay-300" [class.opacity-0]="isRouletteSpinning()" [class.pointer-events-none]="isRouletteSpinning()">
               
               <!-- Added the Starts Speaking layout above the name -->
-              <span class="text-slate-300 uppercase tracking-widest text-xs font-bold mb-2">{{ 'PLAY.STARTS' | translate }}</span>
+              <span class="text-slate-300 uppercase tracking-widest text-xs font-bold mb-2">{{ (engine.currentSettings()?.gameTypeId === 'draw' ? 'PLAY.STARTS_DRAW' : 'PLAY.STARTS') | translate }}</span>
               <h2 class="text-4xl font-black text-secondary text-center mb-6 drop-shadow-[0_0_15px_rgba(13,242,242,0.6)]">{{ winnerName() }}</h2>
               
               <button 
-                (click)="goToVote()" 
+                (click)="goToNextPhase()" 
                 class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-bold text-xl shadow-[0_0_20px_rgba(242,13,185,0.4)] hover:shadow-[0_0_30px_rgba(13,242,242,0.5)] active:scale-95 transition-all text-center">
-                {{ 'PLAY.PLAY_BTN' | translate }}
+                @if (engine.currentSettings()?.gameTypeId === 'draw') {
+                  {{ 'PLAY.PLAY_BTN_DRAW' | translate }}
+                } @else {
+                  {{ 'PLAY.PLAY_BTN' | translate }}
+                }
               </button>
            </div>
         </div>
@@ -113,6 +117,16 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
                                 <span class="text-3xl font-bold text-white tracking-wider drop-shadow-md">{{ engine.secretWord()?.word }}</span>
                             }
                         </div>
+                        
+                        <p class="text-slate-400 text-sm mt-4 text-center">
+                            @if (engine.currentSettings()?.gameTypeId === 'word') {
+                                {{ 'PLAY.INSTRUCTION_WORD' | translate }}
+                            } @else if (engine.currentSettings()?.gameTypeId === 'question') {
+                                {{ 'PLAY.INSTRUCTION_QUESTION' | translate }}
+                            } @else if (engine.currentSettings()?.gameTypeId === 'draw') {
+                                {{ 'PLAY.INSTRUCTION_DRAW' | translate }}
+                            }
+                        </p>
                     }
 
                 </div>
@@ -305,7 +319,11 @@ export class Play implements OnInit {
     }, 50);
   }
 
-  goToVote() {
-    this.router.navigate(['/vote'], { state: { intentional: true } });
+  goToNextPhase() {
+    if (this.engine.currentSettings()?.gameTypeId === 'draw') {
+      this.router.navigate(['/draw'], { state: { intentional: true } });
+    } else {
+      this.router.navigate(['/vote'], { state: { intentional: true } });
+    }
   }
 }

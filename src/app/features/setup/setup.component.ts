@@ -8,6 +8,7 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
 
 // Subcomponents
 import { SetupModes } from './setup-modes/setup-modes';
+import { SetupTypes } from './setup-types/setup-types';
 import { SetupPlayers } from './setup-players/setup-players';
 import { SetupPackages } from './setup-packages/setup-packages';
 
@@ -24,7 +25,7 @@ export interface PlayerConfig {
 @Component({
   selector: 'app-setup',
   standalone: true,
-  imports: [TranslateModule, CommonModule, FormsModule, SetupModes, SetupPlayers, SetupPackages],
+  imports: [TranslateModule, CommonModule, FormsModule, SetupModes, SetupTypes, SetupPlayers, SetupPackages],
   template: `
     <div class="min-h-screen bg-transparent text-slate-50 flex flex-col">
       
@@ -43,8 +44,24 @@ export interface PlayerConfig {
             <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] flex-1 text-center">EL IMPOSTOR</h2>
             <div class="w-10 h-10 invisible shrink-0"></div> <!-- Spacer for centering -->
           </header>
-          
-          <main class="flex-1 px-4 overflow-y-auto pb-24">
+          <main class="flex-1 px-4 overflow-y-auto pb-40 relative custom-scrollbar">
+
+            <!-- INFO MODAL -->
+            @if (infoModalKey()) {
+              <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 backdrop-blur-sm" (click)="infoModalKey.set(null)">
+                  <div class="bg-glass backdrop-blur-2xl border border-secondary rounded-3xl p-6 max-w-sm w-full shadow-[0_0_30px_rgba(13,242,242,0.2)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300" (click)="$event.stopPropagation()">
+                      <div class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mb-4 border border-secondary/50">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                      </div>
+                      <h3 class="text-xl font-bold text-white mb-2">{{ 'SETUP.INFO_' + infoModalKey() + '_TITLE' | translate }}</h3>
+                      <p class="text-slate-300 text-sm mb-8">{{ 'SETUP.INFO_' + infoModalKey() + '_DESC' | translate }}</p>
+                      <button (click)="infoModalKey.set(null)" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
+                          {{ 'SETUP.CLOSE' | translate }}
+                      </button>
+                  </div>
+              </div>
+            }
+
             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 ml-2">{{ 'SETUP.TITLE_MAIN' | translate }}</p>
             
             <div class="bg-glass backdrop-blur-md rounded-2xl border border-glass-border divide-y divide-glass-border shadow-xl">
@@ -54,11 +71,35 @@ export interface PlayerConfig {
                 (click)="activeScreen.set('modes')"
                 class="flex items-center justify-between p-5 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer first:rounded-t-2xl">
                 <div class="flex items-center gap-3">
-                  <img src="/images/setup/mode.png" alt="" class="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
-                  <span class="font-semibold text-slate-200">{{ 'SETUP.GAME_MODE' | translate }}</span>
+                  <img src="/images/setup/mode.png" alt="" class="w-12 h-12 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <span class="font-semibold text-slate-200 flex items-center gap-2">
+                    {{ 'SETUP.GAME_MODE' | translate }}
+                    <button (click)="infoModalKey.set('MODE'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                    </button>
+                  </span>
                 </div>
                 <div class="flex items-center gap-2 text-slate-400">
                   <span class="text-sm font-medium">{{ gameMode().name | translate }}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+                </div>
+              </div>
+
+              <!-- TIPO DE JUEGO -->
+              <div 
+                (click)="activeScreen.set('types')"
+                class="flex items-center justify-between p-5 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer border-b border-glass-border">
+                <div class="flex items-center gap-3">
+                  <img src="/images/setup/type.png" alt="" class="w-12 h-12 rounded-xl object-cover drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <span class="font-semibold text-slate-200 flex items-center gap-2">
+                    {{ 'SETUP.GAME_TYPE' | translate }}
+                    <button (click)="infoModalKey.set('TYPE'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                    </button>
+                  </span>
+                </div>
+                <div class="flex items-center gap-2 text-slate-400">
+                  <span class="text-sm font-medium">{{ gameType().name | translate }}</span>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
                 </div>
               </div>
@@ -68,8 +109,13 @@ export interface PlayerConfig {
                 (click)="activeScreen.set('players')"
                 class="flex items-center justify-between p-5 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer">
                 <div class="flex items-center gap-3">
-                  <img src="/images/setup/players.png" alt="" class="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
-                  <span class="font-semibold text-slate-200">{{ 'SETUP.PLAYERS' | translate }}</span>
+                  <img src="/images/setup/players.png" alt="" class="w-12 h-12 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <span class="font-semibold text-slate-200 flex items-center gap-2">
+                    {{ 'SETUP.PLAYERS' | translate }}
+                    <button (click)="infoModalKey.set('PLAYERS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                    </button>
+                  </span>
                 </div>
                 <div class="flex items-center gap-2 text-slate-400">
                   <span class="text-sm font-medium">{{ players().length }}</span>
@@ -81,8 +127,13 @@ export interface PlayerConfig {
               @if (gameMode().id !== 'chaos' && gameMode().id !== 'fast') {
                   <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors">
                     <div class="flex items-center gap-3">
-                      <img src="/images/setup/impostors.png" alt="" class="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
-                      <span class="font-semibold text-slate-200">{{ 'SETUP.IMPOSTORS' | translate }}</span>
+                      <img src="/images/setup/impostors.png" alt="" class="w-12 h-12 object-contain scale-[1.3] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                      <span class="font-semibold text-slate-200 flex items-center gap-2">
+                        {{ 'SETUP.IMPOSTORS' | translate }}
+                        <button (click)="infoModalKey.set('IMPOSTORS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                        </button>
+                      </span>
                     </div>
                     <div class="flex items-center gap-4 text-white">
                       <button (click)="changeImpostors(-1)" class="w-8 h-8 rounded-full border border-glass-border bg-white/10 text-secondary flex items-center justify-center text-[1.5rem] pb-[0.05rem] font-medium cursor-pointer hover:bg-white/20 transition-colors">&minus;</button>
@@ -96,8 +147,13 @@ export interface PlayerConfig {
               @if (gameMode().id === 'detective') {
                 <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors">
                     <div class="flex items-center gap-3">
-                    <img src="/images/setup/detectives.png" alt="" class="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
-                    <span class="font-semibold text-slate-200">{{ 'SETUP.DETECTIVES' | translate }}</span>
+                    <img src="/images/setup/detectives.png" alt="" class="w-12 h-12 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                    <span class="font-semibold text-slate-200 flex items-center gap-2">
+                        {{ 'SETUP.DETECTIVES' | translate }}
+                        <button (click)="infoModalKey.set('DETECTIVES'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                        </button>
+                    </span>
                     </div>
                     <div class="flex items-center gap-4 text-white">
                     <button (click)="changeDetectives(-1)" class="w-8 h-8 rounded-full border border-glass-border bg-white/10 text-secondary flex items-center justify-center text-[1.5rem] pb-[0.05rem] font-medium cursor-pointer hover:bg-white/20 transition-colors">&minus;</button>
@@ -111,8 +167,15 @@ export interface PlayerConfig {
               @if (gameMode().id !== 'team' && gameMode().id !== 'infiltrator') {
                   <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors">
                     <div class="flex items-center gap-3">
-                      <img src="/images/setup/hints.png" alt="" class="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
-                      <span class="font-semibold text-slate-200">{{ 'SETUP.HINTS' | translate }} <span class="text-xs text-slate-400 font-normal">{{ 'SETUP.HINTS_ONLY_IMPS' | translate }}</span></span>
+                      <img src="/images/setup/hints.png" alt="" class="w-12 h-12 object-contain scale-[1.25] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                      <span class="font-semibold text-slate-200 flex flex-col justify-center">
+                          <span class="flex items-center gap-2">
+                             {{ 'SETUP.HINTS' | translate }}
+                             <button (click)="infoModalKey.set('HINTS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                             </button>
+                          </span>
+                      </span>
                     </div>
                     <!-- Custom Select Dropdown -->
                 <div class="relative w-48 shrink-0">
@@ -153,7 +216,12 @@ export interface PlayerConfig {
                 class="flex items-center justify-between p-5 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer">
                 <div class="flex items-center gap-3">
                   <img src="/images/setup/package.png" alt="" class="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
-                  <span class="font-semibold text-slate-200">{{ 'SETUP.PACKAGES' | translate }}</span>
+                  <span class="font-semibold text-slate-200 flex items-center gap-2">
+                    {{ 'SETUP.PACKAGES' | translate }}
+                    <button (click)="infoModalKey.set('PACKAGES'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                    </button>
+                  </span>
                 </div>
                 <div class="flex items-center gap-2 text-slate-400">
                   <span class="text-sm font-medium">
@@ -170,10 +238,15 @@ export interface PlayerConfig {
               </div>
 
               <!-- DURACION -->
-              <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors last:rounded-b-2xl">
+              <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors" [class.last:rounded-b-2xl]="gameType().id !== 'draw'" [class.border-b]="gameType().id === 'draw'" [class.border-glass-border]="gameType().id === 'draw'">
                 <div class="flex items-center gap-3">
-                  <img src="/images/setup/duration.png" alt="" class="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
-                  <span class="font-semibold text-slate-200">{{ 'SETUP.DURATION' | translate }}</span>
+                  <img src="/images/setup/duration.png" alt="" class="w-12 h-12 object-contain scale-125 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <span class="font-semibold text-slate-200 flex items-center gap-2">
+                    {{ 'SETUP.DURATION' | translate }}
+                    <button (click)="infoModalKey.set('DURATION'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                    </button>
+                  </span>
                 </div>
                 <!-- Custom Select Dropdown -->
                 <div class="relative w-40 shrink-0">
@@ -204,6 +277,45 @@ export interface PlayerConfig {
                   }
                 </div>
               </div>
+
+              <!-- TIEMPO DE DIBUJO -->
+              @if(gameType().id === 'draw') {
+              <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors last:rounded-b-2xl">
+                <div class="flex items-center gap-3">
+                  <img src="/images/setup/duration.png" alt="" class="w-12 h-12 object-contain scale-125 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <span class="font-semibold text-slate-200 flex items-center gap-2">
+                    {{ 'SETUP.DRAW_TIME' | translate }}
+                    <button (click)="infoModalKey.set('DRAW_TIME'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                    </button>
+                  </span>
+                </div>
+                <!-- Custom Select Dropdown -->
+                <div class="relative w-48 shrink-0">
+                  <div 
+                    (click)="isDrawTimeOpen.set(!isDrawTimeOpen())"
+                    class="bg-white/10 rounded-2xl border border-secondary shadow-[0_0_15px_rgba(13,242,242,0.2)] px-4 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">
+                    <span class="text-sm font-medium text-slate-100 select-none">
+                      {{ drawTurnTime() }} {{ 'SETUP.SECS' | translate }}
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-slate-400 transition-transform" [class.rotate-180]="isDrawTimeOpen()">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </div>
+                  
+                  @if (isDrawTimeOpen()) {
+                    <div class="fixed inset-0 z-40" (click)="isDrawTimeOpen.set(false)"></div>
+                    <div class="absolute right-0 bottom-full mb-1 w-full z-50 bg-slate-900 rounded-2xl border border-secondary shadow-[0_0_20px_rgba(13,242,242,0.3)] p-2 flex flex-col gap-1 max-h-60 overflow-y-auto overflow-x-hidden custom-scrollbar">
+                      @for (time of [1,2,3,4,5,6,7,8,9,10]; track time) {
+                        <div (click)="drawTurnTime.set(time); isDrawTimeOpen.set(false)" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-colors text-slate-100 text-sm font-medium cursor-pointer">
+                          {{ time }} {{ 'SETUP.SECS' | translate }}
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+              }
             </div>
 
             @if (!canStart() || selectedPackages().length === 0) {
@@ -237,6 +349,15 @@ export interface PlayerConfig {
                 (onBack)="activeScreen.set('main')"
                 (onChange)="onGameModeChanged($event)">
             </app-setup-modes>
+        }
+
+        <!-- ================= TYPES VIEW ================= -->
+        @case ('types') {
+            <app-setup-types 
+                [currentType]="gameType()" 
+                (onBack)="activeScreen.set('main')"
+                (onChange)="gameType.set($event)">
+            </app-setup-types>
         }
 
         <!-- ================= PLAYERS VIEW ================= -->
@@ -292,9 +413,10 @@ export class SetupComponent implements OnInit {
   private gameEngine = inject(GameEngineService);
 
   // States
-  activeScreen = signal<'main' | 'modes' | 'players' | 'packages'>('main');
+  activeScreen = signal<'main' | 'modes' | 'types' | 'players' | 'packages'>('main');
 
   gameMode = signal<GameModeConfig>({ id: 'classic', name: 'RULES.CLASSIC' });
+  gameType = signal<{ id: string, name: string }>({ id: 'word', name: 'RULES.TYPE_WORD' });
 
   players = signal<PlayerConfig[]>([
     { id: '1', name: 'Jugador 1' },
@@ -306,12 +428,16 @@ export class SetupComponent implements OnInit {
   detectives = signal<number>(0);
   hints = signal<string>('none'); // none, all, first
   duration = signal<string>('5'); // en minutos, '0' = Sin tiempo
+  drawTurnTime = signal<number>(10); // en segundos
 
   selectedPackages = signal<string[]>(['mock-3', 'mock-5']);
 
   // Custom Select States
   isHintsOpen = signal<boolean>(false);
   isDurationOpen = signal<boolean>(false);
+  isDrawTimeOpen = signal<boolean>(false);
+
+  infoModalKey = signal<string | null>(null);
 
   // Computeds
   packagesSelectedText = computed(() => {
@@ -351,11 +477,13 @@ export class SetupComponent implements OnInit {
     try {
       const state = {
         gameMode: this.gameMode(),
+        gameType: this.gameType(),
         players: this.players(),
         impostors: this.impostors(),
         detectives: this.detectives(),
         hints: this.hints(),
         duration: this.duration(),
+        drawTurnTime: this.drawTurnTime(),
         selectedPackages: this.selectedPackages()
       };
       localStorage.setItem('impostorSetupState', JSON.stringify(state));
@@ -370,6 +498,7 @@ export class SetupComponent implements OnInit {
       if (saved) {
         const state = JSON.parse(saved);
         if (state.gameMode) this.gameMode.set(state.gameMode);
+        if (state.gameType) this.gameType.set(state.gameType);
         if (state.players) this.players.set(state.players);
         if (state.impostors !== undefined) this.impostors.set(state.impostors);
         if (state.detectives !== undefined) this.detectives.set(state.detectives);
@@ -381,6 +510,7 @@ export class SetupComponent implements OnInit {
           this.hints.set(h);
         }
         if (state.duration) this.duration.set(state.duration);
+        if (state.drawTurnTime !== undefined) this.drawTurnTime.set(state.drawTurnTime);
         if (state.selectedPackages) this.selectedPackages.set(state.selectedPackages);
       }
     } catch (e) {
@@ -460,8 +590,10 @@ export class SetupComponent implements OnInit {
         numImpostors: this.impostors(),
         numDetectives: this.detectives(),
         modeId: this.gameMode().id,
+        gameTypeId: this.gameType().id as 'word' | 'question' | 'draw',
         duration: this.duration(),
-        hints: this.hints()
+        hints: this.hints(),
+        drawTurnTime: this.drawTurnTime()
       });
 
       // Go to play screen

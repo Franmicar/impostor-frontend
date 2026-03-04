@@ -22,6 +22,11 @@ export const routes: Routes = [
         canDeactivate: [preventExitGuard]
     },
     {
+        path: 'draw',
+        loadComponent: () => import('./features/draw/draw').then(m => m.DrawComponent),
+        canDeactivate: [preventExitGuard]
+    },
+    {
         path: 'results',
         loadComponent: () => import('./features/results/results').then(m => m.Results)
     },

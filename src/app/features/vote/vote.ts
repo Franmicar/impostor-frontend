@@ -13,6 +13,21 @@ import { TimerService } from '../../core/services/timer/timer.service';
   template: `
     <div class="min-h-screen bg-transparent text-slate-50 flex flex-col items-center justify-start p-6 relative">
       
+      <!-- DRAWING MODAL -->
+      @if (showDrawingModal) {
+        <div class="fixed inset-0 bg-black/90 z-[60] flex flex-col items-center justify-center p-4 backdrop-blur-md animate-in fade-in zoom-in duration-300">
+            <div class="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                <img [src]="engine.finalDrawingUrl()" class="w-full h-auto bg-white" alt="Final Drawing">
+                <button (click)="closeDrawingModal()" class="absolute top-4 right-4 w-10 h-10 bg-slate-900/50 hover:bg-slate-900/80 rounded-full flex items-center justify-center text-white backdrop-blur transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <button (click)="closeDrawingModal()" class="mt-6 px-8 py-3 bg-white/20 hover:bg-white/30 rounded-full text-white font-bold tracking-widest uppercase transition-colors">
+                {{ 'VOTE.CLOSE_DRAWING' | translate }}
+            </button>
+        </div>
+      }
+
       <!-- IMPOSTOR ELIMINATED MODAL -->
       @if (showImpostorEliminatedModal) {
         <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 backdrop-blur-sm">
@@ -124,6 +139,16 @@ import { TimerService } from '../../core/services/timer/timer.service';
             <span class="text-xl font-bold text-slate-300 drop-shadow-sm">{{ 'VOTE.NO_TIME_LIMIT' | translate }}</span>
           </div>
         }
+
+        <!-- Ver dibujo button -->
+        @if (engine.currentSettings()?.gameTypeId === 'draw' && engine.finalDrawingUrl()) {
+            <button (click)="openDrawingModal()" class="mt-4 px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-full font-bold transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                </svg>
+                {{ 'VOTE.VIEW_DRAWING' | translate }}
+            </button>
+        }
       </header>
 
       <!-- ALIVE PLAYERS TO VOTE -->
@@ -197,6 +222,7 @@ export class Vote implements OnInit {
   showCivilianEliminatedModal = false;
   showDetectiveModal = false;
   showImpostorEliminatedModal = false;
+  showDrawingModal = false;
   eliminatedCivilianName = '';
   eliminatedImpostorName = '';
   eliminationReason: 'vote' | 'guess' = 'vote';
@@ -288,6 +314,21 @@ export class Vote implements OnInit {
     this.showDetectiveModal = false;
     this.detectiveGuess = '';
     this.selectedDetectiveId = null;
+    if (this.wasTimerActiveBeforeModal && this.timer.timeLeftInSeconds() > 0) {
+      this.timer.resume();
+    }
+  }
+
+  openDrawingModal() {
+    this.wasTimerActiveBeforeModal = this.timer.isActive();
+    if (this.wasTimerActiveBeforeModal) {
+      this.timer.pause();
+    }
+    this.showDrawingModal = true;
+  }
+
+  closeDrawingModal() {
+    this.showDrawingModal = false;
     if (this.wasTimerActiveBeforeModal && this.timer.timeLeftInSeconds() > 0) {
       this.timer.resume();
     }

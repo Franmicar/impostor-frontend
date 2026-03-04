@@ -15,8 +15,10 @@ export interface GameSettings {
   numImpostors: number;
   numDetectives: number; // Optional based on mode
   modeId: string;
+  gameTypeId: 'word' | 'question' | 'draw'; // The selected game type
   duration?: string;
   hints?: string;
+  drawTurnTime?: number;
 }
 
 @Injectable({
@@ -33,6 +35,7 @@ export class GameEngineService {
 
   // Track how many players have been eliminated (equals to how many voting rounds occurred)
   eliminationsCount = signal<number>(0);
+  finalDrawingUrl = signal<string | null>(null);
 
   // Computed Properties
   currentPlayer = computed(() => {
@@ -89,7 +92,8 @@ export class GameEngineService {
    * Initializes the game with the given configuration
    */
   startGame(settings: GameSettings) {
-    let { playerNames, words, numImpostors, numDetectives, modeId } = settings;
+    this.finalDrawingUrl.set(null);
+    let { playerNames, words, numImpostors, numDetectives, modeId, gameTypeId } = settings;
 
     if (playerNames.length < 3) throw new Error('At least 3 players required');
     if (words.length === 0) throw new Error('Word list cannot be empty');
@@ -99,7 +103,7 @@ export class GameEngineService {
       numImpostors = Math.floor(Math.random() * (playerNames.length + 1));
     }
 
-    this.currentSettings.set({ ...settings, numImpostors });
+    this.currentSettings.set({ ...settings, numImpostors, gameTypeId });
 
     // Pick a random word object
     const randomWordObj = words[Math.floor(Math.random() * words.length)];
