@@ -51,7 +51,7 @@ export interface PlayerConfig {
               <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 backdrop-blur-sm" (click)="infoModalKey.set(null)">
                   <div class="bg-glass backdrop-blur-2xl border border-secondary rounded-3xl p-6 max-w-sm w-full shadow-[0_0_30px_rgba(13,242,242,0.2)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300" (click)="$event.stopPropagation()">
                       <div class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mb-4 border border-secondary/50">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                       </div>
                       <h3 class="text-xl font-bold text-white mb-2">{{ 'SETUP.INFO_' + infoModalKey() + '_TITLE' | translate }}</h3>
                       <div class="text-slate-300 text-sm mb-8 text-left w-full max-h-60 overflow-y-auto custom-scrollbar pr-2" [innerHTML]="'SETUP.INFO_' + infoModalKey() + '_DESC' | translate"></div>
@@ -75,7 +75,7 @@ export interface PlayerConfig {
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.GAME_MODE' | translate }}
                     <button (click)="infoModalKey.set('MODE'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
@@ -94,7 +94,7 @@ export interface PlayerConfig {
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.GAME_TYPE' | translate }}
                     <button (click)="infoModalKey.set('TYPE'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
@@ -113,7 +113,7 @@ export interface PlayerConfig {
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.PLAYERS' | translate }}
                     <button (click)="infoModalKey.set('PLAYERS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
@@ -131,7 +131,7 @@ export interface PlayerConfig {
                       <span class="font-semibold text-slate-200 flex items-center gap-2">
                         {{ 'SETUP.IMPOSTORS' | translate }}
                         <button (click)="infoModalKey.set('IMPOSTORS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                         </button>
                       </span>
                     </div>
@@ -151,7 +151,7 @@ export interface PlayerConfig {
                     <span class="font-semibold text-slate-200 flex items-center gap-2">
                         {{ 'SETUP.DETECTIVES' | translate }}
                         <button (click)="infoModalKey.set('DETECTIVES'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                         </button>
                     </span>
                     </div>
@@ -172,7 +172,7 @@ export interface PlayerConfig {
                           <span class="flex items-center gap-2">
                              {{ 'SETUP.HINTS' | translate }}
                              <button (click)="infoModalKey.set('HINTS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                              </button>
                           </span>
                       </span>
@@ -219,7 +219,7 @@ export interface PlayerConfig {
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.PACKAGES' | translate }}
                     <button (click)="infoModalKey.set('PACKAGES'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
@@ -244,7 +244,7 @@ export interface PlayerConfig {
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.DURATION' | translate }}
                     <button (click)="infoModalKey.set('DURATION'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
@@ -282,11 +282,11 @@ export interface PlayerConfig {
               @if(gameType().id === 'draw') {
               <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors last:rounded-b-2xl">
                 <div class="flex items-center gap-3">
-                  <img src="/images/setup/duration.png" alt="" class="w-12 h-12 object-contain scale-125 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <img src="/images/setup/turn_time.png" alt="" class="w-12 h-12 object-contain scale-125 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.DRAW_TIME' | translate }}
                     <button (click)="infoModalKey.set('DRAW_TIME'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>

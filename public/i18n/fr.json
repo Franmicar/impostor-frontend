@@ -80,7 +80,7 @@
         "INFO_HINTS_DESC": "Décidez si les imposteurs reçoivent des indices.<ul class='mt-2 space-y-2 list-disc pl-4 text-left'><li><strong class='text-white'>Aucun:</strong> Pas d'indices... à vous d'improviser.</li><li><strong class='text-white'>Tous:</strong> Tous les imposteurs voient l'indice.</li><li><strong class='text-white'>Premier:</strong> Seul le premier imposteur qui dessine ou parle a l'indice.</li></ul>",
         "INFO_DURATION_TITLE": "Durée",
         "INFO_DURATION_DESC": "Temps limite pour débattre.",
-        "INFO_DRAW_TIME_TITLE": "Durée du tour",
+        "INFO_DRAW_TIME_TITLE": "Temps du tour",
         "INFO_DRAW_TIME_DESC": "Temps limite pour que chaque joueur dessine à son tour.",
         "INFO_PACKAGES_TITLE": "Forfaits",
         "INFO_PACKAGES_DESC": "Sélectionnez les forfaits de mots.",
@@ -102,7 +102,7 @@
     "SETUP_PACKAGES": {
         "TITLE": "Forfaits",
         "DURATION_INFO": "Définissez si vous voulez une limite de temps globale pour débattre, en mode dessin le temps dont dispose chaque joueur est configuré séparément.",
-        "DRAW_TIME": "Durée du tour",
+        "DRAW_TIME": "Temps du tour",
         "SECS": "Secondes",
         "START_GAME": "COMMENCER",
         "NONE_SELECTED": "Aucun",
