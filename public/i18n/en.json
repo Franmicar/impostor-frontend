@@ -64,7 +64,8 @@
         "TIME_MIN": "Minute",
         "PACKAGES": "Packages",
         "START_GAME": "CREATE GAME",
-        "SAVE": "Save"
+        "SAVE": "Save",
+        "WARNING_CANNOT_START": "Players, impostors, or a word package are missing to start."
     },
     "SETUP_PLAYERS": {
         "TITLE": "Players",

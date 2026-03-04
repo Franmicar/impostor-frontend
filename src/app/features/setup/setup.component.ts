@@ -204,10 +204,14 @@ export interface PlayerConfig {
                   }
                 </div>
               </div>
-
             </div>
 
-
+            @if (!canStart() || selectedPackages().length === 0) {
+              <div class="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-3 text-red-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 shrink-0 mt-0.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <p class="text-sm leading-relaxed">{{ 'SETUP.WARNING_CANNOT_START' | translate }}</p>
+              </div>
+            }
 
           </main>
           
@@ -293,9 +297,9 @@ export class SetupComponent implements OnInit {
   gameMode = signal<GameModeConfig>({ id: 'classic', name: 'RULES.CLASSIC' });
 
   players = signal<PlayerConfig[]>([
-    { id: '1', name: 'María' },
-    { id: '2', name: 'Juan' },
-    { id: '3', name: 'Pepe' },
+    { id: '1', name: 'Jugador 1' },
+    { id: '2', name: 'Jugador 2' },
+    { id: '3', name: 'Jugador 3' },
   ]);
 
   impostors = signal<number>(1);
@@ -303,7 +307,7 @@ export class SetupComponent implements OnInit {
   hints = signal<string>('none'); // none, all, first
   duration = signal<string>('5'); // en minutos, '0' = Sin tiempo
 
-  selectedPackages = signal<string[]>([]);
+  selectedPackages = signal<string[]>(['mock-3', 'mock-5']);
 
   // Custom Select States
   isHintsOpen = signal<boolean>(false);

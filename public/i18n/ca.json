@@ -64,7 +64,8 @@
         "TIME_MIN": "Minut",
         "PACKAGES": "Paquets",
         "START_GAME": "CREAR PARTIDA",
-        "SAVE": "Desar"
+        "SAVE": "Desar",
+        "WARNING_CANNOT_START": "Falten jugadors, impostors o un paquet de paraules per començar."
     },
     "SETUP_PLAYERS": {
         "TITLE": "Jugadors",

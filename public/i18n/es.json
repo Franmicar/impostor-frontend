@@ -64,7 +64,8 @@
         "TIME_MIN": "Minuto",
         "PACKAGES": "Paquetes",
         "START_GAME": "CREAR PARTIDA",
-        "SAVE": "Guardar"
+        "SAVE": "Guardar",
+        "WARNING_CANNOT_START": "Faltan jugadores, impostores o un paquete de palabras para empezar."
     },
     "SETUP_PLAYERS": {
         "TITLE": "Jugadores",

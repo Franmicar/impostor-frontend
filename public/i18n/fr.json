@@ -64,7 +64,8 @@
         "TIME_MIN": "Minute",
         "PACKAGES": "Forfaits",
         "START_GAME": "CRÉER PARTIE",
-        "SAVE": "Sauvegarder"
+        "SAVE": "Sauvegarder",
+        "WARNING_CANNOT_START": "Il manque des joueurs, des imposteurs ou un paquet de mots pour commencer."
     },
     "SETUP_PLAYERS": {
         "TITLE": "Joueurs",
