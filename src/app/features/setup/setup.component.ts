@@ -54,7 +54,7 @@ export interface PlayerConfig {
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M12 8.25h.008v.008H12V8.25z" /></svg>
                       </div>
                       <h3 class="text-xl font-bold text-white mb-2">{{ 'SETUP.INFO_' + infoModalKey() + '_TITLE' | translate }}</h3>
-                      <p class="text-slate-300 text-sm mb-8">{{ 'SETUP.INFO_' + infoModalKey() + '_DESC' | translate }}</p>
+                      <div class="text-slate-300 text-sm mb-8 text-left w-full max-h-60 overflow-y-auto custom-scrollbar pr-2" [innerHTML]="'SETUP.INFO_' + infoModalKey() + '_DESC' | translate"></div>
                       <button (click)="infoModalKey.set(null)" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
                           {{ 'SETUP.CLOSE' | translate }}
                       </button>
@@ -71,7 +71,7 @@ export interface PlayerConfig {
                 (click)="activeScreen.set('modes')"
                 class="flex items-center justify-between p-5 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer first:rounded-t-2xl">
                 <div class="flex items-center gap-3">
-                  <img src="/images/setup/mode.png" alt="" class="w-12 h-12 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <img src="/images/setup/mode.png" alt="" class="w-12 h-12 shrink-0 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.GAME_MODE' | translate }}
                     <button (click)="infoModalKey.set('MODE'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
@@ -90,7 +90,7 @@ export interface PlayerConfig {
                 (click)="activeScreen.set('types')"
                 class="flex items-center justify-between p-5 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer border-b border-glass-border">
                 <div class="flex items-center gap-3">
-                  <img src="/images/setup/type.png" alt="" class="w-12 h-12 rounded-xl object-cover drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <img src="/images/setup/type.png" alt="" class="w-12 h-12 shrink-0 rounded-xl object-cover drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.GAME_TYPE' | translate }}
                     <button (click)="infoModalKey.set('TYPE'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
@@ -109,7 +109,7 @@ export interface PlayerConfig {
                 (click)="activeScreen.set('players')"
                 class="flex items-center justify-between p-5 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer">
                 <div class="flex items-center gap-3">
-                  <img src="/images/setup/players.png" alt="" class="w-12 h-12 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <img src="/images/setup/players.png" alt="" class="w-12 h-12 shrink-0 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.PLAYERS' | translate }}
                     <button (click)="infoModalKey.set('PLAYERS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
@@ -127,7 +127,7 @@ export interface PlayerConfig {
               @if (gameMode().id !== 'chaos' && gameMode().id !== 'fast') {
                   <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors">
                     <div class="flex items-center gap-3">
-                      <img src="/images/setup/impostors.png" alt="" class="w-12 h-12 object-contain scale-[1.3] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                      <img src="/images/setup/impostors.png" alt="" class="w-12 h-12 shrink-0 object-contain scale-[1.3] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                       <span class="font-semibold text-slate-200 flex items-center gap-2">
                         {{ 'SETUP.IMPOSTORS' | translate }}
                         <button (click)="infoModalKey.set('IMPOSTORS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
@@ -147,7 +147,7 @@ export interface PlayerConfig {
               @if (gameMode().id === 'detective') {
                 <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors">
                     <div class="flex items-center gap-3">
-                    <img src="/images/setup/detectives.png" alt="" class="w-12 h-12 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                    <img src="/images/setup/detectives.png" alt="" class="w-12 h-12 shrink-0 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                     <span class="font-semibold text-slate-200 flex items-center gap-2">
                         {{ 'SETUP.DETECTIVES' | translate }}
                         <button (click)="infoModalKey.set('DETECTIVES'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
@@ -178,11 +178,11 @@ export interface PlayerConfig {
                       </span>
                     </div>
                     <!-- Custom Select Dropdown -->
-                <div class="relative w-48 shrink-0">
+                <div class="relative w-[145px] shrink-0">
                   <div 
                     (click)="isHintsOpen.set(!isHintsOpen())"
-                    class="bg-white/10 rounded-2xl border border-primary shadow-[0_0_15px_rgba(242,13,185,0.2)] px-4 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">
-                    <span class="text-sm font-medium text-slate-100 select-none">
+                    class="bg-white/10 rounded-2xl border border-primary shadow-[0_0_15px_rgba(242,13,185,0.2)] px-3 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">
+                    <span class="text-xs sm:text-sm font-medium text-slate-100 select-none">
                       @if(hints() === 'none') { {{ 'SETUP.HINT_NONE' | translate }} }
                       @else if(hints() === 'all') { {{ 'SETUP.HINT_ALL' | translate }} }
                       @else if(hints() === 'first') { {{ 'SETUP.HINT_FIRST' | translate }} }
@@ -215,7 +215,7 @@ export interface PlayerConfig {
                 (click)="activeScreen.set('packages')"
                 class="flex items-center justify-between p-5 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer">
                 <div class="flex items-center gap-3">
-                  <img src="/images/setup/package.png" alt="" class="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <img src="/images/setup/package.png" alt="" class="w-12 h-12 shrink-0 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.PACKAGES' | translate }}
                     <button (click)="infoModalKey.set('PACKAGES'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
@@ -249,11 +249,11 @@ export interface PlayerConfig {
                   </span>
                 </div>
                 <!-- Custom Select Dropdown -->
-                <div class="relative w-40 shrink-0">
+                <div class="relative w-[145px] shrink-0">
                   <div 
                     (click)="isDurationOpen.set(!isDurationOpen())"
-                    class="bg-white/10 rounded-2xl border border-secondary shadow-[0_0_15px_rgba(13,242,242,0.2)] px-4 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">
-                    <span class="text-sm font-medium text-slate-100 select-none">
+                    class="bg-white/10 rounded-2xl border border-secondary shadow-[0_0_15px_rgba(13,242,242,0.2)] px-3 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">
+                    <span class="text-xs sm:text-sm font-medium text-slate-100 select-none">
                       @if(duration() === '0') { {{ 'SETUP.TIME_NONE' | translate }} }
                       @else if(duration() === '1') { 1 {{ 'SETUP.TIME_MIN' | translate }} }
                       @else { {{ duration() }} {{ 'SETUP.TIME_MINS' | translate }} }
@@ -291,11 +291,11 @@ export interface PlayerConfig {
                   </span>
                 </div>
                 <!-- Custom Select Dropdown -->
-                <div class="relative w-48 shrink-0">
+                <div class="relative w-[145px] shrink-0">
                   <div 
                     (click)="isDrawTimeOpen.set(!isDrawTimeOpen())"
-                    class="bg-white/10 rounded-2xl border border-secondary shadow-[0_0_15px_rgba(13,242,242,0.2)] px-4 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">
-                    <span class="text-sm font-medium text-slate-100 select-none">
+                    class="bg-white/10 rounded-2xl border border-secondary shadow-[0_0_15px_rgba(13,242,242,0.2)] px-3 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">
+                    <span class="text-xs sm:text-sm font-medium text-slate-100 select-none">
                       {{ drawTurnTime() }} {{ 'SETUP.SECS' | translate }}
                     </span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-slate-400 transition-transform" [class.rotate-180]="isDrawTimeOpen()">
