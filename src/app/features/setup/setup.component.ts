@@ -269,7 +269,7 @@ export interface PlayerConfig {
       width: 6px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
+      background-color: #0f172a;
       border-radius: 8px;
       margin: 4px;
     }

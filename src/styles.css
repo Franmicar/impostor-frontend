@@ -6,16 +6,18 @@
 @layer base {
   :root {
     /* Primary Pink: hsl(324, 91%, 50%) -> #f20db9 approx */
-    --color-primary: 242 13 185; 
+    --color-primary: 242 13 185;
     /* Secondary Cyan: hsl(185, 90%, 50%) -> #0df2f2 approx */
-    --color-secondary: 13 242 242; 
-    
+    --color-secondary: 13 242 242;
+
     /* Base Glass Values */
-    --glass-bg: rgba(30, 41, 59, 0.6); /* Equivalent to slate-800/60 */
+    --glass-bg: rgba(30, 41, 59, 0.6);
+    /* Equivalent to slate-800/60 */
     --glass-border: rgba(255, 255, 255, 0.1);
   }
 
-  html, body {
+  html,
+  body {
     height: 100%;
   }
 
@@ -29,25 +31,56 @@
   }
 }
 
-@layer utilities {
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(13, 242, 242, 0.3); /* Secondary Cyan tinted */
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(13, 242, 242, 0.6);
-  }
-  /* For Firefox */
-  .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(13, 242, 242, 0.3) rgba(255, 255, 255, 0.05);
-  }
+@layer utilities {}
+
+/* Globals para todos los scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #0f172a;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #0f172a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(13, 242, 242, 0.3);
+  /* Secondary Cyan tinted */
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.6);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(13, 242, 242, 0.6);
+}
+
+/* Clases específicas por si alguna librería inyecta sus propios scrollbars duros y queremos forzarlo */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #0f172a;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #0f172a;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(13, 242, 242, 0.3);
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.6);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(13, 242, 242, 0.6);
+}
+
+/* For Firefox */
+.custom-scrollbar,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(13, 242, 242, 0.3) #0f172a;
 }

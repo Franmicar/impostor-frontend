@@ -146,5 +146,11 @@
         "WIN_CIVS_TITLE": "Civils Supervivents (Guanyadors)",
         "LOSERS_WARN": "Els civils eliminats han perdut la partida.",
         "PLAY_AGAIN": "Tornar a jugar"
+    },
+    "CONFIRM": {
+        "TITLE": "ABANDONAR PARTIDA?",
+        "MESSAGE": "Estàs a punt d'abandonar la partida actual i perdràs el teu progrés. N'estàs segur?",
+        "CANCEL": "Tornar",
+        "EXIT": "Sortir"
     }
 }

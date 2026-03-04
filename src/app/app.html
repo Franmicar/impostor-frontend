@@ -1,5 +1,8 @@
 <router-outlet></router-outlet>
 
+@if (confirmService.isOpen()) {
+<app-confirm-dialog></app-confirm-dialog>
+}
 <!-- GLOBAL LOADING OVERLAY -->
 @if (apiService.isLoading()) {
 <div

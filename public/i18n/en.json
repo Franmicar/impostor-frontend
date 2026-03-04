@@ -146,5 +146,11 @@
         "WIN_CIVS_TITLE": "Surviving Civilians (Winners)",
         "LOSERS_WARN": "Eliminated civilians have lost the game.",
         "PLAY_AGAIN": "Play Again"
+    },
+    "CONFIRM": {
+        "TITLE": "LEAVE GAME?",
+        "MESSAGE": "You are about to leave the current game and will lose your progress. Are you sure?",
+        "CANCEL": "Back",
+        "EXIT": "Exit"
     }
 }

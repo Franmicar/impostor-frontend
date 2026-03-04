@@ -1,7 +1,7 @@
-import { Component, inject, OnInit, computed } from '@angular/core';
+import { Component, inject, signal, computed, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { GameEngineService, Player } from '../../core/services/game-engine/game-engine';
 import { TimerService } from '../../core/services/timer/timer.service';
@@ -209,6 +209,14 @@ export class Vote implements OnInit {
     return this.engine.alivePlayers().filter(p => p.isDetective);
   });
 
+  translate = inject(TranslateService);
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any): void {
+    // Check if the game is still active logic could go here, but since vote is an active game state, always warn
+    $event.returnValue = this.translate.instant('CONFIRM.MESSAGE');
+  }
+
   ngOnInit() {
     // Start timer only if it's the first time visiting the vote screen, or read from settings
     if (!this.timer.isActive() && this.timer.timeLeftInSeconds() === 0) {
@@ -234,7 +242,7 @@ export class Vote implements OnInit {
     if (!gameEnded && this.engine.currentSettings()?.modeId === 'fast') {
       // In fast mode, if the game didn't end implies the impostor was NOT voted out. Fast mode is sudden death.
       this.timer.stop();
-      this.router.navigate(['/results'], { queryParams: { winner: 'impostors' } });
+      this.router.navigate(['/results'], { queryParams: { winner: 'impostors' }, state: { intentional: true } });
       return;
     }
 
@@ -299,7 +307,10 @@ export class Vote implements OnInit {
 
     if (guessCorrect) {
       this.timer.stop();
-      this.router.navigate(['/results'], { queryParams: { winner: 'town', reason: 'guess', guess: this.detectiveGuess.trim(), detectiveId: det.id } });
+      this.router.navigate(['/results'], {
+        queryParams: { winner: 'town', reason: 'guess', guess: this.detectiveGuess.trim(), detectiveId: det.id },
+        state: { intentional: true }
+      });
     } else {
       // Fails: Eliminate detective
       this.engine.eliminatePlayer(det.id);
@@ -333,7 +344,7 @@ export class Vote implements OnInit {
       if (originalImpostors === 0) {
         if (eliminations >= 1) {
           this.timer.stop();
-          this.router.navigate(['/results'], { queryParams: { winner: 'town' } });
+          this.router.navigate(['/results'], { queryParams: { winner: 'town' }, state: { intentional: true } });
           return true;
         }
         return false;
@@ -342,7 +353,7 @@ export class Vote implements OnInit {
       if (originalImpostors === totalOriginalPlayers) {
         if (eliminations >= 2) {
           this.timer.stop();
-          this.router.navigate(['/results'], { queryParams: { winner: 'impostors' } });
+          this.router.navigate(['/results'], { queryParams: { winner: 'impostors' }, state: { intentional: true } });
           return true;
         }
         return false;
@@ -351,12 +362,12 @@ export class Vote implements OnInit {
       // Any other chaos combination plays out normally but ignoring the "impostors >= townies" rule
       if (aliveImpostors === 0) {
         this.timer.stop();
-        this.router.navigate(['/results'], { queryParams: { winner: 'town' } });
+        this.router.navigate(['/results'], { queryParams: { winner: 'town' }, state: { intentional: true } });
         return true;
       }
       if (aliveTownies === 0) {
         this.timer.stop();
-        this.router.navigate(['/results'], { queryParams: { winner: 'impostors' } });
+        this.router.navigate(['/results'], { queryParams: { winner: 'impostors' }, state: { intentional: true } });
         return true;
       }
 
@@ -368,7 +379,7 @@ export class Vote implements OnInit {
       // If there are exactly 0 impostors, civilians just need to survive until detectives eliminate themselves or are voted out.
       if (aliveDetectives === 0) {
         this.timer.stop();
-        this.router.navigate(['/results'], { queryParams: { winner: 'town' } });
+        this.router.navigate(['/results'], { queryParams: { winner: 'town' }, state: { intentional: true } });
         return true;
       }
       return false;
@@ -377,12 +388,12 @@ export class Vote implements OnInit {
     if (aliveImpostors === 0) {
       this.timer.stop();
       // Pueblo gana
-      this.router.navigate(['/results'], { queryParams: { winner: 'town' } });
+      this.router.navigate(['/results'], { queryParams: { winner: 'town' }, state: { intentional: true } });
       return true;
     } else if (aliveImpostors >= aliveTownies) {
       this.timer.stop();
       // Impostor(es) ganan por paridad
-      this.router.navigate(['/results'], { queryParams: { winner: 'impostors' } });
+      this.router.navigate(['/results'], { queryParams: { winner: 'impostors' }, state: { intentional: true } });
       return true;
     } else {
       // Continue game

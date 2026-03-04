@@ -92,6 +92,23 @@ import { PlayerConfig } from '../setup.component';
     </div>
   `,
   styles: [`
+    /* Custom Scrollbar to match duration select */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background-color: #0f172a;
+      border-radius: 8px;
+      margin: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(13, 242, 242, 0.3);
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(13, 242, 242, 0.6);
+    }
+    
     .cdk-drag-preview {
       box-sizing: border-box;
       border-radius: 0.75rem; /* xl */

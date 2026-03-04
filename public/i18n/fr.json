@@ -146,5 +146,11 @@
         "WIN_CIVS_TITLE": "Civils Survivants (Gagnants)",
         "LOSERS_WARN": "Les civils éliminés ont perdu la partie.",
         "PLAY_AGAIN": "Rejouer"
+    },
+    "CONFIRM": {
+        "TITLE": "QUITTER LA PARTIE?",
+        "MESSAGE": "Vous êtes sur le point de quitter la partie en cours et perdrez votre progression. Êtes-vous sûr ?",
+        "CANCEL": "Retour",
+        "EXIT": "Quitter"
     }
 }

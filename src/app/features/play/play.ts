@@ -1,6 +1,6 @@
 import { Component, inject, signal, HostListener, computed, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
 
 @Component({
@@ -209,8 +209,8 @@ export class Play implements OnInit {
 
   // Compute the slide offset
   slideTransform = computed(() => {
-    // Only allow sliding UP (negative Y)
-    const slideOffset = Math.min(0, this.currentY() - this.startY());
+    // Only allow sliding UP (negative Y), cap the maximum slide to -480px
+    const slideOffset = Math.max(-480, Math.min(0, this.currentY() - this.startY()));
     return 'translateY(' + slideOffset + 'px)';
   });
 
@@ -219,6 +219,14 @@ export class Play implements OnInit {
     if (this.engine.isRevealPhaseFinished() && !this.winnerName()) {
       this.startRoulette();
     }
+  }
+
+  translate = inject(TranslateService);
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any): void {
+    // Show standard browser unload confirmation dialog
+    $event.returnValue = this.translate.instant('CONFIRM.MESSAGE');
   }
 
   onDragStart(event: MouseEvent | TouchEvent) {
@@ -298,6 +306,6 @@ export class Play implements OnInit {
   }
 
   goToVote() {
-    this.router.navigate(['/vote']);
+    this.router.navigate(['/vote'], { state: { intentional: true } });
   }
 }
