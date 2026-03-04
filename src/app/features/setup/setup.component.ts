@@ -74,8 +74,8 @@ export interface PlayerConfig {
                   <img src="/images/setup/mode.png" alt="" class="w-12 h-12 shrink-0 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.GAME_MODE' | translate }}
-                    <button (click)="infoModalKey.set('MODE'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
+                    <button (click)="infoModalKey.set('MODE'); $event.stopPropagation()" class="w-[30px] h-[30px] rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
@@ -93,8 +93,8 @@ export interface PlayerConfig {
                   <img src="/images/setup/type.png" alt="" class="w-12 h-12 shrink-0 rounded-xl object-cover drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.GAME_TYPE' | translate }}
-                    <button (click)="infoModalKey.set('TYPE'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
+                    <button (click)="infoModalKey.set('TYPE'); $event.stopPropagation()" class="w-[30px] h-[30px] rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
@@ -112,8 +112,8 @@ export interface PlayerConfig {
                   <img src="/images/setup/players.png" alt="" class="w-12 h-12 shrink-0 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.PLAYERS' | translate }}
-                    <button (click)="infoModalKey.set('PLAYERS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
+                    <button (click)="infoModalKey.set('PLAYERS'); $event.stopPropagation()" class="w-[30px] h-[30px] rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
@@ -130,8 +130,8 @@ export interface PlayerConfig {
                       <img src="/images/setup/impostors.png" alt="" class="w-12 h-12 shrink-0 object-contain scale-[1.3] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                       <span class="font-semibold text-slate-200 flex items-center gap-2">
                         {{ 'SETUP.IMPOSTORS' | translate }}
-                        <button (click)="infoModalKey.set('IMPOSTORS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
+                        <button (click)="infoModalKey.set('IMPOSTORS'); $event.stopPropagation()" class="w-[30px] h-[30px] rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                         </button>
                       </span>
                     </div>
@@ -150,8 +150,8 @@ export interface PlayerConfig {
                     <img src="/images/setup/detectives.png" alt="" class="w-12 h-12 shrink-0 object-contain scale-[1.15] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                     <span class="font-semibold text-slate-200 flex items-center gap-2">
                         {{ 'SETUP.DETECTIVES' | translate }}
-                        <button (click)="infoModalKey.set('DETECTIVES'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
+                        <button (click)="infoModalKey.set('DETECTIVES'); $event.stopPropagation()" class="w-[30px] h-[30px] rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                         </button>
                     </span>
                     </div>
@@ -171,8 +171,8 @@ export interface PlayerConfig {
                       <span class="font-semibold text-slate-200 flex flex-col justify-center">
                           <span class="flex items-center gap-2">
                              {{ 'SETUP.HINTS' | translate }}
-                             <button (click)="infoModalKey.set('HINTS'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
+                             <button (click)="infoModalKey.set('HINTS'); $event.stopPropagation()" class="w-[30px] h-[30px] rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                              </button>
                           </span>
                       </span>
@@ -218,8 +218,8 @@ export interface PlayerConfig {
                   <img src="/images/setup/package.png" alt="" class="w-12 h-12 shrink-0 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.PACKAGES' | translate }}
-                    <button (click)="infoModalKey.set('PACKAGES'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
+                    <button (click)="infoModalKey.set('PACKAGES'); $event.stopPropagation()" class="w-[30px] h-[30px] rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
@@ -243,8 +243,8 @@ export interface PlayerConfig {
                   <img src="/images/setup/duration.png" alt="" class="w-12 h-12 object-contain scale-125 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.DURATION' | translate }}
-                    <button (click)="infoModalKey.set('DURATION'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
+                    <button (click)="infoModalKey.set('DURATION'); $event.stopPropagation()" class="w-[30px] h-[30px] rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
@@ -282,11 +282,11 @@ export interface PlayerConfig {
               @if(gameType().id === 'draw') {
               <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors last:rounded-b-2xl">
                 <div class="flex items-center gap-3">
-                  <img src="/images/setup/turn_time.png" alt="" class="w-12 h-12 object-contain scale-125 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                  <img src="/images/setup/turn_time.png" alt="" class="w-12 h-12 object-contain scale-[1.65] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                   <span class="font-semibold text-slate-200 flex items-center gap-2">
                     {{ 'SETUP.DRAW_TIME' | translate }}
-                    <button (click)="infoModalKey.set('DRAW_TIME'); $event.stopPropagation()" class="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
+                    <button (click)="infoModalKey.set('DRAW_TIME'); $event.stopPropagation()" class="w-[30px] h-[30px] rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 hover:bg-secondary/40 transition-colors pointer-events-auto shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
                     </button>
                   </span>
                 </div>
