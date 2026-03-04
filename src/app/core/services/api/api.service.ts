@@ -38,9 +38,30 @@ export class ApiService {
     }
 
     /**
+     * Silently wakes up the backend and preloads packages without showing the loading screen
+     */
+    async preloadPackages() {
+        if (this.packages().length > 0) return; // Already loaded
+
+        try {
+            const currentLang = this.translate.getCurrentLang() || this.translate.getFallbackLang() || 'es';
+            const response = await firstValueFrom(
+                this.http.get<{ success: boolean, data: Package[] }>(`${this.apiUrl}/packages?lang=${currentLang}`)
+            );
+            if (response && response.success) {
+                this.packages.set(response.data);
+            }
+        } catch (err: any) {
+            console.warn('Background preload failed (expected on cold starts), will retry on Setup', err);
+        }
+    }
+
+    /**
      * Obtiene la lista de paquetes funcionales desde la API
      */
     async fetchPackages() {
+        if (this.packages().length > 0) return; // Si ya están cacheados, no bloquemos la UI
+
         this.startRequest();
         this.error.set(null);
         try {

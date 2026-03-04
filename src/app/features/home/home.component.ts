@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService } from '../../core/services/api/api.service';
 
 @Component({
   selector: 'app-home',
@@ -58,8 +59,14 @@ import { TranslateModule } from '@ngx-translate/core';
     }
   `]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   private router = inject(Router);
+  private apiService = inject(ApiService);
+
+  ngOnInit() {
+    // Wake up the backend and prefetch packages so Setup screen is instant
+    this.apiService.preloadPackages();
+  }
 
   startGame() {
     this.router.navigate(['/setup']);
