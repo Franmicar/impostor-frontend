@@ -52,4 +52,8 @@ Junto a los modos y roles, la versión actual introduce la capacidad de elegir c
 - **Tipos de Juego (Dinámicas)**: Incorporación de las mecánicas de "Preguntas" y "Dibujo" como alternativas al modo clásico de "Palabras", incrementando exponencialmente los modos de interacción en mesa.
 - **Internacionalización**: Integración completa de los idiomas Francés (FR) y Catalán (CA).
 - **Assets Gráficos**: Nuevos iconos 3D renderizados para los paquetes de palabras (Anime, Animales, Películas).
-- **Interfaz (UI) y Experiencia (UX)**: Refinamientos en la pantalla de *Setup* (ajustes de iconos y layout) y diseño de *scrollbars* personalizadas globalmente (fondo oscuro y track cyan) acorde al estilo Dark Glass. Corrección en los textos de duración de turnos.
+### Versión 1.2.0
+- **Cloud Presets (Grupos en la Nube)**: Funcionalidad para guardar grupos de amigos habituales asociados a la cuenta de usuario (Firebase). Permite selección, memorización de estado y borrado con modales de seguridad personalizados.
+- **Rediseño de Sistema de Alertas**: Sustratos de alertas nativos del navegador (`alert()`) eliminados y sustituidos por un sistema de Pop-Ups inmersivos con el diseño *Dark Glassmorphism*.
+- **Avatares Visibles y Optimizados**: Compresión de imágenes subidas en el lado del cliente (Canvas) para evitar saturación de red, y rediseño de la pantalla de "Votación" para renderizar dinámicamente las fotografías subidas en juego, aumentando la inmersión dramática.
+- **Validaciones de Seguridad**: Límites de caracteres en la creación de grupos y sistemas anti-duplicados estrictos.

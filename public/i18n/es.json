@@ -202,5 +202,25 @@
         "MESSAGE": "Vas a abandonar la partida actual y perderás el progreso. ¿Estás seguro?",
         "CANCEL": "Volver",
         "EXIT": "Salir"
+    },
+    "COMMON": {
+        "OK": "Aceptar"
+    },
+    "CONFIRM_DELETE_PRESET": {
+        "TITLE": "Eliminar grupo",
+        "MESSAGE": "¿Estás seguro de que quieres eliminar este grupo de la nube? Esta acción no se puede deshacer.",
+        "CANCEL": "Cancelar",
+        "CONFIRM": "Eliminar"
+    },
+    "ALERTS": {
+        "TITLE_ERROR": "Error",
+        "TITLE_SUCCESS": "¡Éxito!",
+        "DUPLICATE_NAME": "Hay jugadores con el mismo nombre. Por favor, diferéncialos (ej: Juan y Juan 2).",
+        "SAVE_SUCCESS": "¡Grupo \"{{name}}\" guardado correctamente!",
+        "LIMIT_REACHED": "Límite de grupos alcanzado (Máx 3). Borra alguno o usa el mismo nombre para sobrescribir.",
+        "SAVE_ERROR": "Hubo un error guardando el grupo. Revisa tu conexión a internet.",
+        "IMAGE_TOO_LARGE": "La imagen es demasiado grande. Intenta con una imagen de menor tamaño.",
+        "NO_WORDS": "Los paquetes seleccionados no tienen palabras válidas para iniciar.",
+        "START_ERROR": "Hubo un error al iniciar la partida. Revisa la conexión."
     }
 }

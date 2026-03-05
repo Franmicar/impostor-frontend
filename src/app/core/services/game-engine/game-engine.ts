@@ -3,6 +3,7 @@ import { Injectable, signal, computed } from '@angular/core';
 export interface Player {
   id: number;
   name: string;
+  photoUrl?: string;
   isImpostor: boolean;
   isDetective?: boolean;
   hasSeenRole: boolean;
@@ -10,7 +11,7 @@ export interface Player {
 }
 
 export interface GameSettings {
-  playerNames: string[];
+  playerData: { name: string, photoUrl?: string }[];
   words: { word: string, hint: string, fakeWord?: string }[];
   numImpostors: number;
   numDetectives: number; // Optional based on mode
@@ -93,14 +94,14 @@ export class GameEngineService {
    */
   startGame(settings: GameSettings) {
     this.finalDrawingUrl.set(null);
-    let { playerNames, words, numImpostors, numDetectives, modeId, gameTypeId } = settings;
+    let { playerData, words, numImpostors, numDetectives, modeId, gameTypeId } = settings;
 
-    if (playerNames.length < 3) throw new Error('At least 3 players required');
+    if (playerData.length < 3) throw new Error('At least 3 players required');
     if (words.length === 0) throw new Error('Word list cannot be empty');
 
     // Override impostors for chaos mode
     if (modeId === 'chaos') {
-      numImpostors = Math.floor(Math.random() * (playerNames.length + 1));
+      numImpostors = Math.floor(Math.random() * (playerData.length + 1));
     }
 
     this.currentSettings.set({ ...settings, numImpostors, gameTypeId });
@@ -110,16 +111,17 @@ export class GameEngineService {
     this.secretWord.set(randomWordObj);
 
     // Create player objects
-    let initPlayers: Player[] = playerNames.map((name, index) => ({
+    let initPlayers: Player[] = playerData.map((pd, index) => ({
       id: index + 1,
-      name,
+      name: pd.name,
+      photoUrl: pd.photoUrl,
       isImpostor: false,
       hasSeenRole: false
     }));
 
     // Assign impostors randomly
     let impostorsAssigned = 0;
-    while (impostorsAssigned < numImpostors && impostorsAssigned < playerNames.length) {
+    while (impostorsAssigned < numImpostors && impostorsAssigned < playerData.length) {
       const randomIndex = Math.floor(Math.random() * initPlayers.length);
       if (!initPlayers[randomIndex].isImpostor) {
         initPlayers[randomIndex].isImpostor = true;
@@ -129,7 +131,7 @@ export class GameEngineService {
 
     // Assign detectives (if any)
     let detectivesAssigned = 0;
-    while (detectivesAssigned < numDetectives && (impostorsAssigned + detectivesAssigned) < playerNames.length) {
+    while (detectivesAssigned < numDetectives && (impostorsAssigned + detectivesAssigned) < playerData.length) {
       const randomIndex = Math.floor(Math.random() * initPlayers.length);
       if (!initPlayers[randomIndex].isImpostor && !initPlayers[randomIndex].isDetective) {
         initPlayers[randomIndex].isDetective = true;

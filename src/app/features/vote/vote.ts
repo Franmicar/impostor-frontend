@@ -165,16 +165,20 @@ import { TimerService } from '../../core/services/timer/timer.service';
               [class.shadow-[0_0_25px_rgba(242,13,185,0.5)]]="selectedPlayerId === player.id"
               [class.border-glass-border]="selectedPlayerId !== player.id"
               [class.hover:border-white/20]="selectedPlayerId !== player.id">
-              <div class="w-14 h-14 rounded-full flex items-center justify-center border transition-all"
+              <div class="w-14 h-14 rounded-full flex items-center justify-center border transition-all overflow-hidden relative"
                    [class.bg-primary/20]="selectedPlayerId === player.id"
                    [class.border-primary]="selectedPlayerId === player.id"
                    [class.bg-white/5]="selectedPlayerId !== player.id"
                    [class.border-white/10]="selectedPlayerId !== player.id">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transition-colors"
-                     [class.text-primary]="selectedPlayerId === player.id"
-                     [class.text-slate-400]="selectedPlayerId !== player.id">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
+                @if (player.photoUrl) {
+                  <img [src]="player.photoUrl" class="w-full h-full object-cover">
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transition-colors"
+                       [class.text-primary]="selectedPlayerId === player.id"
+                       [class.text-slate-400]="selectedPlayerId !== player.id">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                  </svg>
+                }
               </div>
               <span class="font-bold text-slate-200">{{ player.name }}</span>
             </div>

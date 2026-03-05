@@ -202,5 +202,25 @@
         "MESSAGE": "Estàs a punt d'abandonar la partida actual i perdràs el teu progrés. N'estàs segur?",
         "CANCEL": "Tornar",
         "EXIT": "Sortir"
+    },
+    "COMMON": {
+        "OK": "D'acord"
+    },
+    "CONFIRM_DELETE_PRESET": {
+        "TITLE": "Eliminar grup",
+        "MESSAGE": "Estàs segur que vols eliminar aquest grup del núvol? Aquesta acció no es pot desfer.",
+        "CANCEL": "Cancel·lar",
+        "CONFIRM": "Eliminar"
+    },
+    "ALERTS": {
+        "TITLE_ERROR": "Error",
+        "TITLE_SUCCESS": "Èxit!",
+        "DUPLICATE_NAME": "Hi ha jugadors amb el mateix nom. Si us plau, diferència'ls (ex: Joan i Joan 2).",
+        "SAVE_SUCCESS": "Grup \"{{name}}\" desat correctament!",
+        "LIMIT_REACHED": "Límit de grups assolit (Màx 3). Esborra'n algun o usa el mateix nom per sobreescriure.",
+        "SAVE_ERROR": "Hi ha hagut un error en desar el grup. Revisa la teva connexió a internet.",
+        "IMAGE_TOO_LARGE": "La imatge és massa gran. Intenta-ho amb una imatge de menor mida.",
+        "NO_WORDS": "Els paquets seleccionats no tenen paraules vàlides per començar.",
+        "START_ERROR": "Hi ha hagut un error en iniciar la partida. Revisa la connexió."
     }
 }

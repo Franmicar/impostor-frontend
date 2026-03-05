@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 @Component({
     selector: 'app-rules',
@@ -15,10 +16,19 @@ import { TranslateModule } from '@ngx-translate/core';
           </svg>
         </button>
         <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] flex-1 text-center">{{ 'RULES.TITLE' | translate }}</h2>
-        <div class="w-10 h-10 invisible shrink-0"></div> <!-- Spacer -->
+        
+        <div class="flex items-center justify-end shrink-0 w-10">
+          @if (authService.userSignal()) {
+            <img [src]="authService.userSignal()?.photoURL || '/images/default-avatar.png'" referrerpolicy="no-referrer" class="w-8 h-8 rounded-full border-2 border-secondary shadow-[0_0_10px_rgba(13,242,242,0.4)] cursor-pointer" (click)="authService.logout()" title="Cerrar sesión" />
+          } @else {
+            <button (click)="authService.loginWithGoogle()" class="text-[0.65rem] font-bold text-secondary uppercase bg-white/5 border border-secondary/30 px-2 py-1 rounded-lg hover:bg-secondary/20 transition-colors">
+              Login
+            </button>
+          }
+        </div>
       </header>
 
-      <div class="w-full max-w-lg mx-auto space-y-6 pb-12">
+      <div class="w-full mx-auto space-y-6 pb-12">
         <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border">
             <h3 class="text-xl font-bold text-primary drop-shadow-sm mb-3">{{ 'RULES.HOW_TO_PLAY' | translate }}</h3>
             <p class="text-slate-300 text-sm leading-relaxed mb-3">
@@ -92,6 +102,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class Rules {
     private router = inject(Router);
+    authService = inject(AuthService);
 
     goBack() {
         this.router.navigate(['/']);

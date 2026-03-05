@@ -202,5 +202,25 @@
         "MESSAGE": "You are about to leave the current game and will lose your progress. Are you sure?",
         "CANCEL": "Back",
         "EXIT": "Exit"
+    },
+    "COMMON": {
+        "OK": "OK"
+    },
+    "CONFIRM_DELETE_PRESET": {
+        "TITLE": "Delete group",
+        "MESSAGE": "Are you sure you want to delete this cloud group? This action cannot be undone.",
+        "CANCEL": "Cancel",
+        "CONFIRM": "Delete"
+    },
+    "ALERTS": {
+        "TITLE_ERROR": "Error",
+        "TITLE_SUCCESS": "Success!",
+        "DUPLICATE_NAME": "There are players with the same name. Please differentiate them (e.g. John and John 2).",
+        "SAVE_SUCCESS": "Group \"{{name}}\" saved successfully!",
+        "LIMIT_REACHED": "Group limit reached (Max 3). Delete one or use the same name to overwrite.",
+        "SAVE_ERROR": "There was an error saving the group. Check your internet connection.",
+        "IMAGE_TOO_LARGE": "The image is too large. Try a smaller image size.",
+        "NO_WORDS": "The selected packages don't have valid words to start.",
+        "START_ERROR": "There was an error starting the game. Check your internet connection."
     }
 }

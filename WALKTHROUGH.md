@@ -59,4 +59,9 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Implementación de Dinámicas de Juego**: Expansión del Core (`GameEngineService`) e interfaz en `/setup` para acomodar la selección entre mecánicas de Palabras, Preguntas y Dibujo como selector principal de partida.
 - **Localización Expandida**: La arquitectura de i18n ahora maneja y carga dinámicamente traducciones en FR y CA en las directivas y componentes de configuración.
 - **Assets y Medios**: Integración robusta de recursos visuales y logos 3D en la selección de paquetes.
-- **Refinamiento UI (Setup)**: Ajustes de componentes en la vista de `/setup` (retirada de fondo en el hourglass, redimensionado dinámico del icono de info) y traducciones de duración de turno calibradas.
+### Versión 1.2.0
+- **Integración Firebase (Cloud Presets)**: Adición de `@angular/fire` para el guardado de perfiles de jugadores habituales asociados al usuario de Google y sincronizados en la nube.
+- **Optimización de Medios (DOM Canvas)**: Refactor del input file para redimensionar en un Canvas invisible del lado cliente y comprimir a `base64` en JPEG las fotografías subidas para los avatares, evitando cuellos de botella en la base de datos de Firebase.
+- **Flujo de Votación Visual**: Modificación del `GameEngineService` y la pantalla `/vote` para transportar el árbol de datos complejos (`photoUrl`) hasta la fase de votación de forma intacta.
+- **Modales UI Internos**: Completa purga de las interrupciones nativas del navegador y reimplementación de sistemas de alerta por Signal atados a traducciones puras dentro del componente.
+

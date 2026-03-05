@@ -201,5 +201,25 @@
         "MESSAGE": "Vous êtes sur le point de quitter la partie en cours et perdrez votre progression. Êtes-vous sûr ?",
         "CANCEL": "Retour",
         "EXIT": "Quitter"
+    },
+    "COMMON": {
+        "OK": "OK"
+    },
+    "CONFIRM_DELETE_PRESET": {
+        "TITLE": "Supprimer le groupe",
+        "MESSAGE": "Êtes-vous sûr de vouloir supprimer ce groupe cloud ? Cette action est irréversible.",
+        "CANCEL": "Annuler",
+        "CONFIRM": "Supprimer"
+    },
+    "ALERTS": {
+        "TITLE_ERROR": "Erreur",
+        "TITLE_SUCCESS": "Succès!",
+        "DUPLICATE_NAME": "Il y a des joueurs avec le même nom. Veuillez les différencier (ex: Jean et Jean 2).",
+        "SAVE_SUCCESS": "Groupe \"{{name}}\" enregistré avec succès !",
+        "LIMIT_REACHED": "Limite de groupes atteinte (Max 3). Supprimez-en un ou utilisez le même nom pour écraser.",
+        "SAVE_ERROR": "Une erreur s'est produite lors de l'enregistrement. Vérifiez votre connexion Internet.",
+        "IMAGE_TOO_LARGE": "L'image est trop grande. Essayez avec une image plus petite.",
+        "NO_WORDS": "Les forfaits sélectionnés n'ont pas de mots valides pour commencer.",
+        "START_ERROR": "Une erreur s'est produite lors du démarrage du jeu. Vérifiez votre connexion."
     }
 }

@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/services/api/api.service';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
+import { AuthService } from '../../core/services/auth/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 // Subcomponents
 import { SetupModes } from './setup-modes/setup-modes';
@@ -20,6 +22,7 @@ export interface GameModeConfig {
 export interface PlayerConfig {
   id: string;
   name: string;
+  photoUrl?: string;
 }
 
 @Component({
@@ -42,7 +45,16 @@ export interface PlayerConfig {
               </svg>
             </button>
             <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] flex-1 text-center">EL IMPOSTOR</h2>
-            <div class="w-10 h-10 invisible shrink-0"></div> <!-- Spacer for centering -->
+            
+            <div class="flex items-center justify-end shrink-0 w-10">
+              @if (authService.userSignal()) {
+                <img [src]="authService.userSignal()?.photoURL || '/images/default-avatar.png'" class="w-8 h-8 rounded-full border-2 border-secondary shadow-[0_0_10px_rgba(13,242,242,0.4)] cursor-pointer" (click)="authService.logout()" title="Cerrar sesión" />
+              } @else {
+                <button (click)="authService.loginWithGoogle()" class="text-[0.65rem] font-bold text-secondary uppercase bg-white/5 border border-secondary/30 px-2 py-1 rounded-lg hover:bg-secondary/20 transition-colors">
+                  Login
+                </button>
+              }
+            </div>
           </header>
           <main class="flex-1 px-4 overflow-y-auto pb-40 relative custom-scrollbar">
 
@@ -363,9 +375,11 @@ export interface PlayerConfig {
         <!-- ================= PLAYERS VIEW ================= -->
         @case ('players') {
             <app-setup-players 
-                [currentPlayers]="players()" 
-                (onBack)="activeScreen.set('main')"
-                (onChange)="updatePlayers($event)">
+              [currentPlayers]="players()"
+              [presetId]="selectedPresetId()"
+              (presetIdChange)="selectedPresetId.set($event)"
+              (onChange)="updatePlayers($event)"
+              (onBack)="activeScreen.set('main')">
             </app-setup-players>
         }
 
@@ -380,6 +394,39 @@ export interface PlayerConfig {
         }
 
       }
+
+      <!-- MODAL ALERTAS GENERICO -->
+      @if (alertModal().show) {
+        <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+          <div class="bg-slate-900 border border-glass-border rounded-3xl p-6 w-full max-w-sm shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200 text-center">
+            
+            <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-2" [ngClass]="alertModal().isError ? 'bg-red-500/20 text-red-500' : 'bg-green-500/20 text-green-500'">
+              @if (alertModal().isError) {
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              }
+            </div>
+            
+            <h3 class="text-2xl font-black text-white">
+              {{ alertModal().title }}
+            </h3>
+            
+            <p class="text-base text-slate-400 mb-2">
+              {{ alertModal().message }}
+            </p>
+            
+            <button 
+              (click)="alertModal.set({show: false, title: '', message: '', isError: false})"
+              class="w-full py-4 rounded-2xl font-bold transition-all active:scale-95"
+              [ngClass]="alertModal().isError ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-gradient-to-r from-primary to-secondary text-white shadow-[0_0_20px_rgba(242,13,185,0.3)]'">
+              {{ 'COMMON.OK' | translate }}
+            </button>
+            
+          </div>
+        </div>
+      }
+
     </div>
   `,
   styles: [`
@@ -411,6 +458,8 @@ export class SetupComponent implements OnInit {
   private router = inject(Router);
   apiService = inject(ApiService);
   private gameEngine = inject(GameEngineService);
+  authService = inject(AuthService);
+  translate = inject(TranslateService);
 
   // States
   activeScreen = signal<'main' | 'modes' | 'types' | 'players' | 'packages'>('main');
@@ -431,6 +480,7 @@ export class SetupComponent implements OnInit {
   drawTurnTime = signal<number>(10); // en segundos
 
   selectedPackages = signal<string[]>(['mock-3', 'mock-5']);
+  selectedPresetId = signal<string | null>(null);
 
   // Custom Select States
   isHintsOpen = signal<boolean>(false);
@@ -438,6 +488,17 @@ export class SetupComponent implements OnInit {
   isDrawTimeOpen = signal<boolean>(false);
 
   infoModalKey = signal<string | null>(null);
+
+  // Alert Modal
+  alertModal = signal<{ show: boolean, title: string, message: string, isError: boolean }>({
+    show: false, title: '', message: '', isError: false
+  });
+
+  showAlert(titleKey: string, messageKey: string, isError: boolean = false, params?: any) {
+    const title = this.translate.instant(titleKey);
+    const message = this.translate.instant(messageKey, params);
+    this.alertModal.set({ show: true, title, message, isError });
+  }
 
   // Computeds
   packagesSelectedText = computed(() => {
@@ -484,7 +545,8 @@ export class SetupComponent implements OnInit {
         hints: this.hints(),
         duration: this.duration(),
         drawTurnTime: this.drawTurnTime(),
-        selectedPackages: this.selectedPackages()
+        selectedPackages: this.selectedPackages(),
+        selectedPresetId: this.selectedPresetId()
       };
       localStorage.setItem('impostorSetupState', JSON.stringify(state));
     } catch (e) {
@@ -512,6 +574,7 @@ export class SetupComponent implements OnInit {
         if (state.duration) this.duration.set(state.duration);
         if (state.drawTurnTime !== undefined) this.drawTurnTime.set(state.drawTurnTime);
         if (state.selectedPackages) this.selectedPackages.set(state.selectedPackages);
+        if (state.selectedPresetId !== undefined) this.selectedPresetId.set(state.selectedPresetId);
       }
     } catch (e) {
       console.warn('Could not restore setup state', e);
@@ -577,15 +640,18 @@ export class SetupComponent implements OnInit {
       const allWords = wordsArrays.flat();
 
       if (allWords.length === 0) {
-        alert('Los paquetes seleccionados no tienen palabras válidas.');
+        this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.NO_WORDS', true);
         return;
       }
 
       // We pass the settings to the engine logic
-      const playerNames = this.players().map(p => p.name);
+      const playerData = this.players().map(p => ({
+        name: p.name,
+        photoUrl: p.photoUrl
+      }));
 
       this.gameEngine.startGame({
-        playerNames,
+        playerData,
         words: allWords,
         numImpostors: this.impostors(),
         numDetectives: this.detectives(),
@@ -600,7 +666,7 @@ export class SetupComponent implements OnInit {
       this.router.navigate(['/play']);
     } catch (e) {
       console.error('Failed to start game', e);
-      alert('Hubo un error al iniciar la partida. Revisa conexión.');
+      this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.START_ERROR', true);
     }
   }
 

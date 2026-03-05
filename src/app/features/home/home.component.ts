@@ -23,7 +23,10 @@ import { ApiService } from '../../core/services/api/api.service';
             </button>
         </div>
 
-        <div class="flex-1 flex flex-col items-center justify-center w-full max-w-md">
+        <div class="flex-1 flex flex-col items-center justify-center w-full max-w-md mt-12">
+            <!-- New Character Mask Image -->
+            <img src="/images/home_impostor_mask.png" alt="Impostor Mask" class="w-48 h-48 sm:w-56 sm:h-56 object-cover rounded-full shadow-[0_0_30px_rgba(13,242,242,0.4)] border-2 border-primary mb-6 animate-pulse" />
+            
             <!-- Game Title using Gradient Text Effect -->
             <h1 class="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-2 drop-shadow-[0_0_20px_rgba(242,13,185,0.4)] text-center tracking-tight">
                 {{ 'HOME.TITLE' | translate }}
