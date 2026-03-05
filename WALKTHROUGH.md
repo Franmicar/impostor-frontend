@@ -33,8 +33,8 @@ src/app/
 ## 4. Flujo de Aplicación 
 1. **Arranque (Bootstrapping)**: La aplicación arranca enteramente en `main.ts/app.ts` enlazando proveedores troncales de Router y la máquina `TranslateService`.
 2. **Setup y Configuración (`/setup`)**: 
-   - A través de validaciones, el anfitrión configura la partida. Si algo en las combinaciones (Modo de juego vs Cantidad de detectives, por ejemplo) es incoherente el slider del Setup no se lo permitirá. 
-   - Cuando se verifica llama `GameEngineService.startGame()`, asignando roles aleatoriamente, repartiendo palabras señuelo a impostores según el "Game Mode" y movilizando a los usuarios sin demora.
+   - A través de validaciones, el anfitrión configura la partida seleccionando entre las diferentes dinámicas (Tipo "Palabras", "Preguntas" o "Dibujo"). Si algo en las combinaciones (Modo de juego vs Cantidad de detectives, por ejemplo) es incoherente el slider del Setup no se lo permitirá. 
+   - Cuando se verifica llama `GameEngineService.startGame()`, combinando el Tipo de Juego estipulado, asignando roles aleatoriamente, repartiendo palabras señuelo a impostores según el "Game Mode" y movilizando a los usuarios sin demora.
 3. **Pilar de Juego (`/play`)**:
    - Componente core gestionado enteramente mediante indexación de array y comprobaciones a `@HostListener` de ratón/pantalla táctil (drag-and-drop de la Carta).
    - Cuando cada usuario devuelve la Carta, el sistema avanza al siguiente hasta que `isRevealPhaseFinished()` se emite a verdadero.
@@ -52,5 +52,11 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - Cada cambio como una inyección de id, marca de flag `isEliminated = true`, modifica al completo las UI circundantes gracias a la función cacheada en `computed()`.
 
 ## 6. Sistema Visual de Diseño
-- **Tailwind Config**: Colores estandarizados de raíz (Primario->Rosa, Secundario->Cyan) y un CSS index general de trackeo de barras de carga "webkit-scrollbars" teñido.
+- **Tailwind Config**: Colores estandarizados de raíz (Primario->Rosa, Secundario->Cyan) y un CSS index general de trackeo de barras de carga "webkit-scrollbars" teñido de cyan con fondo oscuro (estilizado globalmente).
 - **Glassmorfismo**: Estructura de capas creada con múltiples opacidades (`bg-white/10`, `bg-black/30`), un emborronamiento nativo fuerte (`backdrop-blur-md/xl`) y un uso muy pronunciado de brillos por los bordes en el formato drop-shadows y bordes blancos que da volumen a un entorno muy sombrío de fondo.
+
+## 7. Actualizaciones Recientes (v1.1.0)
+- **Implementación de Dinámicas de Juego**: Expansión del Core (`GameEngineService`) e interfaz en `/setup` para acomodar la selección entre mecánicas de Palabras, Preguntas y Dibujo como selector principal de partida.
+- **Localización Expandida**: La arquitectura de i18n ahora maneja y carga dinámicamente traducciones en FR y CA en las directivas y componentes de configuración.
+- **Assets y Medios**: Integración robusta de recursos visuales y logos 3D en la selección de paquetes.
+- **Refinamiento UI (Setup)**: Ajustes de componentes en la vista de `/setup` (retirada de fondo en el hourglass, redimensionado dinámico del icono de info) y traducciones de duración de turno calibradas.
