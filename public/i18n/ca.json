@@ -50,7 +50,7 @@
         "VIBRATION": "Vibració",
         "SOUND": "Efectes de So",
         "DARK_THEME": "Tema Fosc",
-        "VERSION": "Versió 1.1.0",
+        "VERSION": "Versió 1.2.1",
         "DEV_INFO": "Desenvolupat per al millor ambient de festa."
     },
     "SETUP": {
@@ -74,7 +74,7 @@
         "INFO_DETECTIVES_TITLE": "Detectius",
         "INFO_DETECTIVES_DESC": "Nombre de detectius que intenten descobrir l'impostor.",
         "INFO_HINTS_TITLE": "Pistes",
-        "INFO_HINTS_DESC": "Decideix si els impostors reben pistes.<ul class='mt-2 space-y-2 list-disc pl-4 text-left'><li><strong class='text-white'>Cap:</strong> Sense pistes, toca improvisar.</li><li><strong class='text-white'>Tots:</strong> Tots els impostors reben la pista.</li><li><strong class='text-white'>Primer:</strong> Només el primer impostor que parla o dibuixa rep la pista.</li></ul>",
+        "INFO_HINTS_DESC": "Decideix si els impostors reben pistes.<ul class='mt-2 space-y-2 list-disc pl-4 text-left'><li><strong class='text-white'>Cap:</strong> Sense pistes, toca improvisar.</li><li><strong class='text-white'>Tots:</strong> Tots els impostors reben la pista.</li><li><strong class='text-white'>Primer:</strong> Si el joc comença amb un impostor, només ell rep la pista.</li></ul>",
         "INFO_DURATION_TITLE": "Durada",
         "INFO_DURATION_DESC": "Temps límit per debatre.",
         "INFO_DRAW_TIME_TITLE": "Temps del torn",
@@ -176,7 +176,12 @@
         "SECRET_WORD_PH": "Paraula secreta...",
         "GUESS_BTN": "Endevinar",
         "CANCEL": "Cancel·lar",
-        "DETECTIVE_FAIL_WARN": "Si el detectiu falla serà eliminat de la partida."
+        "DETECTIVE_FAIL_WARN": "Si el detectiu falla serà eliminat de la partida.",
+        "DRAW_AGAIN": "Tornar a Dibuixar",
+        "DRAW_AGAIN_TITLE": "Continuar dibuixant?",
+        "DRAW_AGAIN_DESC": "Pots començar un llenç en blanc o seguir des d'on ho vau deixar l'última ronda.",
+        "RESUME_DRAWING": "Continuar dibuix",
+        "BLANK_CANVAS": "Llenç en blanc"
     },
     "RESULTS": {
         "WIN_IMPOSTORS": "Victòria dels Impostors!",

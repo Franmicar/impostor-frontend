@@ -6,11 +6,13 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 import { PlayerConfig } from '../setup.component';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { CloudPresetsService, Preset } from '../../../core/services/cloud-presets/cloud-presets.service';
+import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-setup-players',
   standalone: true,
-  imports: [CommonModule, FormsModule, DragDropModule, TranslateModule],
+  imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent],
   template: `
     <div class="h-full flex flex-col bg-transparent text-white p-6">
       
@@ -252,6 +254,43 @@ import { CloudPresetsService, Preset } from '../../../core/services/cloud-preset
         </div>
       }
 
+      <!-- MODAL RECORTAR IMAGEN -->
+      @if (showCropModal) {
+        <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+          <div class="bg-slate-900 border border-glass-border rounded-3xl p-6 w-full max-w-sm shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200 text-center">
+            
+            <h3 class="text-2xl font-black text-white">
+              Recortar Imagen
+            </h3>
+            
+            <div class="w-full h-64 bg-black/50 border border-slate-700 rounded-xl overflow-hidden relative flex items-center justify-center">
+              <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="1 / 1"
+                [resizeToWidth]="200"
+                format="jpeg"
+                (imageCropped)="imageCropped($event)"
+                (loadImageFailed)="loadImageFailed()"
+                style="max-height: 250px; max-width: 100%; margin: auto;"
+              ></image-cropper>
+            </div>
+            
+            <div class="flex gap-3 w-full mt-2">
+              <button 
+                (click)="cancelCrop()"
+                class="flex-1 py-4 rounded-xl border border-slate-700 text-slate-300 font-semibold hover:bg-white/5 transition-colors">
+                Cancelar
+              </button>
+              <button 
+                (click)="confirmCrop()"
+                class="flex-1 py-4 rounded-xl bg-primary text-white font-bold shadow-[0_0_15px_rgba(242,13,185,0.4)] hover:bg-primary/90 transition-colors">
+                Aplicar
+              </button>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   `,
   styles: [`
@@ -327,6 +366,13 @@ export class SetupPlayers {
   });
 
   deleteConfirmModal = signal<{ show: boolean, presetId: string }>({ show: false, presetId: '' });
+
+  // Cropper Modals
+  showCropModal = false;
+  imageChangedEvent: any = '';
+  currentPlayerToCrop: PlayerConfig | null = null;
+  croppedImageBlob: Blob | null | undefined = null;
+  sanitizer = inject(DomSanitizer);
 
   showAlert(titleKey: string, messageKey: string, isError: boolean = false, params?: any) {
     const title = this.translate.instant(titleKey);
@@ -428,34 +474,50 @@ export class SetupPlayers {
   onFileSelected(event: any, player: PlayerConfig) {
     const file = event.target.files?.[0];
     if (file) {
-      // Basic size validation to avoid Firestore limit issues
-      if (file.size > 1024 * 1024) { // over 1MB
+      // Relax initial validation from 1MB to 5MB since we will crop and scale it down anyway
+      if (file.size > 5 * 1024 * 1024) {
         this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.IMAGE_TOO_LARGE', true);
         return;
       }
+      this.currentPlayerToCrop = player;
+      this.imageChangedEvent = event;
+      this.showCropModal = true;
+    }
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImageBlob = event.blob;
+  }
+
+  loadImageFailed() {
+    this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.IMAGE_TOO_LARGE', true);
+    this.cancelCrop();
+  }
+
+  cancelCrop() {
+    this.showCropModal = false;
+    this.imageChangedEvent = '';
+    this.currentPlayerToCrop = null;
+    this.croppedImageBlob = null;
+
+    // Reset inputs so the same file could be selected again
+    const inputs = document.querySelectorAll('input[type="file"]');
+    inputs.forEach(input => (input as HTMLInputElement).value = '');
+  }
+
+  confirmCrop() {
+    if (this.croppedImageBlob && this.currentPlayerToCrop) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        const img = new Image();
-        img.src = e.target.result;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          const maxW = 200; // Small size for fast transfer and no localStorage limits
-          const maxH = 200;
-          let w = img.width;
-          let h = img.height;
-          if (w > h) {
-            if (w > maxW) { h *= maxW / w; w = maxW; }
-          } else {
-            if (h > maxH) { w *= maxH / h; h = maxH; }
-          }
-          canvas.width = w; canvas.height = h;
-          ctx?.drawImage(img, 0, 0, w, h);
-          player.photoUrl = canvas.toDataURL('image/jpeg', 0.8);
-          this.cdr.detectChanges(); // Forzar la actualización del DOM
-        };
+        if (this.currentPlayerToCrop) {
+          this.currentPlayerToCrop.photoUrl = e.target.result;
+        }
+        this.cancelCrop();
+        this.cdr.detectChanges(); // Ensure the view is updated synchronously after async load
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(this.croppedImageBlob);
+    } else {
+      this.cancelCrop();
     }
   }
 

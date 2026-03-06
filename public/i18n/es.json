@@ -50,7 +50,7 @@
         "VIBRATION": "Vibración",
         "SOUND": "Efectos de Sonido",
         "DARK_THEME": "Tema Oscuro",
-        "VERSION": "Versión 1.1.0",
+        "VERSION": "Versión 1.2.1",
         "DEV_INFO": "Desarrollado para el mejor ambiente de fiesta."
     },
     "SETUP": {
@@ -77,7 +77,7 @@
         "INFO_DETECTIVES_TITLE": "Detectives",
         "INFO_DETECTIVES_DESC": "Número de detectives que intentan descubrir al impostor y la palabra.",
         "INFO_HINTS_TITLE": "Pistas",
-        "INFO_HINTS_DESC": "Decide si los impostores reciben pistas.<ul class='mt-2 space-y-2 list-disc pl-4 text-left'><li><strong class='text-white'>Ninguno:</strong> Sin pistas, toca improvisar.</li><li><strong class='text-white'>Todos:</strong> Todos los impostores ven la pista.</li><li><strong class='text-white'>Primero:</strong> Solo el primer impostor que habla o dibuja recibe la pista.</li></ul>",
+        "INFO_HINTS_DESC": "Decide si los impostores reciben pistas.<ul class='mt-2 space-y-2 list-disc pl-4 text-left'><li><strong class='text-white'>Ninguno:</strong> Sin pistas, toca improvisar.</li><li><strong class='text-white'>Todos:</strong> Todos los impostores ven la pista.</li><li><strong class='text-white'>Primero:</strong> Si el juego lo empieza un impostor solo él recibe la pista.</li></ul>",
         "INFO_DURATION_TITLE": "Duración",
         "INFO_DURATION_DESC": "Establece si quieres que haya un tiempo límite global para debatir.",
         "INFO_DRAW_TIME_TITLE": "Tiempo turno",
@@ -176,7 +176,12 @@
         "SECRET_WORD_PH": "Palabra secreta...",
         "GUESS_BTN": "Adivinar",
         "CANCEL": "Cancelar",
-        "DETECTIVE_FAIL_WARN": "Si el detective falla será eliminado de la partida."
+        "DETECTIVE_FAIL_WARN": "Si el detective falla será eliminado de la partida.",
+        "DRAW_AGAIN": "Volver a Pintar",
+        "DRAW_AGAIN_TITLE": "¿Continuar dibujando?",
+        "DRAW_AGAIN_DESC": "Puedes empezar un lienzo en blanco o seguir dibujando donde lo dejasteis en la ronda anterior.",
+        "RESUME_DRAWING": "Continuar dibujo",
+        "BLANK_CANVAS": "Lienzo en blanco"
     },
     "RESULTS": {
         "WIN_IMPOSTORS": "¡Victoria de los Impostores!",

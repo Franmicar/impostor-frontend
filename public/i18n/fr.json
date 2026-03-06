@@ -50,7 +50,7 @@
         "VIBRATION": "Vibration",
         "SOUND": "Effets sonores",
         "DARK_THEME": "Thème sombre",
-        "VERSION": "Version 1.1.0",
+        "VERSION": "Version 1.2.1",
         "DEV_INFO": "Développé pour la meilleure ambiance de fête."
     },
     "SETUP": {
@@ -77,7 +77,7 @@
         "INFO_DETECTIVES_TITLE": "Détectives",
         "INFO_DETECTIVES_DESC": "Nombre de détectives essayant de trouver l'imposteur.",
         "INFO_HINTS_TITLE": "Indices",
-        "INFO_HINTS_DESC": "Décidez si les imposteurs reçoivent des indices.<ul class='mt-2 space-y-2 list-disc pl-4 text-left'><li><strong class='text-white'>Aucun:</strong> Pas d'indices... à vous d'improviser.</li><li><strong class='text-white'>Tous:</strong> Tous les imposteurs voient l'indice.</li><li><strong class='text-white'>Premier:</strong> Seul le premier imposteur qui dessine ou parle a l'indice.</li></ul>",
+        "INFO_HINTS_DESC": "Décidez si les imposteurs reçoivent des indices.<ul class='mt-2 space-y-2 list-disc pl-4 text-left'><li><strong class='text-white'>Aucun:</strong> Pas d'indices... à vous d'improviser.</li><li><strong class='text-white'>Tous:</strong> Tous les imposteurs voient l'indice.</li><li><strong class='text-white'>Premier:</strong> Si la partie commence avec un imposteur, seul lui reçoit l’indice.</li></ul>",
         "INFO_DURATION_TITLE": "Durée",
         "INFO_DURATION_DESC": "Temps limite pour débattre.",
         "INFO_DRAW_TIME_TITLE": "Temps du tour",
@@ -175,7 +175,12 @@
         "SECRET_WORD_PH": "Mot secret...",
         "GUESS_BTN": "Deviner",
         "CANCEL": "Annuler",
-        "DETECTIVE_FAIL_WARN": "Si le détective échoue, il sera éliminé de la partie."
+        "DETECTIVE_FAIL_WARN": "Si le détective échoue, il sera éliminé de la partie.",
+        "DRAW_AGAIN": "Dessiner à nouveau",
+        "DRAW_AGAIN_TITLE": "Continuer à dessiner ?",
+        "DRAW_AGAIN_DESC": "Commencez avec une toile vierge ou continuez depuis le dernier tour.",
+        "RESUME_DRAWING": "Continuer le dessin",
+        "BLANK_CANVAS": "Toile vierge"
     },
     "RESULTS": {
         "WIN_IMPOSTORS": "Victoire des Imposteurs!",

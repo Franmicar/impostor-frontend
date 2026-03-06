@@ -190,7 +190,7 @@ export interface PlayerConfig {
                       </span>
                     </div>
                     <!-- Custom Select Dropdown -->
-                <div class="relative w-[145px] shrink-0">
+                <div class="relative w-[133px] shrink-0">
                   <div 
                     (click)="isHintsOpen.set(!isHintsOpen())"
                     class="bg-white/10 rounded-2xl border border-primary shadow-[0_0_15px_rgba(242,13,185,0.2)] px-3 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">
@@ -261,7 +261,7 @@ export interface PlayerConfig {
                   </span>
                 </div>
                 <!-- Custom Select Dropdown -->
-                <div class="relative w-[145px] shrink-0">
+                <div class="relative w-[133px] shrink-0">
                   <div 
                     (click)="isDurationOpen.set(!isDurationOpen())"
                     class="bg-white/10 rounded-2xl border border-secondary shadow-[0_0_15px_rgba(13,242,242,0.2)] px-3 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">
@@ -303,7 +303,7 @@ export interface PlayerConfig {
                   </span>
                 </div>
                 <!-- Custom Select Dropdown -->
-                <div class="relative w-[145px] shrink-0">
+                <div class="relative w-[133px] shrink-0">
                   <div 
                     (click)="isDrawTimeOpen.set(!isDrawTimeOpen())"
                     class="bg-white/10 rounded-2xl border border-secondary shadow-[0_0_15px_rgba(13,242,242,0.2)] px-3 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">

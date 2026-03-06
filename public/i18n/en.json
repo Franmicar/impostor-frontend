@@ -50,7 +50,7 @@
         "VIBRATION": "Vibration",
         "SOUND": "Sound Effects",
         "DARK_THEME": "Dark Theme",
-        "VERSION": "Version 1.1.0",
+        "VERSION": "Version 1.2.1",
         "DEV_INFO": "Developed for the best party atmosphere."
     },
     "SETUP": {
@@ -77,7 +77,7 @@
         "INFO_DETECTIVES_TITLE": "Detectives",
         "INFO_DETECTIVES_DESC": "Number of detectives trying to find the impostor and the secret word.",
         "INFO_HINTS_TITLE": "Hints",
-        "INFO_HINTS_DESC": "Decide if impostors receive hints.<ul class='mt-2 space-y-2 list-disc pl-4 text-left'><li><strong class='text-white'>None:</strong> No hints, time to guess.</li><li><strong class='text-white'>All:</strong> All impostors see the hint.</li><li><strong class='text-white'>First:</strong> Only the first impostor to answer or draw gets the hint.</li></ul>",
+        "INFO_HINTS_DESC": "Decide if impostors receive hints.<ul class='mt-2 space-y-2 list-disc pl-4 text-left'><li><strong class='text-white'>None:</strong> No hints, time to guess.</li><li><strong class='text-white'>All:</strong> All impostors see the hint.</li><li><strong class='text-white'>First:</strong> If the game starts with an impostor, only they receive the hint.</li></ul>",
         "INFO_DURATION_TITLE": "Duration",
         "INFO_DURATION_DESC": "Global time limit for the voting and discussion phase.",
         "INFO_DRAW_TIME_TITLE": "Turn Time",
@@ -176,7 +176,12 @@
         "SECRET_WORD_PH": "Secret word...",
         "GUESS_BTN": "Guess",
         "CANCEL": "Cancel",
-        "DETECTIVE_FAIL_WARN": "If the detective fails, they will be eliminated from the game."
+        "DETECTIVE_FAIL_WARN": "If the detective fails, they will be eliminated from the game.",
+        "DRAW_AGAIN": "Draw Again",
+        "DRAW_AGAIN_TITLE": "Continue drawing?",
+        "DRAW_AGAIN_DESC": "You can start with a blank canvas or continue from the previous round.",
+        "RESUME_DRAWING": "Resume drawing",
+        "BLANK_CANVAS": "Blank canvas"
     },
     "RESULTS": {
         "WIN_IMPOSTORS": "Impostors Win!",

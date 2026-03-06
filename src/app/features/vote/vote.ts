@@ -17,14 +17,54 @@ import { TimerService } from '../../core/services/timer/timer.service';
       @if (showDrawingModal) {
         <div class="fixed inset-0 bg-black/90 z-[60] flex flex-col items-center justify-center p-4 backdrop-blur-md animate-in fade-in zoom-in duration-300">
             <div class="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-                <img [src]="engine.finalDrawingUrl()" class="w-full h-auto bg-white" alt="Final Drawing">
-                <button (click)="closeDrawingModal()" class="absolute top-4 right-4 w-10 h-10 bg-slate-900/50 hover:bg-slate-900/80 rounded-full flex items-center justify-center text-white backdrop-blur transition-colors">
+                @if (engine.drawings().length > 1) {
+                    <button *ngIf="currentDrawingIndex > 0" (click)="prevDrawing($event)" class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/80 rounded-full flex items-center justify-center text-white backdrop-blur transition-colors z-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+                    </button>
+                    <button *ngIf="currentDrawingIndex < engine.drawings().length - 1" (click)="nextDrawing($event)" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/80 rounded-full flex items-center justify-center text-white backdrop-blur transition-colors z-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+                    </button>
+                    <!-- Indicators -->
+                    <div class="absolute bottom-4 left-0 right-0 gap-2 flex justify-center z-10">
+                        @for (d of engine.drawings(); track $index) {
+                            <div class="w-2.5 h-2.5 rounded-full shadow-sm transition-colors" [class.bg-white]="currentDrawingIndex === $index" [class.bg-white/40]="currentDrawingIndex !== $index"></div>
+                        }
+                    </div>
+                }
+                <img [src]="engine.drawings()[currentDrawingIndex]" class="w-full h-auto bg-white" alt="Final Drawing">
+                <button (click)="closeDrawingModal()" class="absolute top-4 right-4 w-10 h-10 bg-slate-900/50 hover:bg-slate-900/80 rounded-full flex items-center justify-center text-white backdrop-blur transition-colors z-10">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </div>
             <button (click)="closeDrawingModal()" class="mt-6 px-8 py-3 bg-white/20 hover:bg-white/30 rounded-full text-white font-bold tracking-widest uppercase transition-colors">
                 {{ 'VOTE.CLOSE_DRAWING' | translate }}
             </button>
+        </div>
+      }
+
+      <!-- DRAW AGAIN MODAL -->
+      @if (showDrawAgainModal) {
+        <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 backdrop-blur-sm">
+            <div class="bg-glass backdrop-blur-2xl border border-glass-border rounded-3xl p-8 max-w-sm w-full shadow-[0_0_30px_rgba(255,255,255,0.05)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+                <div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10 text-primary">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-black text-white mb-2 uppercase tracking-widest">{{ 'VOTE.DRAW_AGAIN_TITLE' | translate }}</h3>
+                <p class="text-slate-300 text-lg mb-8">{{ 'VOTE.DRAW_AGAIN_DESC' | translate }}</p>
+                <div class="flex flex-col gap-3 w-full">
+                    <button (click)="resumeDrawing(true)" class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-md active:scale-95 uppercase tracking-widest cursor-pointer">
+                        {{ 'VOTE.RESUME_DRAWING' | translate }}
+                    </button>
+                    <button (click)="resumeDrawing(false)" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
+                        {{ 'VOTE.BLANK_CANVAS' | translate }}
+                    </button>
+                    <button (click)="closeDrawAgainModal()" class="w-full mt-2 py-3 bg-transparent text-slate-400 hover:text-white rounded-xl font-bold transition-colors uppercase cursor-pointer">
+                        {{ 'VOTE.CANCEL' | translate }}
+                    </button>
+                </div>
+            </div>
         </div>
       }
 
@@ -141,13 +181,21 @@ import { TimerService } from '../../core/services/timer/timer.service';
         }
 
         <!-- Ver dibujo button -->
-        @if (engine.currentSettings()?.gameTypeId === 'draw' && engine.finalDrawingUrl()) {
-            <button (click)="openDrawingModal()" class="mt-4 px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-full font-bold transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                </svg>
-                {{ 'VOTE.VIEW_DRAWING' | translate }}
-            </button>
+        @if (engine.currentSettings()?.gameTypeId === 'draw' && engine.drawings().length > 0) {
+            <div class="flex flex-wrap justify-center gap-3 mt-4">
+                <button (click)="openDrawingModal()" class="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-full font-bold transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                    </svg>
+                    {{ 'VOTE.VIEW_DRAWING' | translate }}
+                </button>
+                <button (click)="openDrawAgainModal()" class="px-6 py-2 bg-gradient-to-r from-primary to-secondary border border-transparent hover:brightness-110 text-white rounded-full font-bold transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                    </svg>
+                    {{ 'VOTE.DRAW_AGAIN' | translate }}
+                </button>
+            </div>
         }
       </header>
 
@@ -227,6 +275,7 @@ export class Vote implements OnInit {
   showDetectiveModal = false;
   showImpostorEliminatedModal = false;
   showDrawingModal = false;
+  showDrawAgainModal = false;
   eliminatedCivilianName = '';
   eliminatedImpostorName = '';
   eliminationReason: 'vote' | 'guess' = 'vote';
@@ -234,6 +283,7 @@ export class Vote implements OnInit {
 
   selectedDetectiveId: number | null = null;
   detectiveGuess: string = '';
+  currentDrawingIndex: number = 0;
 
   aliveDetectives = computed(() => {
     return this.engine.alivePlayers().filter(p => p.isDetective);
@@ -328,6 +378,7 @@ export class Vote implements OnInit {
     if (this.wasTimerActiveBeforeModal) {
       this.timer.pause();
     }
+    this.currentDrawingIndex = this.engine.drawings().length - 1;
     this.showDrawingModal = true;
   }
 
@@ -336,6 +387,41 @@ export class Vote implements OnInit {
     if (this.wasTimerActiveBeforeModal && this.timer.timeLeftInSeconds() > 0) {
       this.timer.resume();
     }
+  }
+
+  nextDrawing(e: MouseEvent) {
+    e.stopPropagation();
+    if (this.currentDrawingIndex < this.engine.drawings().length - 1) {
+      this.currentDrawingIndex++;
+    }
+  }
+
+  prevDrawing(e: MouseEvent) {
+    e.stopPropagation();
+    if (this.currentDrawingIndex > 0) {
+      this.currentDrawingIndex--;
+    }
+  }
+
+  openDrawAgainModal() {
+    this.wasTimerActiveBeforeModal = this.timer.isActive();
+    if (this.wasTimerActiveBeforeModal) {
+      this.timer.pause();
+    }
+    this.showDrawAgainModal = true;
+  }
+
+  closeDrawAgainModal() {
+    this.showDrawAgainModal = false;
+    if (this.wasTimerActiveBeforeModal && this.timer.timeLeftInSeconds() > 0) {
+      this.timer.resume();
+    }
+  }
+
+  resumeDrawing(keepDrawing: boolean) {
+    this.timer.stop();
+    this.closeDrawAgainModal();
+    this.router.navigate(['/draw'], { state: { resume: keepDrawing, intentional: true } });
   }
 
   submitDetectiveGuess() {

@@ -36,7 +36,7 @@ export class GameEngineService {
 
   // Track how many players have been eliminated (equals to how many voting rounds occurred)
   eliminationsCount = signal<number>(0);
-  finalDrawingUrl = signal<string | null>(null);
+  drawings = signal<string[]>([]);
 
   // Computed Properties
   currentPlayer = computed(() => {
@@ -93,7 +93,7 @@ export class GameEngineService {
    * Initializes the game with the given configuration
    */
   startGame(settings: GameSettings) {
-    this.finalDrawingUrl.set(null);
+    this.drawings.set([]);
     let { playerData, words, numImpostors, numDetectives, modeId, gameTypeId } = settings;
 
     if (playerData.length < 3) throw new Error('At least 3 players required');

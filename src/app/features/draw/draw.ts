@@ -54,39 +54,27 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
             </div>
         </div>
 
-        <!-- CANVAS AREA -->
-        <!-- We use flex-1 to occupy maximum available height nicely -->
-        <div class="z-10 w-full max-w-lg flex-1 min-h-[300px] mb-6 flex flex-col bg-white rounded-3xl shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-hidden relative border-[4px] border-slate-700">
-            <!-- Interacive Canvas -->
-            <canvas #drawCanvas 
-                    class="w-full h-full touch-none"
-                    [class.pointer-events-none]="!isCurrentPlayerTurn()"
-                    (mousedown)="startDrawing($event)"
-                    (mousemove)="draw($event)"
-                    (mouseup)="stopDrawing()"
-                    (mouseleave)="stopDrawing()"
-                    (touchstart)="startDrawingTouch($event)"
-                    (touchmove)="drawTouch($event)"
-                    (touchend)="stopDrawingTouch()"
-                    (touchcancel)="stopDrawingTouch()">
-            </canvas>
-
-            <!-- Toolbox Overlay -->
-            @if(isCurrentPlayerTurn() && !isDrawingPhaseFinished()) {
-              <div class="absolute top-4 left-4 flex flex-col gap-3 z-30">
-                  <button (click)="undo()" class="w-10 h-10 rounded-full bg-slate-800 shadow-md flex items-center justify-center text-white active:scale-95 transition-transform border border-slate-600">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+        <!-- CANVAS & TOOLS AREA -->
+        <div class="z-10 w-full max-w-lg flex-1 flex flex-row gap-4 mb-6 relative">
+            <!-- Toolbox on the left -->
+            @if(!isDrawingPhaseFinished()) {
+              <div class="flex flex-col gap-3 z-30 shrink-0 mt-4">
+                  <button (click)="undo()" 
+                          [disabled]="!isCurrentPlayerTurn()"
+                          [class.opacity-50]="!isCurrentPlayerTurn()"
+                          class="w-12 h-12 rounded-full bg-slate-800 shadow-md flex items-center justify-center text-white active:scale-95 transition-all border border-slate-600 disabled:cursor-not-allowed">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                       </svg>
                   </button>
                   
                   <div class="relative">
-                      <button (click)="isPaletteOpen = !isPaletteOpen" class="w-10 h-10 rounded-full shadow-md flex items-center justify-center border-2 border-slate-600 active:scale-95 transition-transform" [style.backgroundColor]="currentColor">
+                      <button (click)="isPaletteOpen = !isPaletteOpen" class="w-12 h-12 rounded-full shadow-md flex items-center justify-center border-2 border-slate-600 active:scale-95 transition-transform" [style.backgroundColor]="currentColor">
                       </button>
                       
                       <!-- Color Palette Dropdown -->
                       @if(isPaletteOpen) {
-                          <div class="absolute top-12 left-0 bg-slate-800 border border-slate-600 rounded-2xl p-2 shadow-xl flex flex-col gap-2 z-40">
+                          <div class="absolute top-14 left-0 bg-slate-800 border border-slate-600 rounded-2xl p-2 shadow-xl flex flex-col gap-2 z-40">
                               @for(color of availableColors; track color) {
                                   <div (click)="setColor(color)" class="w-8 h-8 rounded-full cursor-pointer hover:scale-110 shadow-sm border border-black/20 transition-transform" [style.backgroundColor]="color"></div>
                               }
@@ -96,27 +84,43 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
               </div>
             }
 
-            <!-- Turn Block Overlay (prevents drawing when not your turn, e.g. handing over phone) -->
-            @if (!isCurrentPlayerTurn()) {
-                <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center z-20">
-                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-white">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5" />
-                        </svg>
+            <!-- Interacive Canvas -->
+            <div class="flex-1 bg-white rounded-3xl shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-hidden relative border-[4px] border-slate-700 min-h-[300px]">
+                <canvas #drawCanvas 
+                        class="w-full h-full touch-none"
+                        [class.pointer-events-none]="!isCurrentPlayerTurn()"
+                        (mousedown)="startDrawing($event)"
+                        (mousemove)="draw($event)"
+                        (mouseup)="stopDrawing()"
+                        (mouseleave)="stopDrawing()"
+                        (touchstart)="startDrawingTouch($event)"
+                        (touchmove)="drawTouch($event)"
+                        (touchend)="stopDrawingTouch()"
+                        (touchcancel)="stopDrawingTouch()">
+                </canvas>
+
+                <!-- Turn Block Overlay (prevents drawing when not your turn, e.g. handing over phone) -->
+                @if (!isCurrentPlayerTurn()) {
+                    <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center z-20">
+                        <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-white">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5" />
+                            </svg>
+                        </div>
+                        @if (isDrawingPhaseFinished()) {
+                            <h3 class="text-2xl font-bold text-white mb-2">{{ 'DRAW.ALL_DONE' | translate }}</h3>
+                            <p class="text-slate-300">{{ 'DRAW.ALL_DONE_DESC' | translate }}</p>
+                        } @else {
+                            <h3 class="text-2xl font-bold text-white mb-2">{{ 'DRAW.PASS_DEVICE_TO' | translate: { name: currentPlayerDrawing()?.name } }}</h3>
+                            <p class="text-slate-300 mb-6">{{ 'DRAW.READY_TO_DRAW' | translate: { time: maxTime() } }}</p>
+                            
+                            <button (click)="startTurn()" class="px-8 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-bold shadow-lg hover:shadow-primary/50 transition-all active:scale-95">
+                                {{ 'DRAW.START_MY_TURN' | translate }}
+                            </button>
+                        }
                     </div>
-                    @if (isDrawingPhaseFinished()) {
-                        <h3 class="text-2xl font-bold text-white mb-2">{{ 'DRAW.ALL_DONE' | translate }}</h3>
-                        <p class="text-slate-300">{{ 'DRAW.ALL_DONE_DESC' | translate }}</p>
-                    } @else {
-                        <h3 class="text-2xl font-bold text-white mb-2">{{ 'DRAW.PASS_DEVICE_TO' | translate: { name: currentPlayerDrawing()?.name } }}</h3>
-                        <p class="text-slate-300 mb-6">{{ 'DRAW.READY_TO_DRAW' | translate: { time: maxTime() } }}</p>
-                        
-                        <button (click)="startTurn()" class="px-8 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-bold shadow-lg hover:shadow-primary/50 transition-all active:scale-95">
-                            {{ 'DRAW.START_MY_TURN' | translate }}
-                        </button>
-                    }
-                </div>
-            }
+                }
+            </div>
         </div>
 
         <!-- CONTROLS & NEXT BUTTON -->
@@ -164,7 +168,7 @@ export class DrawComponent implements AfterViewInit, OnDestroy {
     private lastX = 0;
     private lastY = 0;
     private history: ImageData[] = [];
-    currentColor = '#1e293b'; // blackish
+    currentColor = '#000000'; // black
 
     // Basic color palette
     isPaletteOpen = false;
@@ -176,13 +180,15 @@ export class DrawComponent implements AfterViewInit, OnDestroy {
         '#eab308', // Yellow
         '#f97316', // Orange
         '#ec4899', // Pink
-        '#1e293b'  // Black
+        '#8b4513', // Brown
+        '#6b7280', // Gray
+        '#000000'  // Black
     ];
 
     // Turn tracking and Timer
     isCurrentPlayerTurn = signal<boolean>(false);
     maxTime = computed(() => this.engine.currentSettings()?.drawTurnTime || 10);
-    timeLeft = signal<number>(10);
+    timeLeft = signal<number>(this.engine.currentSettings()?.drawTurnTime || 10);
     private timerInterval: any;
 
     drawTurnCount = signal<number>(0); // from 0 to players().length - 1
@@ -208,6 +214,21 @@ export class DrawComponent implements AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         if (this.engine.gameStarted() && this.canvasRef) {
             this.initCanvas();
+            const state = history.state as { resume?: boolean };
+            if (state.resume) {
+                const drawings = this.engine.drawings();
+                if (drawings.length > 0) {
+                    const lastDrawing = drawings[drawings.length - 1];
+                    const img = new Image();
+                    img.onload = () => {
+                        if (this.ctx && this.canvasRef) {
+                            this.ctx.drawImage(img, 0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
+                            this.saveState();
+                        }
+                    };
+                    img.src = lastDrawing;
+                }
+            }
         }
     }
 
@@ -346,15 +367,11 @@ export class DrawComponent implements AfterViewInit, OnDestroy {
 
         // Increment the drawing round count
         this.drawTurnCount.update(c => c + 1);
-        const isDone = this.drawTurnCount() >= this.engine.players().length;
-        if (isDone) {
-            this.engine.finalDrawingUrl.set(this.canvasRef.nativeElement.toDataURL());
-        }
     }
 
     goToVote() {
         if (this.canvasRef) {
-            this.engine.finalDrawingUrl.set(this.canvasRef.nativeElement.toDataURL());
+            this.engine.drawings.update(d => [...d, this.canvasRef.nativeElement.toDataURL()]);
         }
         this.router.navigate(['/vote'], { state: { intentional: true } });
     }
