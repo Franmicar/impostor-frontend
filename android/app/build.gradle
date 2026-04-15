@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "md.impostor.app"
+    namespace = "com.ras.impostify"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "md.impostor.app"
+        applicationId "com.ras.impostify"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
