@@ -8,7 +8,7 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
     standalone: true,
     imports: [TranslateModule],
     template: `
-    <div class="min-h-screen bg-slate-950 text-slate-50 flex flex-col items-center justify-between p-4 overflow-hidden relative">
+    <div class="min-h-dvh bg-slate-950 text-slate-50 flex flex-col items-center justify-between p-4 overflow-hidden relative">
       <!-- Background elements for style -->
       <div class="absolute inset-0 z-0 bg-transparent bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none"></div>
 

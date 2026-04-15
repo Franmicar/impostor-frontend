@@ -9,7 +9,7 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
   standalone: true,
   imports: [CommonModule, TranslateModule],
   template: `
-    <div class="min-h-screen flex flex-col items-center justify-center p-6 text-slate-50 relative overflow-hidden" 
+    <div class="min-h-dvh flex flex-col items-center justify-center p-6 text-slate-50 relative overflow-hidden" 
          [ngClass]="backgroundClass()">
       
       <!-- Confetti or dynamic background could go here -->

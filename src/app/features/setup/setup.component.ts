@@ -30,7 +30,7 @@ export interface PlayerConfig {
   standalone: true,
   imports: [TranslateModule, CommonModule, FormsModule, SetupModes, SetupTypes, SetupPlayers, SetupPackages],
   template: `
-    <div class="min-h-screen bg-transparent text-slate-50 flex flex-col">
+    <div class="min-h-dvh bg-transparent text-slate-50 flex flex-col">
       
       <!-- Main Routing View Switcher -->
       @switch (activeScreen()) {

@@ -8,7 +8,7 @@ import { ApiService } from '../../core/services/api/api.service';
   standalone: true,
   imports: [TranslateModule],
   template: `
-    <div class="flex flex-col items-center justify-center min-h-screen bg-transparent text-slate-50 p-6 relative">
+    <div class="flex flex-col items-center justify-center min-h-dvh bg-transparent text-slate-50 p-6 relative">
         <div class="absolute top-4 right-4 flex gap-4">
             <button (click)="openRules()" class="w-10 h-10 rounded-full bg-glass border border-glass-border backdrop-blur-md flex items-center justify-center text-white hover:bg-white/10 transition-colors active:scale-95 shadow-[0_0_15px_rgba(242,13,185,0.3)]">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">

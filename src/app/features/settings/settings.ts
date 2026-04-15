@@ -10,7 +10,7 @@ import { AuthService } from '../../core/services/auth/auth.service';
     standalone: true,
     imports: [CommonModule, TranslateModule],
     template: `
-    <div class="flex flex-col min-h-screen bg-transparent text-slate-50 p-6 overflow-y-auto">
+    <div class="flex flex-col min-h-dvh bg-transparent text-slate-50 p-6 overflow-y-auto">
       
       <!-- HEADER -->
       <header class="flex items-center justify-between mb-8 pt-4">

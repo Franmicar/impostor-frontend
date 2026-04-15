@@ -11,7 +11,7 @@ import { TimerService } from '../../core/services/timer/timer.service';
   standalone: true,
   imports: [CommonModule, FormsModule, TranslateModule],
   template: `
-    <div class="min-h-screen bg-transparent text-slate-50 flex flex-col items-center justify-start p-6 relative">
+    <div class="min-h-dvh bg-transparent text-slate-50 flex flex-col items-center justify-start p-6 relative">
       
       <!-- DRAWING MODAL -->
       @if (showDrawingModal) {

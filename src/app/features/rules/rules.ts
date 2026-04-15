@@ -8,7 +8,7 @@ import { AuthService } from '../../core/services/auth/auth.service';
     standalone: true,
     imports: [TranslateModule],
     template: `
-    <div class="flex flex-col min-h-screen bg-transparent text-slate-50 p-6 overflow-y-auto">
+    <div class="flex flex-col min-h-dvh bg-transparent text-slate-50 p-6 overflow-y-auto">
       <header class="flex items-center justify-between mb-8 pt-4 shrink-0">
         <button (click)="goBack()" class="w-10 h-10 flex flex-shrink-0 items-center justify-center rounded-full bg-glass border border-glass-border backdrop-blur-md text-slate-300 hover:text-white transition-colors active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)] relative z-10 cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
