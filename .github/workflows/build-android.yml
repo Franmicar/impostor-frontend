@@ -41,8 +41,18 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
 
+      - name: Build AAB (Release Bundle for Play Store)
+        working-directory: ./android
+        run: ./gradlew bundleRelease
+
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: impostor-app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: impostor-app-release-bundle
+          path: android/app/build/outputs/bundle/release/app-release.aab

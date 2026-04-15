@@ -25,7 +25,7 @@ export class CloudPresetsService {
 
     async getUserPresets(): Promise<Preset[]> {
         const user = this.authService.currentUser;
-        if (!user) throw new Error('No auth user');
+        if (!user) throw new Error('No auth user fetching presets');
 
         const colRef = collection(this.db, `users/${user.uid}/presets`);
         const snap = await getDocs(colRef);
@@ -34,7 +34,7 @@ export class CloudPresetsService {
 
     async savePreset(presetName: string, players: PlayerConfig[]): Promise<void> {
         const user = this.authService.currentUser;
-        if (!user) throw new Error('No auth user');
+        if (!user) throw new Error('No auth user saving presets');
 
         const presets = await this.getUserPresets();
 
@@ -61,7 +61,7 @@ export class CloudPresetsService {
 
     async deletePreset(presetId: string): Promise<void> {
         const user = this.authService.currentUser;
-        if (!user) throw new Error('No auth user');
+        if (!user) throw new Error('No auth user deleting preset');
         const docRef = doc(this.db, `users/${user.uid}/presets/${presetId}`);
         await deleteDoc(docRef);
     }

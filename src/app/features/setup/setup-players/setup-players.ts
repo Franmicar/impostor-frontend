@@ -17,28 +17,32 @@ import { DomSanitizer } from '@angular/platform-browser';
     <div class="h-full flex flex-col bg-transparent text-white p-6">
       
       <!-- HEADER -->
-      <header class="flex items-center gap-4 mb-6 relative z-10">
-        <button 
-          (click)="goBack()"
-          class="w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full flex items-center justify-center transition-all active:scale-90">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-white drop-shadow-md">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-          </svg>
-        </button>
-
-        <h1 class="text-3xl font-black text-white px-2 py-1 tracking-wider uppercase drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] flex-1" style="font-size: 1.5rem; font-weight: 700;">
-            {{ 'SETUP.PLAYERS' | translate }}
-        </h1>
-
-        @if (authService.userSignal()) {
+      <header class="flex flex-col gap-4 mb-6 relative z-10 w-full">
+        <!-- Top Row -->
+        <div class="flex items-center gap-4 w-full">
           <button 
-              (click)="openCloudSaveModal()"
-              class="h-10 px-3 flex items-center gap-1.5 bg-primary/20 hover:bg-primary/40 text-primary border border-primary/50 rounded-lg text-xs font-bold uppercase tracking-wide transition-all active:scale-95 shadow-[0_0_10px_rgba(242,13,185,0.2)] shrink-0" title="Guardar Mesa">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg>
-              <span>Guardar grupo</span>
+            (click)="goBack()"
+            class="w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full flex items-center justify-center transition-all active:scale-90">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-white drop-shadow-md">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
           </button>
-        } @else {
-          <div class="h-10 px-3 shrink-0 invisible"></div>
+
+          <h1 class="text-3xl font-black text-white px-2 py-1 tracking-wider uppercase drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] flex-1" style="font-size: 1.5rem; font-weight: 700;">
+              {{ 'SETUP.PLAYERS' | translate }}
+          </h1>
+        </div>
+
+        <!-- Bottom Row (Save Group Button) -->
+        @if (authService.userSignal()) {
+          <div class="flex justify-start w-full">
+            <button 
+                (click)="openCloudSaveModal()"
+                class="w-full sm:w-auto h-12 px-5 flex justify-center items-center gap-2 bg-primary/20 hover:bg-primary/40 text-primary border border-primary/50 rounded-xl text-sm font-bold uppercase tracking-wide transition-all active:scale-95 shadow-[0_0_10px_rgba(242,13,185,0.2)] shrink-0" title="Guardar Grupo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg>
+                <span>Guardar grupo configurado</span>
+            </button>
+          </div>
         }
       </header>
 
@@ -386,7 +390,10 @@ export class SetupPlayers {
       if (user) {
         this.presetsService.getUserPresets().then(p => {
           this.cloudPresets.set(p);
-        }).catch(e => console.error("Error cargando presets", e));
+        }).catch(e => {
+          console.error("Error cargando presets", e);
+          this.alertModal.set({ show: true, title: 'Error API', message: e.message || 'Fallo de acceso a DB', isError: true });
+        });
       } else {
         this.cloudPresets.set([]); // limpiar si cierra sesión
       }
@@ -446,7 +453,8 @@ export class SetupPlayers {
         if (error?.message === 'LIMIT_REACHED') {
           this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.LIMIT_REACHED', true);
         } else {
-          this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.SAVE_ERROR', true);
+          // Mostramos el mensaje exacto para saber por qué falla en vez de traducción
+          this.alertModal.set({ show: true, title: 'Error Fatal BD', message: error?.message || 'Error guardando', isError: true });
         }
       }
       this.showCloudSaveModal = false;

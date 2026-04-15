@@ -133,11 +133,13 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
                 
                 <!-- Slide Cover -->
                 <div 
-                    class="absolute inset-0 w-full h-full bg-slate-900 border border-slate-700 rounded-3xl p-8 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.05)] cursor-grab active:cursor-grabbing z-10 transition-transform select-none"
+                    class="absolute inset-0 w-full h-full bg-slate-900 border border-slate-700 rounded-3xl p-8 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.05)] cursor-grab active:cursor-grabbing z-10 transition-transform select-none will-change-transform"
                     [style.transform]="slideTransform()"
-                    [class.duration-300]="!isDragging()"
+                    [class.duration-500]="!isDragging()"
+                    [style.transition-timing-function]="!isDragging() ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' : 'none'"
                     (mousedown)="onDragStart($event)"
-                    (touchstart)="onDragStart($event)">
+                    (touchstart)="onDragStart($event)"
+                    (contextmenu)="$event.preventDefault()">
                     
                     <!-- Gradient overlay to represent back of the card -->
                     <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 pointer-events-none"></div>
