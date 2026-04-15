@@ -44,7 +44,7 @@ export interface PlayerConfig {
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
               </svg>
             </button>
-            <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] flex-1 text-center">EL IMPOSTOR</h2>
+            <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgba(242,13,185,0.4)] flex-1 text-center font-black tracking-wider uppercase">IMPOSTIFY</h2>
             
             <div class="flex items-center justify-end shrink-0 w-10">
               @if (authService.userSignal()) {

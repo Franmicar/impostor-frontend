@@ -76,8 +76,8 @@ import { AuthService } from '../../core/services/auth/auth.service';
 
         <!-- ABOUT -->
         <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border text-center">
-            <h1 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-1">
-                El Impostor
+            <h1 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-1 uppercase tracking-wider">
+                Impostify
             </h1>
             <p class="text-slate-500 text-sm">{{ 'SETTINGS.VERSION' | translate }}</p>
             <p class="text-slate-600 text-xs mt-4">{{ 'SETTINGS.DEV_INFO' | translate }}</p>
