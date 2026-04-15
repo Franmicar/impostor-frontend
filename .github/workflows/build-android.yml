@@ -41,9 +41,28 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
 
+      - name: Generate Keystore (Si no existe)
+        working-directory: ./android/app
+        run: |
+          if [ ! -f "release.jks" ]; then
+            keytool -genkey -v -keystore release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias impostor -dname "CN=dj_ra, OU=Impostor, O=Impostor, L=Madrid, ST=Madrid, C=ES" -storepass Imp0storReleaseKey2026XpQ -keypass Imp0storReleaseKey2026XpQ
+            git config --global user.name "antigravity[bot]"
+            git config --global user.email "bot@antigravity.io"
+            git add release.jks
+            git commit -m "chore: Auto-generate Android App Keystore"
+            git push origin HEAD:main
+            git push origin HEAD:develop || true
+          fi
+
       - name: Build AAB (Release Bundle for Play Store)
         working-directory: ./android
         run: ./gradlew bundleRelease
+
+      - name: Upload Security Keystore Backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: impostor-keystore-backup
+          path: android/app/release.jks
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
