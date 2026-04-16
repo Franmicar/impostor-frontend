@@ -1,4 +1,4 @@
-package com.impostify.app;
+package com.ras.impostorapp;
 
 import com.getcapacitor.BridgeActivity;
 
