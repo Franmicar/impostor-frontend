@@ -67,8 +67,7 @@ jobs:
         run: |
           if [ -f "pepk.jar" ] && [ -f "encryption_public_key.pem" ]; then
             export PASS="Imp0storReleaseKey2026XpQ"
-            keytool -importkeystore -srckeystore release.jks -srcstorepass "$PASS" -destkeystore legacy.jks -deststoretype jks -deststorepass "$PASS" -destkeypass "$PASS" || true
-            java -jar pepk.jar --keystore=legacy.jks --alias=impostor --output=output.zip --include-cert --rsa-aes-encryption --encryption-key-path=encryption_public_key.pem --keystore-pass=pass:"$PASS" --key-pass=pass:"$PASS"
+            java -jar pepk.jar --keystore=release.jks --alias=impostor --output=output.zip --include-cert --rsa-aes-encryption --encryption-key-path=encryption_public_key.pem --keystore-pass="$PASS" --key-pass="$PASS"
           fi
 
       - name: Upload Security Keystore Backup
