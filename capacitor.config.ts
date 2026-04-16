@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.ras.impostify',
+  appId: 'com.impostify.app',
   appName: 'Impostify',
   webDir: 'dist/impostor-frontend/browser'
 };
