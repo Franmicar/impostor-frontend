@@ -66,9 +66,9 @@ jobs:
         working-directory: ./android/app
         run: |
           if [ -f "pepk.jar" ] && [ -f "encryption_public_key.pem" ]; then
-            export KEYSTORE_PASSWORD="Imp0storReleaseKey2026XpQ"
-            export KEY_PASSWORD="Imp0storReleaseKey2026XpQ"
-            java -jar pepk.jar --keystore=release.jks --alias=impostor --output=output.zip --include-cert --rsa-aes-encryption --encryption-key-path=encryption_public_key.pem --keystore-pass=env:KEYSTORE_PASSWORD --key-pass=env:KEY_PASSWORD
+            export PASS="Imp0storReleaseKey2026XpQ"
+            keytool -importkeystore -srckeystore release.jks -srcstorepass "$PASS" -destkeystore legacy.jks -deststoretype jks -deststorepass "$PASS" -destkeypass "$PASS" || true
+            java -jar pepk.jar --keystore=legacy.jks --alias=impostor --output=output.zip --include-cert --rsa-aes-encryption --encryption-key-path=encryption_public_key.pem --keystore-pass=env:PASS --key-pass=env:PASS
           fi
 
       - name: Upload Security Keystore Backup
