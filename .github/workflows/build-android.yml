@@ -62,11 +62,25 @@ jobs:
           ./gradlew bundleRelease
           mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/bundle/release/IMPOSTIFY-OFICIAL-PLAY-STORE.aab
 
+      - name: Encrypt Keystore with PEPK (for Google Play Console App Signing)
+        working-directory: ./android/app
+        run: |
+          if [ -f "pepk.jar" ] && [ -f "encryption_public_key.pem" ]; then
+            java -jar pepk.jar --keystore=release.jks --alias=impostor --output=output.zip --include-cert --rsa-aes-encryption --encryption-key-path=encryption_public_key.pem --keystore-pass=pass:Imp0storReleaseKey2026XpQ --key-pass=pass:Imp0storReleaseKey2026XpQ
+          fi
+
       - name: Upload Security Keystore Backup
         uses: actions/upload-artifact@v4
         with:
           name: impostor-keystore-backup
           path: android/app/release.jks
+
+      - name: Upload PEPK Output ZIP
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: LLAVE-ENCRIPTADA-PEPK-output-zip
+          path: android/app/output.zip
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
