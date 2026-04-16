@@ -68,7 +68,14 @@ jobs:
           if [ -f "pepk.jar" ] && [ -f "encryption_public_key.pem" ]; then
             export PASS="Imp0storReleaseKey2026XpQ"
             keytool -importkeystore -srckeystore release.jks -srcstorepass "$PASS" -destkeystore legacy.jks -deststoretype jks -deststorepass "$PASS" -destkeypass "$PASS" || true
-            printf "%s\n%s\n" "$PASS" "$PASS" | java -jar pepk.jar --keystore=legacy.jks --alias=impostor --output=output.zip --include-cert --rsa-aes-encryption --encryption-key-path=encryption_public_key.pem
+            sudo apt-get install -y expect
+            expect -c '
+              set timeout 10
+              spawn java -jar pepk.jar --keystore=legacy.jks --alias=impostor --output=output.zip --include-cert --rsa-aes-encryption --encryption-key-path=encryption_public_key.pem
+              expect "Enter keystore password:" { send "Imp0storReleaseKey2026XpQ\r" }
+              expect "Enter key password for <impostor>:" { send "Imp0storReleaseKey2026XpQ\r" }
+              expect eof
+            '
           fi
 
       - name: Upload Security Keystore Backup
