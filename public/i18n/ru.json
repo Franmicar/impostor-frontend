@@ -142,7 +142,11 @@
         "NEXT_PLAYER": "Следующий игрок",
         "START_PLAY": "Начать игру",
         "PLAYER_TURN": "Ход игрока {{name}}",
-        "PASS_DEVICE": "Передай устройство."
+        "PASS_DEVICE": "Передай устройство.",
+        "CHANGE_WORD": "Change word",
+        "CHANGE_WORD_TITLE": "Change Word",
+        "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
+        "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
         "NO_ACTIVE_GAME": "Нет активной игры.",
@@ -209,7 +213,9 @@
         "EXIT": "Выйти"
     },
     "COMMON": {
-        "OK": "ОК"
+        "OK": "ОК",
+        "CANCEL": "Cancel",
+        "LOADING": "Loading..."
     },
     "CONFIRM_DELETE_PRESET": {
         "TITLE": "Удалить группу",

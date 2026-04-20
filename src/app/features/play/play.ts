@@ -69,6 +69,15 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
         <!-- Pass and Play -->
         <div class="w-full max-w-sm flex-1 flex flex-col relative py-12">
             
+            <button 
+                (click)="showChangeWordModal.set(true)" 
+                class="absolute top-0 right-0 z-30 bg-white/10 hover:bg-white/20 border border-white/10 px-3 py-2 rounded-xl backdrop-blur-md transition-colors shadow-lg active:scale-95 text-slate-300 flex items-center gap-2 text-[0.65rem] font-bold uppercase tracking-widest mt-[-10px]">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+               </svg>
+               {{ 'PLAY.CHANGE_WORD' | translate }}
+            </button>
+
             <div class="text-center mb-8 z-20 relative bg-glass backdrop-blur-md border border-glass-border rounded-2xl py-4 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.05)] mx-auto w-full">
                 <h2 class="text-4xl font-black text-white drop-shadow-lg">{{ engine.currentPlayer()?.name }}</h2>
             </div>
@@ -171,6 +180,29 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
             </div>
         </div>
       }
+
+      <!-- MODAL DE CAMBIAR PALABRA -->
+      @if (showChangeWordModal()) {
+        <div class="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-6 backdrop-blur-md">
+            <div class="bg-glass backdrop-blur-2xl border border-secondary rounded-3xl p-6 max-w-sm w-full shadow-[0_0_40px_rgba(13,242,242,0.2)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+                <div class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mb-4 border border-secondary/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 text-secondary">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-black text-white mb-2 uppercase tracking-widest">{{ 'PLAY.CHANGE_WORD_TITLE' | translate }}</h3>
+                <p class="text-slate-300 text-sm mb-8 leading-relaxed" [innerHTML]="'PLAY.CHANGE_WORD_DESC' | translate"></p>
+                <div class="w-full flex flex-col gap-3">
+                    <button (click)="changeWordAndRestart()" class="w-full py-4 bg-gradient-to-r from-primary to-secondary hover:shadow-[0_0_20px_rgba(13,242,242,0.4)] border border-transparent text-white rounded-xl font-bold transition-all active:scale-95 uppercase tracking-widest cursor-pointer">
+                        {{ 'PLAY.CHANGE_WORD_CONFIRM' | translate }}
+                    </button>
+                    <button (click)="showChangeWordModal.set(false)" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
+                        {{ 'COMMON.CANCEL' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+      }
     </div>
   `,
   styles: [`
@@ -186,6 +218,7 @@ export class Play implements OnInit {
   engine = inject(GameEngineService);
 
   isRevealed = signal<boolean>(false);
+  showChangeWordModal = signal<boolean>(false);
 
   // Roulette state
   isRouletteSpinning = signal<boolean>(true);
@@ -235,6 +268,21 @@ export class Play implements OnInit {
     if (this.engine.isRevealPhaseFinished() && !this.winnerName()) {
       this.startRoulette();
     }
+  }
+
+  changeWordAndRestart() {
+    this.showChangeWordModal.set(false);
+    const settings = this.engine.currentSettings();
+    if (settings) {
+      this.engine.startGame(settings); // Resets game, players, roles, and word
+    }
+    // Reset play UI state
+    this.isRevealed.set(false);
+    this.isDragging.set(false);
+    this.startY.set(0);
+    this.currentY.set(0);
+    this.winnerName.set('');
+    this.isRouletteSpinning.set(true);
   }
 
   translate = inject(TranslateService);

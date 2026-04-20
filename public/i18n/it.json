@@ -142,7 +142,11 @@
         "NEXT_PLAYER": "Prossimo giocatore",
         "START_PLAY": "Inizia partita",
         "PLAYER_TURN": "Turno di",
-        "PASS_DEVICE": "Passa il dispositivo."
+        "PASS_DEVICE": "Passa il dispositivo.",
+        "CHANGE_WORD": "Change word",
+        "CHANGE_WORD_TITLE": "Change Word",
+        "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
+        "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
         "NO_ACTIVE_GAME": "Nessuna partita attiva.",
@@ -209,7 +213,9 @@
         "EXIT": "Esci"
     },
     "COMMON": {
-        "OK": "OK"
+        "OK": "OK",
+        "CANCEL": "Cancel",
+        "LOADING": "Loading..."
     },
     "CONFIRM_DELETE_PRESET": {
         "TITLE": "Elimina gruppo",

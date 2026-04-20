@@ -142,7 +142,11 @@
         "NEXT_PLAYER": "下一位玩家",
         "START_PLAY": "开始游戏",
         "PLAYER_TURN": "{{name}} 的回合",
-        "PASS_DEVICE": "请把设备交给下一位。"
+        "PASS_DEVICE": "请把设备交给下一位。",
+        "CHANGE_WORD": "Change word",
+        "CHANGE_WORD_TITLE": "Change Word",
+        "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
+        "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
         "NO_ACTIVE_GAME": "当前没有游戏。",
@@ -209,7 +213,9 @@
         "EXIT": "退出"
     },
     "COMMON": {
-        "OK": "确定"
+        "OK": "确定",
+        "CANCEL": "Cancel",
+        "LOADING": "Loading..."
     },
     "CONFIRM_DELETE_PRESET": {
         "TITLE": "删除分组",

@@ -142,7 +142,11 @@
         "NEXT_PLAYER": "Següent jugador",
         "START_PLAY": "Començar partida",
         "PLAYER_TURN": "És el torn de",
-        "PASS_DEVICE": "Passa-li el dispositiu perquè vegi el seu rol."
+        "PASS_DEVICE": "Passa-li el dispositiu perquè vegi el seu rol.",
+        "CHANGE_WORD": "Change word",
+        "CHANGE_WORD_TITLE": "Change Word",
+        "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
+        "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
         "NO_ACTIVE_GAME": "No hi ha partida activa ara mateix.",
@@ -209,7 +213,9 @@
         "EXIT": "Sortir"
     },
     "COMMON": {
-        "OK": "D'acord"
+        "OK": "D'acord",
+        "CANCEL": "Cancel",
+        "LOADING": "Loading..."
     },
     "CONFIRM_DELETE_PRESET": {
         "TITLE": "Eliminar grup",

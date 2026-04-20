@@ -142,7 +142,11 @@
         "NEXT_PLAYER": "Próximo jogador",
         "START_PLAY": "Iniciar jogo",
         "PLAYER_TURN": "Vez de {{name}}",
-        "PASS_DEVICE": "Passa o dispositivo."
+        "PASS_DEVICE": "Passa o dispositivo.",
+        "CHANGE_WORD": "Change word",
+        "CHANGE_WORD_TITLE": "Change Word",
+        "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
+        "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
         "NO_ACTIVE_GAME": "Nenhuma partida ativa.",
@@ -209,7 +213,9 @@
         "EXIT": "Sair"
     },
     "COMMON": {
-        "OK": "OK"
+        "OK": "OK",
+        "CANCEL": "Cancel",
+        "LOADING": "Loading..."
     },
     "CONFIRM_DELETE_PRESET": {
         "TITLE": "Eliminar grupo",

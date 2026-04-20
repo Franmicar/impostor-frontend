@@ -94,7 +94,7 @@ export class ApiService {
         this.startRequest();
         this.error.set(null);
         try {
-            const currentLang = this.translate.currentLang || this.translate.defaultLang || 'es';
+            const currentLang = this.translate.getCurrentLang() || this.translate.getFallbackLang() || 'es';
             const response = await firstValueFrom(
                 this.http.get<{ success: boolean, data: { word: string, hint?: string, hints?: string[], fakeWord?: string }[] }>(`${this.apiUrl}/packages/${packageId}/words?lang=${currentLang}`)
             );

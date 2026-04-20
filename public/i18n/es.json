@@ -142,7 +142,11 @@
         "NEXT_PLAYER": "Siguiente jugador",
         "START_PLAY": "Empezar partida",
         "PLAYER_TURN": "Es el turno de",
-        "PASS_DEVICE": "Pásale el dispositivo para que vea su rol."
+        "PASS_DEVICE": "Pásale el dispositivo para que vea su rol.",
+        "CHANGE_WORD": "Cambiar palabra",
+        "CHANGE_WORD_TITLE": "Cambiar Palabra",
+        "CHANGE_WORD_DESC": "¿Seguro que quieres cambiar la palabra con la que estáis jugando?<br><br><strong>Esto reiniciará toda la ronda desde cero:</strong> Se asignará una nueva palabra, se volverán a repartir los roles de forma aleatoria, y todos tendrán que volver a ver su tarjeta desde el primer jugador.",
+        "CHANGE_WORD_CONFIRM": "SÍ, REINICIAR"
     },
     "DRAW": {
         "NO_ACTIVE_GAME": "No hay una partida activa ahora mismo.",
@@ -209,7 +213,9 @@
         "EXIT": "Salir"
     },
     "COMMON": {
-        "OK": "Aceptar"
+        "OK": "Aceptar",
+        "CANCEL": "Cancelar",
+        "LOADING": "Cargando..."
     },
     "CONFIRM_DELETE_PRESET": {
         "TITLE": "Eliminar grupo",

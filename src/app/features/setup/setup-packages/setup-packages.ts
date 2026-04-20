@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { Package } from '../../../core/services/api/api.service';
+import { Package, ApiService } from '../../../core/services/api/api.service';
 
 @Component({
   selector: 'app-setup-packages',
@@ -23,6 +23,28 @@ import { Package } from '../../../core/services/api/api.service';
         <div class="w-10 h-10 invisible"></div> <!-- Spacer -->
       </header>
       
+      <!-- MODAL DE PALABRAS -->
+      @if (infoModalPackage()) {
+        <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 backdrop-blur-sm" (click)="closeInfoModal()">
+            <div class="bg-glass backdrop-blur-2xl border border-primary rounded-3xl p-6 max-w-sm w-full shadow-[0_0_30px_rgba(242,13,185,0.2)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300" (click)="$event.stopPropagation()">
+                <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-4 border border-primary/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10 text-primary"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">{{ infoModalPackage()?.name }}</h3>
+                <div class="text-slate-300 text-sm mb-8 text-left w-full max-h-60 overflow-y-auto custom-scrollbar pr-2 leading-relaxed">
+                  @if (isLoadingWords()) {
+                    <p class="text-center text-slate-500 animate-pulse">{{ 'COMMON.LOADING' | translate }}</p>
+                  } @else {
+                    {{ infoModalWords().join(', ') }}
+                  }
+                </div>
+                <button (click)="closeInfoModal()" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
+                    {{ 'SETUP.CLOSE' | translate }}
+                </button>
+            </div>
+        </div>
+      }
+
       <!-- INSTRUCTIONS -->
       <p class="text-center text-slate-400 mb-6 shrink-0 text-sm">
         {{ 'SETUP_PACKAGES.INSTRUCTION' | translate }}
@@ -59,6 +81,15 @@ import { Package } from '../../../core/services/api/api.service';
                   {{ pkg.wordCount || 0 }} {{ 'SETUP_PACKAGES.WORDS' | translate }}
                 </p>
               </div>
+
+              <!-- Info Button -->
+              <button 
+                  (click)="openInfoModal(pkg, $event)"
+                  class="ml-2 w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-slate-300 pointer-events-auto">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                  </svg>
+              </button>
             </div>
           }
       </div>
@@ -78,6 +109,8 @@ import { Package } from '../../../core/services/api/api.service';
   styles: [``]
 })
 export class SetupPackages {
+  apiService = inject(ApiService);
+
   @Input() apiPackages: Package[] = [];
 
   @Input() set selectedIds(ids: string[]) {
@@ -89,6 +122,30 @@ export class SetupPackages {
   @Output() onChange = new EventEmitter<string[]>();
 
   localSelectedIds: string[] = [];
+  
+  infoModalPackage = signal<Package | null>(null);
+  infoModalWords = signal<string[]>([]);
+  isLoadingWords = signal<boolean>(false);
+
+  async openInfoModal(pkg: Package, event: Event) {
+    event.stopPropagation();
+    this.infoModalPackage.set(pkg);
+    this.isLoadingWords.set(true);
+    this.infoModalWords.set([]);
+    
+    try {
+      const wordsData = await this.apiService.getWordsByPackage(pkg.id);
+      this.infoModalWords.set(wordsData.map(w => w.word));
+    } catch (error) {
+      console.error('Failed to load words', error);
+    } finally {
+      this.isLoadingWords.set(false);
+    }
+  }
+
+  closeInfoModal() {
+    this.infoModalPackage.set(null);
+  }
 
   isSelected(id: string): boolean {
     return this.localSelectedIds.includes(id);

@@ -142,7 +142,11 @@
         "NEXT_PLAYER": "次のプレイヤー",
         "START_PLAY": "ゲーム開始",
         "PLAYER_TURN": "{{name}}のターン",
-        "PASS_DEVICE": "端末を渡してください。"
+        "PASS_DEVICE": "端末を渡してください。",
+        "CHANGE_WORD": "Change word",
+        "CHANGE_WORD_TITLE": "Change Word",
+        "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
+        "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
         "NO_ACTIVE_GAME": "現在ゲームはありません。",
@@ -209,7 +213,9 @@
         "EXIT": "終了"
     },
     "COMMON": {
-        "OK": "OK"
+        "OK": "OK",
+        "CANCEL": "Cancel",
+        "LOADING": "Loading..."
     },
     "CONFIRM_DELETE_PRESET": {
         "TITLE": "グループ削除",

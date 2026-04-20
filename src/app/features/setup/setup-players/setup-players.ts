@@ -134,19 +134,19 @@ import { DomSanitizer } from '@angular/platform-browser';
       </div>
 
       <!-- FOOTER ACTIONS -->
-      <footer class="fixed bottom-0 left-0 right-0 p-6 bg-slate-900/80 backdrop-blur-md border-t border-slate-700/50 z-50 flex flex-col gap-4">
+      <footer class="fixed bottom-0 left-0 right-0 p-6 bg-slate-900/80 backdrop-blur-md border-t border-slate-700/50 z-50 flex flex-row gap-4">
         
         <!-- ADD BUTTON -->
         <button 
             (click)="addPlayer()"
-            class="w-full relative py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors active:scale-95">
+            class="flex-1 relative py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 rounded-2xl font-semibold flex items-center justify-center gap-2 transition-colors active:scale-95">
             <span>{{ 'SETUP_PLAYERS.ADD_PLAYER' | translate }}</span>
         </button>
 
         <!-- SAVE BUTTON -->
         <button 
           (click)="save()"
-          class="w-full relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgba(242,13,185,0.4)] transition-all active:scale-95 flex items-center justify-center gap-2">
+          class="flex-1 relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgba(242,13,185,0.4)] transition-all active:scale-95 flex items-center justify-center gap-2">
           <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
           <span class="relative z-10 drop-shadow-md tracking-wider">{{ 'SETUP.SAVE' | translate }}</span>
         </button>

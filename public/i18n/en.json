@@ -142,7 +142,11 @@
         "NEXT_PLAYER": "Next player",
         "START_PLAY": "Start game",
         "PLAYER_TURN": "It's the turn of",
-        "PASS_DEVICE": "Pass the device to them to see their role."
+        "PASS_DEVICE": "Pass the device to them to see their role.",
+        "CHANGE_WORD": "Change word",
+        "CHANGE_WORD_TITLE": "Change Word",
+        "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
+        "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
         "NO_ACTIVE_GAME": "There is no active game right now.",
@@ -209,7 +213,9 @@
         "EXIT": "Exit"
     },
     "COMMON": {
-        "OK": "OK"
+        "OK": "OK",
+        "CANCEL": "Cancel",
+        "LOADING": "Loading..."
     },
     "CONFIRM_DELETE_PRESET": {
         "TITLE": "Delete group",
