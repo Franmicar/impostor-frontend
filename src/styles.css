@@ -23,6 +23,7 @@
 
   body {
     margin: 0;
+    padding-bottom: 60px; /* Espacio para banner de AdMob */
     font-family: 'Space Grotesk', Roboto, "Helvetica Neue", sans-serif;
     @apply bg-slate-900 text-slate-50 transition-colors duration-300;
     /* Optional atmospheric dark gradient as seen on Stitch */

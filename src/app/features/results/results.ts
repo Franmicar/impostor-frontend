@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
-
+import { AdsService } from '../../core/services/ads.service';
 @Component({
   selector: 'app-results',
   standalone: true,
@@ -101,10 +101,12 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
     }
   `
 })
+
 export class Results implements OnInit {
   engine = inject(GameEngineService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  adsService = inject(AdsService);
 
   showRoles = false;
   winner: 'impostors' | 'town' | null = null;
@@ -175,7 +177,8 @@ export class Results implements OnInit {
     return 'text-pink-500 drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]';
   }
 
-  playAgain() {
+  async playAgain() {
+    await this.adsService.showInterstitial();
     this.engine.resetGame();
     this.router.navigate(['/setup']);
   }

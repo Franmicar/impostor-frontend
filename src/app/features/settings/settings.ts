@@ -45,6 +45,12 @@ import { AuthService } from '../../core/services/auth/auth.service';
                         <option value="en">English (EN)</option>
                         <option value="fr">Français (FR)</option>
                         <option value="ca">Català (CA)</option>
+                        <option value="it">Italiano (IT)</option>
+                        <option value="pt">Português (PT)</option>
+                        <option value="de">Deutsch (DE)</option>
+                        <option value="ru">Русский (RU)</option>
+                        <option value="zh">中文 (ZH)</option>
+                        <option value="ja">日本語 (JA)</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
                       <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>

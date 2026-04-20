@@ -38,5 +38,9 @@ export const routes: Routes = [
         path: 'settings',
         loadComponent: () => import('./features/settings/settings').then(m => m.Settings)
     },
+    {
+        path: 'custom-package',
+        loadComponent: () => import('./features/custom-package/custom-package.component').then(m => m.default)
+    },
     { path: '**', redirectTo: '' }
 ];
