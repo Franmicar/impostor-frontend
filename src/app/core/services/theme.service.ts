@@ -1,13 +1,16 @@
-import { Injectable, signal, effect } from '@angular/core';
+import { Injectable, signal, effect, inject } from '@angular/core';
+import { BillingService } from './billing.service';
 
-export type Theme = 'light' | 'dark' | 'system';
+export type Theme = 'neon' | 'neon2' | 'infantil';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ThemeService {
-    // Estado local gestionado con un Signal (Angular v21 Best Practices)
-    currentTheme = signal<Theme>('system');
+    private billing = inject(BillingService);
+    
+    // Estado local gestionado con un Signal
+    currentTheme = signal<Theme>('neon');
 
     constructor() {
         this.initTheme();
@@ -16,31 +19,55 @@ export class ThemeService {
         effect(() => {
             this.applyTheme(this.currentTheme());
         });
+
+        // Suscribirse a cambios premium para revertir tema si caduca
+        this.billing.isPremium$.subscribe(isPremium => {
+            if (!isPremium && this.currentTheme() === 'neon2') {
+                this.setTheme('neon');
+            }
+        });
     }
 
     private initTheme() {
         const savedTheme = localStorage.getItem('impostor-theme') as Theme | null;
-        if (savedTheme) {
+        if (savedTheme === 'neon' || savedTheme === 'neon2' || savedTheme === 'infantil') {
+            // Si intenta cargar neon2 y no es premium, podría haber un pequeño desfase, 
+            // pero el subscribe de arriba lo corregirá en cuanto billing termine de cargar.
             this.currentTheme.set(savedTheme);
         } else {
-            this.currentTheme.set('system');
+            this.currentTheme.set('neon');
         }
     }
 
     setTheme(theme: Theme) {
+        if (theme === 'neon2' && !this.billing.isPremium) {
+            console.warn('Requiere plan Premium para usar este tema');
+            return;
+        }
         this.currentTheme.set(theme);
         localStorage.setItem('impostor-theme', theme);
     }
 
     private applyTheme(theme: Theme) {
-        const isDark =
-            theme === 'dark' ||
-            (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        // Limpiamos clases previas
+        document.documentElement.classList.remove('theme-neon', 'theme-neon2', 'theme-infantil', 'dark', 'light');
+        
+        // Añadimos la clase del tema actual
+        document.documentElement.classList.add(`theme-${theme}`);
+        
+        // Por compatibilidad de base con tailwind oscuro
+        document.documentElement.classList.add('dark');
+    }
 
-        if (isDark) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
+    // Retorna la ruta de la imagen dependiendo del tema.
+    // Si el tema es infantil, buscará en /images/infantil/...
+    // neon2 usa las mismas de neon pero con filtro CSS.
+    getImagePath(originalPath: string): string {
+        const theme = this.currentTheme();
+        if (theme === 'infantil') {
+            // Ejemplo: /images/setup/mode.png -> /images/infantil/setup/mode.png
+            return originalPath.replace('/images/', '/images/infantil/');
         }
+        return originalPath;
     }
 }

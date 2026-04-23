@@ -9,6 +9,8 @@ module.exports = {
       colors: {
         primary: 'rgb(var(--color-primary) / <alpha-value>)',
         secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+        textPrimary: 'var(--text-main)',
+        textMuted: 'var(--text-muted)',
         glass: {
           DEFAULT: 'var(--glass-bg)',
           border: 'var(--glass-border)'

@@ -47,13 +47,45 @@ export class BillingService {
     return this._isPremium.value;
   }
 
-  async purchasePremium(): Promise<boolean> {
+  async getOfferings() {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const offerings = await Purchases.getOfferings();
+        if (offerings.current !== null && offerings.current.availablePackages.length !== 0) {
+          return offerings.current.availablePackages;
+        }
+      } catch (e) {
+        console.error('Error fetching offerings', e);
+      }
+    }
+    // Fallback simulado para web o si falla (Mock data based on requirements)
+    return [
+      { identifier: 'monthly', packageType: 'MONTHLY', product: { identifier: 'sub_monthly', title: 'Plan Mensual', priceString: '4.99€' } },
+      { identifier: 'quarterly', packageType: 'THREE_MONTH', product: { identifier: 'sub_quarterly', title: 'Plan Trimestral', priceString: '11.99€' } },
+      { identifier: 'annual', packageType: 'ANNUAL', product: { identifier: 'sub_annual', title: 'Plan Anual', priceString: '39.99€' } }
+    ] as any[];
+  }
+
+  async purchasePremium(pkg?: any): Promise<boolean> {
     try {
-      const offerings = await Purchases.getOfferings();
-      if (offerings.current !== null && offerings.current.availablePackages.length !== 0) {
-        const { customerInfo } = await Purchases.purchasePackage({ aPackage: offerings.current.availablePackages[0] });
-        this.updatePremiumStatus(customerInfo);
-        return this.isPremium;
+      if (Capacitor.isNativePlatform()) {
+        if (pkg) {
+          const { customerInfo } = await Purchases.purchasePackage({ aPackage: pkg });
+          this.updatePremiumStatus(customerInfo);
+          return this.isPremium;
+        } else {
+          // Backward compatibility: compra el primero
+          const offerings = await Purchases.getOfferings();
+          if (offerings.current !== null && offerings.current.availablePackages.length !== 0) {
+            const { customerInfo } = await Purchases.purchasePackage({ aPackage: offerings.current.availablePackages[0] });
+            this.updatePremiumStatus(customerInfo);
+            return this.isPremium;
+          }
+        }
+      } else {
+        // En web simulamos la compra con éxito
+        this._isPremium.next(true);
+        return true;
       }
     } catch (e) {
       console.error('Error in purchase', e);

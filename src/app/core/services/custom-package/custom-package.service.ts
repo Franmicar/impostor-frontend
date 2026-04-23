@@ -1,7 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { initializeApp, getApp, getApps } from 'firebase/app';
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { AuthService } from '../auth/auth.service';
 import { BillingService } from '../billing.service';
+import { environment } from '../../../../environments/environment';
 
 export interface CustomWord {
   word: string;
@@ -19,16 +21,21 @@ export interface CustomPackage {
   providedIn: 'root'
 })
 export class CustomPackageService {
-  private firestore: Firestore = inject(Firestore);
   private auth = inject(AuthService);
   private billing = inject(BillingService);
+  private db: any;
+
+  constructor() {
+    const app = getApps().length === 0 ? initializeApp(environment.firebase) : getApp();
+    this.db = getFirestore(app);
+  }
 
   async getMyCustomPackage(): Promise<CustomPackage | null> {
     if (!this.billing.isPremium) return null;
     const user = this.auth.userSignal();
     if (!user) return null;
 
-    const docRef = doc(this.firestore, `users/${user.uid}/custom_packages/main`);
+    const docRef = doc(this.db, `users/${user.uid}/custom_packages/main`);
     const snap = await getDoc(docRef);
     if (snap.exists()) {
       return snap.data() as CustomPackage;
@@ -41,7 +48,7 @@ export class CustomPackageService {
     const user = this.auth.userSignal();
     if (!user) throw new Error('User not authenticated');
 
-    const docRef = doc(this.firestore, `users/${user.uid}/custom_packages/main`);
+    const docRef = doc(this.db, `users/${user.uid}/custom_packages/main`);
     await setDoc(docRef, pkg);
   }
 }

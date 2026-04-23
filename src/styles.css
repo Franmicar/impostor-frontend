@@ -4,17 +4,56 @@
 
 /* Angular Material overrides & base resets */
 @layer base {
-  :root {
-    /* Primary Pink: hsl(324, 91%, 50%) -> #f20db9 approx */
-    --color-primary: 242 13 185;
-    /* Secondary Cyan: hsl(185, 90%, 50%) -> #0df2f2 approx */
-    --color-secondary: 13 242 242;
+    /* Base Theme (Neon / Cyberpunk) */
+    :root, .theme-neon {
+      --color-primary: 242 13 185; /* Pink #f20db9 */
+      --color-secondary: 13 242 242; /* Cyan #0df2f2 */
+      --glass-bg: rgba(30, 41, 59, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --app-bg-from: #1e1b4b;
+      --app-bg-to: #0f172a;
+      --text-main: #f8fafc; /* slate-50 */
+      --text-muted: #94a3b8; /* slate-400 */
+      --modal-bg: rgba(15, 23, 42, 0.9);
+      --backdrop-bg: rgba(0, 0, 0, 0.6);
+    }
 
-    /* Base Glass Values */
-    --glass-bg: rgba(30, 41, 59, 0.6);
-    /* Equivalent to slate-800/60 */
-    --glass-border: rgba(255, 255, 255, 0.1);
-  }
+    /* Premium Theme (Neon / Cyberpunk 2) */
+    .theme-neon2 {
+      --color-primary: 234 179 8; /* Yellow #eab308 */
+      --color-secondary: 22 163 74; /* Green #16a34a */
+      --glass-bg: rgba(20, 30, 20, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --app-bg-from: #064e3b; /* Dark Emerald */
+      --app-bg-to: #020617; /* Dark Slate */
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    /* Free Theme (Infantil) */
+    .theme-infantil {
+      --color-primary: 255 159 28; /* Orange #ff9f1c */
+      --color-secondary: 56 189 248; /* Light Blue #38bdf8 */
+      --glass-bg: rgba(255, 255, 255, 0.5); /* Brighter glass */
+      --glass-border: rgba(0, 0, 0, 0.15); /* Darker border */
+      --app-bg-from: #e0f2fe; /* sky-100 */
+      --app-bg-to: #f0f9ff; /* sky-50 */
+      --text-main: #0f172a; /* slate-900 */
+      --text-muted: #334155; /* slate-700 */
+      --modal-bg: rgba(255, 255, 255, 0.95);
+      --backdrop-bg: rgba(0, 0, 0, 0.25);
+    }
+
+    img.neon-dynamic-img:not(.rounded-full) {
+      border-radius: 15px;
+    }
+
+    /* Aplicar filtro a las imágenes cuando el tema sea neon2 para que sean verde/amarillo */
+    .theme-neon2 img.neon-dynamic-img {
+      /* Mezclamos con un 50% de sepia para acercar los tonos en la rueda de color, 
+         y luego rotamos 60 grados. Así el Rosa se vuelve Amarillo y el Cian se vuelve Verde! */
+      filter: sepia(0.5) hue-rotate(60deg) saturate(2.5) brightness(1.1);
+    }
 
   html,
   body {
@@ -25,9 +64,11 @@
     margin: 0;
     padding-bottom: 60px; /* Espacio para banner de AdMob */
     font-family: 'Space Grotesk', Roboto, "Helvetica Neue", sans-serif;
-    @apply bg-slate-900 text-slate-50 transition-colors duration-300;
+    color: var(--text-main);
+    transition: background-color 0.3s, color 0.3s;
     /* Optional atmospheric dark gradient as seen on Stitch */
-    background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 100%);
+    background: radial-gradient(circle at 50% 0%, var(--app-bg-from) 0%, var(--app-bg-to) 100%);
+    background-color: var(--app-bg-to);
     background-attachment: fixed;
   }
 }

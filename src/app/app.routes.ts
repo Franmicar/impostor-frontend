@@ -42,5 +42,9 @@ export const routes: Routes = [
         path: 'custom-package',
         loadComponent: () => import('./features/custom-package/custom-package.component').then(m => m.default)
     },
+    {
+        path: 'premium',
+        loadComponent: () => import('./features/premium/premium.component').then(m => m.PremiumComponent)
+    },
     { path: '**', redirectTo: '' }
 ];

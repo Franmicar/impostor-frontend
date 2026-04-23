@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
   template: `
     <div class="fixed inset-0 z-[9999] flex flex-col items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div 
-        class="w-full max-w-sm bg-glass backdrop-blur-xl rounded-3xl p-6 border border-glass-border shadow-[0_0_30px_rgba(242,13,185,0.15)] flex flex-col items-center animate-in zoom-in-95 duration-200">
+        class="w-full max-w-sm bg-glass backdrop-blur-xl rounded-3xl p-6 border border-glass-border shadow-[0_0_30px_rgb(var(--color-primary)/0.4)] flex flex-col items-center animate-in zoom-in-95 duration-200">
         
         <!-- Warning Icon -->
         <div class="w-16 h-16 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(244,63,94,0.3)]">
