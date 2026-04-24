@@ -9,10 +9,15 @@ import { CloudPresetsService, Preset } from '../../../core/services/cloud-preset
 import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
 import { DomSanitizer } from '@angular/platform-browser';
 
+import { IconButtonComponent } from '../../../shared/components/ui/icon-button.component';
+import { TextHeaderComponent } from '../../../shared/components/ui/text-header.component';
+import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
+import { ButtonSecondaryComponent } from '../../../shared/components/ui/button-secondary.component';
+
 @Component({
  selector: 'app-setup-players',
  standalone: true,
- imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent],
+ imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent, ButtonSecondaryComponent],
  template: `
   <div class="h-full flex flex-col bg-transparent text-white p-6">
    
@@ -20,17 +25,13 @@ import { DomSanitizer } from '@angular/platform-browser';
    <header class="flex flex-col gap-4 mb-6 relative z-10 w-full">
     <!-- Top Row -->
     <div class="flex items-center justify-between w-full">
-     <button 
-      (click)="goBack()"
-      class="w-10 h-10 rounded-full bg-glass border border-glass-border backdrop-blur-md flex items-center justify-center text-textPrimary hover:bg-white/10 transition-colors active:scale-95 shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] shrink-0">
+     <app-icon-button (onClick)="goBack()">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
       </svg>
-     </button>
+     </app-icon-button>
 
-     <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] text-center tracking-wider uppercase" style="font-size: 1.5rem; font-weight: 700;">
-       {{ 'SETUP.PLAYERS' | translate }}
-     </h1>
+     <app-text-header>{{ 'SETUP.PLAYERS' | translate }}</app-text-header>
      
      <div class="w-10 h-10 invisible shrink-0"></div>
     </div>
@@ -38,13 +39,10 @@ import { DomSanitizer } from '@angular/platform-browser';
     <!-- Bottom Row (Save Group Button) -->
     @if (authService.userSignal()) {
      <div class="flex justify-start w-full">
-      <button 
-        (click)="openCloudSaveModal()"
-        class="w-full sm:w-auto h-12 px-6 flex justify-center items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white rounded-xl text-sm font-bold uppercase tracking-widest transition-all active:scale-95 shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] shrink-0 group relative overflow-hidden" title="Guardar Grupo">
-        <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 relative z-10"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg>
-        <span class="relative z-10 drop-shadow-md">Guardar grupo configurado</span>
-      </button>
+      <app-button-secondary (onClick)="openCloudSaveModal()">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg>
+       Guardar grupo configurado
+      </app-button-secondary>
      </div>
     }
    </header>
@@ -87,10 +85,12 @@ import { DomSanitizer } from '@angular/platform-browser';
        class="flex items-center gap-4 bg-glass border-glass-border backdrop-blur-md p-2 pl-4 rounded-xl border shadow-lg hover:bg-white/5 transition-colors">
        
        <!-- DRAG HANDLE -->
-       <div cdkDragHandle class="cursor-grab text-textMuted hover:text-white active:cursor-grabbing p-2 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-        </svg>
+       <div cdkDragHandle class="cursor-grab active:cursor-grabbing">
+        <app-icon-button class="pointer-events-none">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+         </svg>
+        </app-icon-button>
        </div>
        
        <!-- AVATAR UPLOAD -->
@@ -136,23 +136,22 @@ import { DomSanitizer } from '@angular/platform-browser';
     </div>
    </div>
 
-   <!-- FOOTER ACTIONS -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[76px] bg-slate-900/80 backdrop-blur-md border-t border-slate-700/50 z-50 flex flex-row gap-4">
-    
-    <!-- ADD BUTTON -->
-    <button 
-      (click)="addPlayer()"
-      class="flex-1 relative py-4 bg-glass hover:bg-white/20 border border-glass-border text-textPrimary rounded-2xl font-semibold flex items-center justify-center gap-2 transition-colors active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.05)] backdrop-blur">
-      <span>{{ 'SETUP_PLAYERS.ADD_PLAYER' | translate }}</span>
-    </button>
+   <!-- FOOTER ACCIONES -->
+   <footer class="fixed bottom-0 left-0 right-0 p-6 z-40 flex items-center gap-4 border-t border-glass-border bg-[var(--app-bg-to)] shadow-[0_-10px_30px_rgba(0,0,0,0.15)]">
+    <!-- ADD PLAYER BUTTON -->
+    <div class="flex-1">
+     <app-button-secondary (onClick)="addPlayer()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+      {{ 'SETUP_PLAYERS.ADD_PLAYER' | translate }}
+     </app-button-secondary>
+    </div>
 
     <!-- SAVE BUTTON -->
-    <button 
-     (click)="save()"
-     class="flex-1 relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgb(var(--color-primary)/0.4)] transition-all active:scale-95 flex items-center justify-center gap-2">
-     <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
-     <span class="relative z-10 drop-shadow-md tracking-wider">{{ 'SETUP.SAVE' | translate }}</span>
-    </button>
+    <div class="flex-1">
+     <app-button-primary (onClick)="save()">
+      {{ 'SETUP.SAVE' | translate }}
+     </app-button-primary>
+    </div>
    </footer>
 
    <!-- MODAL PARA GUARDAR PRESET CLOUD -->

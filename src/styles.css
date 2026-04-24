@@ -34,14 +34,25 @@
     .theme-infantil {
       --color-primary: 255 159 28; /* Orange #ff9f1c */
       --color-secondary: 56 189 248; /* Light Blue #38bdf8 */
-      --glass-bg: rgba(255, 255, 255, 0.5); /* Brighter glass */
-      --glass-border: rgba(0, 0, 0, 0.15); /* Darker border */
+      --glass-bg: rgba(255, 255, 255, 0.85); /* Solid white look */
+      --glass-border: rgba(0, 0, 0, 0.10); /* Softer border */
       --app-bg-from: #e0f2fe; /* sky-100 */
       --app-bg-to: #f0f9ff; /* sky-50 */
       --text-main: #0f172a; /* slate-900 */
       --text-muted: #334155; /* slate-700 */
       --modal-bg: rgba(255, 255, 255, 0.95);
       --backdrop-bg: rgba(0, 0, 0, 0.25);
+    }
+
+    /* Ocultar el padding (bordes grises) y sombras oscuras solo en el tema infantil */
+    .theme-infantil img.p-1.neon-dynamic-img {
+      padding: 0 !important;
+      object-fit: cover !important;
+    }
+    
+    .theme-infantil .shadow-black\/50 {
+      --tw-shadow-color: rgba(0, 0, 0, 0.15) !important;
+      --tw-shadow: var(--tw-shadow-colored) !important;
     }
 
     img.neon-dynamic-img:not(.rounded-full) {

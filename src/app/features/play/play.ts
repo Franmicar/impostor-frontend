@@ -3,11 +3,13 @@ import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
 import { ThemeService } from '../../core/services/theme.service';
+import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
+import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 
 @Component({
  selector: 'app-play',
  standalone: true,
- imports: [TranslateModule],
+ imports: [TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent],
  template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-center p-6 overflow-hidden relative">
    
@@ -55,29 +57,27 @@ import { ThemeService } from '../../core/services/theme.service';
        <span class="text-textMuted uppercase tracking-widest text-xs font-bold mb-2">{{ (engine.currentSettings()?.gameTypeId === 'draw' ? 'PLAY.STARTS_DRAW' : 'PLAY.STARTS') | translate }}</span>
        <h2 class="text-4xl font-black text-secondary text-center mb-6 drop-shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)]">{{ winnerName() }}</h2>
        
-       <button 
-        (click)="goToNextPhase()" 
-        class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-bold text-xl shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] hover:shadow-[0_0_30px_rgb(var(--color-secondary)/0.4)] active:scale-95 transition-all text-center">
+       <app-button-primary (onClick)="goToNextPhase()" class="block w-full">
         @if (engine.currentSettings()?.gameTypeId === 'draw') {
          {{ 'PLAY.PLAY_BTN_DRAW' | translate }}
         } @else {
          {{ 'PLAY.PLAY_BTN' | translate }}
         }
-       </button>
+       </app-button-primary>
       </div>
     </div>
    } @else {
     <!-- Pass and Play -->
     <div class="w-full max-w-sm flex-1 flex flex-col relative py-12">
       
-      <button 
-        (click)="showChangeWordModal.set(true)" 
-        class="absolute top-0 right-0 z-30 bg-white/10 hover:bg-white/20 border border-white/10 px-3 py-2 rounded-xl backdrop-blur-md transition-colors shadow-lg active:scale-95 text-textMuted flex items-center gap-2 text-[0.65rem] font-bold uppercase tracking-widest mt-[-10px]">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary">
+      <div class="absolute top-0 right-0 z-30 mt-[-10px] w-max">
+       <app-button-secondary (onClick)="showChangeWordModal.set(true)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-secondary">
          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
         </svg>
-        {{ 'PLAY.CHANGE_WORD' | translate }}
-      </button>
+        <span>{{ 'PLAY.CHANGE_WORD' | translate }}</span>
+       </app-button-secondary>
+      </div>
 
       <div class="text-center mb-8 z-20 relative bg-glass backdrop-blur-md border border-glass-border rounded-2xl py-4 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.05)] mx-auto w-full">
         <h2 class="text-4xl font-black text-textPrimary drop-shadow-lg">{{ engine.currentPlayer()?.name }}</h2>
@@ -143,7 +143,7 @@ import { ThemeService } from '../../core/services/theme.service';
         
         <!-- Slide Cover -->
         <div 
-          class="absolute inset-0 w-full h-full rounded-3xl p-8 flex flex-col items-center justify-center shadow-2xl cursor-grab active:cursor-grabbing z-10 transition-transform select-none will-change-transform border"
+          class="absolute inset-0 w-full h-full rounded-3xl p-8 flex flex-col items-center justify-center shadow-2xl cursor-grab active:cursor-grabbing z-10 transition-transform select-none will-change-transform border touch-none"
           [class]="themeService.currentTheme() === 'infantil' ? 'bg-white border-primary/20' : 'bg-slate-900 border-slate-700 shadow-[0_0_30px_rgba(255,255,255,0.05)]'"
           [style.transform]="slideTransform()"
           [class.duration-500]="!isDragging()"
@@ -169,11 +169,9 @@ import { ThemeService } from '../../core/services/theme.service';
       
       <div class="mt-8 h-16 flex flex-col justify-center w-full">
         @if (isRevealed()) {
-         <button 
-           (click)="nextPlayer()"
-           class="w-full py-4 bg-glass hover:bg-white/20 border border-glass-border backdrop-blur shadow-[0_0_15px_rgba(255,255,255,0.05)] text-textPrimary rounded-full font-bold text-xl active:scale-95 transition-all text-center cursor-pointer">
+         <app-button-primary (onClick)="nextPlayer()" class="block w-full">
            {{ isLastPlayer() ? ('PLAY.START_PLAY' | translate) : ('PLAY.NEXT_PLAYER' | translate) }}
-         </button>
+         </app-button-primary>
         } @else {
          <div class="text-center text-textMuted text-sm font-semibold">
            {{ 'PLAY.PLAYER_N_OF_M' | translate: { n: engine.currentPlayerIndex() + 1, m: engine.players().length } }}
@@ -195,12 +193,13 @@ import { ThemeService } from '../../core/services/theme.service';
         <h3 class="text-2xl font-black text-white mb-2 uppercase tracking-widest">{{ 'PLAY.CHANGE_WORD_TITLE' | translate }}</h3>
         <p class="text-textMuted text-sm mb-8 leading-relaxed" [innerHTML]="'PLAY.CHANGE_WORD_DESC' | translate"></p>
         <div class="w-full flex flex-col gap-3">
-          <button (click)="changeWordAndRestart()" class="w-full py-4 bg-gradient-to-r from-primary to-secondary hover:shadow-[0_0_20px_rgb(var(--color-secondary)/0.4)] border border-transparent text-white rounded-xl font-bold transition-all active:scale-95 uppercase tracking-widest cursor-pointer">
+          <app-button-primary (onClick)="changeWordAndRestart()">
             {{ 'PLAY.CHANGE_WORD_CONFIRM' | translate }}
-          </button>
-          <button (click)="showChangeWordModal.set(false)" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
-            {{ 'COMMON.CANCEL' | translate }}
-          </button>
+          </app-button-primary>
+          <app-button-secondary (onClick)="showChangeWordModal.set(false)">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            <span>{{ 'COMMON.CANCEL' | translate }}</span>
+          </app-button-secondary>
         </div>
       </div>
     </div>

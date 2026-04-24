@@ -5,11 +5,15 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { GameEngineService, Player } from '../../core/services/game-engine/game-engine';
 import { TimerService } from '../../core/services/timer/timer.service';
+import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
+import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
+import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
+import { TextHeaderComponent } from '../../shared/components/ui/text-header.component';
 
 @Component({
  selector: 'app-vote',
  standalone: true,
- imports: [CommonModule, FormsModule, TranslateModule],
+ imports: [CommonModule, FormsModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, TextHeaderComponent],
  template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-start p-6 relative">
    
@@ -54,15 +58,17 @@ import { TimerService } from '../../core/services/timer/timer.service';
         <h3 class="text-2xl font-black text-white mb-2 uppercase tracking-widest">{{ 'VOTE.DRAW_AGAIN_TITLE' | translate }}</h3>
         <p class="text-textMuted text-lg mb-8">{{ 'VOTE.DRAW_AGAIN_DESC' | translate }}</p>
         <div class="flex flex-col gap-3 w-full">
-          <button (click)="resumeDrawing(true)" class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-md active:scale-95 uppercase tracking-widest cursor-pointer">
+          <app-button-primary (onClick)="resumeDrawing(true)">
             {{ 'VOTE.RESUME_DRAWING' | translate }}
-          </button>
-          <button (click)="resumeDrawing(false)" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
-            {{ 'VOTE.BLANK_CANVAS' | translate }}
-          </button>
-          <button (click)="closeDrawAgainModal()" class="w-full mt-2 py-3 bg-transparent text-textMuted hover:text-white rounded-xl font-bold transition-colors uppercase cursor-pointer">
-            {{ 'VOTE.CANCEL' | translate }}
-          </button>
+          </app-button-primary>
+          <app-button-secondary (onClick)="resumeDrawing(false)">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+            <span>{{ 'VOTE.BLANK_CANVAS' | translate }}</span>
+          </app-button-secondary>
+          <app-button-secondary (onClick)="closeDrawAgainModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            <span>{{ 'VOTE.CANCEL' | translate }}</span>
+          </app-button-secondary>
         </div>
       </div>
     </div>
@@ -80,9 +86,9 @@ import { TimerService } from '../../core/services/timer/timer.service';
         <h3 class="text-2xl font-black text-pink-400 mb-2 uppercase tracking-widest">{{ 'VOTE.IMPOSTOR_CAUGHT' | translate }}</h3>
         <p class="text-textMuted text-lg mb-8" [innerHTML]="'VOTE.IMPOSTOR_CAUGHT_DESC' | translate: { name: '<span class=\\'font-bold text-primary drop-shadow-md\\'>' + eliminatedImpostorName + '</span>' }">
         </p>
-        <button (click)="closeImpostorModal()" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
+        <app-button-primary (onClick)="closeImpostorModal()">
           {{ 'VOTE.CONTINUE' | translate }}
-        </button>
+        </app-button-primary>
       </div>
     </div>
    }
@@ -104,9 +110,9 @@ import { TimerService } from '../../core/services/timer/timer.service';
             <span [innerHTML]="'VOTE.CIVIL_ELIMINATED' | translate: { name: '<span class=\\'font-bold text-secondary\\'>' + eliminatedCivilianName + '</span>' }"></span>
           }
         </div>
-        <button (click)="closeModal()" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
+        <app-button-primary (onClick)="closeModal()">
           {{ 'VOTE.CONTINUE' | translate }}
-        </button>
+        </app-button-primary>
       </div>
     </div>
    }
@@ -136,15 +142,15 @@ import { TimerService } from '../../core/services/timer/timer.service';
         </div>
 
         <div class="flex flex-col w-full gap-3">
-          <button 
-            (click)="submitDetectiveGuess()"
-            [disabled]="(aliveDetectives().length > 1 && !selectedDetectiveId) || !detectiveGuess.trim()"
-            class="w-full py-4 bg-indigo-600/80 hover:bg-indigo-500 border border-indigo-500/50 text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(99,102,241,0.4)] active:scale-95 uppercase disabled:opacity-50 disabled:grayscale disabled:scale-100 disabled:cursor-not-allowed cursor-pointer">
+          <app-button-primary 
+            (onClick)="submitDetectiveGuess()"
+            [disabled]="(aliveDetectives().length > 1 && !selectedDetectiveId) || !detectiveGuess.trim()">
             {{ 'VOTE.GUESS_BTN' | translate }}
-          </button>
-          <button (click)="closeDetectiveModal()" class="w-full py-3 bg-transparent text-textMuted hover:text-white rounded-xl font-bold transition-colors uppercase cursor-pointer">
-            {{ 'VOTE.CANCEL' | translate }}
-          </button>
+          </app-button-primary>
+          <app-button-secondary (onClick)="closeDetectiveModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            <span>{{ 'VOTE.CANCEL' | translate }}</span>
+          </app-button-secondary>
         </div>
       </div>
       
@@ -154,7 +160,7 @@ import { TimerService } from '../../core/services/timer/timer.service';
 
    <!-- HEADER & TIMER -->
    <header class="w-full max-w-md flex flex-col items-center mt-4 mb-8">
-    <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] mb-4 text-center">{{ 'VOTE.TITLE' | translate }}</h2>
+    <app-text-header class="mb-4">{{ 'VOTE.TITLE' | translate }}</app-text-header>
     
     @if (timer.isActive() || timer.timeLeftInSeconds() > 0) {
      <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
@@ -166,12 +172,15 @@ import { TimerService } from '../../core/services/timer/timer.service';
       <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">{{ 'VOTE.TIME_REMAINING' | translate }}</span>
       
       <div class="flex gap-4 mt-4">
-        <button *ngIf="timer.isActive()" (click)="timer.pause()" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition backdrop-blur text-textPrimary">
-         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" /></svg>
-        </button>
-        <button *ngIf="!timer.isActive() && timer.timeLeftInSeconds() > 0" (click)="timer.resume()" class="w-10 h-10 rounded-full bg-secondary/20 border border-secondary flex items-center justify-center hover:bg-secondary/40 transition backdrop-blur text-secondary">
-         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>
-        </button>
+        @if (timer.isActive()) {
+         <app-icon-button (onClick)="timer.pause()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" /></svg>
+         </app-icon-button>
+        } @else if (timer.timeLeftInSeconds() > 0) {
+         <app-icon-button (onClick)="timer.resume()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>
+         </app-icon-button>
+        }
       </div>
      </div>
     } @else {
@@ -182,19 +191,23 @@ import { TimerService } from '../../core/services/timer/timer.service';
 
     <!-- Ver dibujo button -->
     @if (engine.currentSettings()?.gameTypeId === 'draw' && engine.drawings().length > 0) {
-      <div class="flex flex-wrap justify-center gap-3 mt-4">
-        <button (click)="openDrawingModal()" class="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-textPrimary rounded-full font-bold transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-          </svg>
-          {{ 'VOTE.VIEW_DRAWING' | translate }}
-        </button>
-        <button (click)="openDrawAgainModal()" class="px-6 py-2 bg-gradient-to-r from-primary to-secondary border border-transparent hover:brightness-110 text-white rounded-full font-bold transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-           <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-          </svg>
-          {{ 'VOTE.DRAW_AGAIN' | translate }}
-        </button>
+      <div class="w-full flex flex-row flex-wrap justify-center gap-3 mt-4 px-2">
+        <div class="flex-1 w-full sm:w-auto sm:min-w-[200px]">
+         <app-button-secondary (onClick)="openDrawingModal()">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+           </svg>
+           <span>{{ 'VOTE.VIEW_DRAWING' | translate }}</span>
+         </app-button-secondary>
+        </div>
+        <div class="flex-1 w-full sm:w-auto sm:min-w-[200px]">
+         <app-button-secondary (onClick)="openDrawAgainModal()">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+           </svg>
+           <span>{{ 'VOTE.DRAW_AGAIN' | translate }}</span>
+         </app-button-secondary>
+        </div>
       </div>
     }
    </header>

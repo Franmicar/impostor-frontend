@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BillingService } from '../../core/services/billing.service';
+import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
+import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 
 @Component({
  selector: 'app-premium',
  standalone: true,
- imports: [CommonModule, TranslateModule],
+ imports: [CommonModule, TranslateModule, IconButtonComponent, ButtonSecondaryComponent],
  template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col pt-6 px-4 pb-[80px] overflow-y-auto custom-scrollbar relative">
    <!-- Decoración de fondo extra para Premium -->
@@ -15,14 +17,17 @@ import { BillingService } from '../../core/services/billing.service';
 
    <!-- Header -->
    <header class="flex items-center justify-between mb-6 relative z-10">
-    <button (click)="goBack()" class="w-10 h-10 rounded-full bg-glass border border-glass-border backdrop-blur-md flex items-center justify-center text-textPrimary hover:bg-white/10 transition-colors active:scale-95 shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] shrink-0">
+    <app-icon-button (onClick)="goBack()">
      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
      </svg>
-    </button>
-    <button (click)="restorePurchases()" class="text-xs font-bold text-textMuted hover:text-white uppercase tracking-wider bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl transition-all active:scale-95">
-     Restaurar
-    </button>
+    </app-icon-button>
+    <div class="scale-90 origin-right">
+     <app-button-secondary (onClick)="restorePurchases()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+      <span>Restaurar</span>
+     </app-button-secondary>
+    </div>
    </header>
 
    <!-- Main Content -->

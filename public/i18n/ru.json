@@ -99,7 +99,7 @@
     "SETUP_PLAYERS": {
         "TITLE": "Игроки",
         "P_NAME": "Имя игрока",
-        "ADD_PLAYER": "+ Добавить игрока",
+        "ADD_PLAYER": "Добавить игрока",
         "MIN_WARNING": "Добавьте минимум 3 игроков."
     },
     "SETUP_PACKAGES": {

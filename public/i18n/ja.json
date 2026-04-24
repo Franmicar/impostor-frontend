@@ -99,7 +99,7 @@
     "SETUP_PLAYERS": {
         "TITLE": "プレイヤー",
         "P_NAME": "プレイヤー名",
-        "ADD_PLAYER": "+ プレイヤー追加",
+        "ADD_PLAYER": "プレイヤー追加",
         "MIN_WARNING": "最低3人必要です。"
     },
     "SETUP_PACKAGES": {

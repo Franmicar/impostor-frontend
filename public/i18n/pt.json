@@ -99,7 +99,7 @@
     "SETUP_PLAYERS": {
         "TITLE": "Jogadores",
         "P_NAME": "Nome do jogador",
-        "ADD_PLAYER": "+ Adicionar jogador",
+        "ADD_PLAYER": "Adicionar jogador",
         "MIN_WARNING": "Adiciona pelo menos 3 jogadores."
     },
     "SETUP_PACKAGES": {

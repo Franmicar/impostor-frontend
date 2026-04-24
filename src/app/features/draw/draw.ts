@@ -2,11 +2,12 @@ import { Component, inject, signal, computed, ViewChild, ElementRef, AfterViewIn
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
+import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 
 @Component({
   selector: 'app-draw',
   standalone: true,
-  imports: [TranslateModule],
+  imports: [TranslateModule, ButtonPrimaryComponent],
   template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-between p-4 overflow-hidden relative">
    <!-- Background elements for style -->
@@ -114,9 +115,9 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
               <h3 class="text-2xl font-bold text-textPrimary mb-2">{{ 'DRAW.PASS_DEVICE_TO' | translate: { name: currentPlayerDrawing()?.name } }}</h3>
               <p class="text-textMuted mb-6">{{ 'DRAW.READY_TO_DRAW' | translate: { time: maxTime() } }}</p>
               
-              <button (click)="startTurn()" class="px-8 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-bold shadow-lg hover:shadow-primary/50 transition-all active:scale-95">
+              <app-button-primary (onClick)="startTurn()">
                 {{ 'DRAW.START_MY_TURN' | translate }}
-              </button>
+              </app-button-primary>
             }
           </div>
         }
@@ -126,21 +127,13 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
     <!-- CONTROLS & NEXT BUTTON -->
     <div class="z-10 w-full max-w-lg pb-4">
       @if (!isDrawingPhaseFinished()) {
-        <button 
-         (click)="passTurn()" 
-         [disabled]="!isCurrentPlayerTurn()"
-         class="w-full py-4 bg-glass border border-glass-border backdrop-blur shadow-[0_0_15px_rgba(255,255,255,0.05)] text-textPrimary rounded-full font-bold text-xl active:scale-95 transition-all text-center flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:pointer-events-none">
+        <app-button-primary (onClick)="passTurn()" [disabled]="!isCurrentPlayerTurn()">
          {{ 'DRAW.PASS_TURN' | translate }}
-         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z" />
-         </svg>
-        </button>
+        </app-button-primary>
       } @else {
-        <button 
-         (click)="goToVote()" 
-         class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-bold text-xl shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] hover:shadow-[0_0_30px_rgb(var(--color-secondary)/0.4)] active:scale-95 transition-all text-center">
+        <app-button-primary (onClick)="goToVote()">
          {{ 'DRAW.GO_TO_VOTE' | translate }}
-        </button>
+        </app-button-primary>
       }
     </div>
    }

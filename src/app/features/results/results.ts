@@ -5,10 +5,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
 import { AdsService } from '../../core/services/ads.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
+
 @Component({
  selector: 'app-results',
  standalone: true,
- imports: [CommonModule, TranslateModule],
+ imports: [CommonModule, TranslateModule, ButtonPrimaryComponent],
  template: `
   <div class="min-h-dvh flex flex-col items-center justify-center p-6 text-textPrimary relative overflow-hidden" 
      [ngClass]="backgroundClass()">
@@ -85,11 +87,11 @@ import { ThemeService } from '../../core/services/theme.service';
      </div>
     }
 
-    <button 
-     (click)="playAgain()"
-     class="w-full py-4 bg-glass hover:bg-white/20 border border-glass-border text-textPrimary rounded-xl font-black tracking-widest text-lg shadow-[0_0_20px_rgba(255,255,255,0.05)] active:scale-95 transition-all uppercase mt-4">
-     {{ 'RESULTS.PLAY_AGAIN' | translate }}
-    </button>
+    <div class="mt-4 w-full">
+      <app-button-primary (onClick)="playAgain()">
+       {{ 'RESULTS.PLAY_AGAIN' | translate }}
+      </app-button-primary>
+    </div>
    </div>
 
   </div>

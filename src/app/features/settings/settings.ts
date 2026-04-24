@@ -6,22 +6,24 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { ThemeService, Theme } from '../../core/services/theme.service';
 import { BillingService } from '../../core/services/billing.service';
+import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
+import { TextHeaderComponent } from '../../shared/components/ui/text-header.component';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent],
   template: `
   <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary p-6 overflow-y-auto">
    
    <!-- HEADER -->
    <header class="flex items-center justify-between mb-8 ">
-    <button (click)="goBack()" class="w-10 h-10 flex flex-shrink-0 items-center justify-center rounded-full bg-glass border border-glass-border backdrop-blur-md text-textMuted hover:text-white transition-colors active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)] cursor-pointer">
+    <app-icon-button (onClick)="goBack()">
      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
      </svg>
-    </button>
-    <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] text-center">{{ 'SETTINGS.TITLE' | translate }}</h2>
+    </app-icon-button>
+    <app-text-header>{{ 'SETTINGS.TITLE' | translate }}</app-text-header>
     
     <div class="flex items-center justify-end shrink-0 w-10">
      @if (authService.userSignal()) {

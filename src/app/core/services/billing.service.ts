@@ -95,9 +95,16 @@ export class BillingService {
 
   async restorePurchases(): Promise<boolean> {
     try {
-      const { customerInfo } = await Purchases.restorePurchases();
-      this.updatePremiumStatus(customerInfo);
-      return this.isPremium;
+      if (Capacitor.isNativePlatform()) {
+        const { customerInfo } = await Purchases.restorePurchases();
+        this.updatePremiumStatus(customerInfo);
+        return this.isPremium;
+      } else {
+        // En web simulamos la restauración si ya había activado algo antes,
+        // o por facilidad lo activamos
+        this._isPremium.next(true);
+        return true;
+      }
     } catch (e) {
       console.error('Error restoring purchases', e);
     }
