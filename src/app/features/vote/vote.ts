@@ -253,16 +253,21 @@ import { TextHeaderComponent } from '../../shared/components/ui/text-header.comp
     <button 
       (click)="eliminate()"
       [disabled]="!selectedPlayerId"
-      class="w-full max-w-md py-4 bg-gradient-to-r from-red-600 to-rose-500 hover:from-red-500 hover:to-rose-400 text-white rounded-full font-bold text-xl shadow-[0_0_20px_rgba(225,29,72,0.4)] active:scale-95 transition-all text-center disabled:opacity-50 disabled:shadow-none disabled:grayscale disabled:scale-100 disabled:cursor-not-allowed cursor-pointer uppercase tracking-widest">
-      {{ 'VOTE.ELIMINATE' | translate }}
+      class="relative group overflow-hidden w-full max-w-md py-4 px-6 bg-gradient-to-r from-red-600 to-rose-500 text-white rounded-2xl font-bold text-xl shadow-[0_0_20px_rgba(225,29,72,0.4)] active:scale-95 transition-all text-center disabled:opacity-50 disabled:shadow-none disabled:grayscale disabled:scale-100 disabled:cursor-not-allowed cursor-pointer uppercase tracking-widest flex items-center justify-center gap-2">
+      <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
+      <span class="relative z-10 drop-shadow-md">
+        {{ 'VOTE.ELIMINATE' | translate }}
+      </span>
     </button>
 
     <!-- Detective Guess Block -->
     @if (engine.currentSettings()?.modeId === 'detective' && aliveDetectives().length > 0) {
       <button 
        (click)="openDetectiveModal()"
-       class="w-full max-w-md py-4 bg-glass backdrop-blur-md text-indigo-400 border border-indigo-400/50 rounded-full font-bold hover:bg-white/10 active:scale-95 transition-all text-center mt-2 cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.2)] tracking-widest uppercase">
-       {{ 'VOTE.DETECTIVE_WANTS_GUESS' | translate }}
+       class="relative group overflow-hidden w-full max-w-md py-4 px-6 bg-glass backdrop-blur-md text-indigo-400 border border-indigo-400/50 rounded-2xl font-bold hover:bg-white/10 active:scale-95 transition-all text-center mt-2 cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.2)] tracking-widest uppercase flex items-center justify-center gap-2">
+       <span class="relative z-10 drop-shadow-md">
+         {{ 'VOTE.DETECTIVE_WANTS_GUESS' | translate }}
+       </span>
      </button>
     }
    </footer>
