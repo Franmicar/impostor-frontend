@@ -6,23 +6,26 @@ import { Package, ApiService } from '../../../core/services/api/api.service';
 import { ThemeService } from '../../../core/services/theme.service';
 import { BillingService } from '../../../core/services/billing.service';
 
+import { IconButtonComponent } from '../../../shared/components/ui/icon-button.component';
+import { TextHeaderComponent } from '../../../shared/components/ui/text-header.component';
+import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
+import { IconButtonMiniComponent } from '../../../shared/components/ui/icon-button-mini.component';
+
 @Component({
  selector: 'app-setup-packages',
  standalone: true,
- imports: [CommonModule, TranslateModule],
+ imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent, IconButtonMiniComponent],
  template: `
   <div class="h-full flex flex-col bg-transparent text-white p-6">
    
    <!-- HEADER -->
    <header class="flex items-center justify-between mb-6 shrink-0">
-    <button 
-     (click)="goBack()" 
-     class="w-10 h-10 rounded-full bg-glass border border-glass-border backdrop-blur-md flex items-center justify-center text-textPrimary hover:bg-white/10 transition-colors active:scale-95 shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] shrink-0">
+    <app-icon-button (onClick)="goBack()">
      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
      </svg>
-    </button>
-    <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] text-center">{{ 'SETUP.PACKAGES' | translate }}</h2>
+    </app-icon-button>
+    <app-text-header>{{ 'SETUP.PACKAGES' | translate }}</app-text-header>
     <div class="w-10 h-10 invisible"></div> <!-- Spacer -->
    </header>
    
@@ -112,25 +115,18 @@ import { BillingService } from '../../../core/services/billing.service';
        </div>
 
        <!-- Info Button -->
-       <button 
-         (click)="openInfoModal(pkg, $event)"
-         class="ml-2 w-[30px] h-[30px] shrink-0 rounded-full bg-secondary/20 border border-secondary/50 flex items-center justify-center hover:bg-secondary/40 transition-colors pointer-events-auto">
-         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" />
-         </svg>
-       </button>
+       <app-icon-button-mini (onClick)="openInfoModal(pkg, $event)" class="ml-2">
+        <span class="font-serif italic font-black text-lg leading-none">i</span>
+       </app-icon-button-mini>
       </div>
      }
    </div>
    
    <!-- FIXED FOOTER -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[76px] bg-slate-900/80 backdrop-blur-md border-t border-slate-700/50 z-50">
-    <button 
-     (click)="save()"
-     class="w-full relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgb(var(--color-primary)/0.4)] transition-all active:scale-95 flex items-center justify-center gap-2">
-     <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
-     <span class="relative z-10 drop-shadow-md tracking-wider">{{ 'SETUP.SAVE' | translate }}</span>
-    </button>
+   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[76px] bg-[var(--app-bg-to)] border-t border-glass-border z-50">
+    <app-button-primary (onClick)="save()">
+     {{ 'SETUP.SAVE' | translate }}
+    </app-button-primary>
    </footer>
 
   </div>
