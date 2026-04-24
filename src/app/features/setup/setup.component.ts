@@ -22,6 +22,7 @@ import { IconButtonComponent } from '../../shared/components/ui/icon-button.comp
 import { IconButtonMiniComponent } from '../../shared/components/ui/icon-button-mini.component';
 import { SelectComponent } from '../../shared/components/ui/select.component';
 import { TextHeaderComponent } from '../../shared/components/ui/text-header.component';
+import { ModalComponent } from '../../shared/components/ui/modal.component';
 
 export interface GameModeConfig {
   id: string;
@@ -40,7 +41,7 @@ export interface PlayerConfig {
   imports: [
     TranslateModule, CommonModule, FormsModule, SetupModes, SetupTypes, SetupPlayers, SetupPackages,
     ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, IconButtonMiniComponent,
-    SelectComponent, TextHeaderComponent
+    SelectComponent, TextHeaderComponent, ModalComponent
   ],
   template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col">
@@ -73,21 +74,23 @@ export interface PlayerConfig {
      <main class="flex-1 px-4 overflow-y-auto pb-40 relative custom-scrollbar">
 
       <!-- INFO MODAL -->
-      @if (infoModalKey()) {
-       <div class="fixed inset-0 bg-[var(--backdrop-bg)] z-50 flex items-center justify-center p-6 backdrop-blur-sm" (click)="infoModalKey.set(null)">
-         <div class="bg-[var(--modal-bg)] backdrop-blur-2xl border border-secondary rounded-3xl p-6 max-w-sm w-full shadow-[0_0_30px_rgb(var(--color-secondary)/0.4)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300" (click)="$event.stopPropagation()">
-           <div class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mb-4 border border-secondary/50">
-             <span class="font-serif italic font-black text-4xl leading-none text-secondary">i</span>
-           </div>
-           <h3 class="text-xl font-bold text-textPrimary mb-2">{{ 'SETUP.INFO_' + infoModalKey() + '_TITLE' | translate }}</h3>
-           <div class="text-textMuted text-sm mb-8 text-left w-full max-h-60 overflow-y-auto custom-scrollbar pr-2" [innerHTML]="'SETUP.INFO_' + infoModalKey() + '_DESC' | translate"></div>
-           <app-button-secondary (onClick)="infoModalKey.set(null)">
-             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-             <span class="uppercase tracking-widest">{{ 'SETUP.CLOSE' | translate }}</span>
-           </app-button-secondary>
-         </div>
-       </div>
-      }
+      <app-modal
+        [isOpen]="!!infoModalKey()"
+        [title]="infoModalKey() ? ('SETUP.INFO_' + infoModalKey() + '_TITLE' | translate) : ''"
+        (onClose)="infoModalKey.set(null)">
+        
+        <div modal-icon class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mb-4 border border-secondary/50">
+          <span class="font-serif italic font-black text-4xl leading-none text-secondary">i</span>
+        </div>
+
+        @if (infoModalKey()) {
+          <div class="text-textMuted text-sm text-left w-full" [innerHTML]="'SETUP.INFO_' + infoModalKey() + '_DESC' | translate"></div>
+        }
+        
+        <app-button-secondary modal-footer (onClick)="infoModalKey.set(null)">
+          <span class="uppercase tracking-widest font-bold">{{ 'SETUP.CLOSE' | translate }}</span>
+        </app-button-secondary>
+      </app-modal>
 
       <!-- PREMIUM UPSELL -->
       @if (!billing.isPremium) {
@@ -383,36 +386,23 @@ export interface PlayerConfig {
    }
 
    <!-- MODAL ALERTAS GENERICO -->
-   @if (alertModal().show) {
-    <div class="fixed inset-0 bg-[var(--backdrop-bg)] backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-     <div class="bg-[var(--modal-bg)] backdrop-blur-2xl border border-glass-border rounded-3xl p-6 w-full max-w-sm shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200 text-center">
-      
-      <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-2" [ngClass]="alertModal().isError ? 'bg-red-500/20 text-red-500' : 'bg-green-500/20 text-green-500'">
-       @if (alertModal().isError) {
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-       } @else {
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-       }
-      </div>
-      
-      <h3 class="text-2xl font-black text-textPrimary">
-       {{ alertModal().title }}
-      </h3>
-      
-      <p class="text-base text-textMuted mb-2">
-       {{ alertModal().message }}
-      </p>
-      
-      <button 
-       (click)="alertModal.set({show: false, title: '', message: '', isError: false})"
-       class="w-full py-4 rounded-2xl font-bold transition-all active:scale-95"
-       [ngClass]="alertModal().isError ? 'bg-glass hover:bg-white/20 text-textPrimary' : 'bg-gradient-to-r from-primary to-secondary text-white shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]'">
-       {{ 'COMMON.OK' | translate }}
-      </button>
-      
-     </div>
-    </div>
-   }
+   <app-modal
+     [isOpen]="alertModal().show"
+     [title]="alertModal().title"
+     [icon]="alertModal().isError ? 'error' : 'success'"
+     (onClose)="alertModal.set({show: false, title: '', message: '', isError: false})">
+     
+     <p class="text-base text-textMuted w-full">
+      {{ alertModal().message }}
+     </p>
+     
+     <button modal-footer
+      (click)="alertModal.set({show: false, title: '', message: '', isError: false})"
+      class="w-full py-4 rounded-2xl font-bold transition-all active:scale-95 uppercase tracking-widest"
+      [ngClass]="alertModal().isError ? 'bg-glass border border-glass-border hover:bg-white/20 text-textPrimary' : 'bg-gradient-to-r from-primary to-secondary text-white shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]'">
+      {{ 'COMMON.OK' | translate }}
+     </button>
+   </app-modal>
 
   </div>
  `,

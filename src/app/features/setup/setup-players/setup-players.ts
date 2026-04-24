@@ -13,11 +13,12 @@ import { IconButtonComponent } from '../../../shared/components/ui/icon-button.c
 import { TextHeaderComponent } from '../../../shared/components/ui/text-header.component';
 import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../../shared/components/ui/button-secondary.component';
+import { ModalComponent } from '../../../shared/components/ui/modal.component';
 
 @Component({
  selector: 'app-setup-players',
  standalone: true,
- imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent, ButtonSecondaryComponent],
+ imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent],
  template: `
   <div class="h-full flex flex-col bg-transparent text-white p-6">
    
@@ -155,148 +156,128 @@ import { ButtonSecondaryComponent } from '../../../shared/components/ui/button-s
    </footer>
 
    <!-- MODAL PARA GUARDAR PRESET CLOUD -->
-   @if (showCloudSaveModal) {
-    <div class="fixed inset-0 bg-[var(--backdrop-bg)] backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-     <div class="bg-[var(--modal-bg)] backdrop-blur-2xl border border-glass-border rounded-3xl p-6 w-full max-w-sm shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200">
-      <h3 class="text-xl font-bold text-white flex items-center gap-2">
-       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-primary"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-8H7v8"></path><path stroke-linecap="round" stroke-linejoin="round" d="M7 3v5h8"></path></svg>
-       Guardar Grupo
-      </h3>
-      <p class="text-sm text-textMuted">Dale un nombre a este grupo de amigos para poder cargarlo rápidamente en el futuro (ej: Familia, Trabajo, Los de siempre).</p>
-      
-      <div>
-       <input 
-        type="text" 
-        [(ngModel)]="cloudPresetName"
-        placeholder="Nombre del grupo..."
-        maxlength="30"
-        class="w-full bg-glass border border-glass-border rounded-xl p-3 text-textPrimary outline-none focus:border-primary transition-colors"
-         />
-       <div class="text-right text-xs text-textPrimary0 mt-1 font-medium">
-        {{ cloudPresetName.length || 0 }}/30
-       </div>
-      </div>
-
-      <div class="flex gap-3 mt-2">
-       <button 
-        (click)="showCloudSaveModal = false"
-        class="flex-1 py-3 rounded-xl border border-slate-700 text-textMuted font-semibold hover:bg-white/5 transition-colors">
-        {{ 'VOTE.CANCEL' | translate }}
-       </button>
-       <button 
-        (click)="confirmSaveCloud()"
-        [disabled]="!cloudPresetName.trim()"
-        class="flex-1 py-3 rounded-xl bg-primary text-white font-bold shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] disabled:opacity-50 disabled:shadow-none hover:bg-primary/90 transition-colors">
-        {{ 'SETUP.SAVE' | translate }}
-       </button>
+   <app-modal
+     [isOpen]="showCloudSaveModal"
+     title="Guardar Grupo"
+     (onClose)="showCloudSaveModal = false">
+     
+     <div modal-icon class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 border border-secondary/50 text-secondary bg-secondary/20">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-8H7v8"></path><path stroke-linecap="round" stroke-linejoin="round" d="M7 3v5h8"></path></svg>
+     </div>
+     
+     <p class="text-sm text-textMuted mb-4">Dale un nombre a este grupo de amigos para poder cargarlo rápidamente en el futuro (ej: Familia, Trabajo, Los de siempre).</p>
+     
+     <div class="w-full text-left">
+      <input 
+       type="text" 
+       [(ngModel)]="cloudPresetName"
+       placeholder="Nombre del grupo..."
+       maxlength="30"
+       class="w-full bg-glass border border-glass-border rounded-xl p-3 text-textPrimary outline-none focus:border-primary transition-colors"
+        />
+      <div class="text-right text-xs text-textMuted mt-1 font-medium">
+       {{ cloudPresetName.length || 0 }}/30
       </div>
      </div>
-    </div>
-   }
+
+     <div modal-footer class="flex gap-3 w-full">
+      <button 
+       (click)="showCloudSaveModal = false"
+       class="flex-1 py-3 rounded-xl bg-glass border border-glass-border text-textMuted font-bold shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] hover:bg-white/10 transition-colors uppercase tracking-widest text-sm active:scale-95">
+       {{ 'VOTE.CANCEL' | translate }}
+      </button>
+      <button 
+       (click)="confirmSaveCloud()"
+       [disabled]="!cloudPresetName.trim()"
+       class="relative group overflow-hidden flex-1 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] disabled:opacity-50 disabled:shadow-none transition-all active:scale-95 uppercase tracking-widest text-sm flex items-center justify-center">
+       <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors pointer-events-none"></div>
+       <span class="relative z-10 drop-shadow-md pointer-events-none">
+         {{ 'SETUP.SAVE' | translate }}
+       </span>
+      </button>
+     </div>
+   </app-modal>
 
    <!-- MODAL ALERTAS GENERICO -->
-   @if (alertModal().show) {
-    <div class="fixed inset-0 bg-[var(--backdrop-bg)] backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-     <div class="bg-[var(--modal-bg)] backdrop-blur-2xl border border-glass-border rounded-3xl p-6 w-full max-w-sm shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200 text-center">
-      
-      <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-2" [ngClass]="alertModal().isError ? 'bg-red-500/20 text-red-500' : 'bg-green-500/20 text-green-500'">
-       @if (alertModal().isError) {
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-       } @else {
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-       }
-      </div>
-      
-      <h3 class="text-2xl font-black text-white">
-       {{ alertModal().title }}
-      </h3>
-      
-      <p class="text-base text-textMuted mb-2">
-       {{ alertModal().message }}
-      </p>
-      
-      <button 
-       (click)="alertModal.set({show: false, title: '', message: '', isError: false})"
-       class="w-full py-4 rounded-2xl font-bold transition-all active:scale-95"
-       [ngClass]="alertModal().isError ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-gradient-to-r from-primary to-secondary text-white shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]'">
-       {{ 'COMMON.OK' | translate }}
-      </button>
-      
-     </div>
-    </div>
-   }
+   <app-modal
+     [isOpen]="alertModal().show"
+     [title]="alertModal().title"
+     [icon]="alertModal().isError ? 'error' : 'success'"
+     (onClose)="alertModal.set({show: false, title: '', message: '', isError: false})">
+     
+     <p class="text-base text-textMuted w-full">
+      {{ alertModal().message }}
+     </p>
+     
+     <button modal-footer
+      (click)="alertModal.set({show: false, title: '', message: '', isError: false})"
+      class="w-full py-4 rounded-2xl font-bold transition-all active:scale-95 uppercase tracking-widest"
+      [ngClass]="alertModal().isError ? 'bg-glass border border-glass-border hover:bg-white/20 text-textPrimary' : 'bg-gradient-to-r from-primary to-secondary text-white shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]'">
+      {{ 'COMMON.OK' | translate }}
+     </button>
+   </app-modal>
 
    <!-- MODAL CONFIRM DELETE -->
-   @if (deleteConfirmModal().show) {
-    <div class="fixed inset-0 bg-[var(--backdrop-bg)] backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-     <div class="bg-[var(--modal-bg)] backdrop-blur-2xl border border-glass-border rounded-3xl p-6 w-full max-w-sm shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200 text-center">
-      
-      <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-2 bg-red-500/20 text-red-500">
-       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-      </div>
-      
-      <h3 class="text-2xl font-black text-white">
-       {{ 'CONFIRM_DELETE_PRESET.TITLE' | translate }}
-      </h3>
-      
-      <p class="text-base text-textMuted mb-2">
-       {{ 'CONFIRM_DELETE_PRESET.MESSAGE' | translate }}
-      </p>
-      
-      <div class="flex gap-3 w-full">
-       <button 
-        (click)="deleteConfirmModal.set({show: false, presetId: ''})"
-        class="flex-1 py-4 rounded-xl border border-slate-700 text-textMuted font-semibold hover:bg-white/5 transition-colors">
-        {{ 'CONFIRM_DELETE_PRESET.CANCEL' | translate }}
-       </button>
-       <button 
-        (click)="executeDeletePreset()"
-        class="flex-1 py-4 rounded-xl bg-red-600 text-white font-bold shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:bg-red-500 transition-colors">
-        {{ 'CONFIRM_DELETE_PRESET.CONFIRM' | translate }}
-       </button>
-      </div>
-      
+   <app-modal
+     [isOpen]="deleteConfirmModal().show"
+     [title]="'CONFIRM_DELETE_PRESET.TITLE' | translate"
+     icon="error"
+     (onClose)="deleteConfirmModal.set({show: false, presetId: ''})">
+     
+     <p class="text-base text-textMuted mb-2 w-full">
+      {{ 'CONFIRM_DELETE_PRESET.MESSAGE' | translate }}
+     </p>
+     
+     <div modal-footer class="flex gap-3 w-full">
+      <button 
+       (click)="deleteConfirmModal.set({show: false, presetId: ''})"
+       class="flex-1 py-4 rounded-xl border border-glass-border text-textMuted font-semibold hover:bg-white/5 transition-colors uppercase tracking-widest text-sm">
+       {{ 'CONFIRM_DELETE_PRESET.CANCEL' | translate }}
+      </button>
+      <button 
+       (click)="executeDeletePreset()"
+       class="flex-1 py-4 rounded-xl bg-red-600 text-white font-bold shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:bg-red-500 transition-colors uppercase tracking-widest text-sm">
+       {{ 'CONFIRM_DELETE_PRESET.CONFIRM' | translate }}
+      </button>
      </div>
-    </div>
-   }
+   </app-modal>
 
    <!-- MODAL RECORTAR IMAGEN -->
-   @if (showCropModal) {
-    <div class="fixed inset-0 bg-[var(--backdrop-bg)] backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-     <div class="bg-[var(--modal-bg)] backdrop-blur-2xl border border-glass-border rounded-3xl p-6 w-full max-w-sm shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200 text-center">
-      
-      <h3 class="text-2xl font-black text-white">
-       Recortar Imagen
-      </h3>
-      
-      <div class="w-full h-64 bg-black/50 border border-slate-700 rounded-xl overflow-hidden relative flex items-center justify-center">
-       <image-cropper
-        [imageChangedEvent]="imageChangedEvent"
-        [maintainAspectRatio]="true"
-        [aspectRatio]="1 / 1"
-        [resizeToWidth]="200"
-        format="jpeg"
-        (imageCropped)="imageCropped($event)"
-        (loadImageFailed)="loadImageFailed()"
-        style="max-height: 250px; max-width: 100%; margin: auto;"
-       ></image-cropper>
-      </div>
-      
-      <div class="flex gap-3 w-full mt-2">
-       <button 
-        (click)="cancelCrop()"
-        class="flex-1 py-4 rounded-xl border border-slate-700 text-textMuted font-semibold hover:bg-white/5 transition-colors">
-        Cancelar
-       </button>
-       <button 
-        (click)="confirmCrop()"
-        class="flex-1 py-4 rounded-xl bg-primary text-white font-bold shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] hover:bg-primary/90 transition-colors">
-        Aplicar
-       </button>
-      </div>
+   <app-modal
+     [isOpen]="showCropModal"
+     title="Recortar Imagen"
+     [preventCloseOutside]="true"
+     (onClose)="cancelCrop()">
+     
+     <div class="w-full h-64 bg-black/50 border border-slate-700 rounded-xl overflow-hidden relative flex items-center justify-center mb-2">
+      <image-cropper
+       [imageChangedEvent]="imageChangedEvent"
+       [maintainAspectRatio]="true"
+       [aspectRatio]="1 / 1"
+       [resizeToWidth]="200"
+       format="jpeg"
+       (imageCropped)="imageCropped($event)"
+       (loadImageFailed)="loadImageFailed()"
+       style="max-height: 250px; max-width: 100%; margin: auto;"
+      ></image-cropper>
      </div>
-    </div>
-   }
+     
+     <div modal-footer class="flex gap-3 w-full mt-2">
+      <button 
+       (click)="cancelCrop()"
+       class="flex-1 py-4 rounded-xl bg-glass border border-glass-border text-textMuted font-bold shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] hover:bg-white/10 transition-colors uppercase tracking-widest text-sm active:scale-95">
+       Cancelar
+      </button>
+      <button 
+       (click)="confirmCrop()"
+       class="relative group overflow-hidden flex-1 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] transition-all active:scale-95 uppercase tracking-widest text-sm flex items-center justify-center">
+       <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors pointer-events-none"></div>
+       <span class="relative z-10 drop-shadow-md pointer-events-none">
+         Aplicar
+       </span>
+      </button>
+     </div>
+   </app-modal>
   </div>
  `,
  styles: [`

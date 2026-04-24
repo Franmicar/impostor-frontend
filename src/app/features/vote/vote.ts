@@ -9,11 +9,12 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
 import { TextHeaderComponent } from '../../shared/components/ui/text-header.component';
+import { ModalComponent } from '../../shared/components/ui/modal.component';
 
 @Component({
  selector: 'app-vote',
  standalone: true,
- imports: [CommonModule, FormsModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, TextHeaderComponent],
+ imports: [CommonModule, FormsModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, TextHeaderComponent, ModalComponent],
  template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-start p-6 relative">
    
@@ -47,116 +48,119 @@ import { TextHeaderComponent } from '../../shared/components/ui/text-header.comp
    }
 
    <!-- DRAW AGAIN MODAL -->
-   @if (showDrawAgainModal) {
-    <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 backdrop-blur-sm">
-      <div class="bg-glass backdrop-blur-2xl border border-glass-border rounded-3xl p-8 max-w-sm w-full shadow-[0_0_30px_rgba(255,255,255,0.05)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
-        <div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-6">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10 text-primary">
-           <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-          </svg>
-        </div>
-        <h3 class="text-2xl font-black text-white mb-2 uppercase tracking-widest">{{ 'VOTE.DRAW_AGAIN_TITLE' | translate }}</h3>
-        <p class="text-textMuted text-lg mb-8">{{ 'VOTE.DRAW_AGAIN_DESC' | translate }}</p>
-        <div class="flex flex-col gap-3 w-full">
-          <app-button-primary (onClick)="resumeDrawing(true)">
-            {{ 'VOTE.RESUME_DRAWING' | translate }}
-          </app-button-primary>
-          <app-button-secondary (onClick)="resumeDrawing(false)">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-            <span>{{ 'VOTE.BLANK_CANVAS' | translate }}</span>
-          </app-button-secondary>
-          <app-button-secondary (onClick)="closeDrawAgainModal()">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-            <span>{{ 'VOTE.CANCEL' | translate }}</span>
-          </app-button-secondary>
-        </div>
-      </div>
-    </div>
-   }
+   <app-modal
+     [isOpen]="showDrawAgainModal"
+     [title]="'VOTE.DRAW_AGAIN_TITLE' | translate"
+     (onClose)="closeDrawAgainModal()">
+     
+     <div modal-icon class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-6 border border-primary/50 text-primary mx-auto">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+       </svg>
+     </div>
+     
+     <p class="text-textMuted text-lg mb-8">{{ 'VOTE.DRAW_AGAIN_DESC' | translate }}</p>
+     
+     <div modal-footer class="flex flex-col gap-3 w-full">
+       <app-button-primary (onClick)="resumeDrawing(true)">
+         {{ 'VOTE.RESUME_DRAWING' | translate }}
+       </app-button-primary>
+       <app-button-secondary (onClick)="resumeDrawing(false)">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+         <span>{{ 'VOTE.BLANK_CANVAS' | translate }}</span>
+       </app-button-secondary>
+       <app-button-secondary (onClick)="closeDrawAgainModal()">
+         <span class="uppercase tracking-widest font-bold">{{ 'VOTE.CANCEL' | translate }}</span>
+       </app-button-secondary>
+     </div>
+   </app-modal>
 
    <!-- IMPOSTOR ELIMINATED MODAL -->
-   @if (showImpostorEliminatedModal) {
-    <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 backdrop-blur-sm">
-      <div class="bg-glass backdrop-blur-2xl border-2 border-primary rounded-3xl p-8 max-w-sm w-full shadow-[0_0_30px_rgb(var(--color-primary)/0.4)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
-        <div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-6">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10 text-pink-500">
-           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        </div>
-        <h3 class="text-2xl font-black text-pink-400 mb-2 uppercase tracking-widest">{{ 'VOTE.IMPOSTOR_CAUGHT' | translate }}</h3>
-        <p class="text-textMuted text-lg mb-8" [innerHTML]="'VOTE.IMPOSTOR_CAUGHT_DESC' | translate: { name: '<span class=\\'font-bold text-primary drop-shadow-md\\'>' + eliminatedImpostorName + '</span>' }">
-        </p>
-        <app-button-primary (onClick)="closeImpostorModal()">
-          {{ 'VOTE.CONTINUE' | translate }}
-        </app-button-primary>
-      </div>
-    </div>
-   }
+   <app-modal
+     [isOpen]="showImpostorEliminatedModal"
+     [title]="'VOTE.IMPOSTOR_CAUGHT' | translate"
+     [preventCloseOutside]="true"
+     (onClose)="closeImpostorModal()">
+     
+     <div modal-icon class="w-20 h-20 bg-primary/20 border border-primary/50 rounded-full flex items-center justify-center mb-6 mx-auto text-pink-500 shrink-0">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+       </svg>
+     </div>
+     
+     <p class="text-textMuted text-lg mb-8" [innerHTML]="'VOTE.IMPOSTOR_CAUGHT_DESC' | translate: { name: '<span class=\\'font-bold text-primary drop-shadow-md\\'>' + eliminatedImpostorName + '</span>' }">
+     </p>
+     
+     <app-button-primary modal-footer (onClick)="closeImpostorModal()">
+       {{ 'VOTE.CONTINUE' | translate }}
+     </app-button-primary>
+   </app-modal>
    
    <!-- INNOCENT ELIMINATED MODAL -->
-   @if (showCivilianEliminatedModal) {
-    <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 backdrop-blur-sm">
-      <div class="bg-glass backdrop-blur-2xl border border-glass-border rounded-3xl p-8 max-w-sm w-full shadow-[0_0_30px_rgba(255,255,255,0.05)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
-        <div class="w-20 h-20 bg-secondary/20 rounded-full flex items-center justify-center mb-6">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10 text-secondary">
-           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        </div>
-        <h3 class="text-2xl font-black text-white mb-2 uppercase tracking-widest drop-shadow-sm">{{ 'VOTE.ELIMINATED' | translate }}</h3>
-        <div class="text-textMuted text-lg mb-8 text-center">
-          @if (eliminationReason === 'guess') {
-            <span [innerHTML]="'VOTE.DETECTIVE_FAILED' | translate: { name: '<span class=\\'font-bold text-secondary\\'>' + eliminatedCivilianName + '</span>' }"></span>
-          } @else {
-            <span [innerHTML]="'VOTE.CIVIL_ELIMINATED' | translate: { name: '<span class=\\'font-bold text-secondary\\'>' + eliminatedCivilianName + '</span>' }"></span>
-          }
-        </div>
-        <app-button-primary (onClick)="closeModal()">
-          {{ 'VOTE.CONTINUE' | translate }}
-        </app-button-primary>
-      </div>
-    </div>
-   }
+   <app-modal
+     [isOpen]="showCivilianEliminatedModal"
+     [title]="'VOTE.ELIMINATED' | translate"
+     [preventCloseOutside]="true"
+     (onClose)="closeModal()">
+     
+     <div modal-icon class="w-20 h-20 bg-secondary/20 border border-secondary/50 rounded-full flex items-center justify-center mb-6 mx-auto text-secondary shrink-0">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+       </svg>
+     </div>
+     
+     <div class="text-textMuted text-lg mb-8 text-center">
+       @if (eliminationReason === 'guess') {
+         <span [innerHTML]="'VOTE.DETECTIVE_FAILED' | translate: { name: '<span class=\\'font-bold text-secondary\\'>' + eliminatedCivilianName + '</span>' }"></span>
+       } @else {
+         <span [innerHTML]="'VOTE.CIVIL_ELIMINATED' | translate: { name: '<span class=\\'font-bold text-secondary\\'>' + eliminatedCivilianName + '</span>' }"></span>
+       }
+     </div>
+     
+     <app-button-primary modal-footer (onClick)="closeModal()">
+       {{ 'VOTE.CONTINUE' | translate }}
+     </app-button-primary>
+   </app-modal>
 
    <!-- DETECTIVE GUESS MODAL -->
-   @if (showDetectiveModal) {
-    <div class="fixed inset-0 bg-black/60 z-50 flex flex-col items-center justify-center p-6 backdrop-blur-sm">
-      <div class="bg-glass backdrop-blur-2xl border border-indigo-500/50 rounded-3xl p-8 max-w-sm w-full shadow-[0_0_30px_rgba(99,102,241,0.3)] flex flex-col items-center animate-in fade-in zoom-in duration-300">
-        <h3 class="text-2xl font-black text-indigo-400 mb-4 uppercase tracking-widest text-center drop-shadow-sm">{{ 'VOTE.SOLVE_MYSTERY' | translate }}</h3>
-        
-        @if (aliveDetectives().length > 1) {
-          <select [(ngModel)]="selectedDetectiveId" class="w-full bg-glass border border-glass-border rounded-lg p-3 text-textPrimary outline-none focus:border-indigo-500 mb-4 backdrop-blur">
-            <option [ngValue]="null" disabled selected>{{ 'VOTE.WHICH_DETECTIVE' | translate }}</option>
-            @for (det of aliveDetectives(); track det.id) {
-              <option [ngValue]="det.id">{{ det.name }}</option>
-            }
-          </select>
-        }
+   <app-modal
+     [isOpen]="showDetectiveModal"
+     [title]="'VOTE.SOLVE_MYSTERY' | translate"
+     (onClose)="closeDetectiveModal()">
+     
+     <div class="w-full mt-2">
+       @if (aliveDetectives().length > 1) {
+         <select [(ngModel)]="selectedDetectiveId" class="w-full bg-glass border border-glass-border rounded-lg p-3 text-textPrimary outline-none focus:border-primary mb-4 backdrop-blur">
+           <option [ngValue]="null" disabled selected>{{ 'VOTE.WHICH_DETECTIVE' | translate }}</option>
+           @for (det of aliveDetectives(); track det.id) {
+             <option [ngValue]="det.id">{{ det.name }}</option>
+           }
+         </select>
+       }
 
-        <div class="relative w-full mb-6">
-          <input type="text" [(ngModel)]="detectiveGuess" list="packWordsModal" [placeholder]="'VOTE.SECRET_WORD_PH' | translate" class="w-full bg-glass border border-glass-border rounded-lg p-3 text-textPrimary outline-none focus:border-indigo-500 backdrop-blur" [disabled]="aliveDetectives().length > 1 && !selectedDetectiveId">
-          <datalist id="packWordsModal">
-            @for (w of engine.currentSettings()?.words; track w.word) {
-              <option [value]="w.word">{{ w.word }}</option>
-            }
-          </datalist>
-        </div>
+       <div class="relative w-full mb-6">
+         <input type="text" [(ngModel)]="detectiveGuess" list="packWordsModal" [placeholder]="'VOTE.SECRET_WORD_PH' | translate" class="w-full bg-glass border border-glass-border rounded-lg p-3 text-textPrimary outline-none focus:border-primary backdrop-blur" [disabled]="aliveDetectives().length > 1 && !selectedDetectiveId">
+         <datalist id="packWordsModal">
+           @for (w of engine.currentSettings()?.words; track w.word) {
+             <option [value]="w.word">{{ w.word }}</option>
+           }
+         </datalist>
+       </div>
+       
+       <p class="mb-4 text-sm text-center text-textMuted max-w-xs mx-auto font-medium">{{ 'VOTE.DETECTIVE_FAIL_WARN' | translate }}</p>
+     </div>
 
-        <div class="flex flex-col w-full gap-3">
-          <app-button-primary 
-            (onClick)="submitDetectiveGuess()"
-            [disabled]="(aliveDetectives().length > 1 && !selectedDetectiveId) || !detectiveGuess.trim()">
-            {{ 'VOTE.GUESS_BTN' | translate }}
-          </app-button-primary>
-          <app-button-secondary (onClick)="closeDetectiveModal()">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-            <span>{{ 'VOTE.CANCEL' | translate }}</span>
-          </app-button-secondary>
-        </div>
-      </div>
-      
-      <p class="mt-6 text-sm text-center text-textMuted max-w-xs font-medium">{{ 'VOTE.DETECTIVE_FAIL_WARN' | translate }}</p>
-    </div>
-   }
+     <div modal-footer class="flex flex-col w-full gap-3">
+       <app-button-primary 
+         (onClick)="submitDetectiveGuess()"
+         [disabled]="(aliveDetectives().length > 1 && !selectedDetectiveId) || !detectiveGuess.trim()">
+         {{ 'VOTE.GUESS_BTN' | translate }}
+       </app-button-primary>
+       <app-button-secondary (onClick)="closeDetectiveModal()">
+         <span class="uppercase tracking-widest font-bold">{{ 'VOTE.CANCEL' | translate }}</span>
+       </app-button-secondary>
+     </div>
+   </app-modal>
 
    <!-- HEADER & TIMER -->
    <header class="w-full max-w-md flex flex-col items-center mt-4 mb-8">

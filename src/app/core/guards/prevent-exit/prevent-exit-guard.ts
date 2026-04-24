@@ -26,7 +26,10 @@ export const preventExitGuard: CanDeactivateFn<CanComponentDeactivate> = async (
 
   if (confirmed) {
     engine.resetGame();
-    return router.parseUrl('/setup');
+    setTimeout(() => {
+      router.navigate(['/setup'], { replaceUrl: true });
+    }, 0);
+    return false;
   }
 
   return false;

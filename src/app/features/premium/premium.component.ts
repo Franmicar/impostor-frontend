@@ -5,11 +5,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BillingService } from '../../core/services/billing.service';
 import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
+import { ModalComponent } from '../../shared/components/ui/modal.component';
 
 @Component({
  selector: 'app-premium',
  standalone: true,
- imports: [CommonModule, TranslateModule, IconButtonComponent, ButtonSecondaryComponent],
+ imports: [CommonModule, TranslateModule, IconButtonComponent, ButtonSecondaryComponent, ModalComponent],
  template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col pt-6 px-4 pb-[80px] overflow-y-auto custom-scrollbar relative">
    <!-- Decoración de fondo extra para Premium -->
@@ -113,17 +114,18 @@ import { ButtonSecondaryComponent } from '../../shared/components/ui/button-seco
 
    <!-- ALERTS MODAL NATIVO OMITIDO POR REGLA 4, CREAREMOS UN MODAL PERSONALIZADO AHORA -->
    <!-- ALERTS MODAL -->
-   @if (alertModal().show) {
-    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-     <div class="bg-slate-900 border border-glass-border rounded-3xl p-6 w-full max-w-sm shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200 text-center">
-      <h3 class="text-2xl font-black text-white">{{ alertModal().title }}</h3>
-      <p class="text-base text-textMuted mb-2">{{ alertModal().message }}</p>
-      <button (click)="closeAlert()" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest">
-        Cerrar
-      </button>
-     </div>
-    </div>
-   }
+   <app-modal
+     [isOpen]="alertModal().show"
+     [title]="alertModal().title"
+     [icon]="alertModal().success ? 'success' : 'error'"
+     (onClose)="closeAlert()">
+     
+     <p class="text-base text-textMuted mb-2 w-full text-center">{{ alertModal().message }}</p>
+     
+     <button modal-footer (click)="closeAlert()" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest">
+       Cerrar
+     </button>
+   </app-modal>
   </div>
  `,
  styles: [`

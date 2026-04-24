@@ -5,11 +5,12 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
 import { ThemeService } from '../../core/services/theme.service';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
+import { ModalComponent } from '../../shared/components/ui/modal.component';
 
 @Component({
  selector: 'app-play',
  standalone: true,
- imports: [TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent],
+ imports: [TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent],
  template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-center p-6 overflow-hidden relative">
    
@@ -182,28 +183,28 @@ import { ButtonSecondaryComponent } from '../../shared/components/ui/button-seco
    }
 
    <!-- MODAL DE CAMBIAR PALABRA -->
-   @if (showChangeWordModal()) {
-    <div class="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-6 backdrop-blur-md">
-      <div class="bg-glass backdrop-blur-2xl border border-secondary rounded-3xl p-6 max-w-sm w-full shadow-[0_0_40px_rgb(var(--color-secondary)/0.4)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
-        <div class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mb-4 border border-secondary/50">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 text-secondary">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-          </svg>
-        </div>
-        <h3 class="text-2xl font-black text-white mb-2 uppercase tracking-widest">{{ 'PLAY.CHANGE_WORD_TITLE' | translate }}</h3>
-        <p class="text-textMuted text-sm mb-8 leading-relaxed" [innerHTML]="'PLAY.CHANGE_WORD_DESC' | translate"></p>
-        <div class="w-full flex flex-col gap-3">
-          <app-button-primary (onClick)="changeWordAndRestart()">
-            {{ 'PLAY.CHANGE_WORD_CONFIRM' | translate }}
-          </app-button-primary>
-          <app-button-secondary (onClick)="showChangeWordModal.set(false)">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-            <span>{{ 'COMMON.CANCEL' | translate }}</span>
-          </app-button-secondary>
-        </div>
-      </div>
-    </div>
-   }
+   <app-modal
+     [isOpen]="showChangeWordModal()"
+     [title]="'PLAY.CHANGE_WORD_TITLE' | translate"
+     (onClose)="showChangeWordModal.set(false)">
+     
+     <div modal-icon class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mb-4 border border-secondary/50 mx-auto text-secondary shrink-0">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+       </svg>
+     </div>
+     
+     <p class="text-textMuted text-sm mb-8 leading-relaxed w-full text-center" [innerHTML]="'PLAY.CHANGE_WORD_DESC' | translate"></p>
+     
+     <div modal-footer class="w-full flex flex-col gap-3">
+       <app-button-primary (onClick)="changeWordAndRestart()">
+         {{ 'PLAY.CHANGE_WORD_CONFIRM' | translate }}
+       </app-button-primary>
+       <app-button-secondary (onClick)="showChangeWordModal.set(false)">
+         <span class="uppercase tracking-widest font-bold">{{ 'COMMON.CANCEL' | translate }}</span>
+       </app-button-secondary>
+     </div>
+   </app-modal>
   </div>
  `,
  styles: [`

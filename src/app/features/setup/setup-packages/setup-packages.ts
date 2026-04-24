@@ -10,11 +10,12 @@ import { IconButtonComponent } from '../../../shared/components/ui/icon-button.c
 import { TextHeaderComponent } from '../../../shared/components/ui/text-header.component';
 import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
 import { IconButtonMiniComponent } from '../../../shared/components/ui/icon-button-mini.component';
+import { ModalComponent } from '../../../shared/components/ui/modal.component';
 
 @Component({
  selector: 'app-setup-packages',
  standalone: true,
- imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent, IconButtonMiniComponent],
+ imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent, IconButtonMiniComponent, ModalComponent],
  template: `
   <div class="h-full flex flex-col bg-transparent text-white p-6">
    
@@ -30,26 +31,27 @@ import { IconButtonMiniComponent } from '../../../shared/components/ui/icon-butt
    </header>
    
    <!-- MODAL DE PALABRAS -->
-   @if (infoModalPackage()) {
-    <div class="fixed inset-0 bg-[var(--backdrop-bg)] z-50 flex items-center justify-center p-6 backdrop-blur-sm" (click)="closeInfoModal()">
-      <div class="bg-[var(--modal-bg)] backdrop-blur-2xl border border-secondary rounded-3xl p-6 max-w-sm w-full shadow-[0_0_30px_rgb(var(--color-secondary)/0.4)] flex flex-col items-center text-center animate-in fade-in zoom-in duration-300" (click)="$event.stopPropagation()">
-        <div class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mb-4 border border-secondary/50">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
-        </div>
-        <h3 class="text-xl font-bold text-textPrimary mb-2">{{ infoModalPackage()?.name }}</h3>
-        <div class="text-textMuted text-sm mb-8 text-left w-full max-h-60 overflow-y-auto custom-scrollbar pr-2 leading-relaxed">
-         @if (isLoadingWords()) {
-          <p class="text-center text-textPrimary animate-pulse">{{ 'COMMON.LOADING' | translate }}</p>
-         } @else {
-          {{ infoModalWords().join(', ') }}
-         }
-        </div>
-        <button (click)="closeInfoModal()" class="w-full py-4 bg-glass hover:bg-white/20 border border-glass-border text-textPrimary rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
-          {{ 'SETUP.CLOSE' | translate }}
-        </button>
-      </div>
-    </div>
-   }
+   <app-modal
+     [isOpen]="!!infoModalPackage()"
+     [title]="infoModalPackage()?.name || ''"
+     (onClose)="closeInfoModal()">
+     
+     <div modal-icon class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 border border-secondary/50 text-secondary bg-secondary/20 shrink-0">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" /></svg>
+     </div>
+     
+     <div class="text-textMuted text-sm text-left w-full leading-relaxed">
+      @if (isLoadingWords()) {
+       <p class="text-center text-textPrimary animate-pulse">{{ 'COMMON.LOADING' | translate }}</p>
+      } @else {
+       {{ infoModalWords().join(', ') }}
+      }
+     </div>
+     
+     <button modal-footer (click)="closeInfoModal()" class="w-full py-4 bg-glass border border-glass-border hover:bg-white/20 text-textPrimary rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
+       {{ 'SETUP.CLOSE' | translate }}
+     </button>
+   </app-modal>
 
    <!-- INSTRUCTIONS -->
    <p class="text-center text-textMuted mb-6 shrink-0 text-sm">
