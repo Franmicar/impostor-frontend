@@ -138,7 +138,7 @@ import { ModalComponent } from '../../../shared/components/ui/modal.component';
    </div>
 
    <!-- FOOTER ACCIONES -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 z-40 flex items-center gap-4 border-t border-glass-border bg-[var(--app-bg-to)] shadow-[0_-10px_30px_rgba(0,0,0,0.15)]">
+   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[96px] z-40 flex items-center gap-4 border-t border-glass-border bg-[var(--app-bg-to)] shadow-[0_-10px_30px_rgba(0,0,0,0.15)]">
     <!-- ADD PLAYER BUTTON -->
     <div class="flex-1">
      <app-button-secondary (onClick)="addPlayer()">

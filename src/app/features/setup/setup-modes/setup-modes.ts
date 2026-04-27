@@ -7,10 +7,10 @@ import { TextHeaderComponent } from '../../../shared/components/ui/text-header.c
 import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
 
 @Component({
- selector: 'app-setup-modes',
- standalone: true,
- imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent],
- template: `
+  selector: 'app-setup-modes',
+  standalone: true,
+  imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent],
+  template: `
   <div class="h-full flex flex-col bg-transparent text-white p-6">
    <header class="flex items-center justify-between mb-8 shrink-0">
     <app-icon-button (onClick)="goBack()">
@@ -41,7 +41,7 @@ import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-pri
       }
       
       <!-- Icon/Image based on mode -->
-      <div class="flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden border border-white/10 shadow-lg shadow-black/50 bg-black/40" style="width: 72px; height: 72px;">
+      <div class="setup-img-box flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden" style="width: 72px; height: 72px;">
         <img [src]="themeService.getImagePath('/images/modes/' + mode.id + '.png')" [alt]="mode.name | translate" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 neon-dynamic-img">
       </div>
       
@@ -54,7 +54,7 @@ import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-pri
    </div>
    
    <!-- FIXED FOOTER -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[76px] bg-[var(--app-bg-to)] border-t border-glass-border z-50">
+   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[96px] bg-[var(--app-bg-to)] border-t border-glass-border z-50">
     <app-button-primary (onClick)="save()">
      {{ 'SETUP.SAVE' | translate }}
     </app-button-primary>
@@ -62,79 +62,79 @@ import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-pri
 
   </div>
  `,
- styles: ``,
+  styles: ``,
 })
 export class SetupModes implements OnInit {
- @Input() currentMode!: { id: string; name: string };
- @Output() onBack = new EventEmitter<void>();
- 
- public themeService = inject(ThemeService);
- @Output() onChange = new EventEmitter<{ id: string; name: string }>();
+  @Input() currentMode!: { id: string; name: string };
+  @Output() onBack = new EventEmitter<void>();
 
- localMode: { id: string; name: string } | null = null;
+  public themeService = inject(ThemeService);
+  @Output() onChange = new EventEmitter<{ id: string; name: string }>();
 
- ngOnInit() {
-  this.localMode = this.currentMode;
- }
+  localMode: { id: string; name: string } | null = null;
 
- availableModes = [
-  {
-   id: 'classic',
-   name: 'RULES.CLASSIC',
-   description: 'RULES.CLASSIC_DESC',
-   emoji: '🎭',
-   bgClass: 'bg-gradient-to-br from-slate-700 to-slate-600'
-  },
-  {
-   id: 'fast',
-   name: 'RULES.FAST',
-   description: 'RULES.FAST_DESC',
-   emoji: '⏱️',
-   bgClass: 'bg-gradient-to-br from-amber-500 to-orange-600'
-  },
-  {
-   id: 'detective',
-   name: 'RULES.DETECTIVE_MODE',
-   description: 'RULES.DETECTIVE_MODE_DESC',
-   emoji: '🕵️‍♂️',
-   bgClass: 'bg-gradient-to-br from-indigo-900 to-slate-800'
-  },
-  {
-   id: 'infiltrator',
-   name: 'RULES.INFILTRATOR',
-   description: 'RULES.INFILTRATOR_DESC',
-   emoji: '🥷',
-   bgClass: 'bg-gradient-to-br from-zinc-800 to-black'
-  },
-  {
-   id: 'team',
-   name: 'RULES.TEAM',
-   description: 'RULES.TEAM_DESC',
-   emoji: '🤝',
-   bgClass: 'bg-gradient-to-br from-blue-600 to-indigo-600'
-  },
-  {
-   id: 'chaos',
-   name: 'RULES.CHAOS',
-   description: 'RULES.CHAOS_DESC',
-   emoji: '🌪️',
-   bgClass: 'bg-gradient-to-br from-rose-600 to-red-800'
+  ngOnInit() {
+    this.localMode = this.currentMode;
   }
- ];
 
- selectMode(mode: any) {
-  this.localMode = { id: mode.id, name: mode.name };
- }
+  availableModes = [
+    {
+      id: 'classic',
+      name: 'RULES.CLASSIC',
+      description: 'RULES.CLASSIC_DESC',
+      emoji: '🎭',
+      bgClass: 'bg-gradient-to-br from-slate-700 to-slate-600'
+    },
+    {
+      id: 'fast',
+      name: 'RULES.FAST',
+      description: 'RULES.FAST_DESC',
+      emoji: '⏱️',
+      bgClass: 'bg-gradient-to-br from-amber-500 to-orange-600'
+    },
+    {
+      id: 'detective',
+      name: 'RULES.DETECTIVE_MODE',
+      description: 'RULES.DETECTIVE_MODE_DESC',
+      emoji: '🕵️‍♂️',
+      bgClass: 'bg-gradient-to-br from-indigo-900 to-slate-800'
+    },
+    {
+      id: 'infiltrator',
+      name: 'RULES.INFILTRATOR',
+      description: 'RULES.INFILTRATOR_DESC',
+      emoji: '🥷',
+      bgClass: 'bg-gradient-to-br from-zinc-800 to-black'
+    },
+    {
+      id: 'team',
+      name: 'RULES.TEAM',
+      description: 'RULES.TEAM_DESC',
+      emoji: '🤝',
+      bgClass: 'bg-gradient-to-br from-blue-600 to-indigo-600'
+    },
+    {
+      id: 'chaos',
+      name: 'RULES.CHAOS',
+      description: 'RULES.CHAOS_DESC',
+      emoji: '🌪️',
+      bgClass: 'bg-gradient-to-br from-rose-600 to-red-800'
+    }
+  ];
 
- save() {
-  if (this.localMode) {
-   this.onChange.emit(this.localMode);
+  selectMode(mode: any) {
+    this.localMode = { id: mode.id, name: mode.name };
   }
-  this.onBack.emit();
- }
 
- goBack() {
-  this.localMode = this.currentMode; // Discard changes
-  this.onBack.emit();
- }
+  save() {
+    if (this.localMode) {
+      this.onChange.emit(this.localMode);
+    }
+    this.onBack.emit();
+  }
+
+  goBack() {
+    this.localMode = this.currentMode; // Discard changes
+    this.onBack.emit();
+  }
 }

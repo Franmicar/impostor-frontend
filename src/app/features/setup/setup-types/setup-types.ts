@@ -7,10 +7,10 @@ import { TextHeaderComponent } from '../../../shared/components/ui/text-header.c
 import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
 
 @Component({
- selector: 'app-setup-types',
- standalone: true,
- imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent],
- template: `
+  selector: 'app-setup-types',
+  standalone: true,
+  imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent],
+  template: `
   <div class="h-full flex flex-col bg-transparent text-white p-6">
    <header class="flex items-center justify-between mb-8 shrink-0">
     <app-icon-button (onClick)="goBack()">
@@ -41,7 +41,7 @@ import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-pri
       }
       
       <!-- Icon based on type -->
-      <div class="flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden border border-white/10 shadow-lg shadow-black/50 bg-black/40" style="width: 72px; height: 72px;">
+      <div class="setup-img-box flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden" style="width: 72px; height: 72px;">
         <img [src]="themeService.getImagePath('/images/types/' + type.id + '.png')" alt="" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 neon-dynamic-img">
       </div>
       
@@ -54,7 +54,7 @@ import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-pri
    </div>
    
    <!-- FIXED FOOTER -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[76px] bg-[var(--app-bg-to)] border-t border-glass-border z-50">
+   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[96px] bg-[var(--app-bg-to)] border-t border-glass-border z-50">
     <app-button-primary (onClick)="save()">
      {{ 'SETUP.SAVE' | translate }}
     </app-button-primary>
@@ -62,52 +62,52 @@ import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-pri
 
   </div>
  `,
- styles: ``,
+  styles: ``,
 })
 export class SetupTypes implements OnInit {
- @Input() currentType!: { id: string; name: string };
- @Output() onBack = new EventEmitter<void>();
- @Output() onChange = new EventEmitter<{ id: string; name: string }>();
+  @Input() currentType!: { id: string; name: string };
+  @Output() onBack = new EventEmitter<void>();
+  @Output() onChange = new EventEmitter<{ id: string; name: string }>();
 
- public themeService = inject(ThemeService);
+  public themeService = inject(ThemeService);
 
- localType: { id: string; name: string } | null = null;
+  localType: { id: string; name: string } | null = null;
 
- ngOnInit() {
-  this.localType = this.currentType;
- }
-
- availableTypes = [
-  {
-   id: 'word',
-   name: 'RULES.TYPE_WORD',
-   description: 'RULES.TYPE_WORD_DESC'
-  },
-  {
-   id: 'question',
-   name: 'RULES.TYPE_QUESTION',
-   description: 'RULES.TYPE_QUESTION_DESC'
-  },
-  {
-   id: 'draw',
-   name: 'RULES.TYPE_DRAW',
-   description: 'RULES.TYPE_DRAW_DESC'
+  ngOnInit() {
+    this.localType = this.currentType;
   }
- ];
 
- selectType(type: any) {
-  this.localType = { id: type.id, name: type.name };
- }
+  availableTypes = [
+    {
+      id: 'word',
+      name: 'RULES.TYPE_WORD',
+      description: 'RULES.TYPE_WORD_DESC'
+    },
+    {
+      id: 'question',
+      name: 'RULES.TYPE_QUESTION',
+      description: 'RULES.TYPE_QUESTION_DESC'
+    },
+    {
+      id: 'draw',
+      name: 'RULES.TYPE_DRAW',
+      description: 'RULES.TYPE_DRAW_DESC'
+    }
+  ];
 
- save() {
-  if (this.localType) {
-   this.onChange.emit(this.localType);
+  selectType(type: any) {
+    this.localType = { id: type.id, name: type.name };
   }
-  this.onBack.emit();
- }
 
- goBack() {
-  this.localType = this.currentType; // Discard changes
-  this.onBack.emit();
- }
+  save() {
+    if (this.localType) {
+      this.onChange.emit(this.localType);
+    }
+    this.onBack.emit();
+  }
+
+  goBack() {
+    this.localType = this.currentType; // Discard changes
+    this.onBack.emit();
+  }
 }

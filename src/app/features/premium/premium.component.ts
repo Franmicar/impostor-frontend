@@ -12,7 +12,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
  standalone: true,
  imports: [CommonModule, TranslateModule, IconButtonComponent, ButtonSecondaryComponent, ModalComponent],
  template: `
-  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col pt-6 px-4 pb-[80px] overflow-y-auto custom-scrollbar relative">
+  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col pt-6 px-4 pb-[110px] overflow-y-auto custom-scrollbar relative">
    <!-- Decoración de fondo extra para Premium -->
    <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none"></div>
 
@@ -102,7 +102,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
    </div>
 
    <!-- Footer action -->
-   <div class="fixed bottom-0 left-0 right-0 p-6 pb-[76px] z-50">
+   <div class="fixed bottom-0 left-0 right-0 p-6 pb-[96px] z-50">
     <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/90 to-transparent -z-10 pointer-events-none"></div>
     <button 
      (click)="purchase()"
@@ -122,7 +122,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
      
      <p class="text-base text-textMuted mb-2 w-full text-center">{{ alertModal().message }}</p>
      
-     <button modal-footer (click)="closeAlert()" class="w-full py-4 bg-white/10 hover:bg-white/20 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest">
+     <button modal-footer (click)="closeAlert()" class="w-full py-4 bg-glass hover:bg-white/10 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest cursor-pointer">
        Cerrar
      </button>
    </app-modal>

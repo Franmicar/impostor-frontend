@@ -13,10 +13,10 @@ import { IconButtonMiniComponent } from '../../../shared/components/ui/icon-butt
 import { ModalComponent } from '../../../shared/components/ui/modal.component';
 
 @Component({
- selector: 'app-setup-packages',
- standalone: true,
- imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent, IconButtonMiniComponent, ModalComponent],
- template: `
+  selector: 'app-setup-packages',
+  standalone: true,
+  imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent, IconButtonMiniComponent, ModalComponent],
+  template: `
   <div class="h-full flex flex-col bg-transparent text-white p-6">
    
    <!-- HEADER -->
@@ -66,7 +66,7 @@ import { ModalComponent } from '../../../shared/components/ui/modal.component';
       (click)="goToCustomPackage()"
       class="relative rounded-2xl border-2 border-dashed border-primary cursor-pointer transition-all duration-300 bg-glass backdrop-blur-md flex flex-row items-center p-4 min-h-[8rem] hover:bg-primary/10 hover:border-white/50">
       
-      <div class="flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden bg-primary/20 shadow-lg shadow-black/50" style="width: 72px; height: 72px;">
+      <div class="setup-img-box flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden" style="width: 72px; height: 72px;">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 text-primary">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
@@ -102,7 +102,7 @@ import { ModalComponent } from '../../../shared/components/ui/modal.component';
        }
 
        <!-- Image placeholder -->
-       <div class="flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden border border-white/10 shadow-lg shadow-black/50 bg-black/40" style="width: 72px; height: 72px;">
+       <div class="setup-img-box flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden" style="width: 72px; height: 72px;">
          <img [src]="getPackageImage(pkg)" [alt]="pkg.name" class="w-full h-full object-cover neon-dynamic-img">
        </div>
        
@@ -125,7 +125,7 @@ import { ModalComponent } from '../../../shared/components/ui/modal.component';
    </div>
    
    <!-- FIXED FOOTER -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[76px] bg-[var(--app-bg-to)] border-t border-glass-border z-50">
+   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[96px] bg-[var(--app-bg-to)] border-t border-glass-border z-50">
     <app-button-primary (onClick)="save()">
      {{ 'SETUP.SAVE' | translate }}
     </app-button-primary>
@@ -133,110 +133,110 @@ import { ModalComponent } from '../../../shared/components/ui/modal.component';
 
   </div>
  `,
- styles: [``]
+  styles: [``]
 })
 export class SetupPackages {
- apiService = inject(ApiService);
- public themeService = inject(ThemeService);
- public billing = inject(BillingService);
- private router = inject(Router);
+  apiService = inject(ApiService);
+  public themeService = inject(ThemeService);
+  public billing = inject(BillingService);
+  private router = inject(Router);
 
- @Input() apiPackages: Package[] = [];
+  @Input() apiPackages: Package[] = [];
 
- @Input() set selectedIds(ids: string[]) {
-  // Clone array to work locally
-  this.localSelectedIds = [...ids];
- }
-
- @Output() onBack = new EventEmitter<void>();
- @Output() onChange = new EventEmitter<string[]>();
-
- localSelectedIds: string[] = [];
-
- infoModalPackage = signal<Package | null>(null);
- infoModalWords = signal<string[]>([]);
- isLoadingWords = signal<boolean>(false);
-
- goToCustomPackage() {
-  if (!this.billing.isPremium) {
-   this.router.navigate(['/premium']);
-   return;
-  }
-  this.router.navigate(['/custom-package']);
- }
-
- async openInfoModal(pkg: Package, event: Event) {
-  event.stopPropagation();
-  this.infoModalPackage.set(pkg);
-  this.isLoadingWords.set(true);
-  this.infoModalWords.set([]);
-
-  try {
-   const wordsData = await this.apiService.getWordsByPackage(pkg.id);
-   this.infoModalWords.set(wordsData.map(w => w.word));
-  } catch (error) {
-   console.error('Failed to load words', error);
-  } finally {
-   this.isLoadingWords.set(false);
-  }
- }
-
- closeInfoModal() {
-  this.infoModalPackage.set(null);
- }
-
- isSelected(id: string): boolean {
-  return this.localSelectedIds.includes(id);
- }
-
- togglePackage(id: string) {
-  const index = this.localSelectedIds.indexOf(id);
-  if (index === -1) {
-   this.localSelectedIds.push(id);
-  } else {
-   this.localSelectedIds.splice(index, 1);
-  }
- }
-
- save() {
-  // Only emit when clicking Save
-  this.onChange.emit(this.localSelectedIds);
-  this.onBack.emit();
- }
-
- goBack() {
-  this.onBack.emit();
- }
-
- getPackageImage(pkg: Package): string {
-  if (pkg.imageId) {
-   // Just map directly the ID provided by the seed to the package folder.
-   // Cleanest implementation for scaling
-   const idMap: Record<string, string> = {
-    'fiesta_epica': '/images/packages/fiesta_epica.png',
-    'nerd_tecnologia': '/images/packages/nerd_tecnologia.png',
-    'comida_deliciosa': '/images/packages/comida_deliciosa.png',
-    'peliculas_culto': '/images/packages/peliculas_culto.png',
-    'mundo_animal': '/images/packages/mundo_animal.png',
-    'manga_anime': '/images/packages/manga_anime.png',
-    'bichos': '/images/packages/bichos.png',
-    'deportes': '/images/packages/deportes.png',
-    'hogar': '/images/packages/hogar.png',
-    'videojuegos': '/images/packages/videojuegos.png',
-    'paises': '/images/packages/paises.png',
-    'musica': '/images/packages/musica.png',
-    'profesiones': '/images/packages/profesiones.png',
-    'marcas': '/images/packages/marcas.png',
-    'fantasia': '/images/packages/fantasia_mitologia.png',
-    'celebridades': '/images/packages/celebridades.png',
-    'ciencia': '/images/packages/ciencia_espacio.png',
-    'superheroes': '/images/packages/superheroes.png'
-   };
-
-   let imagePath = idMap[pkg.imageId] || `/images/packages/${pkg.imageId}.png`;
-   return this.themeService.getImagePath(imagePath);
+  @Input() set selectedIds(ids: string[]) {
+    // Clone array to work locally
+    this.localSelectedIds = [...ids];
   }
 
-  return this.themeService.getImagePath('/images/packages/fiesta_epica.png'); // Fallback
- }
+  @Output() onBack = new EventEmitter<void>();
+  @Output() onChange = new EventEmitter<string[]>();
+
+  localSelectedIds: string[] = [];
+
+  infoModalPackage = signal<Package | null>(null);
+  infoModalWords = signal<string[]>([]);
+  isLoadingWords = signal<boolean>(false);
+
+  goToCustomPackage() {
+    if (!this.billing.isPremium) {
+      this.router.navigate(['/premium']);
+      return;
+    }
+    this.router.navigate(['/custom-package']);
+  }
+
+  async openInfoModal(pkg: Package, event: Event) {
+    event.stopPropagation();
+    this.infoModalPackage.set(pkg);
+    this.isLoadingWords.set(true);
+    this.infoModalWords.set([]);
+
+    try {
+      const wordsData = await this.apiService.getWordsByPackage(pkg.id);
+      this.infoModalWords.set(wordsData.map(w => w.word));
+    } catch (error) {
+      console.error('Failed to load words', error);
+    } finally {
+      this.isLoadingWords.set(false);
+    }
+  }
+
+  closeInfoModal() {
+    this.infoModalPackage.set(null);
+  }
+
+  isSelected(id: string): boolean {
+    return this.localSelectedIds.includes(id);
+  }
+
+  togglePackage(id: string) {
+    const index = this.localSelectedIds.indexOf(id);
+    if (index === -1) {
+      this.localSelectedIds.push(id);
+    } else {
+      this.localSelectedIds.splice(index, 1);
+    }
+  }
+
+  save() {
+    // Only emit when clicking Save
+    this.onChange.emit(this.localSelectedIds);
+    this.onBack.emit();
+  }
+
+  goBack() {
+    this.onBack.emit();
+  }
+
+  getPackageImage(pkg: Package): string {
+    if (pkg.imageId) {
+      // Just map directly the ID provided by the seed to the package folder.
+      // Cleanest implementation for scaling
+      const idMap: Record<string, string> = {
+        'fiesta_epica': '/images/packages/fiesta_epica.png',
+        'nerd_tecnologia': '/images/packages/nerd_tecnologia.png',
+        'comida_deliciosa': '/images/packages/comida_deliciosa.png',
+        'peliculas_culto': '/images/packages/peliculas_culto.png',
+        'mundo_animal': '/images/packages/mundo_animal.png',
+        'manga_anime': '/images/packages/manga_anime.png',
+        'bichos': '/images/packages/bichos.png',
+        'deportes': '/images/packages/deportes.png',
+        'hogar': '/images/packages/hogar.png',
+        'videojuegos': '/images/packages/videojuegos.png',
+        'paises': '/images/packages/paises.png',
+        'musica': '/images/packages/musica.png',
+        'profesiones': '/images/packages/profesiones.png',
+        'marcas': '/images/packages/marcas.png',
+        'fantasia': '/images/packages/fantasia_mitologia.png',
+        'celebridades': '/images/packages/celebridades.png',
+        'ciencia': '/images/packages/ciencia_espacio.png',
+        'superheroes': '/images/packages/superheroes.png'
+      };
+
+      let imagePath = idMap[pkg.imageId] || `/images/packages/${pkg.imageId}.png`;
+      return this.themeService.getImagePath(imagePath);
+    }
+
+    return this.themeService.getImagePath('/images/packages/fiesta_epica.png'); // Fallback
+  }
 }

@@ -252,7 +252,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
    </main>
 
    <!-- BOTTOM ACTIONS -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[76px] bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent pt-12 flex flex-col gap-3 items-center">
+   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[96px] bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent pt-12 flex flex-col gap-3 items-center">
     <!-- Votar button -->
     <button 
       (click)="eliminate()"
