@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -6,13 +6,15 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { ThemeService, Theme } from '../../core/services/theme.service';
 import { BillingService } from '../../core/services/billing.service';
+import { ReportService } from '../../core/services/report.service';
 import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
 import { TextHeaderComponent } from '../../shared/components/ui/text-header.component';
+import { ModalComponent } from '../../shared/components/ui/modal.component';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent],
+  imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ModalComponent],
   template: `
   <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary p-6 overflow-y-auto">
    
@@ -128,16 +130,74 @@ import { TextHeaderComponent } from '../../shared/components/ui/text-header.comp
       </div>
     </section>
 
+    <!-- SUPPORT & CONTACT -->
+    <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border">
+      <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-4 border-b border-white/10 pb-2">Soporte y Contacto</h3>
+      
+      <button (click)="openReportModal('bug')" class="w-full text-left px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all flex items-center justify-between mb-2">
+        <span class="text-textPrimary text-sm flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-rose-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+          Reportar un Error (Bug)
+        </span>
+      </button>
+
+      <button (click)="openReportModal('suggestion')" class="w-full text-left px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all flex items-center justify-between">
+        <span class="text-textPrimary text-sm flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-cyan-400"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.82 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.496 1.509 1.333 1.509 2.316V18" /></svg>
+          Sugerir Mejora
+        </span>
+      </button>
+    </section>
+
     <!-- ABOUT -->
     <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border text-center">
       <h1 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-1 uppercase tracking-wider">
         Deceptra
       </h1>
       <p class="text-textPrimary text-sm">{{ 'SETTINGS.VERSION' | translate }}</p>
+      <p class="text-textMuted text-xs mt-2">support.deceptra&#64;gmail.com</p>
       <p class="text-textMuted text-xs mt-4">{{ 'SETTINGS.DEV_INFO' | translate }}</p>
     </section>
 
    </div>
+
+   <!-- MODAL REPORTE -->
+   <app-modal
+     [isOpen]="isReportModalOpen()"
+     [title]="reportType() === 'bug' ? 'Reportar Error' : 'Sugerir Mejora'"
+     [icon]="reportType() === 'bug' ? 'error' : 'success'"
+     (onClose)="closeReportModal()">
+     
+     <p class="text-sm text-textMuted mb-4 w-full text-left">
+       {{ reportType() === 'bug' ? 'Por favor, describe el problema que has encontrado con el mayor detalle posible.' : '¿Tienes alguna idea para mejorar el juego? ¡Te escuchamos!' }}
+     </p>
+     
+     <textarea #reportText class="w-full bg-black/40 border border-glass-border rounded-xl p-3 text-white text-sm outline-none focus:border-secondary transition-colors mb-4 resize-none h-32" placeholder="Escribe tu mensaje aquí..."></textarea>
+     
+     <div modal-footer class="w-full flex gap-3">
+       <button (click)="closeReportModal()" class="flex-1 py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest text-xs">
+         Cancelar
+       </button>
+       <button (click)="sendReport(reportText.value); reportText.value = ''" [disabled]="isSendingReport()" class="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest text-xs disabled:opacity-50">
+         {{ isSendingReport() ? 'Enviando...' : 'Enviar' }}
+       </button>
+     </div>
+   </app-modal>
+
+   <!-- MODAL ALERTA -->
+   <app-modal
+     [isOpen]="alertModal().show"
+     [title]="alertModal().title"
+     [icon]="alertModal().success ? 'success' : 'error'"
+     (onClose)="alertModal.set({show: false, title: '', message: '', success: false})">
+     
+     <p class="text-base text-textMuted mb-2 w-full text-center">{{ alertModal().message }}</p>
+     
+     <button modal-footer (click)="alertModal.set({show: false, title: '', message: '', success: false})" class="w-full py-4 bg-glass hover:bg-white/10 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest cursor-pointer">
+       Cerrar
+     </button>
+   </app-modal>
+
   </div>
  `
 })
@@ -147,6 +207,13 @@ export class Settings implements OnInit {
   authService = inject(AuthService);
   public themeService = inject(ThemeService);
   public billing = inject(BillingService);
+  private reportService = inject(ReportService);
+
+  // Modals signals
+  isReportModalOpen = signal(false);
+  reportType = signal<'bug' | 'suggestion'>('bug');
+  isSendingReport = signal(false);
+  alertModal = signal({ show: false, title: '', message: '', success: false });
 
   currentLang = 'es';
 
@@ -186,5 +253,43 @@ export class Settings implements OnInit {
       return;
     }
     this.router.navigate(['/custom-package']);
+  }
+
+  openReportModal(type: 'bug' | 'suggestion') {
+    this.reportType.set(type);
+    this.isReportModalOpen.set(true);
+  }
+
+  closeReportModal() {
+    this.isReportModalOpen.set(false);
+  }
+
+  async sendReport(message: string) {
+    if (!message || message.trim() === '') return;
+
+    this.isSendingReport.set(true);
+    const success = await this.reportService.sendReport(
+      message,
+      this.authService.userSignal()?.uid,
+      this.reportType()
+    );
+    this.isSendingReport.set(false);
+    this.closeReportModal();
+
+    if (success) {
+      this.alertModal.set({
+        show: true,
+        title: '¡Recibido!',
+        message: 'Gracias por tu aporte. Hemos guardado el reporte correctamente.',
+        success: true
+      });
+    } else {
+      this.alertModal.set({
+        show: true,
+        title: 'Error',
+        message: 'No se pudo enviar el reporte. Comprueba tu conexión a internet.',
+        success: false
+      });
+    }
   }
 }
