@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, effect } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { ApiService } from './core/services/api/api.service';
@@ -29,6 +29,14 @@ export class App {
 
     this.billingService.initialize().then(() => {
       this.adsService.initialize();
+    });
+
+    effect(() => {
+      if (this.billingService.isPremium) {
+        document.body.classList.add('premium-active');
+      } else {
+        document.body.classList.remove('premium-active');
+      }
     });
   }
 }

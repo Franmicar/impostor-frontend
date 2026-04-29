@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit, inject } from '@angular
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ThemeService } from '../../../core/services/theme.service';
+import { BillingService } from '../../../core/services/billing.service';
 import { IconButtonComponent } from '../../../shared/components/ui/icon-button.component';
 import { TextHeaderComponent } from '../../../shared/components/ui/text-header.component';
 import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
@@ -22,7 +23,7 @@ import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-pri
     <div class="w-10 h-10 invisible shrink-0"></div> <!-- Spacer -->
    </header>
 
-   <div class="flex-1 overflow-y-auto pb-32 flex flex-col gap-4 place-content-start">
+   <div class="flex-1 overflow-y-auto flex flex-col gap-4 place-content-start" [ngClass]="billing.isPremium ? 'pb-16' : 'pb-32'">
     @for (type of availableTypes; track type.id) {
      <div 
       (click)="selectType(type)"
@@ -54,7 +55,10 @@ import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-pri
    </div>
    
    <!-- FIXED FOOTER -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[96px] bg-[var(--app-bg-to)] border-t border-glass-border z-50">
+   <footer class="fixed bottom-0 left-0 right-0 px-4 pt-8 z-50" [ngClass]="billing.isPremium ? 'pb-8' : 'pb-[96px]'">
+    <!-- Fade for floating effect without solid bg -->
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent -z-10 w-full h-full pointer-events-none"></div>
+
     <app-button-primary (onClick)="save()">
      {{ 'SETUP.SAVE' | translate }}
     </app-button-primary>
@@ -70,6 +74,7 @@ export class SetupTypes implements OnInit {
   @Output() onChange = new EventEmitter<{ id: string; name: string }>();
 
   public themeService = inject(ThemeService);
+  public billing = inject(BillingService);
 
   localType: { id: string; name: string } | null = null;
 

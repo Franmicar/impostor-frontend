@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
 import { AdsService } from '../../core/services/ads.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { BillingService } from '../../core/services/billing.service';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 
 @Component({
@@ -13,7 +14,7 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
  imports: [CommonModule, TranslateModule, ButtonPrimaryComponent],
  template: `
   <div class="min-h-dvh flex flex-col items-center justify-center p-6 text-textPrimary relative overflow-hidden" 
-     [ngClass]="backgroundClass()">
+     [ngClass]="billing.isPremium ? backgroundClass() : backgroundClass() + ' pb-[96px]'">
    
    <!-- Confetti or dynamic background could go here -->
    
@@ -111,6 +112,7 @@ export class Results implements OnInit {
  route = inject(ActivatedRoute);
  adsService = inject(AdsService);
  themeService = inject(ThemeService);
+ billing = inject(BillingService);
 
  showRoles = false;
  winner: 'impostors' | 'town' | null = null;

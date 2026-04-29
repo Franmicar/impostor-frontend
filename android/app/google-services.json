@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "129602075786-fk99i49jfitag7cm1gbe01f1900pf237.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ras.impostorapp",
+            "certificate_hash": "e6d6c49ab31cdd2cfa3f0d215242d20eeb033725"
+          }
+        },
+        {
           "client_id": "129602075786-rvn09q4n7s04t0tqgcuvmj5uoeinkukr.apps.googleusercontent.com",
           "client_type": 3
         }

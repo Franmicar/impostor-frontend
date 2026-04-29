@@ -5,6 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { GameEngineService, Player } from '../../core/services/game-engine/game-engine';
 import { TimerService } from '../../core/services/timer/timer.service';
+import { BillingService } from '../../core/services/billing.service';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
@@ -217,7 +218,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
    </header>
 
    <!-- ALIVE PLAYERS TO VOTE -->
-   <main class="w-full max-w-md flex-1 overflow-y-auto pb-36">
+   <main class="w-full max-w-md flex-1 overflow-y-auto" [ngClass]="billing.isPremium ? 'pb-20' : 'pb-36'">
     <!-- VOTE_INSTRUCTION is omitted from dictionary but fine omitted here temporarily or replaced with general terms -->
     
     <div class="grid grid-cols-2 gap-4 pt-4 px-2">
@@ -252,7 +253,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
    </main>
 
    <!-- BOTTOM ACTIONS -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[96px] bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent pt-12 flex flex-col gap-3 items-center">
+   <footer class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent pt-12 flex flex-col gap-3 items-center" [ngClass]="billing.isPremium ? 'pb-6' : 'pb-[96px]'">
     <!-- Votar button -->
     <button 
       (click)="eliminate()"
@@ -290,6 +291,7 @@ export class Vote implements OnInit {
  engine = inject(GameEngineService);
  timer = inject(TimerService);
  router = inject(Router);
+ billing = inject(BillingService);
 
  selectedPlayerId: number | null = null;
 

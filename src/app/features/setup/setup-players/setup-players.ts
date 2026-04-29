@@ -5,6 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { PlayerConfig } from '../setup.component';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { BillingService } from '../../../core/services/billing.service';
 import { CloudPresetsService, Preset } from '../../../core/services/cloud-presets/cloud-presets.service';
 import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -76,7 +77,7 @@ import { ModalComponent } from '../../../shared/components/ui/modal.component';
    <div 
     cdkDropList 
     (cdkDropListDropped)="drop($event)"
-    class="flex-1 overflow-y-auto pb-44 custom-scrollbar">
+    class="flex-1 overflow-y-auto custom-scrollbar" [ngClass]="billing.isPremium ? 'pb-24' : 'pb-44'">
     <div 
      class="space-y-3">
      
@@ -138,7 +139,10 @@ import { ModalComponent } from '../../../shared/components/ui/modal.component';
    </div>
 
    <!-- FOOTER ACCIONES -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 pb-[96px] z-40 flex items-center gap-4 border-t border-glass-border bg-[var(--app-bg-to)] shadow-[0_-10px_30px_rgba(0,0,0,0.15)]">
+   <footer class="fixed bottom-0 left-0 right-0 px-4 pt-8 z-40 flex items-center gap-4" [ngClass]="billing.isPremium ? 'pb-8' : 'pb-[96px]'">
+    <!-- Fade for floating effect without solid bg -->
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent -z-10 w-full h-full pointer-events-none"></div>
+
     <!-- ADD PLAYER BUTTON -->
     <div class="flex-1">
      <app-button-secondary (onClick)="addPlayer()">
@@ -339,6 +343,7 @@ export class SetupPlayers {
  presetsService = inject(CloudPresetsService);
  cdr = inject(ChangeDetectorRef);
  translate = inject(TranslateService);
+  billing = inject(BillingService);
 
  localPlayers: PlayerConfig[] = [];
  cloudPresets = signal<Preset[]>([]);

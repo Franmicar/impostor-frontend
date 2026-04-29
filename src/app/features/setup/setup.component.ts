@@ -71,7 +71,7 @@ export interface PlayerConfig {
        }
       </div>
      </header>
-     <main class="flex-1 px-4 overflow-y-auto pb-40 relative custom-scrollbar">
+     <main class="flex-1 px-4 overflow-y-auto relative custom-scrollbar" [ngClass]="billing.isPremium ? 'pb-20' : 'pb-40'">
 
       <!-- INFO MODAL -->
       <app-modal
@@ -332,7 +332,7 @@ export interface PlayerConfig {
      </main>
      
      <!-- PLAY FOOTER -->
-     <footer class="fixed bottom-0 left-0 right-0 p-4 pt-8 pb-[96px]">
+     <footer class="fixed bottom-0 left-0 right-0 px-4 pt-8" [ngClass]="billing.isPremium ? 'pb-8' : 'pb-[96px]'">
       <!-- Fade for floating effect without solid bg -->
       <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent -z-10 w-full h-full pointer-events-none"></div>
 

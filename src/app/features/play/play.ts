@@ -1,18 +1,20 @@
 import { Component, inject, signal, HostListener, computed, OnInit } from '@angular/core';
+import { CommonModule, NgClass } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
 import { ThemeService } from '../../core/services/theme.service';
+import { BillingService } from '../../core/services/billing.service';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
 
 @Component({
- selector: 'app-play',
- standalone: true,
- imports: [TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent],
- template: `
-  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-center p-6 overflow-hidden relative">
+  selector: 'app-play',
+  standalone: true,
+  imports: [CommonModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent],
+  template: `
+  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-center p-6 overflow-hidden relative" [ngClass]="billing.isPremium ? '' : 'pb-[96px]'">
    
    @if (!engine.gameStarted()) {
     <p>{{ 'PLAY.NO_ACTIVE_GAME' | translate }}</p>
@@ -207,7 +209,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
    </app-modal>
   </div>
  `,
- styles: [`
+  styles: [`
   :host {
    display: block;
    width: 100%;
@@ -216,167 +218,168 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
  `]
 })
 export class Play implements OnInit {
- router = inject(Router);
- engine = inject(GameEngineService);
- themeService = inject(ThemeService);
+  router = inject(Router);
+  engine = inject(GameEngineService);
+  themeService = inject(ThemeService);
+  billing = inject(BillingService);
 
- isRevealed = signal<boolean>(false);
- showChangeWordModal = signal<boolean>(false);
+  isRevealed = signal<boolean>(false);
+  showChangeWordModal = signal<boolean>(false);
 
- // Roulette state
- isRouletteSpinning = signal<boolean>(true);
- currentWheelRotation = signal<number>(0);
- spinDuration = signal<number>(0);
- winnerName = signal<string>('');
+  // Roulette state
+  isRouletteSpinning = signal<boolean>(true);
+  currentWheelRotation = signal<number>(0);
+  spinDuration = signal<number>(0);
+  winnerName = signal<string>('');
 
- wheelGradient = computed(() => {
-  const players = this.engine.players();
-  const n = players.length;
-  if (n === 0) return '';
-  const sliceAngle = 360 / n;
-  // Cool, vibrant UI palette matching the app (pink, cyan, purple, orange, green, blue)
-  const colors = ['#ec4899', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#14b8a6', '#d946ef'];
+  wheelGradient = computed(() => {
+    const players = this.engine.players();
+    const n = players.length;
+    if (n === 0) return '';
+    const sliceAngle = 360 / n;
+    // Cool, vibrant UI palette matching the app (pink, cyan, purple, orange, green, blue)
+    const colors = ['#ec4899', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#14b8a6', '#d946ef'];
 
-  let gradient = 'conic-gradient(';
-  for (let i = 0; i < n; i++) {
-   const color = colors[i % colors.length];
-   const start = i * sliceAngle;
-   const end = (i + 1) * sliceAngle;
-   // Adding a slight border hack in the gradient isn't trivial, but simple blocks works perfectly
-   gradient += `${color} ${start}deg ${end}deg`;
-   if (i < n - 1) gradient += ', ';
-  }
-  gradient += ')';
-  return gradient;
- });
+    let gradient = 'conic-gradient(';
+    for (let i = 0; i < n; i++) {
+      const color = colors[i % colors.length];
+      const start = i * sliceAngle;
+      const end = (i + 1) * sliceAngle;
+      // Adding a slight border hack in the gradient isn't trivial, but simple blocks works perfectly
+      gradient += `${color} ${start}deg ${end}deg`;
+      if (i < n - 1) gradient += ', ';
+    }
+    gradient += ')';
+    return gradient;
+  });
 
- isLastPlayer = computed(() => {
-  return this.engine.currentPlayerIndex() === this.engine.players().length - 1;
- });
+  isLastPlayer = computed(() => {
+    return this.engine.currentPlayerIndex() === this.engine.players().length - 1;
+  });
 
- // Drag state
- isDragging = signal<boolean>(false);
- startY = signal<number>(0);
- currentY = signal<number>(0);
+  // Drag state
+  isDragging = signal<boolean>(false);
+  startY = signal<number>(0);
+  currentY = signal<number>(0);
 
- // Compute the slide offset
- slideTransform = computed(() => {
-  // Only allow sliding UP (negative Y), cap the maximum slide to -480px
-  const slideOffset = Math.max(-480, Math.min(0, this.currentY() - this.startY()));
-  return 'translateY(' + slideOffset + 'px)';
- });
+  // Compute the slide offset
+  slideTransform = computed(() => {
+    // Only allow sliding UP (negative Y), cap the maximum slide to -480px
+    const slideOffset = Math.max(-480, Math.min(0, this.currentY() - this.startY()));
+    return 'translateY(' + slideOffset + 'px)';
+  });
 
- ngOnInit() {
-  // If we hot-reloaded and we are already in the finished phase, trigger roulette
-  if (this.engine.isRevealPhaseFinished() && !this.winnerName()) {
-   this.startRoulette();
-  }
- }
-
- changeWordAndRestart() {
-  this.showChangeWordModal.set(false);
-  const settings = this.engine.currentSettings();
-  if (settings) {
-   this.engine.startGame(settings); // Resets game, players, roles, and word
-  }
-  // Reset play UI state
-  this.isRevealed.set(false);
-  this.isDragging.set(false);
-  this.startY.set(0);
-  this.currentY.set(0);
-  this.winnerName.set('');
-  this.isRouletteSpinning.set(true);
- }
-
- translate = inject(TranslateService);
-
- @HostListener('window:beforeunload', ['$event'])
- unloadNotification($event: any): void {
-  // Show standard browser unload confirmation dialog
-  $event.returnValue = this.translate.instant('CONFIRM.MESSAGE');
- }
-
- onDragStart(event: MouseEvent | TouchEvent) {
-  this.isDragging.set(true);
-
-  const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
-  this.startY.set(clientY);
-  this.currentY.set(clientY);
- }
-
- @HostListener('window:mousemove', ['$event'])
- @HostListener('window:touchmove', ['$event'])
- onDragMove(event: MouseEvent | TouchEvent) {
-  if (!this.isDragging()) return;
-
-  const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
-  this.currentY.set(clientY);
- }
-
- @HostListener('window:mouseup', ['$event'])
- @HostListener('window:touchend', ['$event'])
- onDragEnd(event: MouseEvent | TouchEvent) {
-  if (!this.isDragging()) return;
-  this.isDragging.set(false);
-
-  const deltaY = this.currentY() - this.startY();
-
-  // Threshold to reveal (e.g. 150px upwards)
-  if (deltaY < -120) {
-   this.isRevealed.set(true);
+  ngOnInit() {
+    // If we hot-reloaded and we are already in the finished phase, trigger roulette
+    if (this.engine.isRevealPhaseFinished() && !this.winnerName()) {
+      this.startRoulette();
+    }
   }
 
-  // Always snap back to original position to hide the word again
-  this.startY.set(0);
-  this.currentY.set(0);
- }
-
- nextPlayer() {
-  this.isRevealed.set(false);
-  this.engine.nextPlayer();
-
-  if (this.engine.isRevealPhaseFinished()) {
-   this.startRoulette();
+  changeWordAndRestart() {
+    this.showChangeWordModal.set(false);
+    const settings = this.engine.currentSettings();
+    if (settings) {
+      this.engine.startGame(settings); // Resets game, players, roles, and word
+    }
+    // Reset play UI state
+    this.isRevealed.set(false);
+    this.isDragging.set(false);
+    this.startY.set(0);
+    this.currentY.set(0);
+    this.winnerName.set('');
+    this.isRouletteSpinning.set(true);
   }
- }
 
- startRoulette() {
-  const players = this.engine.players();
-  if (!players || players.length === 0) return;
+  translate = inject(TranslateService);
 
-  this.isRouletteSpinning.set(true);
-  const startingId = this.engine.startingPlayerId();
-  const winnerIndex = Math.max(0, players.findIndex(p => p.id === startingId));
-  this.winnerName.set(players[winnerIndex].name);
-
-  // Normalize rotation without animation
-  const currentNorm = this.currentWheelRotation() % 360;
-  this.spinDuration.set(0);
-  this.currentWheelRotation.set(currentNorm);
-
-  // Give DOM a frame to snap to 0-360 before applying the huge transition
-  setTimeout(() => {
-   const sliceAngle = 360 / players.length;
-   // Pointer is at RIGHT (which is 90 from top). Align winner's slice center to pointer.
-   const baseTarget = 90 - (winnerIndex + 0.5) * sliceAngle;
-
-   // Final spin adds 5 full rotations (1800 deg)
-   const finalSpin = baseTarget + 360 * 5;
-
-   this.spinDuration.set(4000); // 4 seconds spin
-   this.currentWheelRotation.set(finalSpin);
-
-   setTimeout(() => {
-    this.isRouletteSpinning.set(false);
-   }, 4200); // Add 200ms padding
-  }, 50);
- }
-
- goToNextPhase() {
-  if (this.engine.currentSettings()?.gameTypeId === 'draw') {
-   this.router.navigate(['/draw'], { state: { intentional: true } });
-  } else {
-   this.router.navigate(['/vote'], { state: { intentional: true } });
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any): void {
+    // Show standard browser unload confirmation dialog
+    $event.returnValue = this.translate.instant('CONFIRM.MESSAGE');
   }
- }
+
+  onDragStart(event: MouseEvent | TouchEvent) {
+    this.isDragging.set(true);
+
+    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+    this.startY.set(clientY);
+    this.currentY.set(clientY);
+  }
+
+  @HostListener('window:mousemove', ['$event'])
+  @HostListener('window:touchmove', ['$event'])
+  onDragMove(event: MouseEvent | TouchEvent) {
+    if (!this.isDragging()) return;
+
+    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+    this.currentY.set(clientY);
+  }
+
+  @HostListener('window:mouseup', ['$event'])
+  @HostListener('window:touchend', ['$event'])
+  onDragEnd(event: MouseEvent | TouchEvent) {
+    if (!this.isDragging()) return;
+    this.isDragging.set(false);
+
+    const deltaY = this.currentY() - this.startY();
+
+    // Threshold to reveal (e.g. 150px upwards)
+    if (deltaY < -120) {
+      this.isRevealed.set(true);
+    }
+
+    // Always snap back to original position to hide the word again
+    this.startY.set(0);
+    this.currentY.set(0);
+  }
+
+  nextPlayer() {
+    this.isRevealed.set(false);
+    this.engine.nextPlayer();
+
+    if (this.engine.isRevealPhaseFinished()) {
+      this.startRoulette();
+    }
+  }
+
+  startRoulette() {
+    const players = this.engine.players();
+    if (!players || players.length === 0) return;
+
+    this.isRouletteSpinning.set(true);
+    const startingId = this.engine.startingPlayerId();
+    const winnerIndex = Math.max(0, players.findIndex(p => p.id === startingId));
+    this.winnerName.set(players[winnerIndex].name);
+
+    // Normalize rotation without animation
+    const currentNorm = this.currentWheelRotation() % 360;
+    this.spinDuration.set(0);
+    this.currentWheelRotation.set(currentNorm);
+
+    // Give DOM a frame to snap to 0-360 before applying the huge transition
+    setTimeout(() => {
+      const sliceAngle = 360 / players.length;
+      // Pointer is at RIGHT (which is 90 from top). Align winner's slice center to pointer.
+      const baseTarget = 90 - (winnerIndex + 0.5) * sliceAngle;
+
+      // Final spin adds 5 full rotations (1800 deg)
+      const finalSpin = baseTarget + 360 * 5;
+
+      this.spinDuration.set(4000); // 4 seconds spin
+      this.currentWheelRotation.set(finalSpin);
+
+      setTimeout(() => {
+        this.isRouletteSpinning.set(false);
+      }, 4200); // Add 200ms padding
+    }, 50);
+  }
+
+  goToNextPhase() {
+    if (this.engine.currentSettings()?.gameTypeId === 'draw') {
+      this.router.navigate(['/draw'], { state: { intentional: true } });
+    } else {
+      this.router.navigate(['/vote'], { state: { intentional: true } });
+    }
+  }
 }

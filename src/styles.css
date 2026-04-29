@@ -194,6 +194,10 @@
     background-color: var(--app-bg-to);
     background-attachment: fixed;
   }
+  
+  body.premium-active {
+    padding-bottom: 0px !important;
+  }
 }
 
 @layer utilities {}
