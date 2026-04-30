@@ -115,6 +115,8 @@
         "SUBTITLE": "Selecciona las mecánicas que gobernarán esta ronda."
     },
     "PLAY": {
+        "ROLE_AND_WORD": "Rol y palabra",
+        "WHO_STARTS": "¿Quién empieza?",
         "YOU_ARE": "Tú eres...",
         "IMPOSTOR_TITLE": "IMPOSTOR",
         "CIVIL_TITLE": "CIVIL",
@@ -149,6 +151,7 @@
         "CHANGE_WORD_CONFIRM": "SÍ, REINICIAR"
     },
     "DRAW": {
+        "TITLE": "Dibuja",
         "NO_ACTIVE_GAME": "No hay una partida activa ahora mismo.",
         "BACK_TO_SETUP": "Volver a Configuración",
         "CURRENT_PLAYER": "Artista actual",
@@ -168,7 +171,7 @@
         "TIME_REMAINING": "Tiempo Restante",
         "NO_TIME_LIMIT": "Sin límite de tiempo",
         "ELIMINATE": "Votar",
-        "DETECTIVE_WANTS_GUESS": "El Detective quiere resolver",
+        "DETECTIVE_WANTS_GUESS": "Resolver",
         "IMPOSTOR_CAUGHT": "¡Impostor Cazado!",
         "IMPOSTOR_CAUGHT_DESC": "¡Bien hecho! {{name}} era un impostor, ¡pero el juego continúa! Aún hay cómplices sueltos.",
         "ELIMINATED": "¡Eliminado!",

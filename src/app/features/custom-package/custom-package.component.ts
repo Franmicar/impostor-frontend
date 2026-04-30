@@ -6,22 +6,19 @@ import { Router } from '@angular/router';
 import { CustomPackageService, CustomPackage, CustomWord } from '../../core/services/custom-package/custom-package.service';
 import { BillingService } from '../../core/services/billing.service';
 
+import { HeaderComponent } from '../../shared/components/ui/header.component';
+import { FooterComponent } from '../../shared/components/ui/footer.component';
+import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
+import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
+
 @Component({
  selector: 'app-custom-package',
  standalone: true,
- imports: [CommonModule, FormsModule, TranslateModule],
+ imports: [CommonModule, FormsModule, TranslateModule, HeaderComponent, FooterComponent, ButtonPrimaryComponent, ButtonSecondaryComponent],
  template: `
-  <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary p-6">
-   <header class="flex items-center justify-between mb-6 relative">
-    <button (click)="goBack()" class="w-10 h-10 rounded-full bg-glass border border-glass-border backdrop-blur-md flex flex-shrink-0 items-center justify-center text-textMuted hover:text-white transition-colors active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)] cursor-pointer z-10">
-     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
-    </button>
-    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-     <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] text-center tracking-wider">Paquete personalizado</h2>
-    </div>
-    <div class="w-10"></div>
-   </header>
-
+  <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary">
+   <app-header [showBack]="true" [title]="'Paquete personalizado'" (onBack)="goBack()"></app-header>
+   <div class="flex-1 px-6 flex flex-col">
    @if (!billing.isPremium) {
     <div class="flex flex-col items-center justify-center p-8 bg-glass rounded-xl text-center">
       <h3 class="text-xl font-bold text-pink-500 mb-2">Requiere Suscripción</h3>
@@ -34,7 +31,7 @@ import { BillingService } from '../../core/services/billing.service';
       <input [(ngModel)]="pkgName" placeholder="Ej: Mi Fiesta 2026" class="w-full bg-black/30 border border-glass-border rounded-lg p-3 text-textPrimary outline-none focus:border-primary transition-colors" />
     </div>
 
-    <div class="flex-1 overflow-y-auto pb-6">
+    <div class="flex-1">
       @for (word of words(); track $index) {
         <div class="bg-glass border border-glass-border rounded-2xl p-4 mb-4 flex flex-col gap-3 relative shadow-lg">
           <div class="flex items-center justify-between mb-1">
@@ -63,16 +60,20 @@ import { BillingService } from '../../core/services/billing.service';
     </div>
 
     <!-- FOOTER ACTIONS -->
-    <div class="fixed bottom-0 left-0 right-0 p-6 bg-slate-900/80 backdrop-blur-md border-t border-slate-700/50 z-50 flex flex-row gap-4">
-      <button (click)="addWord()" [disabled]="words().length >= 100" class="flex-1 relative py-4 bg-glass hover:bg-white/20 border border-glass-border text-textPrimary rounded-2xl font-semibold flex items-center justify-center gap-2 transition-colors active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.05)] backdrop-blur disabled:opacity-50">
-        + Añadir Palabra
-      </button>
-      <button (click)="save()" [disabled]="isSaving() || !isValid()" class="flex-1 relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgb(var(--color-primary)/0.4)] transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50">
-        <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
-        <span class="relative z-10 drop-shadow-md tracking-wider">Guardar</span>
-      </button>
-    </div>
+    <app-footer>
+      <div class="flex-1">
+       <app-button-secondary (onClick)="addWord()" [disabled]="words().length >= 100">
+         + Añadir Palabra
+       </app-button-secondary>
+      </div>
+      <div class="flex-1">
+       <app-button-primary (onClick)="save()" [disabled]="isSaving() || !isValid()">
+         Guardar
+       </app-button-primary>
+      </div>
+     </app-footer>
    }
+   </div>
   </div>
  `
 })

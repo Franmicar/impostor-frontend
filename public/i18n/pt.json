@@ -115,6 +115,8 @@
         "SUBTITLE": "Seleciona as mecânicas desta ronda."
     },
     "PLAY": {
+        "ROLE_AND_WORD": "Papel e palavra",
+        "WHO_STARTS": "Quem começa?",
         "YOU_ARE": "Tu és...",
         "IMPOSTOR_TITLE": "IMPOSTOR",
         "CIVIL_TITLE": "CIVIL",
@@ -149,6 +151,7 @@
         "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
+        "TITLE": "Desenhar",
         "NO_ACTIVE_GAME": "Nenhuma partida ativa.",
         "BACK_TO_SETUP": "Voltar",
         "CURRENT_PLAYER": "Artista atual",
@@ -168,7 +171,7 @@
         "TIME_REMAINING": "Tempo restante",
         "NO_TIME_LIMIT": "Sem limite",
         "ELIMINATE": "Votar",
-        "DETECTIVE_WANTS_GUESS": "O detetive quer adivinhar",
+        "DETECTIVE_WANTS_GUESS": "Resolver",
         "IMPOSTOR_CAUGHT": "Impostor apanhado!",
         "IMPOSTOR_CAUGHT_DESC": "Bom trabalho! O jogo continua.",
         "ELIMINATED": "Eliminado!",

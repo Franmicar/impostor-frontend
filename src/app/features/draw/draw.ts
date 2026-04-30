@@ -3,15 +3,18 @@ import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
+import { HeaderComponent } from '../../shared/components/ui/header.component';
+import { FooterComponent } from '../../shared/components/ui/footer.component';
 
 @Component({
   selector: 'app-draw',
   standalone: true,
-  imports: [TranslateModule, ButtonPrimaryComponent],
+  imports: [TranslateModule, ButtonPrimaryComponent, HeaderComponent, FooterComponent],
   template: `
-  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-between p-4 overflow-hidden relative">
-   <!-- Background elements for style -->
-   <div class="absolute inset-0 z-0 bg-transparent bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none"></div>
+  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col overflow-hidden relative">
+   <app-header [showBack]="false" [title]="'DRAW.TITLE' | translate"></app-header>
+   <div class="flex-1 flex flex-col items-center justify-between px-4 relative w-full h-full">
+
 
    <!-- Main Game Area -->
    @if (!engine.gameStarted()) {
@@ -21,12 +24,12 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
     </div>
    } @else {
     
-    <!-- HEADER -->
+    <!-- DRAW INFO -->
     <div class="z-10 w-full max-w-lg mb-4 flex flex-col items-center gap-2 mt-2">
-      <div class="flex items-center justify-between w-full">
+      <div class="flex items-start justify-between w-full">
         <!-- Current Player Info -->
         <div class="flex flex-col">
-          <span class="text-xs uppercase tracking-widest text-textMuted font-bold">{{ 'DRAW.CURRENT_PLAYER' | translate }}</span>
+          <span class="text-xs uppercase tracking-widest text-textMuted font-bold mb-1">{{ 'DRAW.CURRENT_PLAYER' | translate }}</span>
           <h2 class="text-2xl font-black text-textPrimary drop-shadow-md">{{ currentPlayerDrawing()?.name }}</h2>
         </div>
 
@@ -102,7 +105,7 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
 
         <!-- Turn Block Overlay (prevents drawing when not your turn, e.g. handing over phone) -->
         @if (!isCurrentPlayerTurn()) {
-          <div class="absolute inset-0 bg-glass backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-20">
+          <div class="absolute inset-0 bg-glass backdrop-blur-md flex flex-col items-center justify-center px-6 text-center z-20">
             <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-textPrimary">
                <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5" />
@@ -125,7 +128,7 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
     </div>
 
     <!-- CONTROLS & NEXT BUTTON -->
-    <div class="z-10 w-full max-w-lg pb-4">
+    <app-footer>
       @if (!isDrawingPhaseFinished()) {
         <app-button-primary (onClick)="passTurn()" [disabled]="!isCurrentPlayerTurn()">
          {{ 'DRAW.PASS_TURN' | translate }}
@@ -135,8 +138,9 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
          {{ 'DRAW.GO_TO_VOTE' | translate }}
         </app-button-primary>
       }
-    </div>
+    </app-footer>
    }
+   </div>
   </div>
  `,
   styles: [`

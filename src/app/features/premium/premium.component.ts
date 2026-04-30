@@ -3,36 +3,33 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BillingService } from '../../core/services/billing.service';
-import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
+
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
+import { HeaderComponent } from '../../shared/components/ui/header.component';
+import { FooterComponent } from '../../shared/components/ui/footer.component';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
 
 @Component({
  selector: 'app-premium',
  standalone: true,
- imports: [CommonModule, TranslateModule, IconButtonComponent, ButtonSecondaryComponent, ModalComponent],
+ imports: [CommonModule, TranslateModule, ButtonSecondaryComponent, ModalComponent, HeaderComponent, FooterComponent],
  template: `
-  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col pt-6 px-4 pb-[110px] overflow-y-auto custom-scrollbar relative">
+  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col custom-scrollbar relative">
    <!-- Decoración de fondo extra para Premium -->
    <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none"></div>
 
    <!-- Header -->
-   <header class="flex items-center justify-between mb-6 relative z-10">
-    <app-icon-button (onClick)="goBack()">
-     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-     </svg>
-    </app-icon-button>
-    <div class="scale-90 origin-right">
+   <app-header [showBack]="true" [title]="''" (onBack)="goBack()">
+    <div header-extra class="scale-90 origin-right">
      <app-button-secondary (onClick)="restorePurchases()">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
       <span>Restaurar</span>
      </app-button-secondary>
     </div>
-   </header>
+   </app-header>
 
    <!-- Main Content -->
-   <div class="flex-1 flex flex-col relative z-10 max-w-md mx-auto w-full">
+   <div class="flex-1 flex flex-col relative z-10 max-w-md mx-auto w-full px-4">
     <div class="text-center mb-8">
      <div class="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-[0_0_30px_rgb(var(--color-primary)/0.4)] mb-4 animate-pulse-slow">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-white">
@@ -102,15 +99,14 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
    </div>
 
    <!-- Footer action -->
-   <div class="fixed bottom-0 left-0 right-0 p-6 pb-[96px] z-50">
-    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/90 to-transparent -z-10 pointer-events-none"></div>
+   <app-footer>
     <button 
      (click)="purchase()"
      [disabled]="isLoading() || !selectedPlan()"
-     class="w-full relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgb(var(--color-primary)/0.4)] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 max-w-md mx-auto">
+     class="w-full relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgb(var(--color-primary)/0.4)] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 mx-auto">
      <span class="relative z-10 drop-shadow-md tracking-wider">SUSCRIBIRSE</span>
     </button>
-   </div>
+   </app-footer>
 
    <!-- ALERTS MODAL NATIVO OMITIDO POR REGLA 4, CREAREMOS UN MODAL PERSONALIZADO AHORA -->
    <!-- ALERTS MODAL -->

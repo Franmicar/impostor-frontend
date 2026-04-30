@@ -11,43 +11,31 @@ import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { IconButtonComponent } from '../../../shared/components/ui/icon-button.component';
-import { TextHeaderComponent } from '../../../shared/components/ui/text-header.component';
 import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../../shared/components/ui/button-secondary.component';
 import { ModalComponent } from '../../../shared/components/ui/modal.component';
+import { HeaderComponent } from '../../../shared/components/ui/header.component';
+import { FooterComponent } from '../../../shared/components/ui/footer.component';
 
 @Component({
  selector: 'app-setup-players',
  standalone: true,
- imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent],
+ imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent, IconButtonComponent, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent, HeaderComponent, FooterComponent],
  template: `
-  <div class="h-full flex flex-col bg-transparent text-white p-6">
+  <div class="min-h-dvh flex flex-col bg-transparent text-white">
    
    <!-- HEADER -->
-   <header class="flex flex-col gap-4 mb-6 relative z-10 w-full">
-    <!-- Top Row -->
-    <div class="flex items-center justify-between w-full">
-     <app-icon-button (onClick)="goBack()">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-      </svg>
-     </app-icon-button>
-
-     <app-text-header>{{ 'SETUP.PLAYERS' | translate }}</app-text-header>
-     
-     <div class="w-10 h-10 invisible shrink-0"></div>
+   <app-header [showBack]="true" [title]="'SETUP.PLAYERS' | translate" (onBack)="goBack()"></app-header>
+   
+   <div class="flex-1 px-6 flex flex-col">
+   @if (authService.userSignal()) {
+    <div class="flex justify-start w-full mb-6">
+     <app-button-secondary (onClick)="openCloudSaveModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg>
+      Guardar grupo configurado
+     </app-button-secondary>
     </div>
-
-    <!-- Bottom Row (Save Group Button) -->
-    @if (authService.userSignal()) {
-     <div class="flex justify-start w-full">
-      <app-button-secondary (onClick)="openCloudSaveModal()">
-       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg>
-       Guardar grupo configurado
-      </app-button-secondary>
-     </div>
-    }
-   </header>
+   }
 
    <!-- PRESETS NUBE -->
    @if (authService.userSignal() && cloudPresets().length > 0) {
@@ -77,7 +65,7 @@ import { ModalComponent } from '../../../shared/components/ui/modal.component';
    <div 
     cdkDropList 
     (cdkDropListDropped)="drop($event)"
-    class="flex-1 overflow-y-auto custom-scrollbar" [ngClass]="billing.isPremium ? 'pb-24' : 'pb-44'">
+    class="flex-1 custom-scrollbar">
     <div 
      class="space-y-3">
      
@@ -137,12 +125,10 @@ import { ModalComponent } from '../../../shared/components/ui/modal.component';
      }
     </div>
    </div>
+  </div>
 
    <!-- FOOTER ACCIONES -->
-   <footer class="fixed bottom-0 left-0 right-0 px-4 pt-8 z-40 flex items-center gap-4" [ngClass]="billing.isPremium ? 'pb-8' : 'pb-[96px]'">
-    <!-- Fade for floating effect without solid bg -->
-    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent -z-10 w-full h-full pointer-events-none"></div>
-
+   <app-footer>
     <!-- ADD PLAYER BUTTON -->
     <div class="flex-1">
      <app-button-secondary (onClick)="addPlayer()">
@@ -157,7 +143,7 @@ import { ModalComponent } from '../../../shared/components/ui/modal.component';
       {{ 'SETUP.SAVE' | translate }}
      </app-button-primary>
     </div>
-   </footer>
+   </app-footer>
 
    <!-- MODAL PARA GUARDAR PRESET CLOUD -->
    <app-modal

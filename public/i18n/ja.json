@@ -115,6 +115,8 @@
         "SUBTITLE": "このラウンドのルールを選択。"
     },
     "PLAY": {
+        "ROLE_AND_WORD": "役割と単語",
+        "WHO_STARTS": "誰から始める？",
         "YOU_ARE": "あなたは...",
         "IMPOSTOR_TITLE": "インポスター",
         "CIVIL_TITLE": "市民",
@@ -149,6 +151,7 @@
         "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
+        "TITLE": "描く",
         "NO_ACTIVE_GAME": "現在ゲームはありません。",
         "BACK_TO_SETUP": "戻る",
         "CURRENT_PLAYER": "現在のプレイヤー",
@@ -168,7 +171,7 @@
         "TIME_REMAINING": "残り時間",
         "NO_TIME_LIMIT": "制限なし",
         "ELIMINATE": "投票",
-        "DETECTIVE_WANTS_GUESS": "探偵が推測します",
+        "DETECTIVE_WANTS_GUESS": "解決する",
         "IMPOSTOR_CAUGHT": "インポスター発見！",
         "IMPOSTOR_CAUGHT_DESC": "よくやった！ゲームは続きます。",
         "ELIMINATED": "脱落！",

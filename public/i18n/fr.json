@@ -114,6 +114,8 @@
         "SUBTITLE": "Sélectionnez la mécanique qui régira cette manche."
     },
     "PLAY": {
+        "ROLE_AND_WORD": "Rôle et mot",
+        "WHO_STARTS": "Qui commence ?",
         "YOU_ARE": "Vous êtes...",
         "IMPOSTOR_TITLE": "IMPOSTEUR",
         "CIVIL_TITLE": "CIVIL",
@@ -148,6 +150,7 @@
         "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
+        "TITLE": "Dessiner",
         "NO_ACTIVE_GAME": "Aucune partie n'est active pour le moment.",
         "BACK_TO_SETUP": "Retour à la configuration",
         "CURRENT_PLAYER": "Artiste actuel",
@@ -167,7 +170,7 @@
         "TIME_REMAINING": "Temps restant",
         "NO_TIME_LIMIT": "Pas de limite de temps",
         "ELIMINATE": "Voter",
-        "DETECTIVE_WANTS_GUESS": "Le détective veut résoudre",
+        "DETECTIVE_WANTS_GUESS": "Résoudre",
         "IMPOSTOR_CAUGHT": "Imposteur attrapé!",
         "IMPOSTOR_CAUGHT_DESC": "Bien joué ! {{name}} était un imposteur, mais le jeu continue ! Il y a encore des complices en fuite.",
         "ELIMINATED": "Éliminé!",

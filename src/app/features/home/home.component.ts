@@ -12,7 +12,7 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
   standalone: true,
   imports: [TranslateModule, IconButtonComponent, ButtonPrimaryComponent],
   template: `
-    <div class="flex flex-col items-center justify-center min-h-dvh bg-transparent text-textPrimary p-6 relative">
+    <div class="flex flex-col items-center justify-center min-h-dvh bg-transparent text-textPrimary px-6 relative">
         <div class="absolute top-4 right-4 flex gap-4">
             <!-- Premium Button -->
             <button (click)="openPremium()" class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white hover:opacity-90 transition-all active:scale-95 shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] animate-pulse-slow">

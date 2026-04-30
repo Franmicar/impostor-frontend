@@ -5,4 +5,5 @@
     <string name="package_name">com.ras.impostorapp</string>
     <string name="custom_url_scheme">com.ras.impostorapp</string>
     <string name="server_client_id">129602075786-rvn09q4n7s04t0tqgcuvmj5uoeinkukr.apps.googleusercontent.com</string>
+    <string name="default_web_client_id">129602075786-rvn09q4n7s04t0tqgcuvmj5uoeinkukr.apps.googleusercontent.com</string>
 </resources>

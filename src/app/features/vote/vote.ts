@@ -9,16 +9,18 @@ import { BillingService } from '../../core/services/billing.service';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
-import { TextHeaderComponent } from '../../shared/components/ui/text-header.component';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
+import { HeaderComponent } from '../../shared/components/ui/header.component';
+import { FooterComponent } from '../../shared/components/ui/footer.component';
 
 @Component({
  selector: 'app-vote',
  standalone: true,
- imports: [CommonModule, FormsModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, TextHeaderComponent, ModalComponent],
+ imports: [CommonModule, FormsModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, ModalComponent, HeaderComponent, FooterComponent],
  template: `
-  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-start p-6 relative">
-   
+  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-start relative">
+   <app-header [showBack]="false" [title]="'VOTE.TITLE' | translate"></app-header>
+   <div class="flex-1 flex flex-col items-center justify-start w-full px-6">
    <!-- DRAWING MODAL -->
    @if (showDrawingModal) {
     <div class="fixed inset-0 bg-black/90 z-[60] flex flex-col items-center justify-center p-4 backdrop-blur-md animate-in fade-in zoom-in duration-300">
@@ -142,8 +144,8 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
        <div class="relative w-full mb-6">
          <input type="text" [(ngModel)]="detectiveGuess" list="packWordsModal" [placeholder]="'VOTE.SECRET_WORD_PH' | translate" class="w-full bg-glass border border-glass-border rounded-lg p-3 text-textPrimary outline-none focus:border-primary backdrop-blur" [disabled]="aliveDetectives().length > 1 && !selectedDetectiveId">
          <datalist id="packWordsModal">
-           @for (w of engine.currentSettings()?.words; track w.word) {
-             <option [value]="w.word">{{ w.word }}</option>
+           @for (w of uniqueWords; track w) {
+             <option [value]="w">{{ w }}</option>
            }
          </datalist>
        </div>
@@ -154,7 +156,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
      <div modal-footer class="flex flex-col w-full gap-3">
        <app-button-primary 
          (onClick)="submitDetectiveGuess()"
-         [disabled]="(aliveDetectives().length > 1 && !selectedDetectiveId) || !detectiveGuess.trim()">
+         [disabled]="(aliveDetectives().length > 1 && !selectedDetectiveId) || !isGuessValid">
          {{ 'VOTE.GUESS_BTN' | translate }}
        </app-button-primary>
        <app-button-secondary (onClick)="closeDetectiveModal()">
@@ -164,9 +166,9 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
    </app-modal>
 
    <!-- HEADER & TIMER -->
-   <header class="w-full max-w-md flex flex-col items-center mt-4 mb-8">
-    <app-text-header class="mb-4">{{ 'VOTE.TITLE' | translate }}</app-text-header>
-    
+   
+   <!-- TIMER & ACTIONS -->
+   <div class="w-full max-w-md flex flex-col items-center mb-8">
     @if (timer.isActive() || timer.timeLeftInSeconds() > 0) {
      <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
         [class.border-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
@@ -215,10 +217,10 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
         </div>
       </div>
     }
-   </header>
+   </div>
 
    <!-- ALIVE PLAYERS TO VOTE -->
-   <main class="w-full max-w-md flex-1 overflow-y-auto" [ngClass]="billing.isPremium ? 'pb-20' : 'pb-36'">
+   <main class="w-full max-w-md flex-1">
     <!-- VOTE_INSTRUCTION is omitted from dictionary but fine omitted here temporarily or replaced with general terms -->
     
     <div class="grid grid-cols-2 gap-4 pt-4 px-2">
@@ -253,29 +255,34 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
    </main>
 
    <!-- BOTTOM ACTIONS -->
-   <footer class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent pt-12 flex flex-col gap-3 items-center" [ngClass]="billing.isPremium ? 'pb-6' : 'pb-[96px]'">
-    <!-- Votar button -->
-    <button 
-      (click)="eliminate()"
-      [disabled]="!selectedPlayerId"
-      class="relative group overflow-hidden w-full max-w-md py-4 px-6 bg-gradient-to-r from-red-600 to-rose-500 text-white rounded-2xl font-bold text-xl shadow-[0_0_20px_rgba(225,29,72,0.4)] active:scale-95 transition-all text-center disabled:opacity-50 disabled:shadow-none disabled:grayscale disabled:scale-100 disabled:cursor-not-allowed cursor-pointer uppercase tracking-widest flex items-center justify-center gap-2">
-      <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
-      <span class="relative z-10 drop-shadow-md">
-        {{ 'VOTE.ELIMINATE' | translate }}
-      </span>
-    </button>
-
-    <!-- Detective Guess Block -->
-    @if (engine.currentSettings()?.modeId === 'detective' && aliveDetectives().length > 0) {
-      <button 
-       (click)="openDetectiveModal()"
-       class="relative group overflow-hidden w-full max-w-md py-4 px-6 bg-glass backdrop-blur-md text-indigo-400 border border-indigo-400/50 rounded-2xl font-bold hover:bg-white/10 active:scale-95 transition-all text-center mt-2 cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.2)] tracking-widest uppercase flex items-center justify-center gap-2">
+   <app-footer>
+    <div class="flex w-full gap-3">
+     <!-- Votar button -->
+     <button 
+       (click)="eliminate()"
+       [disabled]="!selectedPlayerId"
+       class="flex-1 relative group overflow-hidden py-4 px-2 bg-gradient-to-r from-red-600 to-rose-500 text-white rounded-2xl font-bold text-lg sm:text-xl shadow-[0_0_20px_rgba(225,29,72,0.4)] active:scale-95 transition-all text-center disabled:opacity-50 disabled:shadow-none disabled:grayscale disabled:scale-100 disabled:cursor-not-allowed cursor-pointer uppercase tracking-widest flex items-center justify-center gap-2">
+       <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
        <span class="relative z-10 drop-shadow-md">
-         {{ 'VOTE.DETECTIVE_WANTS_GUESS' | translate }}
+         {{ 'VOTE.ELIMINATE' | translate }}
        </span>
      </button>
-    }
-   </footer>
+
+     <!-- Detective Guess Block -->
+     @if (engine.currentSettings()?.modeId === 'detective' && aliveDetectives().length > 0) {
+       <button 
+        (click)="openDetectiveModal()"
+        class="flex-1 relative group overflow-hidden py-4 px-2 bg-glass backdrop-blur-md text-indigo-400 border border-indigo-400/50 rounded-2xl font-bold hover:bg-white/10 active:scale-95 transition-all text-center cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.2)] tracking-widest uppercase flex items-center justify-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+        <span class="relative z-10 drop-shadow-md text-lg sm:text-xl">
+          {{ 'VOTE.DETECTIVE_WANTS_GUESS' | translate }}
+        </span>
+      </button>
+     }
+    </div>
+   </app-footer>
+
+
 
   </div>
  `,
@@ -312,6 +319,24 @@ export class Vote implements OnInit {
  aliveDetectives = computed(() => {
   return this.engine.alivePlayers().filter(p => p.isDetective);
  });
+
+ get uniqueWords(): string[] {
+  const words = this.engine.currentSettings()?.words || [];
+  const uniqueMap = new Map<string, string>();
+  words.forEach(w => {
+   const lower = w.word.toLowerCase().trim();
+   if (!uniqueMap.has(lower)) {
+    uniqueMap.set(lower, w.word);
+   }
+  });
+  return Array.from(uniqueMap.values()).sort((a, b) => a.localeCompare(b));
+ }
+
+ get isGuessValid(): boolean {
+  const guess = this.detectiveGuess.trim().toLowerCase();
+  if (!guess) return false;
+  return this.uniqueWords.some(w => w.toLowerCase() === guess);
+ }
 
  translate = inject(TranslateService);
 

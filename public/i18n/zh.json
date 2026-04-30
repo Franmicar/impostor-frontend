@@ -115,6 +115,8 @@
         "SUBTITLE": "选择本局的规则。"
     },
     "PLAY": {
+        "ROLE_AND_WORD": "角色和单词",
+        "WHO_STARTS": "谁先开始？",
         "YOU_ARE": "你的身份是...",
         "IMPOSTOR_TITLE": "冒名者",
         "CIVIL_TITLE": "平民",
@@ -149,6 +151,7 @@
         "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
+        "TITLE": "画画",
         "NO_ACTIVE_GAME": "当前没有游戏。",
         "BACK_TO_SETUP": "返回",
         "CURRENT_PLAYER": "当前玩家",
@@ -168,7 +171,7 @@
         "TIME_REMAINING": "剩余时间",
         "NO_TIME_LIMIT": "无限制",
         "ELIMINATE": "投票",
-        "DETECTIVE_WANTS_GUESS": "侦探想猜词",
+        "DETECTIVE_WANTS_GUESS": "解决",
         "IMPOSTOR_CAUGHT": "抓到冒名者！",
         "IMPOSTOR_CAUGHT_DESC": "干得好！游戏继续。",
         "ELIMINATED": "已淘汰！",

@@ -3,27 +3,19 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ThemeService } from '../../../core/services/theme.service';
 import { BillingService } from '../../../core/services/billing.service';
-import { IconButtonComponent } from '../../../shared/components/ui/icon-button.component';
-import { TextHeaderComponent } from '../../../shared/components/ui/text-header.component';
 import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
+import { HeaderComponent } from '../../../shared/components/ui/header.component';
+import { FooterComponent } from '../../../shared/components/ui/footer.component';
 
 @Component({
   selector: 'app-setup-types',
   standalone: true,
-  imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ButtonPrimaryComponent],
+  imports: [CommonModule, TranslateModule, ButtonPrimaryComponent, HeaderComponent, FooterComponent],
   template: `
-  <div class="h-full flex flex-col bg-transparent text-white p-6">
-   <header class="flex items-center justify-between mb-8 shrink-0">
-    <app-icon-button (onClick)="goBack()">
-     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-     </svg>
-    </app-icon-button>
-    <app-text-header>{{ 'SETUP.GAME_TYPE' | translate }}</app-text-header>
-    <div class="w-10 h-10 invisible shrink-0"></div> <!-- Spacer -->
-   </header>
+  <div class="h-full flex flex-col bg-transparent text-white">
+   <app-header [showBack]="true" [title]="'SETUP.GAME_TYPE' | translate" (onBack)="goBack()"></app-header>
 
-   <div class="flex-1 overflow-y-auto flex flex-col gap-4 place-content-start" [ngClass]="billing.isPremium ? 'pb-16' : 'pb-32'">
+   <div class="flex-1 px-6 flex flex-col gap-4 place-content-start">
     @for (type of availableTypes; track type.id) {
      <div 
       (click)="selectType(type)"
@@ -55,14 +47,11 @@ import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-pri
    </div>
    
    <!-- FIXED FOOTER -->
-   <footer class="fixed bottom-0 left-0 right-0 px-4 pt-8 z-50" [ngClass]="billing.isPremium ? 'pb-8' : 'pb-[96px]'">
-    <!-- Fade for floating effect without solid bg -->
-    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent -z-10 w-full h-full pointer-events-none"></div>
-
+   <app-footer>
     <app-button-primary (onClick)="save()">
      {{ 'SETUP.SAVE' | translate }}
     </app-button-primary>
-   </footer>
+   </app-footer>
 
   </div>
  `,

@@ -18,11 +18,11 @@ import { SetupPackages } from './setup-packages/setup-packages';
 
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
-import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
 import { IconButtonMiniComponent } from '../../shared/components/ui/icon-button-mini.component';
 import { SelectComponent } from '../../shared/components/ui/select.component';
-import { TextHeaderComponent } from '../../shared/components/ui/text-header.component';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
+import { HeaderComponent } from '../../shared/components/ui/header.component';
+import { FooterComponent } from '../../shared/components/ui/footer.component';
 
 export interface GameModeConfig {
   id: string;
@@ -40,8 +40,8 @@ export interface PlayerConfig {
   standalone: true,
   imports: [
     TranslateModule, CommonModule, FormsModule, SetupModes, SetupTypes, SetupPlayers, SetupPackages,
-    ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, IconButtonMiniComponent,
-    SelectComponent, TextHeaderComponent, ModalComponent
+    ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonMiniComponent,
+    SelectComponent, ModalComponent, HeaderComponent, FooterComponent
   ],
   template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col">
@@ -52,16 +52,8 @@ export interface PlayerConfig {
     <!-- ================= MAIN SETUP MENU ================= -->
     @case ('main') {
      <!-- Header -->
-     <header class="flex items-center justify-between py-6 px-4 mb-2">
-      <app-icon-button (onClick)="goBack()">
-       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-       </svg>
-      </app-icon-button>
-      
-      <app-text-header>Deceptra</app-text-header>
-      
-      <div class="flex items-center justify-end shrink-0 w-10">
+     <app-header [showBack]="true" [title]="'Deceptra'" (onBack)="goBack()">
+      <div header-extra>
        @if (authService.userSignal()) {
         <img [src]="authService.userSignal()?.photoURL || '/images/default-avatar.png'" class="w-8 h-8 rounded-full border-2 border-secondary shadow-[0_0_10px_rgb(var(--color-secondary)/0.4)] cursor-pointer" (click)="authService.logout()" title="Cerrar sesión" />
        } @else {
@@ -70,8 +62,8 @@ export interface PlayerConfig {
         </app-button-primary>
        }
       </div>
-     </header>
-     <main class="flex-1 px-4 overflow-y-auto relative custom-scrollbar" [ngClass]="billing.isPremium ? 'pb-20' : 'pb-40'">
+     </app-header>
+     <main class="flex-1 px-4 relative custom-scrollbar">
 
       <!-- INFO MODAL -->
       <app-modal
@@ -332,16 +324,13 @@ export interface PlayerConfig {
      </main>
      
      <!-- PLAY FOOTER -->
-     <footer class="fixed bottom-0 left-0 right-0 px-4 pt-8" [ngClass]="billing.isPremium ? 'pb-8' : 'pb-[96px]'">
-      <!-- Fade for floating effect without solid bg -->
-      <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent -z-10 w-full h-full pointer-events-none"></div>
-
+     <app-footer>
       <app-button-primary 
         (onClick)="startGame()"
         [disabled]="!canStart() || apiService.isLoading()">
         {{ 'SETUP.START_GAME' | translate }}
       </app-button-primary>
-     </footer>
+     </app-footer>
     }
 
     <!-- ================= MODES VIEW ================= -->
@@ -518,8 +507,9 @@ export class SetupComponent implements OnInit {
     const isTeamMode = this.gameMode().id === 'team';
     const minImpostors = isDetectiveMode ? 0 : (isTeamMode ? 2 : 1);
     const minDetectives = isDetectiveMode ? 1 : 0;
+    const minPlayers = isDetectiveMode ? 4 : 3;
 
-    return this.players().length >= 3 &&
+    return this.players().length >= minPlayers &&
       this.selectedPackages().length > 0 &&
       this.impostors() >= minImpostors &&
       this.detectives() >= minDetectives &&

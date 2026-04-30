@@ -115,6 +115,8 @@
         "SUBTITLE": "Seleziona le meccaniche."
     },
     "PLAY": {
+        "ROLE_AND_WORD": "Ruolo e parola",
+        "WHO_STARTS": "Chi inizia?",
         "YOU_ARE": "Tu sei...",
         "IMPOSTOR_TITLE": "IMPOSTORE",
         "CIVIL_TITLE": "CIVILE",
@@ -149,6 +151,7 @@
         "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
+        "TITLE": "Disegna",
         "NO_ACTIVE_GAME": "Nessuna partita attiva.",
         "BACK_TO_SETUP": "Torna alla configurazione",
         "CURRENT_PLAYER": "Artista attuale",
@@ -168,7 +171,7 @@
         "TIME_REMAINING": "Tempo rimanente",
         "NO_TIME_LIMIT": "Senza limite",
         "ELIMINATE": "Vota",
-        "DETECTIVE_WANTS_GUESS": "Il detective vuole indovinare",
+        "DETECTIVE_WANTS_GUESS": "Risolvi",
         "IMPOSTOR_CAUGHT": "Impostore catturato!",
         "IMPOSTOR_CAUGHT_DESC": "Ben fatto!",
         "ELIMINATED": "Eliminato!",

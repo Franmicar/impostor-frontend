@@ -7,27 +7,19 @@ import { AuthService } from '../../core/services/auth/auth.service';
 import { ThemeService, Theme } from '../../core/services/theme.service';
 import { BillingService } from '../../core/services/billing.service';
 import { ReportService } from '../../core/services/report.service';
-import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
-import { TextHeaderComponent } from '../../shared/components/ui/text-header.component';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
+import { HeaderComponent } from '../../shared/components/ui/header.component';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, IconButtonComponent, TextHeaderComponent, ModalComponent],
+  imports: [CommonModule, TranslateModule, ModalComponent, HeaderComponent],
   template: `
-  <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary p-6 overflow-y-auto">
+  <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary">
    
    <!-- HEADER -->
-   <header class="flex items-center justify-between mb-8 ">
-    <app-icon-button (onClick)="goBack()">
-     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-     </svg>
-    </app-icon-button>
-    <app-text-header>{{ 'SETTINGS.TITLE' | translate }}</app-text-header>
-    
-    <div class="flex items-center justify-end shrink-0 w-10">
+   <app-header [showBack]="true" [title]="'SETTINGS.TITLE' | translate" (onBack)="goBack()">
+    <div header-extra>
      @if (authService.userSignal()) {
       <img [src]="authService.userSignal()?.photoURL || '/images/default-avatar.png'" referrerpolicy="no-referrer" class="w-8 h-8 rounded-full border-2 border-secondary shadow-[0_0_10px_rgb(var(--color-secondary)/0.4)] cursor-pointer" (click)="authService.logout()" title="Cerrar sesión" />
      } @else {
@@ -36,9 +28,9 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
       </button>
      }
     </div>
-   </header>
+   </app-header>
 
-   <div class="w-full mx-auto space-y-4">
+   <div class="flex-1 px-6 flex flex-col w-full mx-auto space-y-4">
     <!-- APP PREFERENCES -->
     <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border">
       <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-4 border-b border-white/10 pb-2">{{ 'SETTINGS.PREFERENCES' | translate }}</h3>
@@ -197,7 +189,6 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
        Cerrar
      </button>
    </app-modal>
-
   </div>
  `
 })

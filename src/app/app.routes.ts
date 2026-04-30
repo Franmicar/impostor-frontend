@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { preventExitGuard } from './core/guards/prevent-exit/prevent-exit-guard';
 
 // Lazy loaded routes for each major feature module/screen
 export const routes: Routes = [
@@ -13,18 +12,15 @@ export const routes: Routes = [
     },
     {
         path: 'play',
-        loadComponent: () => import('./features/play/play').then(m => m.Play),
-        canDeactivate: [preventExitGuard]
+        loadComponent: () => import('./features/play/play').then(m => m.Play)
     },
     {
         path: 'vote',
-        loadComponent: () => import('./features/vote/vote').then(m => m.Vote),
-        canDeactivate: [preventExitGuard]
+        loadComponent: () => import('./features/vote/vote').then(m => m.Vote)
     },
     {
         path: 'draw',
-        loadComponent: () => import('./features/draw/draw').then(m => m.DrawComponent),
-        canDeactivate: [preventExitGuard]
+        loadComponent: () => import('./features/draw/draw').then(m => m.DrawComponent)
     },
     {
         path: 'results',

@@ -115,6 +115,8 @@
         "SUBTITLE": "Select the mechanics that will govern this round."
     },
     "PLAY": {
+        "ROLE_AND_WORD": "Role and word",
+        "WHO_STARTS": "Who starts?",
         "YOU_ARE": "You are...",
         "IMPOSTOR_TITLE": "IMPOSTOR",
         "CIVIL_TITLE": "CIVILIAN",
@@ -149,6 +151,7 @@
         "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
+        "TITLE": "Draw",
         "NO_ACTIVE_GAME": "There is no active game right now.",
         "BACK_TO_SETUP": "Back to Setup",
         "CURRENT_PLAYER": "Current Artist",
@@ -168,7 +171,7 @@
         "TIME_REMAINING": "Time Remaining",
         "NO_TIME_LIMIT": "No time limit",
         "ELIMINATE": "Vote",
-        "DETECTIVE_WANTS_GUESS": "Detective wants to solve",
+        "DETECTIVE_WANTS_GUESS": "Solve",
         "IMPOSTOR_CAUGHT": "Impostor Caught!",
         "IMPOSTOR_CAUGHT_DESC": "Well done! {{name}} was an impostor, but the game continues! There correspond accomplices on the loose.",
         "ELIMINATED": "Eliminated!",

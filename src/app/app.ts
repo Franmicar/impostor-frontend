@@ -6,6 +6,10 @@ import { ConfirmDialogComponent } from './core/guards/prevent-exit/confirm-dialo
 import { ConfirmService } from './core/services/confirm/confirm.service';
 import { BillingService } from './core/services/billing.service';
 import { AdsService } from './core/services/ads.service';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Capacitor } from '@capacitor/core';
+import { App as CapacitorApp } from '@capacitor/app';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +22,8 @@ export class App {
   confirmService = inject(ConfirmService);
   billingService = inject(BillingService);
   adsService = inject(AdsService);
+  router = inject(Router);
+  location = inject(Location);
 
   protected readonly title = signal('impostor-frontend');
 
@@ -38,5 +44,23 @@ export class App {
         document.body.classList.remove('premium-active');
       }
     });
+
+    if (Capacitor.isNativePlatform()) {
+      CapacitorApp.addListener('backButton', async () => {
+        const url = this.router.url;
+        if (url === '/' || url === '/home') {
+          CapacitorApp.exitApp();
+        } else if (url.startsWith('/play') || url.startsWith('/vote') || url.startsWith('/draw')) {
+          const confirmed = await this.confirmService.requestConfirmation(
+             translate.instant('CONFIRM.MESSAGE')
+          );
+          if (confirmed) {
+            this.router.navigate(['/']);
+          }
+        } else {
+          this.location.back();
+        }
+      });
+    }
   }
 }

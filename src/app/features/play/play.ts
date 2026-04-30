@@ -8,13 +8,18 @@ import { BillingService } from '../../core/services/billing.service';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
+import { HeaderComponent } from '../../shared/components/ui/header.component';
 
 @Component({
   selector: 'app-play',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent],
+  imports: [CommonModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent, HeaderComponent],
   template: `
-  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-center p-6 overflow-hidden relative" [ngClass]="billing.isPremium ? '' : 'pb-[96px]'">
+  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col overflow-hidden relative">
+   
+   <app-header [showBack]="false" [title]="engine.isRevealPhaseFinished() ? ('PLAY.WHO_STARTS' | translate) : ('PLAY.ROLE_AND_WORD' | translate)"></app-header>
+   
+   <div class="flex-1 flex flex-col items-center justify-center w-full px-6 relative">
    
    @if (!engine.gameStarted()) {
     <p>{{ 'PLAY.NO_ACTIVE_GAME' | translate }}</p>
@@ -71,16 +76,9 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
     </div>
    } @else {
     <!-- Pass and Play -->
-    <div class="w-full max-w-sm flex-1 flex flex-col relative py-12">
+    <div class="w-full max-w-sm flex-1 flex flex-col relative">
       
-      <div class="absolute top-0 right-0 z-30 mt-[-10px] w-max">
-       <app-button-secondary (onClick)="showChangeWordModal.set(true)">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-secondary">
-         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-        </svg>
-        <span>{{ 'PLAY.CHANGE_WORD' | translate }}</span>
-       </app-button-secondary>
-      </div>
+
 
       <div class="text-center mb-8 z-20 relative bg-glass backdrop-blur-md border border-glass-border rounded-2xl py-4 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.05)] mx-auto w-full">
         <h2 class="text-4xl font-black text-textPrimary drop-shadow-lg">{{ engine.currentPlayer()?.name }}</h2>
@@ -170,16 +168,29 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
         
       </div>
       
-      <div class="mt-8 h-16 flex flex-col justify-center w-full">
-        @if (isRevealed()) {
-         <app-button-primary (onClick)="nextPlayer()" class="block w-full">
-           {{ isLastPlayer() ? ('PLAY.START_PLAY' | translate) : ('PLAY.NEXT_PLAYER' | translate) }}
-         </app-button-primary>
-        } @else {
-         <div class="text-center text-textMuted text-sm font-semibold">
-           {{ 'PLAY.PLAYER_N_OF_M' | translate: { n: engine.currentPlayerIndex() + 1, m: engine.players().length } }}
-         </div>
-        }
+      <div class="mt-8 flex flex-col gap-4 w-full">
+        <div class="h-16 flex flex-col justify-center w-full">
+          @if (isRevealed()) {
+           <app-button-primary (onClick)="nextPlayer()" class="block w-full">
+             {{ isLastPlayer() ? ('PLAY.START_PLAY' | translate) : ('PLAY.NEXT_PLAYER' | translate) }}
+           </app-button-primary>
+          } @else {
+           <div class="text-center text-textMuted text-sm font-semibold">
+             {{ 'PLAY.PLAYER_N_OF_M' | translate: { n: engine.currentPlayerIndex() + 1, m: engine.players().length } }}
+           </div>
+          }
+        </div>
+        
+        <div class="w-full">
+          <app-button-secondary (onClick)="showChangeWordModal.set(true)" class="block w-full text-center">
+            <div class="flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-secondary">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+              <span>{{ 'PLAY.CHANGE_WORD' | translate }}</span>
+            </div>
+          </app-button-secondary>
+        </div>
       </div>
     </div>
    }
@@ -207,6 +218,8 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
        </app-button-secondary>
      </div>
    </app-modal>
+
+   </div>
   </div>
  `,
   styles: [`
@@ -225,6 +238,7 @@ export class Play implements OnInit {
 
   isRevealed = signal<boolean>(false);
   showChangeWordModal = signal<boolean>(false);
+  showExitModal = signal<boolean>(false);
 
   // Roulette state
   isRouletteSpinning = signal<boolean>(true);
@@ -289,6 +303,15 @@ export class Play implements OnInit {
     this.currentY.set(0);
     this.winnerName.set('');
     this.isRouletteSpinning.set(true);
+  }
+
+  confirmExit() {
+    this.showExitModal.set(true);
+  }
+
+  executeExit() {
+    this.showExitModal.set(false);
+    this.router.navigate(['/']);
   }
 
   translate = inject(TranslateService);

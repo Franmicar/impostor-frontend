@@ -184,7 +184,7 @@
 
   body {
     margin: 0;
-    padding-bottom: 96px;
+    padding-bottom: 10rem;
     /* Espacio para banner de AdMob */
     font-family: 'Space Grotesk', Roboto, "Helvetica Neue", sans-serif;
     color: var(--text-main);
@@ -194,9 +194,9 @@
     background-color: var(--app-bg-to);
     background-attachment: fixed;
   }
-  
+
   body.premium-active {
-    padding-bottom: 0px !important;
+    padding-bottom: 7rem !important;
   }
 }
 

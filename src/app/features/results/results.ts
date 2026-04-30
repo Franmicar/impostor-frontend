@@ -13,13 +13,13 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
  standalone: true,
  imports: [CommonModule, TranslateModule, ButtonPrimaryComponent],
  template: `
-  <div class="min-h-dvh flex flex-col items-center justify-center p-6 text-textPrimary relative overflow-hidden" 
-     [ngClass]="billing.isPremium ? backgroundClass() : backgroundClass() + ' pb-[96px]'">
+  <div class="min-h-dvh flex flex-col items-center justify-center px-6 text-textPrimary relative overflow-hidden" 
+     [ngClass]="backgroundClass()">
    
    <!-- Confetti or dynamic background could go here -->
    
    <div class="bg-glass p-8 rounded-3xl backdrop-blur-2xl border border-glass-border text-center max-w-sm w-full z-10 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-    <h1 class="text-4xl font-black uppercase tracking-widest mb-2" [ngClass]="textClass()">
+    <h1 class="text-3xl sm:text-4xl font-black uppercase tracking-wider sm:tracking-widest mb-2 leading-tight" [ngClass]="textClass()">
      {{ title() | translate }}
     </h1>
     

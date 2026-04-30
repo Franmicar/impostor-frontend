@@ -115,6 +115,8 @@
         "SUBTITLE": "Выберите механики раунда."
     },
     "PLAY": {
+        "ROLE_AND_WORD": "Роль и слово",
+        "WHO_STARTS": "Кто начинает?",
         "YOU_ARE": "Ты...",
         "IMPOSTOR_TITLE": "ИМПОСТОР",
         "CIVIL_TITLE": "МИРНЫЙ",
@@ -149,6 +151,7 @@
         "CHANGE_WORD_CONFIRM": "YES, RESTART"
     },
     "DRAW": {
+        "TITLE": "Рисовать",
         "NO_ACTIVE_GAME": "Нет активной игры.",
         "BACK_TO_SETUP": "Назад",
         "CURRENT_PLAYER": "Текущий художник",
@@ -168,7 +171,7 @@
         "TIME_REMAINING": "Оставшееся время",
         "NO_TIME_LIMIT": "Без ограничения",
         "ELIMINATE": "Голосовать",
-        "DETECTIVE_WANTS_GUESS": "Детектив хочет угадать",
+        "DETECTIVE_WANTS_GUESS": "Решить",
         "IMPOSTOR_CAUGHT": "Импостор найден!",
         "IMPOSTOR_CAUGHT_DESC": "Отлично! Но игра продолжается.",
         "ELIMINATED": "Выбывший!",
