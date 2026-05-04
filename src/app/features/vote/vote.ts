@@ -18,7 +18,7 @@ import { FooterComponent } from '../../shared/components/ui/footer.component';
  standalone: true,
  imports: [CommonModule, FormsModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, ModalComponent, HeaderComponent, FooterComponent],
  template: `
-  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col items-center justify-start relative">
+  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col relative w-full">
    <app-header [showBack]="false" [title]="'VOTE.TITLE' | translate"></app-header>
    <div class="flex-1 flex flex-col items-center justify-start w-full px-6">
    <!-- DRAWING MODAL -->

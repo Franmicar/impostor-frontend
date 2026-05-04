@@ -31,14 +31,12 @@ export class AuthService {
 
     async loginWithGoogle() {
         try {
-            alert("Iniciando login nativo...");
             if (Capacitor.isNativePlatform()) {
                 const result = await FirebaseAuthentication.signInWithGoogle();
                 const idToken = result.credential?.idToken;
                 if (idToken) {
                     const credential = GoogleAuthProvider.credential(idToken);
                     await signInWithCredential(this.auth, credential);
-                    alert("Login exitoso!");
                 } else {
                     throw new Error("No idToken found in native Google Sign-In");
                 }
@@ -48,7 +46,6 @@ export class AuthService {
             }
         } catch (error) {
             console.error('Error durante el login con Google', error);
-            alert('ERROR FATAL: ' + JSON.stringify(error) + ' | Mensaje: ' + String(error));
             throw error;
         }
     }
