@@ -37,12 +37,6 @@ jobs:
       - name: Sync Capacitor Android
         run: npx cap sync android
 
-      - name: Build APK (Debug)
-        working-directory: ./android
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
-
       - name: Generate Keystore (Si no existe)
         working-directory: ./android/app
         run: |
@@ -55,6 +49,12 @@ jobs:
             git push origin HEAD:main
             git push origin HEAD:develop || true
           fi
+
+      - name: Build APK (Debug)
+        working-directory: ./android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
       - name: Build AAB (Release Bundle for Play Store)
         working-directory: ./android
