@@ -1,5 +1,6 @@
 import { Injectable, signal, effect, inject } from '@angular/core';
 import { BillingService } from './billing.service';
+import { UiService } from './ui/ui.service';
 
 export type Theme = 'neon' | 'neon2' | 'infantil';
 
@@ -8,6 +9,7 @@ export type Theme = 'neon' | 'neon2' | 'infantil';
 })
 export class ThemeService {
     private billing = inject(BillingService);
+    private ui = inject(UiService);
     
     // Estado local gestionado con un Signal
     currentTheme = signal<Theme>('neon');
@@ -39,13 +41,20 @@ export class ThemeService {
         }
     }
 
-    setTheme(theme: Theme) {
+    async setTheme(theme: Theme) {
         if (theme === 'neon2' && !this.billing.isPremium) {
             console.warn('Requiere plan Premium para usar este tema');
             return;
         }
+        
+        this.ui.setLoading(true);
+        // Pequeño delay para permitir que la barra de carga se muestre en pantalla y mejore la percepción del cambio de tema
+        await new Promise(resolve => setTimeout(resolve, 400));
+
         this.currentTheme.set(theme);
         localStorage.setItem('impostor-theme', theme);
+        
+        this.ui.setLoading(false);
     }
 
     private applyTheme(theme: Theme) {

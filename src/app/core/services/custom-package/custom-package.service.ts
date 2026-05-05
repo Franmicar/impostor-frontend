@@ -3,6 +3,7 @@ import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { AuthService } from '../auth/auth.service';
 import { BillingService } from '../billing.service';
+import { UiService } from '../ui/ui.service';
 import { environment } from '../../../../environments/environment';
 
 export interface CustomWord {
@@ -23,6 +24,7 @@ export interface CustomPackage {
 export class CustomPackageService {
   private auth = inject(AuthService);
   private billing = inject(BillingService);
+  private ui = inject(UiService);
   private db: any;
 
   constructor() {
@@ -35,12 +37,17 @@ export class CustomPackageService {
     const user = this.auth.userSignal();
     if (!user) return null;
 
-    const docRef = doc(this.db, `users/${user.uid}/custom_packages/main`);
-    const snap = await getDoc(docRef);
-    if (snap.exists()) {
-      return snap.data() as CustomPackage;
+    this.ui.setLoading(true);
+    try {
+      const docRef = doc(this.db, `users/${user.uid}/custom_packages/main`);
+      const snap = await getDoc(docRef);
+      if (snap.exists()) {
+        return snap.data() as CustomPackage;
+      }
+      return null;
+    } finally {
+      this.ui.setLoading(false);
     }
-    return null;
   }
 
   async saveCustomPackage(pkg: CustomPackage): Promise<void> {
@@ -48,7 +55,12 @@ export class CustomPackageService {
     const user = this.auth.userSignal();
     if (!user) throw new Error('User not authenticated');
 
-    const docRef = doc(this.db, `users/${user.uid}/custom_packages/main`);
-    await setDoc(docRef, pkg);
+    this.ui.setLoading(true);
+    try {
+      const docRef = doc(this.db, `users/${user.uid}/custom_packages/main`);
+      await setDoc(docRef, pkg);
+    } finally {
+      this.ui.setLoading(false);
+    }
   }
 }

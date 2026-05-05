@@ -8,9 +8,9 @@ import { TextHeaderComponent } from './text-header.component';
   standalone: true,
   imports: [CommonModule, IconButtonComponent, TextHeaderComponent],
   template: `
-    <header class="flex items-center justify-between py-6 px-4 relative z-10 w-full">
+    <header class="flex items-center justify-between py-6 px-4 relative z-10 w-full min-h-[80px]">
       <!-- Back Button Space -->
-      <div class="w-10 flex shrink-0 justify-start">
+      <div class="flex shrink-0 justify-start relative z-20">
         @if (showBack) {
           <app-icon-button (onClick)="onBack.emit()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -21,10 +21,12 @@ import { TextHeaderComponent } from './text-header.component';
       </div>
 
       <!-- Center Title -->
-      <app-text-header class="flex-1 text-center whitespace-nowrap overflow-hidden text-ellipsis px-2">{{ title }}</app-text-header>
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none w-full max-w-full">
+        <app-text-header class="w-full pointer-events-auto">{{ title }}</app-text-header>
+      </div>
 
       <!-- Extra Right Content -->
-      <div class="w-10 flex shrink-0 justify-end">
+      <div class="flex shrink-0 justify-end relative z-20">
         <ng-content select="[header-extra]"></ng-content>
       </div>
     </header>

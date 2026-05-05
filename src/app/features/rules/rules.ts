@@ -1,24 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService } from '../../core/services/auth/auth.service';
 import { HeaderComponent } from '../../shared/components/ui/header.component';
+import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.component';
 
 @Component({
   selector: 'app-rules',
   standalone: true,
-  imports: [TranslateModule, HeaderComponent],
+  imports: [TranslateModule, HeaderComponent, AuthProfileComponent],
   template: `
   <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary">
    <app-header [showBack]="true" [title]="'RULES.TITLE' | translate" (onBack)="goBack()">
     <div header-extra>
-     @if (authService.userSignal()) {
-      <img [src]="authService.userSignal()?.photoURL || '/images/default-avatar.png'" referrerpolicy="no-referrer" class="w-8 h-8 rounded-full border-2 border-secondary shadow-[0_0_10px_rgb(var(--color-secondary)/0.4)] cursor-pointer" (click)="authService.logout()" title="Cerrar sesión" />
-     } @else {
-      <button (click)="authService.loginWithGoogle()" class="text-[0.65rem] font-bold text-secondary uppercase bg-white/5 border border-secondary/30 px-2 py-1 rounded-lg hover:bg-secondary/20 transition-colors">
-       Login
-      </button>
-     }
+      <app-auth-profile avatarSize="w-8 h-8"></app-auth-profile>
     </div>
    </app-header>
 
@@ -96,7 +90,6 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
 })
 export class Rules {
   private router = inject(Router);
-  authService = inject(AuthService);
 
   goBack() {
     this.router.navigate(['/']);

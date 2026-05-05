@@ -3,18 +3,20 @@ import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService } from '../../core/services/api/api.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
+import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TranslateModule, IconButtonComponent, ButtonPrimaryComponent],
+  imports: [TranslateModule, IconButtonComponent, ButtonPrimaryComponent, AuthProfileComponent],
   template: `
-    <div class="flex flex-col items-center justify-center min-h-dvh bg-transparent text-textPrimary px-6 relative">
-        <div class="absolute top-4 right-4 flex gap-4">
-            <!-- Premium Button -->
+    <div class="flex flex-col items-center justify-center min-h-dvh bg-transparent text-textPrimary px-6 relative overflow-hidden">
+        
+        <div class="absolute top-4 right-4 flex gap-4 z-50 items-center">            <!-- Premium Button -->
             <button (click)="openPremium()" class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white hover:opacity-90 transition-all active:scale-95 shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] animate-pulse-slow">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
@@ -31,6 +33,9 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
               </svg>
             </app-icon-button>
+
+            <!-- Auth Profile / Login -->
+            <app-auth-profile avatarSize="w-10 h-10"></app-auth-profile>
         </div>
 
         <div class="flex-1 flex flex-col items-center justify-center w-full max-w-md mt-12">
@@ -73,6 +78,7 @@ export class HomeComponent implements OnInit {
   private router = inject(Router);
   private apiService = inject(ApiService);
   public themeService = inject(ThemeService);
+  public authService = inject(AuthService);
 
   ngOnInit() {
     // Wake up the backend and prefetch packages so Setup screen is instant

@@ -79,9 +79,8 @@
 
   /* Aplicar filtro a las imágenes cuando el tema sea neon2 para que sean verde/amarillo */
   .theme-neon2 img.neon-dynamic-img {
-    /* Mezclamos con un 50% de sepia para acercar los tonos en la rueda de color, 
-         y luego rotamos 60 grados. Así el Rosa se vuelve Amarillo y el Cian se vuelve Verde! */
-    filter: sepia(0.5) hue-rotate(60deg) saturate(2.5) brightness(1.1);
+    /* Mapeo exacto por matriz de color: Magenta -> Amarillo, Cyan -> Verde */
+    filter: url(#neon2-filter);
   }
 
   /* Caja contenedora de las imágenes del setup basada en el dark metallic de players.png */
@@ -184,8 +183,8 @@
 
   body {
     margin: 0;
-    padding-bottom: 10rem;
-    /* Espacio para banner de AdMob */
+    padding-bottom: 7rem;
+    /* Espacio para footer */
     font-family: 'Space Grotesk', Roboto, "Helvetica Neue", sans-serif;
     color: var(--text-main);
     transition: background-color 0.3s, color 0.3s;
@@ -195,8 +194,8 @@
     background-attachment: fixed;
   }
 
-  body.premium-active {
-    padding-bottom: 7rem !important;
+  body.no-pb {
+    padding-bottom: 0 !important;
   }
 }
 

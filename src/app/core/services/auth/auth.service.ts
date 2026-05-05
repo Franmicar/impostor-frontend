@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
+import { UiService } from '../ui/ui.service';
 import { initializeApp } from 'firebase/app';
 import {
     getAuth,
@@ -22,6 +23,7 @@ export class AuthService {
 
     // Signal reactivo para saber si hay un usuario logueado en la app
     public userSignal = signal<User | null>(null);
+    private ui = inject(UiService);
 
     constructor() {
         onAuthStateChanged(this.auth, (user) => {
@@ -30,6 +32,7 @@ export class AuthService {
     }
 
     async loginWithGoogle() {
+        this.ui.setLoading(true);
         try {
             if (Capacitor.isNativePlatform()) {
                 const result = await FirebaseAuthentication.signInWithGoogle();
@@ -47,10 +50,13 @@ export class AuthService {
         } catch (error) {
             console.error('Error durante el login con Google', error);
             throw error;
+        } finally {
+            this.ui.setLoading(false);
         }
     }
 
     async logout() {
+        this.ui.setLoading(true);
         try {
             if (Capacitor.isNativePlatform()) {
                 await FirebaseAuthentication.signOut();
@@ -59,6 +65,8 @@ export class AuthService {
         } catch (error) {
             console.error('Error al cerrar sesión', error);
             throw error;
+        } finally {
+            this.ui.setLoading(false);
         }
     }
 

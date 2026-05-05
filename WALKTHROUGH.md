@@ -107,3 +107,14 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Expansión y Refinamiento del Modo Detective**: Actualización de la lógica del juego para exigir un mínimo de 4 jugadores. Rediseño del modal de "Resolver", depurándolo de palabras duplicadas en la lista sugerida e implementando comprobación en tiempo real para bloquear el botón de "Adivinar" hasta que la palabra exista. Paralelización de botones ("Votar" y "Resolver") con nueva iconografía.
 - **Localización Completa**: Adición y normalización en los 8 idiomas soportados de las nuevas cadenas para cabeceras y estados del juego.
 - **Google Login Nativo (Configuración en desarrollo)**: Ajustes en el cliente para lidiar con `@capacitor-firebase/authentication` requiriendo tokens nativos.
+### Versión 1.4.6
+- **Hotfix de la versión 1.4.5**: Últimos retoques de UI y el inicio de sesión con Google ya funciona.
+
+### Versión 1.4.7
+- **Arquitectura de Carga Centralizada (`UiService`)**: Consolidación de un sistema atómico de gestión de estados de carga utilizando *Signals* en Angular. Se han integrado servicios críticos (`ApiService`, `AuthService`, `ThemeService`, `CloudPresets`, etc.) bajo este patrón para enmascarar transiciones y evitar doble peticiones.
+- **Deduplicación de Promesas**: Optimización del `ApiService` para cachear llamadas a la base de datos de paquetes, evitando peticiones redundantes cuando múltiples componentes solicitan los datos simultáneamente.
+- **Estandarización de Interfaz (Cabeceras)**: Refinamiento de la posición y estética de los controles de usuario (Login / Perfil) para que estén unificados visualmente a través de las pantallas Home, Rules, Settings y Setup, alojados en la esquina superior derecha bajo el nuevo componente `AuthProfileComponent`.
+- **Refinamiento de Responsive & TextOverflow**: Mejora radical del componente `TextHeaderComponent`, implementando truncado dinámico basado en anchos (`font-size: clamp()`) y corrigiendo la herencia de gradientes CSS para que los textos largos se mantengan coloridos, de alto contraste y confinados en una sola línea.
+- **Modal de Confirmación de Cierre de Sesión**: Inclusión de un flujo seguro de *Logout* integrado directamente en `AuthProfileComponent`, mejorando la UX al evitar cierres de sesión por pulsaciones accidentales sobre el avatar del perfil.
+- **Ajustes de UI en Móviles (AdMob Pushing)**: Inyección dinámica de la clase `.no-pb` a través de un listener de enrutado para anular márgenes de reserva de AdMob en pantallas clave, evitando cortes en la interfaz principal.
+- **Mejora del Tema Neon 2**: Integración de filtros SVG nativos (`<feColorMatrix>`) en el `index.html` para re-colorear el tema con precisión óptica a verdes y amarillos, eliminando los tonos azules/rojos del CSS Filter original.

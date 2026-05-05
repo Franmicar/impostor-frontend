@@ -6,6 +6,7 @@ import { GameEngineService } from '../../core/services/game-engine/game-engine';
 import { AdsService } from '../../core/services/ads.service';
 import { ThemeService } from '../../core/services/theme.service';
 import { BillingService } from '../../core/services/billing.service';
+import { UiService } from '../../core/services/ui/ui.service';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 
 @Component({
@@ -105,7 +106,6 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
   }
  `
 })
-
 export class Results implements OnInit {
  engine = inject(GameEngineService);
  router = inject(Router);
@@ -113,6 +113,7 @@ export class Results implements OnInit {
  adsService = inject(AdsService);
  themeService = inject(ThemeService);
  billing = inject(BillingService);
+ ui = inject(UiService);
 
  showRoles = false;
  winner: 'impostors' | 'town' | null = null;
@@ -192,8 +193,13 @@ export class Results implements OnInit {
  }
 
  async playAgain() {
-  await this.adsService.showInterstitial();
-  this.engine.resetGame();
-  this.router.navigate(['/setup']);
+  this.ui.setLoading(true);
+  try {
+   await this.adsService.showInterstitial();
+   this.engine.resetGame();
+   await this.router.navigate(['/setup']);
+  } finally {
+   this.ui.setLoading(false);
+  }
  }
 }

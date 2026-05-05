@@ -9,6 +9,7 @@ import { AuthService } from '../../core/services/auth/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BillingService } from '../../core/services/billing.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { UiService } from '../../core/services/ui/ui.service';
 
 // Subcomponents
 import { SetupModes } from './setup-modes/setup-modes';
@@ -23,6 +24,7 @@ import { SelectComponent } from '../../shared/components/ui/select.component';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
 import { HeaderComponent } from '../../shared/components/ui/header.component';
 import { FooterComponent } from '../../shared/components/ui/footer.component';
+import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.component';
 
 export interface GameModeConfig {
   id: string;
@@ -41,7 +43,7 @@ export interface PlayerConfig {
   imports: [
     TranslateModule, CommonModule, FormsModule, SetupModes, SetupTypes, SetupPlayers, SetupPackages,
     ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonMiniComponent,
-    SelectComponent, ModalComponent, HeaderComponent, FooterComponent
+    SelectComponent, ModalComponent, HeaderComponent, FooterComponent, AuthProfileComponent
   ],
   template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col">
@@ -54,13 +56,7 @@ export interface PlayerConfig {
      <!-- Header -->
      <app-header [showBack]="true" [title]="'Deceptra'" (onBack)="goBack()">
       <div header-extra>
-       @if (authService.userSignal()) {
-        <img [src]="authService.userSignal()?.photoURL || '/images/default-avatar.png'" class="w-8 h-8 rounded-full border-2 border-secondary shadow-[0_0_10px_rgb(var(--color-secondary)/0.4)] cursor-pointer" (click)="authService.logout()" title="Cerrar sesión" />
-       } @else {
-        <app-button-primary size="small" (onClick)="authService.loginWithGoogle()">
-         Login
-        </app-button-primary>
-       }
+        <app-auth-profile avatarSize="w-8 h-8" [showLoginButton]="true"></app-auth-profile>
       </div>
      </app-header>
      <main class="flex-1 px-4 relative custom-scrollbar">
@@ -327,7 +323,7 @@ export interface PlayerConfig {
      <app-footer>
       <app-button-primary 
         (onClick)="startGame()"
-        [disabled]="!canStart() || apiService.isLoading()">
+        [disabled]="!canStart() || uiService.isLoading()">
         {{ 'SETUP.START_GAME' | translate }}
       </app-button-primary>
      </app-footer>
@@ -428,6 +424,7 @@ export class SetupComponent implements OnInit {
   private translate = inject(TranslateService);
   public billing = inject(BillingService);
   public themeService = inject(ThemeService);
+  public uiService = inject(UiService);
 
   // States
   activeScreen = signal<'main' | 'modes' | 'types' | 'players' | 'packages'>('main');

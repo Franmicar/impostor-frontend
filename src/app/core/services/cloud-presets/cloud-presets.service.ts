@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc } from 'firebase/firestore';
 import { AuthService } from '../auth/auth.service';
+import { UiService } from '../ui/ui.service';
 import { environment } from '../../../../environments/environment';
 import { PlayerConfig } from '../../../features/setup/setup.component';
 
@@ -16,6 +17,7 @@ export interface Preset {
 })
 export class CloudPresetsService {
     private authService = inject(AuthService);
+    private ui = inject(UiService);
     private db: any;
 
     constructor() {
@@ -27,42 +29,52 @@ export class CloudPresetsService {
         const user = this.authService.currentUser;
         if (!user) throw new Error('No auth user fetching presets');
 
-        const colRef = collection(this.db, `users/${user.uid}/presets`);
-        const snap = await getDocs(colRef);
-        return snap.docs.map(d => ({ id: d.id, ...d.data() } as Preset));
+        this.ui.setLoading(true);
+        try {
+            const colRef = collection(this.db, `users/${user.uid}/presets`);
+            const snap = await getDocs(colRef);
+            return snap.docs.map(d => ({ id: d.id, ...d.data() } as Preset));
+        } finally {
+            this.ui.setLoading(false);
+        }
     }
 
     async savePreset(presetName: string, players: PlayerConfig[]): Promise<void> {
         const user = this.authService.currentUser;
         if (!user) throw new Error('No auth user saving presets');
 
-        const presets = await this.getUserPresets();
+        this.ui.setLoading(true);
+        try {
+            // We use getUserPresets, which sets loading to true/false, but since our UiService counter stacks, it's safe.
+            const presets = await this.getUserPresets();
 
-        // Check if we need to overwrite one or add new
-        // For simplicity, if we already have 3, we throw error to be handled by UI
-        if (presets.length >= 3 && !presets.find(p => p.name === presetName)) {
-            throw new Error('LIMIT_REACHED');
+            if (presets.length >= 3 && !presets.find(p => p.name === presetName)) {
+                throw new Error('LIMIT_REACHED');
+            }
+
+            const existing = presets.find(p => p.name === presetName);
+            const docId = existing ? existing.id : Date.now().toString();
+
+            const docRef = doc(this.db, `users/${user.uid}/presets/${docId}`);
+            await setDoc(docRef, {
+                name: presetName,
+                players: players
+            });
+        } finally {
+            this.ui.setLoading(false);
         }
-
-        // Generate valid ID from name or take existing
-        const existing = presets.find(p => p.name === presetName);
-        const docId = existing ? existing.id : Date.now().toString();
-
-        const docRef = doc(this.db, `users/${user.uid}/presets/${docId}`);
-        // Clean out base64 photos to avoid huge database rows unless we use storage
-        // But blob data URLs are local! They won't work across sessions easily if they are blob:.
-        // If they are base64 string, they are huge, but they work. 
-        // We'll keep them as is. If it's a blob url it'll break, but input file uses DataURL which is base64.
-        await setDoc(docRef, {
-            name: presetName,
-            players: players
-        });
     }
 
     async deletePreset(presetId: string): Promise<void> {
         const user = this.authService.currentUser;
         if (!user) throw new Error('No auth user deleting preset');
-        const docRef = doc(this.db, `users/${user.uid}/presets/${presetId}`);
-        await deleteDoc(docRef);
+        
+        this.ui.setLoading(true);
+        try {
+            const docRef = doc(this.db, `users/${user.uid}/presets/${presetId}`);
+            await deleteDoc(docRef);
+        } finally {
+            this.ui.setLoading(false);
+        }
     }
 }

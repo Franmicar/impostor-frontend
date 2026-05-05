@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { UiService } from './ui/ui.service';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { environment } from '../../../environments/environment';
@@ -11,8 +12,10 @@ import { Device } from '@capacitor/device';
 export class ReportService {
   private app = initializeApp(environment.firebase);
   private db = getFirestore(this.app);
+  private ui = inject(UiService);
 
   async sendReport(message: string, uid?: string, type: 'bug' | 'suggestion' = 'bug') {
+    this.ui.setLoading(true);
     try {
       const deviceInfo = await Device.getInfo();
       const reportsRef = collection(this.db, 'reports');
@@ -32,6 +35,8 @@ export class ReportService {
     } catch (error) {
       console.error('Error enviando el reporte:', error);
       return false;
+    } finally {
+      this.ui.setLoading(false);
     }
   }
 }
