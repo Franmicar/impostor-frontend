@@ -15,11 +15,11 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
   standalone: true,
   imports: [CommonModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent, HeaderComponent],
   template: `
-  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col overflow-hidden relative">
+  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col overflow-x-hidden overflow-y-auto relative pb-8">
    
    <app-header [showBack]="false" [title]="engine.isRevealPhaseFinished() ? ('PLAY.WHO_STARTS' | translate) : ('PLAY.ROLE_AND_WORD' | translate)"></app-header>
    
-   <div class="flex-1 flex flex-col items-center justify-center w-full px-6 relative">
+   <div class="flex-1 flex flex-col items-center my-auto w-full px-6 relative py-6">
    
    @if (!engine.gameStarted()) {
     <p>{{ 'PLAY.NO_ACTIVE_GAME' | translate }}</p>
@@ -181,7 +181,7 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
           }
         </div>
         
-        <div class="w-full">
+        <div class="w-full pb-4">
           <app-button-secondary (onClick)="showChangeWordModal.set(true)" class="block w-full text-center">
             <div class="flex items-center justify-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-secondary">
@@ -218,7 +218,6 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
        </app-button-secondary>
      </div>
    </app-modal>
-
    </div>
   </div>
  `,

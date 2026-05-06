@@ -67,13 +67,13 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
       
       <div class="flex flex-col flex-1 justify-center">
        <h3 class="font-bold text-lg mb-1 text-textPrimary flex items-center gap-2">
-        Crear Paquete
+        {{ 'SETUP_PACKAGES.CREATE_CUSTOM' | translate }}
         @if (!billing.isPremium) {
          <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO</span>
         }
        </h3>
        <p class="text-sm text-textMuted select-none">
-        Añade tus propias palabras
+        {{ 'SETUP_PACKAGES.CREATE_CUSTOM_DESC' | translate }}
        </p>
       </div>
      </div>

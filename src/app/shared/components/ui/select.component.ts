@@ -11,7 +11,7 @@ export interface SelectOption {
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="relative w-full min-w-[133px] shrink-0">
+    <div class="relative w-full min-w-[100px] sm:min-w-[133px] shrink-0">
       <div 
         (click)="isOpen.set(!isOpen())"
         class="bg-glass rounded-2xl border border-primary shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] px-3 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">

@@ -32,7 +32,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
     <div class="flex justify-start w-full mb-6">
      <app-button-secondary (onClick)="openCloudSaveModal()">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg>
-      Guardar grupo configurado
+      {{ 'SETUP_PLAYERS.SAVE_GROUP_BTN' | translate }}
      </app-button-secondary>
     </div>
    }
@@ -40,7 +40,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
    <!-- PRESETS NUBE -->
    @if (authService.userSignal() && cloudPresets().length > 0) {
     <div class="mb-4 bg-glass border border-glass-border rounded-xl p-3 flex gap-2 overflow-x-auto custom-scrollbar items-center">
-     <span class="text-xs font-bold text-textMuted uppercase mr-2 shrink-0">Grupos:</span>
+     <span class="text-xs font-bold text-textMuted uppercase mr-2 shrink-0">{{ 'SETUP_PLAYERS.GROUPS_LBL' | translate }}</span>
      @for (preset of cloudPresets(); track preset.id) {
       <div 
        class="flex items-center rounded-xl border transition-colors shrink-0 shadow-[0_4px_10px_rgba(0,0,0,0.2)]"
@@ -148,20 +148,20 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
    <!-- MODAL PARA GUARDAR PRESET CLOUD -->
    <app-modal
      [isOpen]="showCloudSaveModal"
-     title="Guardar Grupo"
+     [title]="'SETUP_PLAYERS.SAVE_GROUP_TITLE' | translate"
      (onClose)="showCloudSaveModal = false">
      
      <div modal-icon class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 border border-secondary/50 text-secondary bg-secondary/20">
        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-8H7v8"></path><path stroke-linecap="round" stroke-linejoin="round" d="M7 3v5h8"></path></svg>
      </div>
      
-     <p class="text-sm text-textMuted mb-4">Dale un nombre a este grupo de amigos para poder cargarlo rápidamente en el futuro (ej: Familia, Trabajo, Los de siempre).</p>
+     <p class="text-sm text-textMuted mb-4">{{ 'SETUP_PLAYERS.SAVE_GROUP_DESC' | translate }}</p>
      
      <div class="w-full text-left">
       <input 
        type="text" 
        [(ngModel)]="cloudPresetName"
-       placeholder="Nombre del grupo..."
+       [placeholder]="'SETUP_PLAYERS.SAVE_GROUP_PLACEHOLDER' | translate"
        maxlength="30"
        class="w-full bg-glass border border-glass-border rounded-xl p-3 text-textPrimary outline-none focus:border-primary transition-colors"
         />
@@ -235,7 +235,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
    <!-- MODAL RECORTAR IMAGEN -->
    <app-modal
      [isOpen]="showCropModal"
-     title="Recortar Imagen"
+     [title]="'SETUP_PLAYERS.CROP_TITLE' | translate"
      [preventCloseOutside]="true"
      (onClose)="cancelCrop()">
      
@@ -256,14 +256,14 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
       <button 
        (click)="cancelCrop()"
        class="flex-1 py-4 rounded-xl bg-glass border border-glass-border text-textMuted font-bold shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] hover:bg-white/10 transition-colors uppercase tracking-widest text-sm active:scale-95">
-       Cancelar
+       {{ 'SETUP_PLAYERS.CROP_CANCEL' | translate }}
       </button>
       <button 
        (click)="confirmCrop()"
        class="relative group overflow-hidden flex-1 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] transition-all active:scale-95 uppercase tracking-widest text-sm flex items-center justify-center">
        <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors pointer-events-none"></div>
        <span class="relative z-10 drop-shadow-md pointer-events-none">
-         Aplicar
+         {{ 'SETUP_PLAYERS.CROP_APPLY' | translate }}
        </span>
       </button>
      </div>

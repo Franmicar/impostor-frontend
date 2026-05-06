@@ -10,6 +10,7 @@ import { ReportService } from '../../core/services/report.service';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
 import { HeaderComponent } from '../../shared/components/ui/header.component';
 import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.component';
+import { UiService } from '../../core/services/ui/ui.service';
 
 @Component({
   selector: 'app-settings',
@@ -67,26 +68,26 @@ import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.co
 
       <!-- THEME SELECTOR -->
       <div class="py-4 border-t border-slate-700/50">
-        <span class="text-textPrimary block mb-3 font-medium">Estilo Visual</span>
+        <span class="text-textPrimary block mb-3 font-medium">{{ 'SETTINGS.VISUAL_STYLE' | translate }}</span>
         <div class="flex flex-col gap-2">
           <!-- Tema Principal -->
           <button (click)="themeService.setTheme('neon')" 
               [class.ring-2]="themeService.currentTheme() === 'neon'"
               class="ring-primary relative w-full text-left px-4 py-3 bg-glass hover:bg-white/10 border border-glass-border rounded-xl transition-all flex items-center justify-between">
-            <span class="text-textPrimary text-sm">Neón / Cyberpunk</span>
+            <span class="text-textPrimary text-sm">{{ 'SETTINGS.THEME_NEON' | translate }}</span>
           </button>
           <!-- Tema Infantil -->
           <button (click)="themeService.setTheme('infantil')" 
               [class.ring-2]="themeService.currentTheme() === 'infantil'"
               class="ring-orange-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-white/10 border border-glass-border rounded-xl transition-all flex items-center justify-between">
-            <span class="text-textPrimary text-sm">Infantil (Familiar)</span>
+            <span class="text-textPrimary text-sm">{{ 'SETTINGS.THEME_INFANTIL' | translate }}</span>
           </button>
           <!-- Tema Neón 2 (Premium) -->
           <button (click)="selectPremiumTheme()" 
               [class.ring-2]="themeService.currentTheme() === 'neon2'"
               class="ring-yellow-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-white/10 border border-glass-border rounded-xl transition-all flex items-center justify-between">
             <span class="text-textPrimary text-sm flex items-center gap-2">
-              Neón 2
+              {{ 'SETTINGS.THEME_NEON_2' | translate }}
               @if (!billing.isPremium) {
                 <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO</span>
               }
@@ -102,10 +103,10 @@ import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.co
 
       <!-- CONTENT PREFERENCES -->
       <div class="py-4 border-t border-slate-700/50">
-        <span class="text-textPrimary block mb-3 font-medium">Contenido</span>
+        <span class="text-textPrimary block mb-3 font-medium">{{ 'SETTINGS.CONTENT' | translate }}</span>
         <button (click)="goToCustomPackage()" class="relative w-full text-left px-4 py-3 bg-glass hover:bg-white/10 border border-glass-border rounded-xl transition-all flex items-center justify-between">
           <span class="text-textPrimary text-sm flex items-center gap-2">
-            Paquetes Personalizados
+            {{ 'SETTINGS.CUSTOM_PACKAGES' | translate }}
             @if (!billing.isPremium) {
               <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO</span>
             }
@@ -119,19 +120,19 @@ import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.co
 
     <!-- SUPPORT & CONTACT -->
     <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border">
-      <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-4 border-b border-white/10 pb-2">Soporte y Contacto</h3>
+      <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-4 border-b border-white/10 pb-2">{{ 'SETTINGS.SUPPORT_CONTACT' | translate }}</h3>
       
       <button (click)="openReportModal('bug')" class="w-full text-left px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all flex items-center justify-between mb-2">
         <span class="text-textPrimary text-sm flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-rose-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-          Reportar un Error (Bug)
+          {{ 'SETTINGS.REPORT_BUG' | translate }}
         </span>
       </button>
 
       <button (click)="openReportModal('suggestion')" class="w-full text-left px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all flex items-center justify-between">
         <span class="text-textPrimary text-sm flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-cyan-400"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.82 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.496 1.509 1.333 1.509 2.316V18" /></svg>
-          Sugerir Mejora
+          {{ 'SETTINGS.SUGGEST_IMPROVEMENT' | translate }}
         </span>
       </button>
     </section>
@@ -151,22 +152,22 @@ import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.co
    <!-- MODAL REPORTE -->
    <app-modal
      [isOpen]="isReportModalOpen()"
-     [title]="reportType() === 'bug' ? 'Reportar Error' : 'Sugerir Mejora'"
+     [title]="reportType() === 'bug' ? ('SETTINGS.REPORT_BUG_TITLE' | translate) : ('SETTINGS.SUGGEST_IMPROVEMENT_TITLE' | translate)"
      [icon]="reportType() === 'bug' ? 'error' : 'success'"
      (onClose)="closeReportModal()">
      
      <p class="text-sm text-textMuted mb-4 w-full text-left">
-       {{ reportType() === 'bug' ? 'Por favor, describe el problema que has encontrado con el mayor detalle posible.' : '¿Tienes alguna idea para mejorar el juego? ¡Te escuchamos!' }}
+       {{ reportType() === 'bug' ? ('SETTINGS.REPORT_BUG_DESC' | translate) : ('SETTINGS.SUGGEST_IMPROVEMENT_DESC' | translate) }}
      </p>
      
-     <textarea #reportText class="w-full bg-black/40 border border-glass-border rounded-xl p-3 text-white text-sm outline-none focus:border-secondary transition-colors mb-4 resize-none h-32" placeholder="Escribe tu mensaje aquí..."></textarea>
+     <textarea #reportText class="w-full bg-black/40 border border-glass-border rounded-xl p-3 text-white text-sm outline-none focus:border-secondary transition-colors mb-4 resize-none h-32" [placeholder]="'SETTINGS.REPORT_PLACEHOLDER' | translate"></textarea>
      
      <div modal-footer class="w-full flex gap-3">
        <button (click)="closeReportModal()" class="flex-1 py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest text-xs">
-         Cancelar
+         {{ 'COMMON.CANCEL' | translate }}
        </button>
        <button (click)="sendReport(reportText.value); reportText.value = ''" [disabled]="isSendingReport()" class="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest text-xs disabled:opacity-50">
-         {{ isSendingReport() ? 'Enviando...' : 'Enviar' }}
+         {{ isSendingReport() ? ('SETTINGS.SENDING' | translate) : ('SETTINGS.SEND' | translate) }}
        </button>
      </div>
    </app-modal>
@@ -181,7 +182,7 @@ import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.co
      <p class="text-base text-textMuted mb-2 w-full text-center">{{ alertModal().message }}</p>
      
      <button modal-footer (click)="alertModal.set({show: false, title: '', message: '', success: false})" class="w-full py-4 bg-glass hover:bg-white/10 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest cursor-pointer">
-       Cerrar
+       {{ 'SETTINGS.CLOSE' | translate }}
      </button>
    </app-modal>
   </div>
@@ -194,6 +195,7 @@ export class Settings implements OnInit {
   public themeService = inject(ThemeService);
   public billing = inject(BillingService);
   private reportService = inject(ReportService);
+  private uiService = inject(UiService);
 
   // Modals signals
   isReportModalOpen = signal(false);
@@ -217,8 +219,23 @@ export class Settings implements OnInit {
   }
 
   changeLanguage(lang: string) {
+    if (this.currentLang === lang) return;
     this.currentLang = lang;
-    this.translate.use(lang);
+    this.uiService.setLoading(true);
+    
+    // Save preference
+    localStorage.setItem('impostify_lang', lang);
+    
+    // Change language and wait for the files to be loaded
+    this.translate.use(lang).subscribe({
+      next: () => {
+        // We add a tiny delay so the UI doesn't blink too fast if cached
+        setTimeout(() => this.uiService.setLoading(false), 300);
+      },
+      error: () => {
+        this.uiService.setLoading(false);
+      }
+    });
   }
 
   toggleOption(key: keyof typeof this.options) {
@@ -265,15 +282,15 @@ export class Settings implements OnInit {
     if (success) {
       this.alertModal.set({
         show: true,
-        title: '¡Recibido!',
-        message: 'Gracias por tu aporte. Hemos guardado el reporte correctamente.',
+        title: this.translate.instant('SETTINGS.SUCCESS_TITLE'),
+        message: this.translate.instant('SETTINGS.SUCCESS_MSG'),
         success: true
       });
     } else {
       this.alertModal.set({
         show: true,
-        title: 'Error',
-        message: 'No se pudo enviar el reporte. Comprueba tu conexión a internet.',
+        title: this.translate.instant('SETTINGS.ERROR_TITLE'),
+        message: this.translate.instant('SETTINGS.ERROR_MSG'),
         success: false
       });
     }

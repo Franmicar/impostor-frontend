@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ApiService } from '../../core/services/api/api.service';
 import { ThemeService } from '../../core/services/theme.service';
 import { AuthService } from '../../core/services/auth/auth.service';
+import { BillingService } from '../../core/services/billing.service';
 
 import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
@@ -14,7 +15,7 @@ import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.co
   standalone: true,
   imports: [TranslateModule, IconButtonComponent, ButtonPrimaryComponent, AuthProfileComponent],
   template: `
-    <div class="flex flex-col items-center justify-center min-h-dvh bg-transparent text-textPrimary px-6 relative overflow-hidden">
+    <div class="flex flex-col items-center min-h-dvh bg-transparent text-textPrimary px-6 relative overflow-y-auto">
         
         <div class="absolute top-4 right-4 flex gap-4 z-50 items-center">            <!-- Premium Button -->
             <button (click)="openPremium()" class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white hover:opacity-90 transition-all active:scale-95 shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] animate-pulse-slow">
@@ -38,7 +39,7 @@ import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.co
             <app-auth-profile avatarSize="w-10 h-10"></app-auth-profile>
         </div>
 
-        <div class="flex-1 flex flex-col items-center justify-center w-full max-w-md mt-12">
+        <div class="w-full max-w-md my-auto pt-24 pb-8 flex flex-col items-center">
             <!-- New Character Mask Image -->
             <img [src]="themeService.getImagePath('/images/home_impostor_mask.png')" alt="Impostor Mask" class="w-48 h-48 sm:w-56 sm:h-56 object-cover rounded-full shadow-[0_0_30px_rgb(var(--color-secondary)/0.4)] border-2 border-primary mb-6 animate-pulse neon-dynamic-img" />
             
@@ -79,6 +80,7 @@ export class HomeComponent implements OnInit {
   private apiService = inject(ApiService);
   public themeService = inject(ThemeService);
   public authService = inject(AuthService);
+  public billing = inject(BillingService);
 
   ngOnInit() {
     // Wake up the backend and prefetch packages so Setup screen is instant

@@ -34,7 +34,18 @@ export class App {
     const translate = inject(TranslateService);
     translate.addLangs(['es', 'en', 'fr', 'ca', 'it', 'pt', 'de', 'ru', 'zh', 'ja']);
     translate.setFallbackLang('es');
+    
+    // Default to 'es' synchronously to prevent empty screens
     translate.use('es');
+    
+    try {
+      const savedLang = localStorage.getItem('impostify_lang');
+      if (savedLang) {
+        translate.use(savedLang);
+      }
+    } catch (e) {
+      // Ignored
+    }
 
     this.billingService.initialize().then(() => {
       this.adsService.initialize();

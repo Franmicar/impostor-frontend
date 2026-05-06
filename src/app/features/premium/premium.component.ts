@@ -1,8 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BillingService } from '../../core/services/billing.service';
+import { ThemeService } from '../../core/services/theme.service';
 
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { HeaderComponent } from '../../shared/components/ui/header.component';
@@ -14,16 +15,20 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
  standalone: true,
  imports: [CommonModule, TranslateModule, ButtonSecondaryComponent, ModalComponent, HeaderComponent, FooterComponent],
  template: `
-  <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col custom-scrollbar relative">
-   <!-- Decoración de fondo extra para Premium -->
+  <!-- Fixed Background -->
+  <div class="fixed inset-0 z-30" [class]="themeService.currentTheme() === 'infantil' ? 'bg-white' : 'bg-slate-900'">
    <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none"></div>
+  </div>
+
+  <!-- Scrolling Content -->
+  <div class="fixed inset-0 bg-transparent text-textPrimary flex flex-col custom-scrollbar overflow-y-auto z-40 pb-[160px]">
 
    <!-- Header -->
    <app-header [showBack]="true" [title]="''" (onBack)="goBack()">
     <div header-extra class="scale-90 origin-right">
      <app-button-secondary (onClick)="restorePurchases()">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
-      <span>Restaurar</span>
+      <span>{{ 'PREMIUM.RESTORE' | translate }}</span>
      </app-button-secondary>
     </div>
    </app-header>
@@ -36,8 +41,8 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
        <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
       </svg>
      </div>
-     <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-wider mb-2">DECEPTRA PRO</h1>
-     <p class="text-textMuted text-sm">Desbloquea todo el potencial del juego.</p>
+     <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-wider mb-2">{{ 'PREMIUM.TITLE' | translate }}</h1>
+     <p class="text-textMuted text-sm">{{ 'PREMIUM.SUBTITLE' | translate }}</p>
     </div>
 
     <!-- Ventajas -->
@@ -47,25 +52,25 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
        <div class="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
        </div>
-       <span class="text-sm font-medium text-textPrimary">Experiencia libre de anuncios</span>
+       <span class="text-sm font-medium text-textPrimary">{{ 'PREMIUM.FEATURE_1' | translate }}</span>
       </li>
       <li class="flex items-center gap-3">
        <div class="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
        </div>
-       <span class="text-sm font-medium text-textPrimary">Regalo Exclusivo: Tema "Neón 2" con colores variables Amarillos y Verdes.</span>
+       <span class="text-sm font-medium text-textPrimary">{{ 'PREMIUM.FEATURE_2' | translate }}</span>
       </li>
       <li class="flex items-center gap-3">
        <div class="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/50 shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
        </div>
-       <span class="text-sm font-medium text-textPrimary">Acceso ilimitado a crear Paquetes Personalizados</span>
+       <span class="text-sm font-medium text-textPrimary">{{ 'PREMIUM.FEATURE_3' | translate }}</span>
       </li>
      </ul>
     </div>
 
     <!-- Planes -->
-    <h2 class="text-sm font-bold text-textMuted uppercase tracking-widest mb-4 ml-2">Elige tu plan</h2>
+    <h2 class="text-sm font-bold text-textMuted uppercase tracking-widest mb-4 ml-2">{{ 'PREMIUM.CHOOSE_PLAN' | translate }}</h2>
     
     @if (isLoading()) {
      <div class="flex items-center justify-center p-8">
@@ -82,12 +87,12 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
         
         @if (plan.packageType === 'ANNUAL') {
          <div class="absolute top-0 right-0 bg-primary text-white text-[0.6rem] font-bold px-2 py-1 rounded-bl-lg">
-          MEJOR VALOR
+          {{ 'PREMIUM.BEST_VALUE' | translate }}
          </div>
         }
 
         <div>
-         <h3 class="text-lg font-bold text-white">{{ plan.product.title }}</h3>
+         <h3 class="text-lg font-bold text-white">{{ 'PREMIUM.PLAN_' + plan.packageType | translate }}</h3>
         </div>
         <div class="text-right">
          <div class="text-xl font-black text-secondary drop-shadow-[0_0_8px_rgb(var(--color-secondary)/0.4)]">{{ plan.product.priceString }}</div>
@@ -104,7 +109,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
      (click)="purchase()"
      [disabled]="isLoading() || !selectedPlan()"
      class="w-full relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 text-xl shadow-[0_0_30px_rgb(var(--color-primary)/0.4)] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 mx-auto">
-     <span class="relative z-10 drop-shadow-md tracking-wider">SUSCRIBIRSE</span>
+     <span class="relative z-10 drop-shadow-md tracking-wider">{{ 'PREMIUM.SUBSCRIBE' | translate }}</span>
     </button>
    </app-footer>
 
@@ -119,7 +124,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
      <p class="text-base text-textMuted mb-2 w-full text-center">{{ alertModal().message }}</p>
      
      <button modal-footer (click)="closeAlert()" class="w-full py-4 bg-glass hover:bg-white/10 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest cursor-pointer">
-       Cerrar
+       {{ 'PREMIUM.CLOSE' | translate }}
      </button>
    </app-modal>
   </div>
@@ -133,6 +138,8 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
 export class PremiumComponent implements OnInit {
  private router = inject(Router);
  public billing = inject(BillingService);
+ public themeService = inject(ThemeService);
+ public translate = inject(TranslateService);
  
  plans = signal<any[]>([]);
  selectedPlan = signal<any | null>(null);
@@ -168,9 +175,9 @@ export class PremiumComponent implements OnInit {
   this.isLoading.set(false);
   
   if (success) {
-   this.alertModal.set({show: true, title: '¡Suscripción Activada!', message: 'Gracias por tu compra. Ya eres PRO.', success: true});
+   this.alertModal.set({show: true, title: this.translate.instant('PREMIUM.SUCCESS_TITLE'), message: this.translate.instant('PREMIUM.SUCCESS_MSG'), success: true});
   } else {
-   this.alertModal.set({show: true, title: 'Error', message: 'No se pudo completar la compra.', success: false});
+   this.alertModal.set({show: true, title: this.translate.instant('PREMIUM.ERROR_TITLE'), message: this.translate.instant('PREMIUM.ERROR_MSG'), success: false});
   }
  }
 
@@ -179,9 +186,9 @@ export class PremiumComponent implements OnInit {
   const success = await this.billing.restorePurchases();
   this.isLoading.set(false);
   if (success) {
-   this.alertModal.set({show: true, title: 'Restaurado', message: 'Tus compras han sido restauradas.', success: true});
+   this.alertModal.set({show: true, title: this.translate.instant('PREMIUM.RESTORE_TITLE'), message: this.translate.instant('PREMIUM.RESTORE_MSG'), success: true});
   } else {
-   this.alertModal.set({show: true, title: 'Error', message: 'No se encontraron compras activas.', success: false});
+   this.alertModal.set({show: true, title: this.translate.instant('PREMIUM.ERROR_TITLE'), message: this.translate.instant('PREMIUM.RESTORE_ERROR_MSG'), success: false});
   }
  }
 

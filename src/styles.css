@@ -183,7 +183,7 @@
 
   body {
     margin: 0;
-    padding-bottom: 7rem;
+    padding-bottom: 10rem;
     /* Espacio para footer */
     font-family: 'Space Grotesk', Roboto, "Helvetica Neue", sans-serif;
     color: var(--text-main);
@@ -195,7 +195,7 @@
   }
 
   body.no-pb {
-    padding-bottom: 0 !important;
+    padding-bottom: 3rem !important;
   }
 }
 
