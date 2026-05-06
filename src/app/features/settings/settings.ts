@@ -11,6 +11,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
 import { HeaderComponent } from '../../shared/components/ui/header.component';
 import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.component';
 import { UiService } from '../../core/services/ui/ui.service';
+import packageJson from '../../../../package.json';
 
 @Component({
   selector: 'app-settings',
@@ -142,7 +143,7 @@ import { UiService } from '../../core/services/ui/ui.service';
       <h1 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-1 uppercase tracking-wider">
         Deceptra
       </h1>
-      <p class="text-textPrimary text-sm">{{ 'SETTINGS.VERSION' | translate }}</p>
+      <p class="text-textPrimary text-sm">{{ 'SETTINGS.VERSION' | translate:{ version: appVersion } }}</p>
       <p class="text-textMuted text-xs mt-2">support.deceptra&#64;gmail.com</p>
       <p class="text-textMuted text-xs mt-4">{{ 'SETTINGS.DEV_INFO' | translate }}</p>
     </section>
@@ -204,6 +205,7 @@ export class Settings implements OnInit {
   alertModal = signal({ show: false, title: '', message: '', success: false });
 
   currentLang = 'es';
+  appVersion = packageJson.version;
 
   options = {
     vibration: true,

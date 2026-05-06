@@ -25,7 +25,7 @@ export interface SelectOption {
       
       @if (isOpen()) {
         <div class="fixed inset-0 z-40" (click)="isOpen.set(false)"></div>
-        <div class="absolute right-0 top-full mt-1 w-full z-50 bg-glass backdrop-blur-xl rounded-2xl border border-primary shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] p-2 flex flex-col gap-1 max-h-60 overflow-y-auto overflow-x-hidden custom-scrollbar">
+        <div class="absolute right-0 bottom-full mb-1 min-w-full w-max z-50 bg-glass backdrop-blur-xl rounded-2xl border border-primary shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] p-2 flex flex-col gap-1 max-h-60 overflow-y-auto overflow-x-hidden custom-scrollbar">
           @for (option of options; track option.value) {
             <div 
               (click)="selectOption(option.value)" 

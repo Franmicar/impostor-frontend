@@ -50,7 +50,7 @@
     "VIBRATION": "Вибрация",
     "SOUND": "Звуковые эффекты",
     "DARK_THEME": "Тёмная тема",
-    "VERSION": "Версия 1.2.1",
+    "VERSION": "Версия {{version}}",
     "DEV_INFO": "Создано для лучших вечеринок.",
     "VISUAL_STYLE": "Visual Style",
     "THEME_NEON": "Neon / Cyberpunk",

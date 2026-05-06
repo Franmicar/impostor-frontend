@@ -50,7 +50,7 @@
     "VIBRATION": "Vibration",
     "SOUND": "Effets sonores",
     "DARK_THEME": "Thème sombre",
-    "VERSION": "Version 1.2.1",
+    "VERSION": "Version {{version}}",
     "DEV_INFO": "Développé pour la meilleure ambiance de fête.",
     "VISUAL_STYLE": "Visual Style",
     "THEME_NEON": "Neon / Cyberpunk",
@@ -114,7 +114,10 @@
     "SAVE": "Sauvegarder",
     "WARNING_CANNOT_START": "Il manque des joueurs, des imposteurs ou un paquet de mots pour commencer.",
     "PREMIUM_BANNER_TITLE": "Buy Premium",
-    "PREMIUM_BANNER_DESC": "Remove ads and get exclusive themes"
+    "PREMIUM_BANNER_DESC": "Remove ads and get exclusive themes",
+    "DURATION_INFO": "Définissez si vous voulez une limite de temps globale pour débattre. En mode dessin, le temps de chaque joueur est configuré séparément dans l'option Temps du tour.",
+    "DRAW_TIME": "Temps du tour",
+    "SECS": "Secondes"
   },
   "SETUP_PLAYERS": {
     "TITLE": "Joueurs",
@@ -140,7 +143,9 @@
     "ONE_SELECTED": "1 Sélectionné",
     "N_SELECTED": "{{count}} Sélectionnés",
     "CREATE_CUSTOM": "Create Package",
-    "CREATE_CUSTOM_DESC": "Add your own words"
+    "CREATE_CUSTOM_DESC": "Add your own words",
+    "INSTRUCTION": "Sélectionnez un ou plusieurs packs de mots pour votre partie.",
+    "WORDS": "mots"
   },
   "SETUP_MODES": {
     "TITLE": "Mode de jeu",

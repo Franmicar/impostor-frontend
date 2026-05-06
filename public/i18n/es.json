@@ -50,7 +50,7 @@
     "VIBRATION": "Vibración",
     "SOUND": "Efectos de Sonido",
     "DARK_THEME": "Tema Oscuro",
-    "VERSION": "Versión 1.4.6",
+    "VERSION": "Versión {{version}}",
     "DEV_INFO": "Desarrollado para el mejor ambiente de fiesta.",
     "VISUAL_STYLE": "Estilo Visual",
     "THEME_NEON": "Neón / Cyberpunk",

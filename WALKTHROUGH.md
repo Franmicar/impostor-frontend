@@ -59,45 +59,55 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Implementación de Dinámicas de Juego**: Expansión del Core (`GameEngineService`) e interfaz en `/setup` para acomodar la selección entre mecánicas de Palabras, Preguntas y Dibujo como selector principal de partida.
 - **Localización Expandida**: La arquitectura de i18n ahora maneja y carga dinámicamente traducciones en FR y CA en las directivas y componentes de configuración.
 - **Assets y Medios**: Integración robusta de recursos visuales y logos 3D en la selección de paquetes.
+
 ### Versión 1.2.0
 - **Integración Firebase (Cloud Presets)**: Adición de `@angular/fire` para el guardado de perfiles de jugadores habituales asociados al usuario de Google y sincronizados en la nube.
 - **Optimización de Medios (DOM Canvas)**: Refactor del input file para redimensionar en un Canvas invisible del lado cliente y comprimir a `base64` en JPEG las fotografías subidas para los avatares, evitando cuellos de botella en la base de datos de Firebase.
 - **Flujo de Votación Visual**: Modificación del `GameEngineService` y la pantalla `/vote` para transportar el árbol de datos complejos (`photoUrl`) hasta la fase de votación de forma intacta.
 - **Modales UI Internos**: Completa purga de las interrupciones nativas del navegador y reimplementación de sistemas de alerta por Signal atados a traducciones puras dentro del componente.
+
 ### Versión 1.2.1
 - **Mejoras QoL en Diseño Dibuja**: Reestructuración del layout de la pantalla de la pizarra, pasando los selectores de colores y la acción de deshacer antes del temporizador principal. Adición de colores grises y marrones fijos y preestablecidos.
 - **Flujo 'Volver a Pintar' y Galería**: Configuración en la pantalla de votación y en memoria (signal multilineal) para que, en modalidades ágiles, los jugadores puedan elegir entre continuar con las capas del lienzo de la ronda anterior o iniciar un borrado completo nuevo, registrando en un paginador interactivo los bocetos anteriores. 
 - **Instalación de Librería de Recorte (ngx-image-cropper)**: Se subió a 5MB el límite para avatares y se incorporó de forma nativa la librería más utilizada para recorte en formato base 1:1, asegurando máxima precisión estética y manteniendo en 200px la subida final para evitar carga asincrónica pesada.
+
 ### Versión 1.3.0
 - **Refactorización de Viewport para Navegadores**: Sustitución global de las métricas `screen` y `100vh` en favor del estándar puro `dvh` (Dynamic Viewport Height) a través de TailwindCSS en todos los micro-componentes para solventar los parpadeos y bandas blancas nativas de iOS Safari y Chrome Android.
 - **Construcción de App Nativa**: Modernización arquitectónica enchufando **Ionic Capacitor v8**. Acoplamiento del motor a Angular e inyección directa de un Workflow (`build-android.yml`) en GitHub Actions para el empaquetado autónomo, testeo y compilación del entorno Java 21 y node, emitiendo artefactos `.apk` para consumo inmediato.
+
 ### Versión 1.3.1
 - **Aesthetic y Metadatos**: Se completó la inyección de Favicon dinámico web, renombrado de etiquetas y generación autónoma de Splash Screens (pantallas de carga) e Íconos adaptados para todo el ecosistema Android mediante IA siguiendo la guía del Glassmorfismo Oscuro Neón.
 - **Flujo de Renderizado de GPU**: Refactor del deslizado de cartas de roles en `/play` para inyectar optimización `will-change: transform` e interpolaciones físicas Spring, logrando tirones ultrasuaves a 60fps en pantallas táctiles nativas.
 - **Corrección Criptográfica (Login App & DB)**: Refactor integral de la sincronía Capacitor-Firebase Auth para posibilitar el inicio de sesión nativo de Android sin popups, garantizando que el motor de Angular lea las credenciales correctas en tiempo unificado y evite los bloqueos de seguridad de tipo Firestore Fetch Limits.
 - **Pipelines App Bundles**: Alteración completa del archivo maestro Cloud de GitHub Actions en YAML, pasando de generar el binario `.apk` a certificar en cada rama Master un archivo opcional `.aab` de publicación optimizada listo para subir a la Google Play Store.
+
 ### Versión 1.4.0
 - **Rebranding (Deceptra)**: Actualización completa de la identidad del juego hacia el nombre oficial "Deceptra", incluyendo mejoras de la UI visual y renombrado nativo de la app.
 - **Publicación en Google Play Console**: Modificación y estabilización definitiva del Application ID de Android (`com.ras.impostorapp`), implementando incrementos de código y permisos restrictivos nativos requeridos para publicación como el de publicidad (`AD_ID`).
 - **Automatización Segura de Firmas (PEPK)**: Extensión y resolución profunda en los pipelines de Integración Continua (CI) en GitHub Actions para lidiar con el encriptado automático del Keystore hacia las normativas de Play Store. Integración de la herramienta de cifrado PEPK (Play Encrypt Private Key) salvando colisiones asíncronas del TTY y sintaxis con Java 8.
 - **Expansión de Contenido General**: Revisión estética y limpieza de artefactos obsoletos preparatoria para el ciclo de lanzamiento continuo.
+
 ### Versión 1.4.1
 - **Visualizador de Paquetes**: Integración de modal asíncrono estilo *glassmorfismo* en la configuración inicial, permitiendo previsualizar el contenido (palabras) exacto de cada paquete activo mediante peticiones REST al backend.
 - **Mecánica de Cambio Dinámico**: Adición de la acción "Cambiar palabra" en pleno juego (fase play), posibilitando reiniciar la ronda en vivo, resetear la palabra secreta e invocar una nueva distribución pseudo-aleatoria de roles a través del motor `GameEngineService` con un solo clic.
 - **Ajustes QoL y de Diseño**: Refinamientos UI/UX en las botoneras de configuración y unificación visual para mantener la responsividad de los componentes de configuración en la versión móvil y tablet.
+
 ### Versión 1.4.2
 - **Gestión de Suscripciones (Premium)**: Implementación de pantalla nativa de pagos con 3 niveles (Mensual, Trimestral y Anual) utilizando la pasarela nativa vía RevenueCat. Inyección de rutas de acceso desde `/home` y `/setup` bajo el botón "Comprar Premium".
 - **Motor Multi-Temas (Theme Service)**: Transición del antiguo switch Binario ("Modo oscuro") hacia un administrador de ecosistemas de color (`ThemeService`), integrando 3 paletas globales con interpolaciones de variables en TailwindCSS: *Neón / Cyberpunk (Principal)*, *Neón 2 (Regalo Premium)*, e *Infantil (Gratis)*.
 - **Expansión Visual (Arte por IA)**: Sustitución íntegra de casi 20 ilustraciones de los paquetes y fondos base para homogeneizar el aspecto hacia el *Neon Cyberpunk*, y generación de una alternativa *Infantil* amigable completa.
 - **QoL en UI y Anuncios**: Configuración estricta del padding base del navegador Capacitor (`pb-[76px]`) para sortear el overol nativo del banner de Google AdMob y evitar ocultación de botones fijos interactivos. Modificación del Application ID de prueba en AndroidManifest.
+
 ### Versión 1.4.3
 - **Refinamiento UI Premium y Layout**: Reestructuración del padding global (`pb-[96px]`) para sortear el banner dinámico de AdMob garantizando accesibilidad total a botones flotantes de pie de página en todo el circuito de configuración (`/setup` y sub-vistas). Estandarización de las sombras (`box-shadow`) en botones modales tipo *cancelar/salir* para homogeneizar toda la aplicación.
 - **Glassmorfismo 3D Avanzado**: Reinvención de la clase CSS (`.setup-img-box`) responsable de encapsular iconografías dinámicas. Integración de capas difuminadas (`::before`), gradientes radiales excéntricos y refracción lumínica para emular materialidad de cristal reflectante bajo la estética Cyberpunk, parametrizado inteligentemente por `ThemeService` para adaptarse cromáticamente a "Neon 1" (Cyan) y "Neon 2" (Esmeralda/Oro).
 - **Hardening Autenticación**: Resolución estructural de los vectores de Firebase Android (`google-services.json`) para soportar correctamente los flujos OAuth nativos del SDK `@capacitor-firebase/authentication` en despliegues físicos `.apk`.
 - **Actualizaciones Legales**: Modernización de la política de privacidad expuesta por el Backend para amparar explícitamente los protocolos OAuth2 (Google Login) frente a normativas Play Store.
+
 ### Versión 1.4.4
 - **Sistema de Feedback In-App**: Integración nativa de un formulario de reporte de errores ("Bugs") y "Sugerencias" en la pantalla de Ajustes. El sistema captura silenciosamente metadatos del dispositivo (SO, Modelo, Versión App) mediante `@capacitor/device` e inyecta los tickets directamente en Firestore (`reports`), abstrayendo al usuario de usar clientes de correo externos.
 - **Identidad de Soporte Dedicada**: Despliegue de un correo electrónico oficial de soporte (`support.deceptra@gmail.com`) expuesto en la aplicación y acoplado en las normativas de la política de privacidad.
+
 ### Versión 1.4.5
 - **Refactorización de Arquitectura UI**: Creación de componentes genéricos `HeaderComponent` y `FooterComponent` para centralizar y estandarizar las cabeceras (con títulos dinámicos y navegación) y pies de página (control de paddings condicionales para Ads) en más de 8 pantallas.
 - **Optimización de UX Premium**: El `FooterComponent` inyecta dinámicamente un espaciado reducido (`padding-bottom: 30px`) frente al habitual (`80px`) para suprimir el margen muerto cuando el usuario tiene Premium. Esto centraliza la lógica visual en un solo bloque.
@@ -107,6 +117,7 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Expansión y Refinamiento del Modo Detective**: Actualización de la lógica del juego para exigir un mínimo de 4 jugadores. Rediseño del modal de "Resolver", depurándolo de palabras duplicadas en la lista sugerida e implementando comprobación en tiempo real para bloquear el botón de "Adivinar" hasta que la palabra exista. Paralelización de botones ("Votar" y "Resolver") con nueva iconografía.
 - **Localización Completa**: Adición y normalización en los 8 idiomas soportados de las nuevas cadenas para cabeceras y estados del juego.
 - **Google Login Nativo (Configuración en desarrollo)**: Ajustes en el cliente para lidiar con `@capacitor-firebase/authentication` requiriendo tokens nativos.
+
 ### Versión 1.4.6
 - **Hotfix de la versión 1.4.5**: Últimos retoques de UI y el inicio de sesión con Google ya funciona.
 
@@ -125,3 +136,9 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Soporte AdMob Dinámico Avanzado**: Refinamiento de la política de `padding-bottom` universal para asegurar que ningún botón de acción crítica en `Home`, `Play`, `Premium` y `Results` quede tapado o inutilizable por los banners publicitarios.
 - **Internacionalización Profunda (i18n)**: Integración masiva de cientos de claves de traducción omitidas previamente. Localización completa de la pantalla "Premium" (planes y botones), "Ajustes" (selección de temas, reportes de bugs, preferencias de hardware), "Setup" (gestión de grupos y creación de paquetes) y "Paquetes Personalizados" a los 10 idiomas.
 - **Persistencia de Lenguaje Inteligente**: Inyección y orquestación del `UiService` junto al uso de almacenamiento nativo de Capacitor/Web (`localStorage` / `Preferences`) para garantizar que la selección de idioma no solo muestra transiciones de carga fluidas, sino que persiste y se reanuda correctamente al cerrar y volver a abrir la aplicación.
+
+### Versión 1.4.9
+- **Centrado y Ajuste Dinámico de Setup**: Reestructuración del contenedor principal de la pantalla de ajustes de partida, eliminando justificaciones forzadas para anclar de forma natural el contenido al tope, mejorando drásticamente el espacio sobrante en móviles de formato panorámico y pantallas alargadas.
+- **Mejora Componente Select (Dropdowns)**: Rediseño completo de los comportamientos de apertura de menús desplegables de tiempo (ahora se abren hacia arriba) y ajuste dinámico inteligente de anchura alineado al margen derecho para evitar solapamientos con los botones.
+- **Parametrización de Versión (i18n)**: Integración de lectura directa del `package.json` a través de Angular para inyectar dinámicamente la versión de la app en la pantalla de Ajustes. Todos los archivos `.json` de idioma ahora utilizan la variable `{{version}}`.
+- **Auditoría de Traducciones Automática**: Desarrollo de scripts para comparar árboles JSON e inyección automática de claves faltantes de `Setup`, `Draw` y `Play` detectadas en los idiomas Alemán, Catalán y Francés.

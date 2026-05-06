@@ -59,7 +59,7 @@ export interface PlayerConfig {
         <app-auth-profile avatarSize="w-8 h-8" [showLoginButton]="true"></app-auth-profile>
       </div>
      </app-header>
-     <main class="flex-1 px-4 relative custom-scrollbar">
+     <main class="flex-1 px-4 relative custom-scrollbar pt-2 sm:pt-4">
 
       <!-- INFO MODAL -->
       <app-modal
@@ -107,7 +107,7 @@ export interface PlayerConfig {
        <!-- MODO DE JUEGO -->
        <div 
         (click)="activeScreen.set('modes')"
-        class="flex items-center justify-between p-2 sm:p-[0.8rem] hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer first:rounded-t-2xl">
+        class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer first:rounded-t-2xl">
         <div class="flex items-center gap-3">
          <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.getImagePath('/images/setup/mode.png')" alt="" class="w-full h-full object-cover neon-dynamic-img">
@@ -128,7 +128,7 @@ export interface PlayerConfig {
        <!-- TIPO DE JUEGO -->
        <div 
         (click)="activeScreen.set('types')"
-        class="flex items-center justify-between p-2 sm:p-[0.8rem] hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer border-b border-glass-border">
+        class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer border-b border-glass-border">
         <div class="flex items-center gap-3">
          <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.getImagePath('/images/setup/type.png')" alt="" class="w-full h-full object-cover neon-dynamic-img">
@@ -149,7 +149,7 @@ export interface PlayerConfig {
        <!-- JUGADORES -->
        <div 
         (click)="activeScreen.set('players')"
-        class="flex items-center justify-between p-2 sm:p-[0.8rem] hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer">
+        class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer">
         <div class="flex items-center gap-3">
          <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.getImagePath('/images/setup/players.png')" alt="" class="w-full h-full object-cover neon-dynamic-img">
@@ -169,7 +169,7 @@ export interface PlayerConfig {
 
        <!-- IMPOSTORES -->
        @if (gameMode().id !== 'chaos' && gameMode().id !== 'fast') {
-         <div class="flex items-center justify-between p-2 sm:p-[0.8rem] hover:bg-white/5 transition-colors">
+         <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors">
           <div class="flex items-center gap-3">
            <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
             <img [src]="themeService.getImagePath('/images/setup/impostors.png')" alt="" class="w-full h-full object-contain p-1 neon-dynamic-img">
@@ -191,7 +191,7 @@ export interface PlayerConfig {
 
        <!-- DETECTIVES (Condicional) -->
        @if (gameMode().id === 'detective') {
-        <div class="flex items-center justify-between p-2 sm:p-[0.8rem] hover:bg-white/5 transition-colors">
+        <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors">
           <div class="flex items-center gap-3">
            <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
             <img [src]="themeService.getImagePath('/images/setup/detectives.png')" alt="" class="w-full h-full object-contain p-1 neon-dynamic-img">
@@ -213,7 +213,7 @@ export interface PlayerConfig {
 
        <!-- PISTAS -->
        @if (gameMode().id !== 'team' && gameMode().id !== 'infiltrator') {
-         <div class="flex items-center justify-between p-2 sm:p-[0.8rem] hover:bg-white/5 transition-colors">
+         <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors">
           <div class="flex items-center gap-3">
            <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
             <img [src]="themeService.getImagePath('/images/setup/hints.png')" alt="" class="w-full h-full object-contain p-1 neon-dynamic-img">
@@ -239,7 +239,7 @@ export interface PlayerConfig {
        <!-- PAQUETES -->
        <div 
         (click)="activeScreen.set('packages')"
-        class="flex items-center justify-between p-2 sm:p-[0.8rem] hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer">
+        class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer">
         <div class="flex items-center gap-3">
          <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.getImagePath('/images/setup/package.png')" alt="" class="w-full h-full object-cover neon-dynamic-img">
@@ -266,7 +266,7 @@ export interface PlayerConfig {
        </div>
 
        <!-- DURACION -->
-       <div class="flex items-center justify-between p-2 sm:p-[0.8rem] hover:bg-white/5 transition-colors" [class.last:rounded-b-2xl]="gameType().id !== 'draw'" [class.border-b]="gameType().id === 'draw'" [class.border-glass-border]="gameType().id === 'draw'">
+       <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors" [class.last:rounded-b-2xl]="gameType().id !== 'draw'" [class.border-b]="gameType().id === 'draw'" [class.border-glass-border]="gameType().id === 'draw'">
         <div class="flex items-center gap-3">
          <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.getImagePath('/images/setup/duration.png')" alt="" class="w-full h-full object-contain p-1 neon-dynamic-img">
@@ -288,7 +288,7 @@ export interface PlayerConfig {
 
        <!-- TIEMPO DE DIBUJO -->
        @if(gameType().id === 'draw') {
-       <div class="flex items-center justify-between p-2 sm:p-[0.8rem] hover:bg-white/5 transition-colors last:rounded-b-2xl">
+       <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors last:rounded-b-2xl">
         <div class="flex items-center gap-3">
          <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.getImagePath('/images/setup/turn_time.png')" alt="" class="w-full h-full object-contain p-1 neon-dynamic-img">

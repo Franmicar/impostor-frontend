@@ -50,7 +50,7 @@
     "VIBRATION": "Vibration",
     "SOUND": "Soundeffekte",
     "DARK_THEME": "Dunkles Design",
-    "VERSION": "Version 1.2.1",
+    "VERSION": "Version {{version}}",
     "DEV_INFO": "Entwickelt für die beste Party-Atmosphäre.",
     "VISUAL_STYLE": "Visual Style",
     "THEME_NEON": "Neon / Cyberpunk",
@@ -179,7 +179,9 @@
     "CHANGE_WORD": "Change word",
     "CHANGE_WORD_TITLE": "Change Word",
     "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
-    "CHANGE_WORD_CONFIRM": "YES, RESTART"
+    "CHANGE_WORD_CONFIRM": "YES, RESTART",
+    "ROLE_AND_WORD": "Rolle und Wort",
+    "WHO_STARTS": "Wer fängt an?"
   },
   "DRAW": {
     "NO_ACTIVE_GAME": "Kein aktives Spiel.",
@@ -192,7 +194,8 @@
     "READY_TO_DRAW": "Bereit? Du hast {{time}} Sekunden!",
     "START_MY_TURN": "ZEICHNEN STARTEN",
     "PASS_TURN": "ZUG WEITERGEBEN",
-    "GO_TO_VOTE": "ZUR ABSTIMMUNG"
+    "GO_TO_VOTE": "ZUR ABSTIMMUNG",
+    "TITLE": "Zeichnen"
   },
   "VOTE": {
     "VIEW_DRAWING": "Zeichnung ansehen",

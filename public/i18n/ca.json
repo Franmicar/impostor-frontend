@@ -50,7 +50,7 @@
     "VIBRATION": "Vibració",
     "SOUND": "Efectes de So",
     "DARK_THEME": "Tema Fosc",
-    "VERSION": "Versió 1.2.1",
+    "VERSION": "Versió {{version}}",
     "DEV_INFO": "Desenvolupat per al millor ambient de festa.",
     "VISUAL_STYLE": "Estilo Visual",
     "THEME_NEON": "Neón / Cyberpunk",
@@ -179,7 +179,9 @@
     "CHANGE_WORD": "Change word",
     "CHANGE_WORD_TITLE": "Change Word",
     "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
-    "CHANGE_WORD_CONFIRM": "YES, RESTART"
+    "CHANGE_WORD_CONFIRM": "YES, RESTART",
+    "ROLE_AND_WORD": "Rol i paraula",
+    "WHO_STARTS": "¿Qui comença?"
   },
   "DRAW": {
     "NO_ACTIVE_GAME": "No hi ha partida activa ara mateix.",
@@ -192,7 +194,8 @@
     "READY_TO_DRAW": "Estàs llest? Només tens {{time}} segons!",
     "START_MY_TURN": "COMENÇAR A DIBUIXAR",
     "PASS_TURN": "PASSAR TORN",
-    "GO_TO_VOTE": "ANAR A VOTAR"
+    "GO_TO_VOTE": "ANAR A VOTAR",
+    "TITLE": "Dibuixa"
   },
   "VOTE": {
     "VIEW_DRAWING": "Veure Dibuix",

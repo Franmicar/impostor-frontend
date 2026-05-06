@@ -50,7 +50,7 @@
     "VIBRATION": "震动",
     "SOUND": "音效",
     "DARK_THEME": "深色模式",
-    "VERSION": "版本 1.2.1",
+    "VERSION": "版本 {{version}}",
     "DEV_INFO": "为最佳派对体验而打造。",
     "VISUAL_STYLE": "Visual Style",
     "THEME_NEON": "Neon / Cyberpunk",
