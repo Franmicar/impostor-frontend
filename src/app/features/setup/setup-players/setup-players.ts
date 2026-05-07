@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject, signal, effect, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject, signal, effect, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -20,6 +20,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
 @Component({
  selector: 'app-setup-players',
  standalone: true,
+ changeDetection: ChangeDetectionStrategy.OnPush,
  imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent, IconButtonComponent, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent, HeaderComponent, FooterComponent],
  template: `
   <div class="min-h-dvh flex flex-col bg-transparent text-white">
@@ -107,6 +108,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
        <input 
         type="text" 
         [(ngModel)]="player.name"
+        maxlength="15"
         class="flex-1 bg-glass outline-none p-3 rounded-lg text-textPrimary font-medium border border-transparent focus:border-secondary focus:bg-white/10 transition-all placeholder-textMuted min-w-0"
         [placeholder]="'SETUP_PLAYERS.P_NAME' | translate" />
         
@@ -310,20 +312,12 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
 export class SetupPlayers {
  private initialPlayersBackup: PlayerConfig[] = [];
 
- @Input() set currentPlayers(players: PlayerConfig[]) {
-  // Deep clone to avoid mutating parent until saved
-  this.initialPlayersBackup = JSON.parse(JSON.stringify(players));
-  this.localPlayers = JSON.parse(JSON.stringify(players));
- }
+ currentPlayers = input<PlayerConfig[]>([]);
+ presetId = input<string | null>(null);
 
- @Output() onBack = new EventEmitter<void>();
- @Output() onChange = new EventEmitter<PlayerConfig[]>();
-
- @Output() presetIdChange = new EventEmitter<string | null>();
-
- @Input() set presetId(val: string | null) {
-  this.selectedPresetId.set(val);
- }
+ onBack = output<void>();
+ onChange = output<PlayerConfig[]>();
+ presetIdChange = output<string | null>();
 
  authService = inject(AuthService);
  presetsService = inject(CloudPresetsService);
@@ -372,6 +366,18 @@ export class SetupPlayers {
     this.cloudPresets.set([]); // limpiar si cierra sesión
    }
   });
+
+  effect(() => {
+    const players = this.currentPlayers();
+    if (players && players.length > 0) {
+      this.initialPlayersBackup = JSON.parse(JSON.stringify(players));
+      this.localPlayers = JSON.parse(JSON.stringify(players));
+    }
+  }, { allowSignalWrites: true });
+
+  effect(() => {
+    this.selectedPresetId.set(this.presetId());
+  }, { allowSignalWrites: true });
  }
 
  drop(event: CdkDragDrop<PlayerConfig[]>) {

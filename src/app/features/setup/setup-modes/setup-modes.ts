@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ThemeService } from '../../../core/services/theme.service';
@@ -10,6 +10,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
 @Component({
   selector: 'app-setup-modes',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, TranslateModule, ButtonPrimaryComponent, HeaderComponent, FooterComponent],
   template: `
   <div class="h-full flex flex-col bg-transparent text-white">
@@ -58,17 +59,17 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
   styles: ``,
 })
 export class SetupModes implements OnInit {
-  @Input() currentMode!: { id: string; name: string };
-  @Output() onBack = new EventEmitter<void>();
+  currentMode = input<{ id: string; name: string }>();
+  onBack = output<void>();
 
   public themeService = inject(ThemeService);
   public billing = inject(BillingService);
-  @Output() onChange = new EventEmitter<{ id: string; name: string }>();
+  onChange = output<{ id: string; name: string }>();
 
   localMode: { id: string; name: string } | null = null;
 
   ngOnInit() {
-    this.localMode = this.currentMode;
+    this.localMode = this.currentMode() || null;
   }
 
   availableModes = [
@@ -128,7 +129,7 @@ export class SetupModes implements OnInit {
   }
 
   goBack() {
-    this.localMode = this.currentMode; // Discard changes
+    this.localMode = this.currentMode() || null; // Discard changes
     this.onBack.emit();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { ModalComponent } from './modal.component';
@@ -7,15 +7,16 @@ import { ButtonPrimaryComponent } from './button-primary.component';
 @Component({
   selector: 'app-auth-profile',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, ModalComponent, ButtonPrimaryComponent],
   template: `
     @if (authService.userSignal()) {
       <img [src]="authService.userSignal()?.photoURL || '/images/default-avatar.png'" 
            referrerpolicy="no-referrer" 
-           [class]="avatarSize + ' rounded-full border-2 border-secondary shadow-[0_0_10px_rgb(var(--color-secondary)/0.4)] cursor-pointer hover:scale-105 transition-transform'" 
+           [class]="avatarSize() + ' rounded-full border-2 border-secondary shadow-[0_0_10px_rgb(var(--color-secondary)/0.4)] cursor-pointer hover:scale-105 transition-transform'" 
            (click)="isLogoutModalOpen.set(true)" 
            title="Opciones de cuenta" />
-    } @else if (showLoginButton) {
+    } @else if (showLoginButton()) {
       <app-button-primary size="small" (onClick)="authService.loginWithGoogle()">
         Login
       </app-button-primary>
@@ -47,8 +48,8 @@ export class AuthProfileComponent {
   authService = inject(AuthService);
   isLogoutModalOpen = signal(false);
 
-  @Input() avatarSize: string = 'w-10 h-10';
-  @Input() showLoginButton: boolean = true;
+  avatarSize = input<string>('w-10 h-10');
+  showLoginButton = input<boolean>(true);
 
   confirmLogout() {
     this.isLogoutModalOpen.set(false);

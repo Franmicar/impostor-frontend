@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { UiService } from '../ui/ui.service';
+import { environment } from '../../../../environments/environment';
 
 export interface Package {
     id: string;
@@ -65,7 +66,9 @@ export class ApiService {
         try {
             const currentLang = this.translate.getCurrentLang() || this.translate.getFallbackLang() || 'es';
             const response = await firstValueFrom(
-                this.http.get<{ success: boolean, data: Package[] }>(`${this.apiUrl}/packages?lang=${currentLang}`)
+                this.http.get<{ success: boolean, data: Package[] }>(`${this.apiUrl}/packages?lang=${currentLang}`, {
+                    headers: { 'x-api-key': environment.backendApiKey }
+                })
             );
             if (response && response.success) {
                 this.packages.set(response.data);
@@ -104,7 +107,9 @@ export class ApiService {
         this.error.set(null);
         try {
             const response = await firstValueFrom(
-                this.http.get<{ success: boolean, data: { word: string, hint?: string, hints?: string[], fakeWord?: string }[] }>(`${this.apiUrl}/packages/${packageId}/words?lang=${currentLang}`)
+                this.http.get<{ success: boolean, data: { word: string, hint?: string, hints?: string[], fakeWord?: string }[] }>(`${this.apiUrl}/packages/${packageId}/words?lang=${currentLang}`, {
+                    headers: { 'x-api-key': environment.backendApiKey }
+                })
             );
             if (response && response.success) {
                 const words = response.data.map(w => ({

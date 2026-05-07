@@ -1,4 +1,6 @@
 import { Injectable, signal, effect, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Preferences } from '@capacitor/preferences';
 import { BillingService } from './billing.service';
 import { UiService } from './ui/ui.service';
 
@@ -23,15 +25,18 @@ export class ThemeService {
         });
 
         // Suscribirse a cambios premium para revertir tema si caduca
-        this.billing.isPremium$.subscribe(isPremium => {
+        this.billing.isPremium$.pipe(
+            takeUntilDestroyed()
+        ).subscribe(isPremium => {
             if (!isPremium && this.currentTheme() === 'neon2') {
                 this.setTheme('neon');
             }
         });
     }
 
-    private initTheme() {
-        const savedTheme = localStorage.getItem('impostor-theme') as Theme | null;
+    private async initTheme() {
+        const { value } = await Preferences.get({ key: 'impostor-theme' });
+        const savedTheme = value as Theme | null;
         if (savedTheme === 'neon' || savedTheme === 'neon2' || savedTheme === 'infantil') {
             // Si intenta cargar neon2 y no es premium, podría haber un pequeño desfase, 
             // pero el subscribe de arriba lo corregirá en cuanto billing termine de cargar.
@@ -52,7 +57,7 @@ export class ThemeService {
         await new Promise(resolve => setTimeout(resolve, 400));
 
         this.currentTheme.set(theme);
-        localStorage.setItem('impostor-theme', theme);
+        await Preferences.set({ key: 'impostor-theme', value: theme });
         
         this.ui.setLoading(false);
     }

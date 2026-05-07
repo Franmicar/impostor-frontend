@@ -12,6 +12,7 @@ import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { Capacitor } from '@capacitor/core';
 import { App as CapacitorApp } from '@capacitor/app';
+import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-root',
@@ -39,10 +40,11 @@ export class App {
     translate.use('es');
     
     try {
-      const savedLang = localStorage.getItem('impostify_lang');
-      if (savedLang) {
-        translate.use(savedLang);
-      }
+      Preferences.get({ key: 'impostify_lang' }).then(({ value: savedLang }) => {
+        if (savedLang) {
+          translate.use(savedLang);
+        }
+      });
     } catch (e) {
       // Ignored
     }

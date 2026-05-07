@@ -45,11 +45,11 @@ import { ButtonSecondaryComponent } from '../../shared/components/ui/button-seco
           </div>
           
           <div class="relative">
-            <input [(ngModel)]="word.word" [placeholder]="'CUSTOM_PACKAGE.WORD_PLACEHOLDER' | translate" class="bg-black/30 border border-glass-border rounded-xl w-full p-3.5 text-textPrimary outline-none placeholder:text-textMuted focus:border-primary transition-colors font-medium" />
+            <input [(ngModel)]="word.word" minlength="2" maxlength="30" [placeholder]="'CUSTOM_PACKAGE.WORD_PLACEHOLDER' | translate" class="bg-black/30 border border-glass-border rounded-xl w-full p-3.5 text-textPrimary outline-none placeholder:text-textMuted focus:border-primary transition-colors font-medium" />
           </div>
           
           <div class="relative">
-            <input [(ngModel)]="word.fake_word" [placeholder]="'CUSTOM_PACKAGE.FAKE_WORD_PLACEHOLDER' | translate" class="bg-black/30 border border-glass-border rounded-xl w-full p-3.5 text-textPrimary outline-none placeholder:text-textMuted focus:border-secondary transition-colors font-medium" />
+            <input [(ngModel)]="word.fake_word" minlength="2" maxlength="30" [placeholder]="'CUSTOM_PACKAGE.FAKE_WORD_PLACEHOLDER' | translate" class="bg-black/30 border border-glass-border rounded-xl w-full p-3.5 text-textPrimary outline-none placeholder:text-textMuted focus:border-secondary transition-colors font-medium" />
           </div>
           
           <div class="relative">
@@ -138,8 +138,8 @@ export default class CustomPackageComponent {
   if (this.words().length === 0) return false;
   
   return this.words().every(w => 
-   w.word && w.word.trim().length > 0 && 
-   w.fake_word && w.fake_word.trim().length > 0
+   w.word && w.word.trim().length >= 2 && w.word.trim().length <= 30 && 
+   w.fake_word && w.fake_word.trim().length >= 2 && w.fake_word.trim().length <= 30
   );
  }
 

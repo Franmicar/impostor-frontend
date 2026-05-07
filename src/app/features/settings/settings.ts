@@ -1,4 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Preferences } from '@capacitor/preferences';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -197,6 +199,7 @@ export class Settings implements OnInit {
   public billing = inject(BillingService);
   private reportService = inject(ReportService);
   private uiService = inject(UiService);
+  private destroyRef = inject(DestroyRef);
 
   // Modals signals
   isReportModalOpen = signal(false);
@@ -226,10 +229,12 @@ export class Settings implements OnInit {
     this.uiService.setLoading(true);
     
     // Save preference
-    localStorage.setItem('impostify_lang', lang);
+    Preferences.set({ key: 'impostify_lang', value: lang });
     
     // Change language and wait for the files to be loaded
-    this.translate.use(lang).subscribe({
+    this.translate.use(lang).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next: () => {
         // We add a tiny delay so the UI doesn't blink too fast if cached
         setTimeout(() => this.uiService.setLoading(false), 300);

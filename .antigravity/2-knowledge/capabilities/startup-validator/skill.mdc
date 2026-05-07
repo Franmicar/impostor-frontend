@@ -1,0 +1,25 @@
+---
+name: Startup Validator
+version: 1.0.0
+type: skill
+scope: business
+---
+
+# Startup Validator
+
+## Objetivo
+Validar ideas de negocio racionalmente.
+
+## Inputs
+
+- Idea.
+- Mercado.
+- Público objetivo.
+- Competencia.
+
+## Outputs
+
+- Riesgos.
+- Viabilidad.
+- Oportunidades.
+- MVP recomendado.

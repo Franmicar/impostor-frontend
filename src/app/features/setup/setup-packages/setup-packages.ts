@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,6 +15,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
 @Component({
   selector: 'app-setup-packages',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, TranslateModule, ButtonPrimaryComponent, IconButtonMiniComponent, ModalComponent, HeaderComponent, FooterComponent],
   template: `
   <div class="min-h-dvh flex flex-col bg-transparent text-white">
@@ -79,7 +80,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
      </div>
 
      <!-- Lista de paquetes de la API -->
-     @for (pkg of apiPackages; track pkg.id) {
+     @for (pkg of apiPackages(); track pkg.id) {
       <div 
        (click)="togglePackage(pkg.id)"
        class="relative rounded-2xl border-2 overflow-hidden cursor-pointer transition-all duration-300 bg-glass backdrop-blur-md flex flex-row items-center p-4 min-h-[8rem]"
@@ -134,15 +135,17 @@ export class SetupPackages {
   public billing = inject(BillingService);
   private router = inject(Router);
 
-  @Input() apiPackages: Package[] = [];
+  apiPackages = input<Package[]>([]);
+  selectedIds = input<string[]>([]);
+  
+  onBack = output<void>();
+  onChange = output<string[]>();
 
-  @Input() set selectedIds(ids: string[]) {
-    // Clone array to work locally
-    this.localSelectedIds = [...ids];
+  constructor() {
+    effect(() => {
+      this.localSelectedIds = [...this.selectedIds()];
+    });
   }
-
-  @Output() onBack = new EventEmitter<void>();
-  @Output() onChange = new EventEmitter<string[]>();
 
   localSelectedIds: string[] = [];
 

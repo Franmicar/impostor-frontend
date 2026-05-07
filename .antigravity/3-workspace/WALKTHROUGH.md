@@ -142,3 +142,9 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Mejora Componente Select (Dropdowns)**: Rediseño completo de los comportamientos de apertura de menús desplegables de tiempo (ahora se abren hacia arriba) y ajuste dinámico inteligente de anchura alineado al margen derecho para evitar solapamientos con los botones.
 - **Parametrización de Versión (i18n)**: Integración de lectura directa del `package.json` a través de Angular para inyectar dinámicamente la versión de la app en la pantalla de Ajustes. Todos los archivos `.json` de idioma ahora utilizan la variable `{{version}}`.
 - **Auditoría de Traducciones Automática**: Desarrollo de scripts para comparar árboles JSON e inyección automática de claves faltantes de `Setup`, `Draw` y `Play` detectadas en los idiomas Alemán, Catalán y Francés.
+
+### Versión 1.5.0
+- **Migración a Capacitor Preferences**: Erradicación del uso de `localStorage` síncrono en favor de `@capacitor/preferences` para toda la persistencia de datos (configuración, tema, idioma y estado del juego), garantizando estabilidad y rendimiento en el entorno móvil nativo.
+- **Modernización de UI con Signals y OnPush**: Sustitución de decoradores antiguos (`@Input()`, `@Output()`) por la API moderna de Signals de Angular 21. Implementación transversal de `ChangeDetectionStrategy.OnPush` en componentes modulares y de configuración para maximizar los FPS.
+- **Prevención de Fugas de Memoria (Memory Leaks)**: Limpieza y blindaje de todas las suscripciones de RxJS (ej. `results.ts`, `ads.service.ts`) utilizando el operador `takeUntilDestroyed()`.
+- **Validación Estricta de Inputs**: Inclusión de límites de caracteres de seguridad para nombres de jugadores (3-15) y palabras de paquetes personalizados (2-30).

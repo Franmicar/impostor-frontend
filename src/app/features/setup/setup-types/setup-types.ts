@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ThemeService } from '../../../core/services/theme.service';
@@ -10,6 +10,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
 @Component({
   selector: 'app-setup-types',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, TranslateModule, ButtonPrimaryComponent, HeaderComponent, FooterComponent],
   template: `
   <div class="h-full flex flex-col bg-transparent text-white">
@@ -58,9 +59,9 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
   styles: ``,
 })
 export class SetupTypes implements OnInit {
-  @Input() currentType!: { id: string; name: string };
-  @Output() onBack = new EventEmitter<void>();
-  @Output() onChange = new EventEmitter<{ id: string; name: string }>();
+  currentType = input<{ id: string; name: string }>();
+  onBack = output<void>();
+  onChange = output<{ id: string; name: string }>();
 
   public themeService = inject(ThemeService);
   public billing = inject(BillingService);
@@ -68,7 +69,7 @@ export class SetupTypes implements OnInit {
   localType: { id: string; name: string } | null = null;
 
   ngOnInit() {
-    this.localType = this.currentType;
+    this.localType = this.currentType() || null;
   }
 
   availableTypes = [
@@ -101,7 +102,7 @@ export class SetupTypes implements OnInit {
   }
 
   goBack() {
-    this.localType = this.currentType; // Discard changes
+    this.localType = this.currentType() || null; // Discard changes
     this.onBack.emit();
   }
 }

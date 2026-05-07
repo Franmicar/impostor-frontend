@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BillingService } from '../../core/services/billing.service';
 import { ThemeService } from '../../core/services/theme.service';
 import { UiService } from '../../core/services/ui/ui.service';
+import { Preferences } from '@capacitor/preferences';
 
 // Subcomponents
 import { SetupModes } from './setup-modes/setup-modes';
@@ -539,15 +540,17 @@ export class SetupComponent implements OnInit {
         selectedPackages: this.selectedPackages(),
         selectedPresetId: this.selectedPresetId()
       };
-      localStorage.setItem('impostorSetupState', JSON.stringify(state));
+      Preferences.set({ key: 'impostorSetupState', value: JSON.stringify(state) }).catch(e => {
+        console.warn('Could not save setup state', e);
+      });
     } catch (e) {
-      console.warn('Could not save setup state', e);
+      console.warn('Could not serialize setup state', e);
     }
   }
 
-  private restoreState() {
+  private async restoreState() {
     try {
-      const saved = localStorage.getItem('impostorSetupState');
+      const { value: saved } = await Preferences.get({ key: 'impostorSetupState' });
       if (saved) {
         const state = JSON.parse(saved);
         if (state.gameMode) this.gameMode.set(state.gameMode);

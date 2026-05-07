@@ -1,4 +1,5 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -116,6 +117,7 @@ export class Results implements OnInit {
   themeService = inject(ThemeService);
   billing = inject(BillingService);
   ui = inject(UiService);
+  destroyRef = inject(DestroyRef);
 
   showRoles = false;
   winner: 'impostors' | 'town' | null = null;
@@ -128,7 +130,9 @@ export class Results implements OnInit {
   detectives: any[] = [];
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(params => {
       this.winner = params['winner'] || null;
       this.reason = params['reason'] || null;
       this.guess = params['guess'] || null;

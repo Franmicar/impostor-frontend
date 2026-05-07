@@ -1,35 +1,36 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-card',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <div 
       (click)="onClick.emit()"
-      [class.cursor-pointer]="clickable"
-      [class.hover:bg-white/5]="clickable"
-      [class.active:bg-white/10]="clickable"
-      [class.ring-2]="selected"
-      [class.ring-primary]="selected"
+      [class.cursor-pointer]="clickable()"
+      [class.hover:bg-white/5]="clickable()"
+      [class.active:bg-white/10]="clickable()"
+      [class.ring-2]="selected()"
+      [class.ring-primary]="selected()"
       class="bg-glass backdrop-blur-md border border-glass-border rounded-2xl flex items-center gap-3 p-5 transition-all">
       
       <!-- Image Left -->
-      @if (imageUrl) {
-        <img [src]="imageUrl" alt="" class="w-12 h-12 shrink-0 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)] neon-dynamic-img">
+      @if (imageUrl()) {
+        <img [src]="imageUrl()" alt="" class="w-12 h-12 shrink-0 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)] neon-dynamic-img">
       }
 
       <!-- Content Right -->
       <div class="flex flex-col flex-1">
         <!-- Title -->
         <span class="font-semibold text-textPrimary flex items-center gap-2">
-          {{ title }}
+          {{ title() }}
           <ng-content select="[card-actions]"></ng-content>
         </span>
         <!-- Description -->
         <span class="text-sm font-medium text-textMuted mt-1">
-          {{ description }}
+          {{ description() }}
         </span>
       </div>
 
@@ -40,11 +41,11 @@ import { CommonModule } from '@angular/common';
   `
 })
 export class CardComponent {
-  @Input() imageUrl?: string;
-  @Input() title: string = '';
-  @Input() description: string = '';
-  @Input() selected = false;
-  @Input() clickable = false;
+  imageUrl = input<string | undefined>(undefined);
+  title = input<string>('');
+  description = input<string>('');
+  selected = input(false);
+  clickable = input(false);
   
-  @Output() onClick = new EventEmitter<void>();
+  onClick = output<void>();
 }

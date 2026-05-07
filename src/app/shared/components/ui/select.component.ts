@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface SelectOption {
@@ -9,6 +9,7 @@ export interface SelectOption {
 @Component({
   selector: 'app-select',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <div class="relative w-full min-w-[100px] sm:min-w-[133px] shrink-0">
@@ -26,11 +27,11 @@ export interface SelectOption {
       @if (isOpen()) {
         <div class="fixed inset-0 z-40" (click)="isOpen.set(false)"></div>
         <div class="absolute right-0 bottom-full mb-1 min-w-full w-max z-50 bg-glass backdrop-blur-xl rounded-2xl border border-primary shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] p-2 flex flex-col gap-1 max-h-60 overflow-y-auto overflow-x-hidden custom-scrollbar">
-          @for (option of options; track option.value) {
+          @for (option of options(); track option.value) {
             <div 
               (click)="selectOption(option.value)" 
               class="px-4 py-3 rounded-xl hover:bg-white/20 transition-colors text-textPrimary text-sm font-medium cursor-pointer whitespace-nowrap"
-              [class.bg-white_10]="option.value === value">
+              [class.bg-white_10]="option.value === value()">
               {{ option.label }}
             </div>
           }
@@ -57,14 +58,14 @@ export interface SelectOption {
   `]
 })
 export class SelectComponent {
-  @Input() options: SelectOption[] = [];
-  @Input() value: any;
-  @Output() valueChange = new EventEmitter<any>();
+  options = input<SelectOption[]>([]);
+  value = input<any>();
+  valueChange = output<any>();
 
   isOpen = signal<boolean>(false);
 
   selectedLabel(): string {
-    const option = this.options.find(o => o.value === this.value);
+    const option = this.options().find(o => o.value === this.value());
     return option ? option.label : '';
   }
 

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Capacitor } from '@capacitor/core';
 import { AdMob, BannerAdOptions, BannerAdSize, BannerAdPosition, InterstitialAdPluginEvents, AdMobBannerSize } from '@capacitor-community/admob';
 import { BillingService } from './billing.service';
@@ -10,6 +11,7 @@ export class AdsService {
   private isAdMobInitialized = false;
   private readonly bannerAdId = 'ca-app-pub-3940256099942544/6300978111'; // ID Test de Banner
   private readonly interstitialAdId = 'ca-app-pub-3940256099942544/1033173712'; // ID Test de Interstitial
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private billing: BillingService
@@ -22,7 +24,9 @@ export class AdsService {
         this.isAdMobInitialized = true;
         
         // Listen to premium changes. If user becomes premium, hide banner
-        this.billing.isPremium$.subscribe(premium => {
+        this.billing.isPremium$.pipe(
+          takeUntilDestroyed(this.destroyRef)
+        ).subscribe(premium => {
           if (premium && this.isAdMobInitialized) {
             this.hideBanner();
           } else if (!premium && this.isAdMobInitialized) {

@@ -1,0 +1,19 @@
+---
+name: API Architect
+version: 1.0.0
+type: skill
+scope: backend
+---
+
+# API Architect
+
+## Objetivo
+Diseñar APIs mantenibles y escalables.
+
+## Reglas
+
+- REST consistente.
+- Versionado.
+- Validación.
+- Manejo correcto de errores.
+- Seguridad por defecto.
