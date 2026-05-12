@@ -1,7 +1,8 @@
 import { Injectable, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Capacitor } from '@capacitor/core';
-import { AdMob, BannerAdOptions, BannerAdSize, BannerAdPosition, InterstitialAdPluginEvents, AdMobBannerSize } from '@capacitor-community/admob';
+import { Keyboard } from '@capacitor/keyboard';
+import { AdMob, BannerAdOptions, BannerAdSize, BannerAdPosition, InterstitialAdPluginEvents } from '@capacitor-community/admob';
 import { BillingService } from './billing.service';
 
 @Injectable({
@@ -15,14 +16,14 @@ export class AdsService {
 
   constructor(
     private billing: BillingService
-  ) {}
+  ) { }
 
   async initialize() {
     if (Capacitor.isNativePlatform()) {
       try {
         await AdMob.initialize({});
         this.isAdMobInitialized = true;
-        
+
         // Listen to premium changes. If user becomes premium, hide banner
         this.billing.isPremium$.pipe(
           takeUntilDestroyed(this.destroyRef)
@@ -31,6 +32,22 @@ export class AdsService {
             this.hideBanner();
           } else if (!premium && this.isAdMobInitialized) {
             this.showBanner();
+          }
+        });
+
+        // Hide banner when keyboard is open to avoid overlapping
+        Keyboard.addListener('keyboardWillShow', () => {
+          if (this.isAdMobInitialized && !this.billing.isPremium) {
+            AdMob.hideBanner().catch(e => console.error('Error hiding banner for keyboard', e));
+          }
+        });
+
+        Keyboard.addListener('keyboardWillHide', () => {
+          if (this.isAdMobInitialized && !this.billing.isPremium) {
+            AdMob.resumeBanner().catch(e => {
+              console.error('Error resuming banner for keyboard', e);
+              this.showBanner();
+            });
           }
         });
       } catch (e) {
@@ -71,7 +88,7 @@ export class AdsService {
     return new Promise(async (resolve) => {
       try {
         await AdMob.prepareInterstitial({ adId: this.interstitialAdId, isTesting: true });
-        
+
         const listener = await AdMob.addListener(InterstitialAdPluginEvents.Dismissed, () => {
           listener.remove();
           resolve();

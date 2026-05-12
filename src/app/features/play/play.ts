@@ -88,7 +88,7 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
       <div class="flex-1 relative flex items-center justify-center w-full max-h-[450px]">
         
         <!-- Secret Content (Provides the height) -->
-        <div class="relative w-full h-full bg-glass backdrop-blur-xl rounded-3xl p-8 flex flex-col items-center justify-center border border-glass-border shadow-2xl z-0 min-h-[300px]">
+        <div class="relative w-full h-[380px] bg-glass backdrop-blur-xl rounded-3xl p-8 flex flex-col items-center justify-center border border-glass-border shadow-2xl z-0">
           <h3 class="text-xl font-bold text-textMuted mb-2 drop-shadow-sm">{{ 'PLAY.YOU_ARE' | translate }}</h3>
           
           @if (engine.currentPlayer()?.isImpostor && engine.currentSettings()?.modeId !== 'infiltrator') {

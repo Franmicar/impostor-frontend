@@ -148,3 +148,10 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Modernización de UI con Signals y OnPush**: Sustitución de decoradores antiguos (`@Input()`, `@Output()`) por la API moderna de Signals de Angular 21. Implementación transversal de `ChangeDetectionStrategy.OnPush` en componentes modulares y de configuración para maximizar los FPS.
 - **Prevención de Fugas de Memoria (Memory Leaks)**: Limpieza y blindaje de todas las suscripciones de RxJS (ej. `results.ts`, `ads.service.ts`) utilizando el operador `takeUntilDestroyed()`.
 - **Validación Estricta de Inputs**: Inclusión de límites de caracteres de seguridad para nombres de jugadores (3-15) y palabras de paquetes personalizados (2-30).
+
+### Versión 1.5.1
+- **Gestión de Teclado y Banners**: Integración con `@capacitor/keyboard` para auto-ocultar el banner publicitario de AdMob cuando se despliega el teclado del sistema, asegurando que no haya bloqueos de UI (e.g. inputs de texto).
+- **Backend Seguro de Reportes**: Creación de un endpoint dedicado (`api/reports`) con Firebase Admin SDK para evadir las restricciones de cliente. Reforzamiento con límite de 1000 caracteres y alerta automática al correo de soporte mediante `nodemailer`.
+- **Acceso Premium Manual**: Modificación del `BillingService` para contrastar un flag dedicado en la base de datos (`isPremiumTester`) y conceder privilegios PRO instantáneamente y en remoto a testers seleccionados.
+- **Infraestructura Multi-Tema Remoto**: Adecuación exhaustiva en `ThemeService` del motor de persistencia física de descargas asíncronas vía `@capacitor/filesystem`. El servicio ahora sabe interceptar y cachear recursos empaquetados pesados en el almacenamiento del sistema para minimizar el payload base de la app (Programado para v1.5.2).
+- **Paridad Estética en Roles**: Corrección de fugas de diseño en la ruleta central y las tarjetas en `play.ts`, forzando dimensiones idénticas (`h-[380px]`) independientemente de si el contenedor aloja el contenido de "Civil" o de "Impostor", evitando "spoilers" en la rotación de pantalla.

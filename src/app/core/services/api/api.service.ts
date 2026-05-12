@@ -164,4 +164,18 @@ export class ApiService {
             this.ui.setLoading(false);
         }
     }
+
+    async submitReport(reportData: any): Promise<boolean> {
+        try {
+            const response = await firstValueFrom(
+                this.http.post<{ success: boolean }>(`${this.apiUrl}/reports`, reportData, {
+                    headers: { 'x-api-key': environment.backendApiKey }
+                })
+            );
+            return response?.success || false;
+        } catch (err) {
+            console.error('Error in submitReport API', err);
+            return false;
+        }
+    }
 }

@@ -1,17 +1,58 @@
 import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Purchases, LOG_LEVEL } from '@revenuecat/purchases-capacitor';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { inject } from '@angular/core';
+import { AuthService } from './auth/auth.service';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BillingService {
-  private _isPremium = new BehaviorSubject<boolean>(false);
-  public isPremium$ = this._isPremium.asObservable();
+  private _isPremiumRevenueCat = new BehaviorSubject<boolean>(false);
+  private _isPremiumTester = new BehaviorSubject<boolean>(false);
 
-  constructor() {}
+  private app = initializeApp(environment.firebase);
+  private db = getFirestore(this.app);
+  private auth = inject(AuthService);
+
+  public isPremium$ = combineLatest([this._isPremiumRevenueCat, this._isPremiumTester]).pipe(
+    map(([revenueCatPremium, testerPremium]) => revenueCatPremium || testerPremium)
+  );
+
+  constructor() {
+    // Listen to auth changes manually (effect requires injection context, so we use effect or just subscribe if it was observable, but userSignal is a signal)
+    // Actually, we can just use effect inside constructor:
+    // Wait, let's fetch tester status when login happens:
+    import('@angular/core').then(core => {
+      core.effect(() => {
+        const user = this.auth.userSignal();
+        if (user) {
+          this.checkTesterStatus(user.uid);
+        } else {
+          this._isPremiumTester.next(false);
+        }
+      });
+    });
+  }
+
+  private async checkTesterStatus(uid: string) {
+    try {
+      const docRef = doc(this.db, `users/${uid}`);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists() && docSnap.data()['isPremiumTester']) {
+        this._isPremiumTester.next(true);
+      } else {
+        this._isPremiumTester.next(false);
+      }
+    } catch (e) {
+      console.error('Error checking tester status', e);
+      this._isPremiumTester.next(false);
+    }
+  }
 
   async initialize() {
     if (Capacitor.isNativePlatform()) {
@@ -40,11 +81,11 @@ export class BillingService {
   private updatePremiumStatus(customerInfo: any) {
     // Asumimos que el entitlement se llama "premium"
     const isEntitled = typeof customerInfo.entitlements.active['premium'] !== 'undefined';
-    this._isPremium.next(isEntitled);
+    this._isPremiumRevenueCat.next(isEntitled);
   }
 
   get isPremium(): boolean {
-    return this._isPremium.value;
+    return this._isPremiumRevenueCat.value || this._isPremiumTester.value;
   }
 
   async getOfferings() {
@@ -84,7 +125,7 @@ export class BillingService {
         }
       } else {
         // En web simulamos la compra con éxito
-        this._isPremium.next(true);
+        this._isPremiumRevenueCat.next(true);
         return true;
       }
     } catch (e) {
@@ -102,7 +143,7 @@ export class BillingService {
       } else {
         // En web simulamos la restauración si ya había activado algo antes,
         // o por facilidad lo activamos
-        this._isPremium.next(true);
+        this._isPremiumRevenueCat.next(true);
         return true;
       }
     } catch (e) {

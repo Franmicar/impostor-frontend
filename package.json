@@ -1,6 +1,6 @@
 {
   "name": "impostor-frontend",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -26,6 +26,8 @@
     "@capacitor/app": "^8.1.0",
     "@capacitor/core": "^8.3.0",
     "@capacitor/device": "^8.0.2",
+    "@capacitor/filesystem": "^8.1.2",
+    "@capacitor/keyboard": "^8.0.3",
     "@capacitor/preferences": "^8.0.1",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",

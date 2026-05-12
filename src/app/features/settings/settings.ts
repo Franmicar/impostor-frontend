@@ -163,7 +163,8 @@ import packageJson from '../../../../package.json';
        {{ reportType() === 'bug' ? ('SETTINGS.REPORT_BUG_DESC' | translate) : ('SETTINGS.SUGGEST_IMPROVEMENT_DESC' | translate) }}
      </p>
      
-     <textarea #reportText class="w-full bg-black/40 border border-glass-border rounded-xl p-3 text-white text-sm outline-none focus:border-secondary transition-colors mb-4 resize-none h-32" [placeholder]="'SETTINGS.REPORT_PLACEHOLDER' | translate"></textarea>
+     <textarea #reportText class="w-full bg-black/40 border border-glass-border rounded-xl p-3 text-white text-sm outline-none focus:border-secondary transition-colors mb-2 resize-none h-32" [placeholder]="'SETTINGS.REPORT_PLACEHOLDER' | translate" maxlength="1000" (input)="0"></textarea>
+     <div class="text-xs text-textMuted text-right mb-4">{{ reportText.value.length || 0 }} / 1000</div>
      
      <div modal-footer class="w-full flex gap-3">
        <button (click)="closeReportModal()" class="flex-1 py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest text-xs">
@@ -278,12 +279,14 @@ export class Settings implements OnInit {
     if (!message || message.trim() === '') return;
 
     this.isSendingReport.set(true);
+    this.uiService.setLoading(true);
     const success = await this.reportService.sendReport(
       message,
       this.authService.userSignal()?.uid,
       this.reportType()
     );
     this.isSendingReport.set(false);
+    this.uiService.setLoading(false);
     this.closeReportModal();
 
     if (success) {
