@@ -83,7 +83,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
         (click)="selectedPlan.set(plan)"
         [class.ring-2]="selectedPlan()?.identifier === plan.identifier"
         [class.ring-primary]="selectedPlan()?.identifier === plan.identifier"
-        class="bg-white/5 border border-glass-border hover:bg-white/10 rounded-2xl p-5 flex items-center justify-between cursor-pointer transition-all relative overflow-hidden">
+        class="bg-glass border border-glass-border hover:bg-white/10 rounded-2xl p-5 flex items-center justify-between cursor-pointer transition-all relative overflow-hidden">
         
         @if (plan.packageType === 'ANNUAL') {
          <div class="absolute top-0 right-0 bg-primary text-white text-[0.6rem] font-bold px-2 py-1 rounded-bl-lg">
@@ -92,7 +92,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
         }
 
         <div>
-         <h3 class="text-lg font-bold text-white">{{ 'PREMIUM.PLAN_' + plan.packageType | translate }}</h3>
+         <h3 class="text-lg font-bold text-textPrimary">{{ 'PREMIUM.PLAN_' + plan.packageType | translate }}</h3>
         </div>
         <div class="text-right">
          <div class="text-xl font-black text-secondary drop-shadow-[0_0_8px_rgb(var(--color-secondary)/0.4)]">{{ plan.product.priceString }}</div>
@@ -123,7 +123,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
      
      <p class="text-base text-textMuted mb-2 w-full text-center">{{ alertModal().message }}</p>
      
-     <button modal-footer (click)="closeAlert()" class="w-full py-4 bg-glass hover:bg-white/10 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest cursor-pointer">
+     <button modal-footer (click)="closeAlert()" class="w-full py-4 bg-glass hover:bg-glass-hover border border-glass-border text-textPrimary rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest cursor-pointer">
        {{ 'PREMIUM.CLOSE' | translate }}
      </button>
    </app-modal>

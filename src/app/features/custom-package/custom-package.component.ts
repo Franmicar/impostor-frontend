@@ -10,11 +10,12 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
 import { FooterComponent } from '../../shared/components/ui/footer.component';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
+import { ModalComponent } from '../../shared/components/ui/modal.component';
 
 @Component({
  selector: 'app-custom-package',
  standalone: true,
- imports: [CommonModule, FormsModule, TranslateModule, HeaderComponent, FooterComponent, ButtonPrimaryComponent, ButtonSecondaryComponent],
+ imports: [CommonModule, FormsModule, TranslateModule, HeaderComponent, FooterComponent, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent],
  template: `
   <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary">
    <app-header [showBack]="true" [title]="'CUSTOM_PACKAGE.TITLE' | translate" (onBack)="goBack()"></app-header>
@@ -74,6 +75,32 @@ import { ButtonSecondaryComponent } from '../../shared/components/ui/button-seco
      </app-footer>
    }
    </div>
+
+    <!-- MODAL DE GUARDADO -->
+    <app-modal
+      [isOpen]="showSaveModal()"
+      [title]="saveModalSuccess() ? ('ALERTS.TITLE_SUCCESS' | translate) : ('ALERTS.TITLE_ERROR' | translate)"
+      [icon]="saveModalSuccess() ? 'success' : 'error'"
+      (onClose)="showSaveModal.set(false)">
+      
+      <p class="text-base text-textMuted mb-4 w-full text-center">
+       {{ saveModalSuccess() ? ('CUSTOM_PACKAGE.SAVE_SUCCESS' | translate) : ('CUSTOM_PACKAGE.SAVE_ERROR' | translate) }}
+      </p>
+      
+      <div modal-footer class="flex gap-3 w-full">
+       <button 
+        (click)="showSaveModal.set(false)"
+        class="flex-1 py-4 rounded-xl border border-glass-border text-textMuted font-semibold hover:bg-white/5 transition-colors uppercase tracking-widest text-sm cursor-pointer">
+        {{ 'CUSTOM_PACKAGE.CONTINUE_EDITING' | translate }}
+       </button>
+       <button 
+        (click)="goBack()"
+        class="flex-1 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-[0_0_15px_rgba(var(--color-primary),0.4)] transition-colors uppercase tracking-widest text-sm cursor-pointer">
+        {{ 'SETUP.CLOSE' | translate }}
+       </button>
+      </div>
+    </app-modal>
+
   </div>
  `
 })
@@ -86,6 +113,8 @@ export default class CustomPackageComponent {
  pkgName = 'Mi Paquete';
  words = signal<CustomWord[]>([{ word: '', fake_word: '', hints: [] }]);
  isSaving = signal(false);
+ showSaveModal = signal(false);
+ saveModalSuccess = signal(true);
 
  constructor() {
   this.load();
@@ -110,9 +139,11 @@ export default class CustomPackageComponent {
     name: this.pkgName,
     words: this.words()
    });
-   alert(this.translate.instant('CUSTOM_PACKAGE.SAVE_SUCCESS'));
+   this.saveModalSuccess.set(true);
+   this.showSaveModal.set(true);
   } catch (e) {
-   alert(this.translate.instant('CUSTOM_PACKAGE.SAVE_ERROR'));
+   this.saveModalSuccess.set(false);
+   this.showSaveModal.set(true);
   } finally {
    this.isSaving.set(false);
   }

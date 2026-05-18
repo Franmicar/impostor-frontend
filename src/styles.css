@@ -40,6 +40,32 @@
     --text-muted: #94a3b8;
   }
 
+  /* Premium Theme (Alien / Sci-Fi) */
+  .theme-alien {
+    --color-primary: 57 255 20;
+    --color-secondary: 171 71 188;
+    --glass-bg: rgba(10, 20, 10, 0.7);
+    --glass-border: rgba(57, 255, 20, 0.2);
+    --app-bg-from: #050510;
+    --app-bg-to: #000000;
+    --text-main: #e2fce2;
+    --text-muted: #79a379;
+    --modal-bg: rgba(0, 0, 0, 0.9);
+  }
+
+  /* Premium Theme (Manga / Comic) */
+  .theme-manga {
+    --color-primary: 211 47 47;
+    --color-secondary: 50 50 50;
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --glass-border: rgba(0, 0, 0, 0.8);
+    --app-bg-from: #fafafa;
+    --app-bg-to: #e0e0e0;
+    --text-main: #121212;
+    --text-muted: #4b4b4b;
+    --modal-bg: rgba(255, 255, 255, 0.95);
+  }
+
   /* Free Theme (Infantil) */
   .theme-infantil {
     --color-primary: 255 159 28;

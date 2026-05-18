@@ -163,7 +163,7 @@ export interface PlayerConfig {
          </span>
         </div>
         <div class="flex items-center gap-2 text-textMuted">
-         <span class="text-sm font-medium">{{ players().length }}</span>
+         <span class="text-sm font-medium">{{ selectedPresetName() ? selectedPresetName() + ' (' + players().length + ')' : players().length }}</span>
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
         </div>
        </div>
@@ -354,6 +354,7 @@ export interface PlayerConfig {
        [currentPlayers]="players()"
        [presetId]="selectedPresetId()"
        (presetIdChange)="selectedPresetId.set($event)"
+       (presetNameChange)="selectedPresetName.set($event)"
        (onChange)="updatePlayers($event)"
        (onBack)="activeScreen.set('main')">
       </app-setup-players>
@@ -385,7 +386,7 @@ export interface PlayerConfig {
      <button modal-footer
       (click)="alertModal.set({show: false, title: '', message: '', isError: false})"
       class="w-full py-4 rounded-2xl font-bold transition-all active:scale-95 uppercase tracking-widest"
-      [ngClass]="alertModal().isError ? 'bg-glass border border-glass-border hover:bg-white/20 text-textPrimary' : 'bg-gradient-to-r from-primary to-secondary text-white shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]'">
+      [ngClass]="alertModal().isError ? 'bg-glass border border-glass-border hover:bg-glass-hover text-textPrimary' : 'bg-gradient-to-r from-primary to-secondary text-white shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]'">
       {{ 'COMMON.OK' | translate }}
      </button>
    </app-modal>
@@ -447,6 +448,7 @@ export class SetupComponent implements OnInit {
 
   selectedPackages = signal<string[]>(['mock-3', 'mock-5']);
   selectedPresetId = signal<string | null>(null);
+  selectedPresetName = signal<string | null>(null);
 
   // Custom Select States
   isHintsOpen = signal<boolean>(false);
@@ -520,8 +522,8 @@ export class SetupComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.apiService.fetchPackages();
+  async ngOnInit() {
+    await this.apiService.fetchPackages();
     this.restoreState();
   }
 
@@ -538,7 +540,8 @@ export class SetupComponent implements OnInit {
         duration: this.duration(),
         drawTurnTime: this.drawTurnTime(),
         selectedPackages: this.selectedPackages(),
-        selectedPresetId: this.selectedPresetId()
+        selectedPresetId: this.selectedPresetId(),
+        selectedPresetName: this.selectedPresetName()
       };
       Preferences.set({ key: 'impostorSetupState', value: JSON.stringify(state) }).catch(e => {
         console.warn('Could not save setup state', e);
@@ -567,8 +570,14 @@ export class SetupComponent implements OnInit {
         }
         if (state.duration) this.duration.set(state.duration);
         if (state.drawTurnTime !== undefined) this.drawTurnTime.set(state.drawTurnTime);
-        if (state.selectedPackages) this.selectedPackages.set(state.selectedPackages);
+        if (state.selectedPackages) {
+          const availableIds = this.apiService.packages().map(p => p.id);
+          // Preserve valid API packages and the custom package ID
+          const validPackages = state.selectedPackages.filter((id: string) => availableIds.includes(id) || id === 'custom-main');
+          this.selectedPackages.set(validPackages);
+        }
         if (state.selectedPresetId !== undefined) this.selectedPresetId.set(state.selectedPresetId);
+        if (state.selectedPresetName !== undefined) this.selectedPresetName.set(state.selectedPresetName);
       }
     } catch (e) {
       console.warn('Could not restore setup state', e);

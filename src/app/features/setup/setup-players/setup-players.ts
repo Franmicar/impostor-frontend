@@ -33,7 +33,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
     <div class="flex justify-start w-full mb-6">
      <app-button-secondary (onClick)="openCloudSaveModal()">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg>
-      {{ 'SETUP_PLAYERS.SAVE_GROUP_BTN' | translate }}
+      {{ selectedPresetId() ? ('SETUP_PLAYERS.EDIT_GROUP_BTN' | translate) : ('SETUP_PLAYERS.SAVE_GROUP_BTN' | translate) }}
      </app-button-secondary>
     </div>
    }
@@ -108,6 +108,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
        <input 
         type="text" 
         [(ngModel)]="player.name"
+        (ngModelChange)="onPlayerEdited()"
         maxlength="15"
         class="flex-1 bg-glass outline-none p-3 rounded-lg text-textPrimary font-medium border border-transparent focus:border-secondary focus:bg-white/10 transition-all placeholder-textMuted min-w-0"
         [placeholder]="'SETUP_PLAYERS.P_NAME' | translate" />
@@ -132,19 +133,15 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
    <!-- FOOTER ACCIONES -->
    <app-footer>
     <!-- ADD PLAYER BUTTON -->
-    <div class="flex-1">
      <app-button-secondary (onClick)="addPlayer()">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
       {{ 'SETUP_PLAYERS.ADD_PLAYER' | translate }}
      </app-button-secondary>
-    </div>
 
     <!-- SAVE BUTTON -->
-    <div class="flex-1">
      <app-button-primary (onClick)="save()">
       {{ 'SETUP.SAVE' | translate }}
      </app-button-primary>
-    </div>
    </app-footer>
 
    <!-- MODAL PARA GUARDAR PRESET CLOUD -->
@@ -204,7 +201,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
      <button modal-footer
       (click)="alertModal.set({show: false, title: '', message: '', isError: false})"
       class="w-full py-4 rounded-2xl font-bold transition-all active:scale-95 uppercase tracking-widest"
-      [ngClass]="alertModal().isError ? 'bg-glass border border-glass-border hover:bg-white/20 text-textPrimary' : 'bg-gradient-to-r from-primary to-secondary text-white shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]'">
+      [ngClass]="alertModal().isError ? 'bg-glass border border-glass-border hover:bg-glass-hover text-textPrimary' : 'bg-gradient-to-r from-primary to-secondary text-white shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]'">
       {{ 'COMMON.OK' | translate }}
      </button>
    </app-modal>
@@ -318,6 +315,7 @@ export class SetupPlayers {
  onBack = output<void>();
  onChange = output<PlayerConfig[]>();
  presetIdChange = output<string | null>();
+ presetNameChange = output<string | null>();
 
  authService = inject(AuthService);
  presetsService = inject(CloudPresetsService);
@@ -394,7 +392,6 @@ export class SetupPlayers {
    this.cloudPresets.set(p);
    if (this.selectedPresetId() === presetId) {
     this.selectedPresetId.set(null);
-    this.presetIdChange.emit(null);
    }
   } catch (e) {
    console.error(e);
@@ -413,8 +410,25 @@ export class SetupPlayers {
    return;
   }
 
-  this.cloudPresetName = '';
-  this.showCloudSaveModal = true;
+  if (this.selectedPresetId()) { this.executeEditPreset(); } else { this.cloudPresetName = ""; this.showCloudSaveModal = true; }
+ }
+
+ 
+ async executeEditPreset() {
+  const presetId = this.selectedPresetId();
+  const existingPreset = this.cloudPresets().find(p => p.id === presetId);
+  const presetName = existingPreset ? existingPreset.name : 'Grupo Editado';
+  
+  const cleanPlayers = JSON.parse(JSON.stringify(this.localPlayers));
+  try {
+   await this.presetsService.savePreset(presetName, cleanPlayers, presetId || undefined);
+   const p = await this.presetsService.getUserPresets();
+   this.cloudPresets.set(p);
+   this.showAlert('ALERTS.TITLE_SUCCESS', 'ALERTS.SAVE_SUCCESS', false, { name: presetName });
+  } catch(error: any) {
+   console.error("Firebase update error: ", error);
+   this.alertModal.set({ show: true, title: 'Error Fatal BD', message: error?.message || 'Error actualizando', isError: true });
+  }
  }
 
  async confirmSaveCloud() {
@@ -426,6 +440,11 @@ export class SetupPlayers {
 
     const p = await this.presetsService.getUserPresets();
     this.cloudPresets.set(p);
+
+    const newPreset = p.find(preset => preset.name === presetName);
+    if (newPreset) {
+     this.selectedPresetId.set(newPreset.id);
+    }
 
     this.showAlert('ALERTS.TITLE_SUCCESS', 'ALERTS.SAVE_SUCCESS', false, { name: presetName });
    } catch (error: any) {
@@ -442,14 +461,25 @@ export class SetupPlayers {
  }
 
  loadPreset(preset: Preset) {
+  if (this.selectedPresetId() === preset.id) {
+   this.selectedPresetId.set(null);
+   this.localPlayers = [
+    { id: '1', name: 'Jugador 1' },
+    { id: '2', name: 'Jugador 2' },
+    { id: '3', name: 'Jugador 3' }
+   ];
+   return;
+  }
   this.localPlayers = JSON.parse(JSON.stringify(preset.players));
   this.selectedPresetId.set(preset.id);
-  this.presetIdChange.emit(preset.id);
  }
+
+ onPlayerEdited() {}
 
  addPlayer() {
   const nextId = new Date().getTime().toString();
   this.localPlayers.push({ id: nextId, name: '' });
+  this.onPlayerEdited();
  }
 
  triggerImageUpload(index: number) {
@@ -512,6 +542,7 @@ export class SetupPlayers {
  removePlayer(index: number) {
   if (this.localPlayers.length > 3) {
    this.localPlayers.splice(index, 1);
+   this.onPlayerEdited();
   }
  }
 
@@ -521,7 +552,6 @@ export class SetupPlayers {
  }
 
  save() {
-  // Clean empty names and assign defaults if needed, ensure photoUrl is preserved
   const validatedPlayers = this.localPlayers.map((p, i) => ({
    id: p.id,
    name: p.name.trim() || `Jugador ${i + 1}`,
@@ -529,6 +559,9 @@ export class SetupPlayers {
   }));
 
   this.onChange.emit(validatedPlayers);
+  this.presetIdChange.emit(this.selectedPresetId());
+  const selectedPreset = this.cloudPresets().find(p => p.id === this.selectedPresetId());
+  this.presetNameChange.emit(selectedPreset ? selectedPreset.name : null);
   this.onBack.emit();
  }
 }

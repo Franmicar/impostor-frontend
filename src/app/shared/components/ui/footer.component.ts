@@ -13,8 +13,8 @@ import { BillingService } from '../../../core/services/billing.service';
     <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent -z-10 w-full h-full pointer-events-none"></div>
     
     <!-- Botones de Acción -->
-    <div class="px-4 pb-4">
-      <div class="flex items-center justify-center gap-4 mx-auto w-full *:w-full *:flex-1">
+    <div class="px-4 pb-4 w-full max-w-md mx-auto">
+      <div class="flex items-center justify-center gap-4 w-full *:flex-1">
         <ng-content></ng-content>
       </div>
     </div>

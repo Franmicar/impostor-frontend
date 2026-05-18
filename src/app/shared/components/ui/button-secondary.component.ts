@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-button-secondary',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block flex-1' },
   imports: [CommonModule],
   template: `
     <button 

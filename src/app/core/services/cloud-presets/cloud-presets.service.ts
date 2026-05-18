@@ -39,21 +39,21 @@ export class CloudPresetsService {
         }
     }
 
-    async savePreset(presetName: string, players: PlayerConfig[]): Promise<void> {
+    async savePreset(presetName: string, players: PlayerConfig[], presetId?: string): Promise<void> {
         const user = this.authService.currentUser;
         if (!user) throw new Error('No auth user saving presets');
 
         this.ui.setLoading(true);
         try {
-            // We use getUserPresets, which sets loading to true/false, but since our UiService counter stacks, it's safe.
             const presets = await this.getUserPresets();
 
-            if (presets.length >= 3 && !presets.find(p => p.name === presetName)) {
+            // If we are creating a new one or saving with a new name that doesn't match the current ID
+            const existingByName = presets.find(p => p.name === presetName);
+            if (!presetId && presets.length >= 3 && !existingByName) {
                 throw new Error('LIMIT_REACHED');
             }
 
-            const existing = presets.find(p => p.name === presetName);
-            const docId = existing ? existing.id : Date.now().toString();
+            const docId = presetId || (existingByName ? existingByName.id : Date.now().toString());
 
             const docRef = doc(this.db, `users/${user.uid}/presets/${docId}`);
             await setDoc(docRef, {

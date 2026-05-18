@@ -32,7 +32,7 @@ import packageJson from '../../../../package.json';
    <div class="flex-1 px-6 flex flex-col w-full mx-auto space-y-4">
     <!-- APP PREFERENCES -->
     <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border">
-      <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-4 border-b border-white/10 pb-2">{{ 'SETTINGS.PREFERENCES' | translate }}</h3>
+      <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-4 border-b border-glass-border pb-2">{{ 'SETTINGS.PREFERENCES' | translate }}</h3>
       
       <div class="flex items-center justify-between py-3">
         <span class="text-textPrimary font-medium">{{ 'SETTINGS.LANGUAGE' | translate }}</span>
@@ -76,23 +76,58 @@ import packageJson from '../../../../package.json';
           <!-- Tema Principal -->
           <button (click)="themeService.setTheme('neon')" 
               [class.ring-2]="themeService.currentTheme() === 'neon'"
-              class="ring-primary relative w-full text-left px-4 py-3 bg-glass hover:bg-white/10 border border-glass-border rounded-xl transition-all flex items-center justify-between">
+              class="ring-primary relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
             <span class="text-textPrimary text-sm">{{ 'SETTINGS.THEME_NEON' | translate }}</span>
           </button>
           <!-- Tema Infantil -->
           <button (click)="themeService.setTheme('infantil')" 
               [class.ring-2]="themeService.currentTheme() === 'infantil'"
-              class="ring-orange-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-white/10 border border-glass-border rounded-xl transition-all flex items-center justify-between">
+              class="ring-orange-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
             <span class="text-textPrimary text-sm">{{ 'SETTINGS.THEME_INFANTIL' | translate }}</span>
           </button>
+          
           <!-- Tema Neón 2 (Premium) -->
-          <button (click)="selectPremiumTheme()" 
+          <button (click)="selectPremiumTheme('neon2')" 
               [class.ring-2]="themeService.currentTheme() === 'neon2'"
-              class="ring-yellow-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-white/10 border border-glass-border rounded-xl transition-all flex items-center justify-between">
+              class="ring-yellow-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
             <span class="text-textPrimary text-sm flex items-center gap-2">
               {{ 'SETTINGS.THEME_NEON_2' | translate }}
               @if (!billing.isPremium) {
                 <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO</span>
+              }
+            </span>
+            @if (!billing.isPremium) {
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-textMuted">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+              </svg>
+            }
+          </button>
+
+          <!-- Tema Alien (Premium) -->
+          <button (click)="selectPremiumTheme('alien')" 
+              [class.ring-2]="themeService.currentTheme() === 'alien'"
+              class="ring-green-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between mt-2">
+            <span class="text-textPrimary text-sm flex items-center gap-2">
+              {{ 'SETTINGS.THEME_ALIEN' | translate }}
+              @if (!billing.isPremium) {
+                <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO / 5€</span>
+              }
+            </span>
+            @if (!billing.isPremium) {
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-textMuted">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+              </svg>
+            }
+          </button>
+
+          <!-- Tema Manga (Premium) -->
+          <button (click)="selectPremiumTheme('manga')" 
+              [class.ring-2]="themeService.currentTheme() === 'manga'"
+              class="ring-red-500 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between mt-2">
+            <span class="text-textPrimary text-sm flex items-center gap-2">
+              {{ 'SETTINGS.THEME_MANGA' | translate }}
+              @if (!billing.isPremium) {
+                <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO / 5€</span>
               }
             </span>
             @if (!billing.isPremium) {
@@ -107,7 +142,7 @@ import packageJson from '../../../../package.json';
       <!-- CONTENT PREFERENCES -->
       <div class="py-4 border-t border-slate-700/50">
         <span class="text-textPrimary block mb-3 font-medium">{{ 'SETTINGS.CONTENT' | translate }}</span>
-        <button (click)="goToCustomPackage()" class="relative w-full text-left px-4 py-3 bg-glass hover:bg-white/10 border border-glass-border rounded-xl transition-all flex items-center justify-between">
+        <button (click)="goToCustomPackage()" class="relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
           <span class="text-textPrimary text-sm flex items-center gap-2">
             {{ 'SETTINGS.CUSTOM_PACKAGES' | translate }}
             @if (!billing.isPremium) {
@@ -123,16 +158,16 @@ import packageJson from '../../../../package.json';
 
     <!-- SUPPORT & CONTACT -->
     <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border">
-      <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-4 border-b border-white/10 pb-2">{{ 'SETTINGS.SUPPORT_CONTACT' | translate }}</h3>
+      <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-4 border-b border-glass-border pb-2">{{ 'SETTINGS.SUPPORT_CONTACT' | translate }}</h3>
       
-      <button (click)="openReportModal('bug')" class="w-full text-left px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all flex items-center justify-between mb-2">
+      <button (click)="openReportModal('bug')" class="w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between mb-2">
         <span class="text-textPrimary text-sm flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-rose-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
           {{ 'SETTINGS.REPORT_BUG' | translate }}
         </span>
       </button>
 
-      <button (click)="openReportModal('suggestion')" class="w-full text-left px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all flex items-center justify-between">
+      <button (click)="openReportModal('suggestion')" class="w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
         <span class="text-textPrimary text-sm flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-cyan-400"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.82 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.496 1.509 1.333 1.509 2.316V18" /></svg>
           {{ 'SETTINGS.SUGGEST_IMPROVEMENT' | translate }}
@@ -185,7 +220,7 @@ import packageJson from '../../../../package.json';
      
      <p class="text-base text-textMuted mb-2 w-full text-center">{{ alertModal().message }}</p>
      
-     <button modal-footer (click)="alertModal.set({show: false, title: '', message: '', success: false})" class="w-full py-4 bg-glass hover:bg-white/10 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest cursor-pointer">
+     <button modal-footer (click)="alertModal.set({show: false, title: '', message: '', success: false})" class="w-full py-4 bg-glass hover:bg-glass-hover border border-glass-border text-textPrimary rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest cursor-pointer">
        {{ 'SETTINGS.CLOSE' | translate }}
      </button>
    </app-modal>
@@ -250,12 +285,12 @@ export class Settings implements OnInit {
     this.options[key] = !this.options[key];
   }
 
-  selectPremiumTheme() {
+  selectPremiumTheme(theme: Theme) {
     if (!this.billing.isPremium) {
       this.router.navigate(['/premium']);
       return;
     }
-    this.themeService.setTheme('neon2');
+    this.themeService.setTheme(theme);
   }
 
   goToCustomPackage() {

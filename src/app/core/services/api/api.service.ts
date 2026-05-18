@@ -1,6 +1,6 @@
 import { Injectable, inject, signal, computed, isDevMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout, retry } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { UiService } from '../ui/ui.service';
 import { environment } from '../../../../environments/environment';
@@ -68,7 +68,10 @@ export class ApiService {
             const response = await firstValueFrom(
                 this.http.get<{ success: boolean, data: Package[] }>(`${this.apiUrl}/packages?lang=${currentLang}`, {
                     headers: { 'x-api-key': environment.backendApiKey }
-                })
+                }).pipe(
+                    timeout(5000),
+                    retry(1)
+                )
             );
             if (response && response.success) {
                 this.packages.set(response.data);
@@ -109,7 +112,10 @@ export class ApiService {
             const response = await firstValueFrom(
                 this.http.get<{ success: boolean, data: { word: string, hint?: string, hints?: string[], fakeWord?: string }[] }>(`${this.apiUrl}/packages/${packageId}/words?lang=${currentLang}`, {
                     headers: { 'x-api-key': environment.backendApiKey }
-                })
+                }).pipe(
+                    timeout(5000),
+                    retry(1)
+                )
             );
             if (response && response.success) {
                 const words = response.data.map(w => ({

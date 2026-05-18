@@ -56,6 +56,8 @@
     "THEME_NEON": "Neon / Cyberpunk",
     "THEME_INFANTIL": "Kids (Family friendly)",
     "THEME_NEON_2": "Neon 2",
+      "THEME_ALIEN": "Alien Theme",
+      "THEME_MANGA": "Manga Theme",
     "CONTENT": "Content",
     "CUSTOM_PACKAGES": "Custom Packages",
     "SUPPORT_CONTACT": "Support & Contact",
@@ -124,14 +126,15 @@
     "P_NAME": "Player name",
     "ADD_PLAYER": "Add player",
     "MIN_WARNING": "Add at least 3 players to start.",
-    "SAVE_GROUP_BTN": "Save configured group",
+    "SAVE_GROUP_BTN": "Save group",
     "GROUPS_LBL": "Groups:",
     "SAVE_GROUP_TITLE": "Save Group",
     "SAVE_GROUP_DESC": "Give this group of friends a name so you can load it quickly in the future (e.g. Family, Work, The usual suspects).",
     "SAVE_GROUP_PLACEHOLDER": "Group name...",
     "CROP_TITLE": "Crop Image",
     "CROP_CANCEL": "Cancel",
-    "CROP_APPLY": "Apply"
+    "CROP_APPLY": "Apply",
+    "EDIT_GROUP_BTN": "Edit group"
   },
   "SETUP_PACKAGES": {
     "TITLE": "Packages",

@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Package, ApiService } from '../../../core/services/api/api.service';
 import { ThemeService } from '../../../core/services/theme.service';
 import { BillingService } from '../../../core/services/billing.service';
+import { CustomPackageService, CustomPackage } from '../../../core/services/custom-package/custom-package.service';
 
 import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
 import { IconButtonMiniComponent } from '../../../shared/components/ui/icon-button-mini.component';
@@ -42,7 +43,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
       }
      </div>
      
-     <button modal-footer (click)="closeInfoModal()" class="w-full py-4 bg-glass border border-glass-border hover:bg-white/20 text-textPrimary rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
+     <button modal-footer (click)="closeInfoModal()" class="w-full py-4 bg-glass border border-glass-border hover:bg-glass-hover text-textPrimary rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] active:scale-95 uppercase tracking-widest cursor-pointer">
        {{ 'SETUP.CLOSE' | translate }}
      </button>
    </app-modal>
@@ -55,29 +56,70 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
    <!-- PACKAGES GRID -->
    <div class="flex-1 flex flex-col gap-4 place-content-start">
      
-     <!-- Botón para paquete personalizado -->
-     <div 
-      (click)="goToCustomPackage()"
-      class="relative rounded-2xl border-2 border-dashed border-primary cursor-pointer transition-all duration-300 bg-glass backdrop-blur-md flex flex-row items-center p-4 min-h-[8rem] hover:bg-primary/10 hover:border-white/50">
-      
-      <div class="setup-img-box flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden" style="width: 72px; height: 72px;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 text-primary">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
-      </div>
-      
-      <div class="flex flex-col flex-1 justify-center">
-       <h3 class="font-bold text-lg mb-1 text-textPrimary flex items-center gap-2">
-        {{ 'SETUP_PACKAGES.CREATE_CUSTOM' | translate }}
-        @if (!billing.isPremium) {
+     <!-- Custom Package Premium Card -->
+     @if (customPackage()) {
+      <div 
+       (click)="togglePackage(customPackage()!.id)"
+       class="relative rounded-2xl border-2 overflow-hidden cursor-pointer transition-all duration-300 bg-glass backdrop-blur-md flex flex-row items-center p-4 min-h-[8rem]"
+       [ngClass]="isSelected(customPackage()!.id) ? 'border-primary shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]' : 'border-glass-border hover:border-white/20 hover:bg-white/5'">
+       
+       <!-- Checkmark icon for selected -->
+       @if (isSelected(customPackage()!.id)) {
+        <div class="absolute top-2 right-2 text-primary bg-glass backdrop-blur border border-primary rounded-full p-0.5 shadow-md z-20">
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+          <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+         </svg>
+        </div>
+       }
+
+       <!-- Image placeholder -->
+       <div class="setup-img-box flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden" style="width: 72px; height: 72px;">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 text-primary">
+           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+         </svg>
+       </div>
+       
+       <!-- Name and Details -->
+       <div class="flex flex-col flex-1 justify-center">
+        <h3 class="font-bold text-lg mb-1 text-textPrimary flex items-center gap-2 select-none">
+         {{ customPackage()!.name }}
          <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO</span>
-        }
-       </h3>
-       <p class="text-sm text-textMuted select-none">
-        {{ 'SETUP_PACKAGES.CREATE_CUSTOM_DESC' | translate }}
-       </p>
+        </h3>
+        <p class="text-sm text-textMuted select-none">
+         {{ customPackage()!.words.length || 0 }} {{ 'SETUP_PACKAGES.WORDS' | translate }}
+        </p>
+       </div>
+
+       <!-- Edit Button -->
+       <app-icon-button-mini (onClick)="editCustomPackage($event)" class="ml-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
+       </app-icon-button-mini>
       </div>
-     </div>
+     } @else {
+      <!-- Botón para crear paquete personalizado -->
+      <div 
+       (click)="goToCustomPackage()"
+       class="relative rounded-2xl border-2 border-dashed border-primary cursor-pointer transition-all duration-300 bg-glass backdrop-blur-md flex flex-row items-center p-4 min-h-[8rem] hover:bg-primary/10 hover:border-white/50">
+       
+       <div class="setup-img-box flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden" style="width: 72px; height: 72px;">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 text-primary">
+           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+         </svg>
+       </div>
+       
+       <div class="flex flex-col flex-1 justify-center">
+        <h3 class="font-bold text-lg mb-1 text-textPrimary flex items-center gap-2">
+         {{ 'SETUP_PACKAGES.CREATE_CUSTOM' | translate }}
+         @if (!billing.isPremium) {
+          <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO</span>
+         }
+        </h3>
+        <p class="text-sm text-textMuted select-none">
+         {{ 'SETUP_PACKAGES.CREATE_CUSTOM_DESC' | translate }}
+        </p>
+       </div>
+      </div>
+     }
 
      <!-- Lista de paquetes de la API -->
      @for (pkg of apiPackages(); track pkg.id) {
@@ -133,6 +175,7 @@ export class SetupPackages {
   apiService = inject(ApiService);
   public themeService = inject(ThemeService);
   public billing = inject(BillingService);
+  private customPackageService = inject(CustomPackageService);
   private router = inject(Router);
 
   apiPackages = input<Package[]>([]);
@@ -141,10 +184,20 @@ export class SetupPackages {
   onBack = output<void>();
   onChange = output<string[]>();
 
+  customPackage = signal<CustomPackage | null>(null);
+
   constructor() {
     effect(() => {
       this.localSelectedIds = [...this.selectedIds()];
     });
+    this.loadCustomPackage();
+  }
+
+  async loadCustomPackage() {
+    if (this.billing.isPremium) {
+      const data = await this.customPackageService.getMyCustomPackage();
+      this.customPackage.set(data);
+    }
   }
 
   localSelectedIds: string[] = [];
@@ -158,6 +211,11 @@ export class SetupPackages {
       this.router.navigate(['/premium']);
       return;
     }
+    this.router.navigate(['/custom-package']);
+  }
+
+  editCustomPackage(event: Event) {
+    event.stopPropagation();
     this.router.navigate(['/custom-package']);
   }
 

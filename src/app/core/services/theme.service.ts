@@ -6,7 +6,7 @@ import { Capacitor } from '@capacitor/core';
 import { BillingService } from './billing.service';
 import { UiService } from './ui/ui.service';
 
-export type Theme = 'neon' | 'neon2' | 'infantil';
+export type Theme = 'neon' | 'neon2' | 'infantil' | 'alien' | 'manga';
 
 @Injectable({
     providedIn: 'root'
@@ -19,34 +19,28 @@ export class ThemeService {
     currentTheme = signal<Theme>('neon');
     // Themes that have been downloaded locally
     downloadedThemes = signal<Record<string, boolean>>({});
-
-    // Lista de assets requeridos para descargar un tema remoto (ejemplo de catálogo)
-    private themeRegistry: Record<string, { path: string, url: string }[]> = {
-        'alien': [
-            { path: '/images/alien/home_impostor_mask.png', url: 'https://impostor-backend-eight.vercel.app/themes/alien/mask.png' }
-            // Agregaríamos el resto de imágenes aquí
-        ]
-    };
+    private dataDirBase: string = '';
 
     constructor() {
         this.initTheme();
-
-        // Efecto reactivo para actualizar la clase del HTML cuando el tema cambie
-        effect(() => {
-            this.applyTheme(this.currentTheme());
-        });
 
         // Suscribirse a cambios premium para revertir tema si caduca
         this.billing.isPremium$.pipe(
             takeUntilDestroyed()
         ).subscribe(isPremium => {
-            if (!isPremium && this.currentTheme() === 'neon2') {
+            const t = this.currentTheme();
+            if (!isPremium && (t === 'neon2' || t === 'alien' || t === 'manga')) {
                 this.setTheme('neon');
             }
         });
     }
 
     private async initTheme() {
+        if (Capacitor.isNativePlatform()) {
+            const uriResult = await Filesystem.getUri({ path: '', directory: Directory.Data });
+            this.dataDirBase = uriResult.uri;
+        }
+
         const { value: downloaded } = await Preferences.get({ key: 'impostor-downloaded-themes' });
         if (downloaded) {
             this.downloadedThemes.set(JSON.parse(downloaded));
@@ -54,54 +48,67 @@ export class ThemeService {
 
         const { value } = await Preferences.get({ key: 'impostor-theme' });
         const savedTheme = value as string | null;
-        if (savedTheme === 'neon' || savedTheme === 'neon2' || savedTheme === 'infantil' || (savedTheme && this.downloadedThemes()[savedTheme])) {
+        if (savedTheme === 'neon' || savedTheme === 'neon2' || savedTheme === 'infantil' || savedTheme === 'alien' || savedTheme === 'manga' || (savedTheme && this.downloadedThemes()[savedTheme])) {
             this.currentTheme.set(savedTheme as Theme);
+            this.applyTheme(savedTheme as Theme);
         } else {
             this.currentTheme.set('neon');
+            this.applyTheme('neon');
         }
     }
 
     async setTheme(theme: Theme) {
-        if (theme === 'neon2' && !this.billing.isPremium) {
+        if ((theme === 'neon2' || theme === 'alien' || theme === 'manga') && !this.billing.isPremium) {
             console.warn('Requiere plan Premium para usar este tema');
             return;
         }
 
         this.ui.setLoading(true);
 
-        // Si es un tema remoto que requiere descarga y no está descargado
-        if (this.themeRegistry[theme] && !this.downloadedThemes()[theme]) {
-            await this.downloadThemeAssets(theme);
+        try {
+            // Si es un tema remoto que requiere descarga y no está descargado
+            if (!this.downloadedThemes()[theme] && (theme === 'alien' || theme === 'manga' || theme === 'infantil')) {
+                await this.downloadThemeAssets(theme);
+            }
+
+            // Pequeño delay para permitir que la barra de carga se muestre en pantalla y mejore la percepción del cambio de tema
+            await new Promise(resolve => setTimeout(resolve, 400));
+
+            this.currentTheme.set(theme);
+            this.applyTheme(theme);
+            await Preferences.set({ key: 'impostor-theme', value: theme });
+        } catch (error) {
+            console.error('Error aplicando el tema:', error);
+            // Optionally could emit a UI error event
+        } finally {
+            this.ui.setLoading(false);
         }
-
-        // Pequeño delay para permitir que la barra de carga se muestre en pantalla y mejore la percepción del cambio de tema
-        await new Promise(resolve => setTimeout(resolve, 400));
-
-        this.currentTheme.set(theme);
-        await Preferences.set({ key: 'impostor-theme', value: theme });
-        
-        this.ui.setLoading(false);
     }
 
     private async downloadThemeAssets(theme: string) {
-        if (!Capacitor.isNativePlatform()) return; // En web podríamos usar la URL directa
-        const assets = this.themeRegistry[theme];
-        if (!assets) return;
-
+        const manifestUrl = `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}/manifest.json`;
         try {
-            for (const asset of assets) {
-                const response = await fetch(asset.url);
-                const blob = await response.blob();
-                const base64 = await this.convertBlobToBase64(blob);
+            const res = await fetch(manifestUrl);
+            if (!res.ok) throw new Error('Manifest no encontrado');
+            const manifest = await res.json();
+            const assets: string[] = manifest.assets;
 
-                const fileName = asset.path.startsWith('/') ? asset.path.substring(1) : asset.path;
-                
-                await Filesystem.writeFile({
-                    path: `themes/${theme}/${fileName}`,
-                    data: base64,
-                    directory: Directory.Data,
-                    recursive: true
-                });
+            if (Capacitor.isNativePlatform()) {
+                for (const asset of assets) {
+                    const assetUrl = `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${asset}`;
+                    const response = await fetch(assetUrl);
+                    const blob = await response.blob();
+                    const base64 = await this.convertBlobToBase64(blob);
+
+                    const fileName = asset.startsWith('/') ? asset.substring(1) : asset;
+                    
+                    await Filesystem.writeFile({
+                        path: `themes/${theme}/${fileName}`,
+                        data: base64,
+                        directory: Directory.Data,
+                        recursive: true
+                    });
+                }
             }
 
             const current = this.downloadedThemes();
@@ -126,7 +133,7 @@ export class ThemeService {
 
     private applyTheme(theme: Theme) {
         // Limpiamos clases previas
-        document.documentElement.classList.remove('theme-neon', 'theme-neon2', 'theme-infantil', 'dark', 'light');
+        document.documentElement.classList.remove('theme-neon', 'theme-neon2', 'theme-infantil', 'theme-alien', 'theme-manga', 'dark', 'light');
         
         // Añadimos la clase del tema actual
         document.documentElement.classList.add(`theme-${theme}`);
@@ -135,35 +142,15 @@ export class ThemeService {
         document.documentElement.classList.add('dark');
     }
 
-    // Retorna la ruta de la imagen dependiendo del tema.
-    // Si el tema es infantil, buscará en /images/infantil/...
-    // neon2 usa las mismas de neon pero con filtro CSS.
     getImagePath(originalPath: string): string {
         const theme = this.currentTheme() as string;
         
-        if (theme === 'infantil') {
-            return originalPath.replace('/images/', '/images/infantil/');
-        }
-        
-        if (this.downloadedThemes()[theme] && Capacitor.isNativePlatform()) {
-            // El path original suele ser "/images/algo.png"
-            const fileName = originalPath.startsWith('/') ? originalPath.substring(1) : originalPath;
-            // Retorna la ruta local. Esto requiere que el componente HTML lo maneje bien.
-            // Para simplificar, Capacitor en iOS y Android puede servir desde Directory.Data usando la URL.
-            // Una opción más robusta sería precargar un mapa de URLs con Capacitor.convertFileSrc().
-            // Asumiremos que el componente HTML puede vincular a la ruta local si le damos Capacitor.convertFileSrc.
-            // Sin embargo, getImagePath es síncrona. Si necesitamos el FileSrc real, 
-            // podemos componerlo: `_capacitor_file_://...` pero Capacitor no expone el path exacto sin llamada async.
-            // Para la arquitectura actual, una solución es guardar el basepath del Directory.Data en el inicio,
-            // o cargar la imagen asíncronamente en el HTML.
-            // Dado que `getImagePath` se asume estática, usaremos el path si web, si no `null` y manejar asíncrono.
-            
-            // Para evitar problemas de rendering síncrono, se sugiere usar la URL en la web (si web) 
-            // y para móvil, esto es un punto de entrada para un Pipe asíncrono futuro.
-            // Por ahora reemplazamos con el patrón local predecible si lo conocemos, o pasamos la original.
-            if (!Capacitor.isNativePlatform()) {
-                 const asset = this.themeRegistry[theme]?.find(a => a.path === originalPath);
-                 if (asset) return asset.url;
+        if (this.downloadedThemes()[theme]) {
+            if (Capacitor.isNativePlatform()) {
+                const fileName = originalPath.startsWith('/') ? originalPath.substring(1) : originalPath;
+                return Capacitor.convertFileSrc(`${this.dataDirBase}/themes/${theme}/${fileName}`);
+            } else {
+                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${originalPath}`;
             }
         }
         
