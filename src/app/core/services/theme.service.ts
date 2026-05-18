@@ -95,12 +95,15 @@ export class ThemeService {
 
             if (Capacitor.isNativePlatform()) {
                 for (const asset of assets) {
-                    const assetUrl = `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${asset}`;
+                    const cleanPath = asset.replace(/^\/images\//, '/');
+                    const assetUrl = `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${cleanPath}`;
                     const response = await fetch(assetUrl);
+                    if (!response.ok) throw new Error('Asset fallido');
+                    
                     const blob = await response.blob();
                     const base64 = await this.convertBlobToBase64(blob);
 
-                    const fileName = asset.startsWith('/') ? asset.substring(1) : asset;
+                    const fileName = cleanPath.startsWith('/') ? cleanPath.substring(1) : cleanPath;
                     
                     await Filesystem.writeFile({
                         path: `themes/${theme}/${fileName}`,
@@ -146,11 +149,12 @@ export class ThemeService {
         const theme = this.currentTheme() as string;
         
         if (this.downloadedThemes()[theme]) {
+            const cleanPath = originalPath.replace(/^\/images\//, '/');
             if (Capacitor.isNativePlatform()) {
-                const fileName = originalPath.startsWith('/') ? originalPath.substring(1) : originalPath;
+                const fileName = cleanPath.startsWith('/') ? cleanPath.substring(1) : cleanPath;
                 return Capacitor.convertFileSrc(`${this.dataDirBase}/themes/${theme}/${fileName}`);
             } else {
-                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${originalPath}`;
+                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${cleanPath}`;
             }
         }
         
