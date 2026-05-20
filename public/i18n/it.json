@@ -52,29 +52,29 @@
     "DARK_THEME": "Tema Scuro",
     "VERSION": "Versione {{version}}",
     "DEV_INFO": "Sviluppato per il miglior ambiente di festa.",
-    "VISUAL_STYLE": "Visual Style",
+    "VISUAL_STYLE": "Stile Visivo",
     "THEME_NEON": "Neon / Cyberpunk",
-    "THEME_INFANTIL": "Kids (Family friendly)",
+    "THEME_INFANTIL": "Bambini (Per famiglie)",
     "THEME_NEON_2": "Neon 2",
-      "THEME_ALIEN": "Tema Alien",
-      "THEME_MANGA": "Tema Manga",
-    "CONTENT": "Content",
-    "CUSTOM_PACKAGES": "Custom Packages",
-    "SUPPORT_CONTACT": "Support & Contact",
-    "REPORT_BUG": "Report a Bug",
-    "SUGGEST_IMPROVEMENT": "Suggest Improvement",
-    "REPORT_BUG_TITLE": "Report a Bug",
-    "SUGGEST_IMPROVEMENT_TITLE": "Suggest Improvement",
-    "REPORT_BUG_DESC": "Please describe the problem you encountered in as much detail as possible.",
-    "SUGGEST_IMPROVEMENT_DESC": "Do you have any ideas to improve the game? We're listening!",
-    "REPORT_PLACEHOLDER": "Write your message here...",
-    "SENDING": "Sending...",
-    "SEND": "Send",
-    "SUCCESS_TITLE": "Received!",
-    "SUCCESS_MSG": "Thank you for your feedback. We have successfully saved your report.",
-    "ERROR_TITLE": "Error",
-    "ERROR_MSG": "Could not send the report. Please check your internet connection.",
-    "CLOSE": "Close"
+    "THEME_ALIEN": "Tema Alieno",
+    "THEME_MANGA": "Tema Manga",
+    "CONTENT": "Contenuto",
+    "CUSTOM_PACKAGES": "Pacchetti Personalizzati",
+    "SUPPORT_CONTACT": "Supporto & Contatti",
+    "REPORT_BUG": "Segnala un Bug",
+    "SUGGEST_IMPROVEMENT": "Suggerisci un Miglioramento",
+    "REPORT_BUG_TITLE": "Segnala un Bug",
+    "SUGGEST_IMPROVEMENT_TITLE": "Suggerisci un Miglioramento",
+    "REPORT_BUG_DESC": "Descrivi il problema che hai riscontrato nel modo più dettagliato possibile.",
+    "SUGGEST_IMPROVEMENT_DESC": "Hai delle idee per migliorare il gioco? Ti ascoltiamo!",
+    "REPORT_PLACEHOLDER": "Scrivi il tuo messaggio qui...",
+    "SENDING": "Invio in corso...",
+    "SEND": "Invia",
+    "SUCCESS_TITLE": "Ricevuto!",
+    "SUCCESS_MSG": "Grazie per il tuo feedback. Abbiamo salvato il tuo rapporto con successo.",
+    "ERROR_TITLE": "Errore",
+    "ERROR_MSG": "Impossibile inviare il rapporto. Controlla la tua connessione internet.",
+    "CLOSE": "Chiudi"
   },
   "SETUP": {
     "TITLE": "Configurazione",
@@ -118,23 +118,23 @@
     "START_GAME": "INIZIA PARTITA",
     "SAVE": "Salva",
     "WARNING_CANNOT_START": "Mancano giocatori, impostori o parole.",
-    "PREMIUM_BANNER_TITLE": "Buy Premium",
-    "PREMIUM_BANNER_DESC": "Remove ads and get exclusive themes"
+    "PREMIUM_BANNER_TITLE": "Acquista Premium",
+    "PREMIUM_BANNER_DESC": "Rimuovi le pubblicità e ottieni temi esclusivi"
   },
   "SETUP_PLAYERS": {
     "TITLE": "Giocatori",
     "P_NAME": "Nome del giocatore",
     "ADD_PLAYER": "Aggiungi giocatore",
     "MIN_WARNING": "Aggiungi almeno 3 giocatori.",
-    "SAVE_GROUP_BTN": "Save group",
-    "GROUPS_LBL": "Groups:",
-    "SAVE_GROUP_TITLE": "Save Group",
-    "SAVE_GROUP_DESC": "Give this group of friends a name so you can load it quickly in the future (e.g. Family, Work, The usual suspects).",
-    "SAVE_GROUP_PLACEHOLDER": "Group name...",
-    "CROP_TITLE": "Crop Image",
-    "CROP_CANCEL": "Cancel",
-    "CROP_APPLY": "Apply",
-    "EDIT_GROUP_BTN": "Edit group"
+    "SAVE_GROUP_BTN": "Salva gruppo",
+    "GROUPS_LBL": "Gruppi:",
+    "SAVE_GROUP_TITLE": "Salva Gruppo",
+    "SAVE_GROUP_DESC": "Dai un nome a questo gruppo di amici in modo da poterlo caricare rapidamente in futuro (es. Famiglia, Lavoro, I soliti sospetti).",
+    "SAVE_GROUP_PLACEHOLDER": "Nome del gruppo...",
+    "CROP_TITLE": "Ritaglia Immagine",
+    "CROP_CANCEL": "Annulla",
+    "CROP_APPLY": "Applica",
+    "EDIT_GROUP_BTN": "Modifica gruppo"
   },
   "SETUP_PACKAGES": {
     "TITLE": "Pacchetti",
@@ -143,8 +143,8 @@
     "NONE_SELECTED": "Nessuno",
     "ONE_SELECTED": "1 selezionato",
     "N_SELECTED": "{{count}} selezionati",
-    "CREATE_CUSTOM": "Create Package",
-    "CREATE_CUSTOM_DESC": "Add your own words"
+    "CREATE_CUSTOM": "Crea Pacchetto",
+    "CREATE_CUSTOM_DESC": "Aggiungi le tue parole"
   },
   "SETUP_MODES": {
     "TITLE": "Modalità di gioco",
@@ -181,10 +181,10 @@
     "START_PLAY": "Inizia partita",
     "PLAYER_TURN": "Turno di",
     "PASS_DEVICE": "Passa il dispositivo.",
-    "CHANGE_WORD": "Change word",
-    "CHANGE_WORD_TITLE": "Change Word",
-    "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
-    "CHANGE_WORD_CONFIRM": "YES, RESTART"
+    "CHANGE_WORD": "Cambia parola",
+    "CHANGE_WORD_TITLE": "Cambia Parola",
+    "CHANGE_WORD_DESC": "Sei sicuro di voler cambiare la parola con cui stai giocando?<br><br><strong>Questo riavvierà l'intero round dall'inizio:</strong> Verrà assegnata una nuova parola, i ruoli verranno ridistribuiti casualmente e tutti dovranno rivedere la propria carta a partire dal primo giocatore.",
+    "CHANGE_WORD_CONFIRM": "SÌ, RIAVVIA"
   },
   "DRAW": {
     "TITLE": "Disegna",
@@ -253,8 +253,8 @@
   },
   "COMMON": {
     "OK": "OK",
-    "CANCEL": "Cancel",
-    "LOADING": "Loading..."
+    "CANCEL": "Annulla",
+    "LOADING": "Caricamento..."
   },
   "CONFIRM_DELETE_PRESET": {
     "TITLE": "Elimina gruppo",
@@ -296,19 +296,19 @@
     "PLAN_ANNUAL": "Piano Annuale"
   },
   "CUSTOM_PACKAGE": {
-    "TITLE": "Custom Package",
-    "REQ_SUBSCRIPTION_TITLE": "Subscription Required",
-    "REQ_SUBSCRIPTION_DESC": "You must be a Premium user to create and play with your own word packages.",
-    "PACKAGE_NAME": "Package Name",
-    "PKG_NAME_PLACEHOLDER": "e.g. My Party 2026",
-    "WORD": "Word",
-    "WORD_PLACEHOLDER": "Main Word (e.g. Cat)",
-    "FAKE_WORD_PLACEHOLDER": "Fake Word (e.g. Dog)",
-    "HINTS_PLACEHOLDER": "Hints separated by comma (e.g. Meow, Whiskers)",
-    "ADD_WORD": "+ Add Word",
-    "SAVE": "Save",
-    "SAVING": "Saving...",
-    "SAVE_SUCCESS": "Successfully saved to the cloud.",
-    "SAVE_ERROR": "Error saving."
+    "TITLE": "Pacchetto Personalizzato",
+    "REQ_SUBSCRIPTION_TITLE": "Abbonamento Richiesto",
+    "REQ_SUBSCRIPTION_DESC": "Devi essere un utente Premium per creare e giocare con i tuoi pacchetti di parole personalizzati.",
+    "PACKAGE_NAME": "Nome Pacchetto",
+    "PKG_NAME_PLACEHOLDER": "es. La mia festa 2026",
+    "WORD": "Parola",
+    "WORD_PLACEHOLDER": "Parola Principale (es. Gatto)",
+    "FAKE_WORD_PLACEHOLDER": "Falsa Parola (es. Cane)",
+    "HINTS_PLACEHOLDER": "Indizi separati da virgola (es. Miao, Baffi)",
+    "ADD_WORD": "+ Aggiungi Parola",
+    "SAVE": "Salva",
+    "SAVING": "Salvataggio...",
+    "SAVE_SUCCESS": "Salvato sul cloud con successo.",
+    "SAVE_ERROR": "Errore di salvataggio."
   }
 }
