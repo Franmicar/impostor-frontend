@@ -22,6 +22,8 @@
     /* slate-400 */
     --modal-bg: rgba(15, 23, 42, 0.9);
     --backdrop-bg: rgba(0, 0, 0, 0.6);
+    --footer-gradient-via: rgba(15, 23, 42, 0.8);
+    --loading-bg: rgba(15, 23, 42, 0.9);
   }
 
   /* Premium Theme (Neon / Cyberpunk 2) */
@@ -38,6 +40,8 @@
     /* Dark Slate */
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
+    --footer-gradient-via: rgba(2, 6, 23, 0.8);
+    --loading-bg: rgba(2, 6, 23, 0.9);
   }
 
   /* Premium Theme (Alien / Sci-Fi) */
@@ -51,6 +55,8 @@
     --text-main: #e2fce2;
     --text-muted: #79a379;
     --modal-bg: rgba(0, 0, 0, 0.9);
+    --footer-gradient-via: rgba(0, 0, 0, 0.8);
+    --loading-bg: rgba(0, 0, 0, 0.9);
   }
 
   /* Premium Theme (Manga / Comic) */
@@ -64,6 +70,8 @@
     --text-main: #121212;
     --text-muted: #4b4b4b;
     --modal-bg: rgba(255, 255, 255, 0.95);
+    --footer-gradient-via: rgba(224, 224, 224, 0.8);
+    --loading-bg: rgba(255, 255, 255, 0.95);
   }
 
   /* Free Theme (Infantil) */
@@ -86,6 +94,8 @@
     /* slate-700 */
     --modal-bg: rgba(255, 255, 255, 0.95);
     --backdrop-bg: rgba(0, 0, 0, 0.25);
+    --footer-gradient-via: rgba(240, 249, 255, 0.8);
+    --loading-bg: rgba(224, 242, 254, 0.95);
   }
 
   /* Ocultar el padding (bordes grises) y sombras oscuras solo en el tema infantil */
@@ -225,7 +235,14 @@
   }
 }
 
-@layer utilities {}
+@layer utilities {
+  .footer-gradient-bg {
+    background: linear-gradient(to top, var(--app-bg-to) 0%, var(--footer-gradient-via) 60%, transparent 100%);
+  }
+  .loading-overlay-bg {
+    background-color: var(--loading-bg);
+  }
+}
 
 /* Globals para todos los scrollbars */
 ::-webkit-scrollbar {

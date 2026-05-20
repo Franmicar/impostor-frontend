@@ -10,7 +10,7 @@ import { BillingService } from '../../../core/services/billing.service';
   template: `
    <footer class="fixed bottom-0 left-0 right-0 z-40 w-full">
     <!-- Fondo degradado que cubre también el espacio del banner -->
-    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent -z-10 w-full h-full pointer-events-none"></div>
+    <div class="absolute inset-0 footer-gradient-bg -z-10 w-full h-full pointer-events-none"></div>
     
     <!-- Botones de Acción -->
     <div class="px-4 pb-4 w-full max-w-md mx-auto">

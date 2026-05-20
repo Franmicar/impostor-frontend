@@ -161,3 +161,9 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Refactorización de Footer y Espaciado:** Consolidación de la estructura Flexbox para el footer dinámico. Corrección exhaustiva del desbordamiento del box-model en contenedores de botones (`app-button-primary` y `app-button-secondary`) utilizando `flex-1` puro en lugar de anchos forzados, respetando milimétricamente el padding global.
 - **Consistencia UI de Estado:** Desacoplamiento estricto del estado seleccionado y guardado de los paquetes y jugadores. Modificación de la pantalla de Jugadores para evitar guardar en la caché visual los cambios no confirmados explícitamente mediante el botón guardar.
 - **Correcciones Signals ThemeService:** Depuración de efectos reactivos (`NG0203`) y estados de carga infinitos inyectando bloques `try-finally` que previenen el bloqueo de renderizado en caídas de red.
+
+### Versión 1.5.3
+- **Mejoras en el Tema Infantil y Carga:** Rediseño adaptativo y dinámico para el fondo del footer y la pantalla de carga global. Se han eliminado los colores oscuros Cyberpunk fijos (`slate-900` y brillos neón) en favor de variables CSS integradas (`--footer-gradient-via` y `--loading-bg`). En el tema Infantil, ahora el footer se funde sobre celeste claro (`sky-50`) y la pantalla de carga usa un fondo celeste suave (`sky-100` con 95% de opacidad) con brillos y texto en naranja y azul, logrando total coherencia estética.
+- **Sincronización Completa de Traducciones (i18n):** Limpieza, depuración y eliminación de claves de traducción obsoletas en todos los idiomas del proyecto, asegurando archivos de traducción sincronizados y consistentes.
+- **Incremento de Versión:** Actualización coordinada a la versión `1.5.3` tanto en `package.json` como en `android/app/build.gradle` de Capacitor para la preparación y publicación de la release.
+
