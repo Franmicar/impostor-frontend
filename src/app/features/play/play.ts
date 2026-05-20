@@ -1,10 +1,11 @@
-import { Component, inject, signal, HostListener, computed, OnInit } from '@angular/core';
+import { Component, inject, signal, HostListener, computed, OnInit, effect } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
 import { ThemeService } from '../../core/services/theme.service';
 import { BillingService } from '../../core/services/billing.service';
+import { SocketService } from '../../core/services/socket/socket.service';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
@@ -65,132 +66,146 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
        <span class="text-textMuted uppercase tracking-widest text-xs font-bold mb-2">{{ (engine.currentSettings()?.gameTypeId === 'draw' ? 'PLAY.STARTS_DRAW' : 'PLAY.STARTS') | translate }}</span>
        <h2 class="text-4xl font-black text-secondary text-center mb-6 drop-shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)]">{{ winnerName() }}</h2>
        
-       <app-button-primary (onClick)="goToNextPhase()" class="block w-full">
-        @if (engine.currentSettings()?.gameTypeId === 'draw') {
-         {{ 'PLAY.PLAY_BTN_DRAW' | translate }}
-        } @else {
-         {{ 'PLAY.PLAY_BTN' | translate }}
-        }
+       <app-button-primary 
+         (onClick)="goToNextPhase()" 
+         [disabled]="engine.isOnline() && !isHost()"
+         class="block w-full">
+         @if (engine.isOnline() && !isHost()) {
+           Esperando al anfitrión...
+         } @else if (engine.currentSettings()?.gameTypeId === 'draw') {
+          {{ 'PLAY.PLAY_BTN_DRAW' | translate }}
+         } @else {
+          {{ 'PLAY.PLAY_BTN' | translate }}
+         }
        </app-button-primary>
       </div>
     </div>
    } @else {
-    <!-- Pass and Play -->
-    <div class="w-full max-w-sm flex-1 flex flex-col relative">
-      
-
-
-      <div class="text-center mb-8 z-20 relative bg-glass backdrop-blur-md border border-glass-border rounded-2xl py-4 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.05)] mx-auto w-full">
-        <h2 class="text-4xl font-black text-textPrimary drop-shadow-lg">{{ engine.currentPlayer()?.name }}</h2>
+    @if (engine.isOnline() && engine.currentPlayer()?.hasSeenRole) {
+      <!-- Waiting for others screen (Online Mode) -->
+      <div class="flex-grow flex flex-col items-center justify-center text-center p-8 bg-glass border border-glass-border rounded-3xl backdrop-blur-md max-w-sm mx-auto w-full my-auto z-10">
+        <div class="w-16 h-16 border-4 border-secondary border-t-transparent rounded-full animate-spin mb-6 shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)]"></div>
+        <h2 class="text-2xl font-bold text-textPrimary mb-2 tracking-wide">¡Rol Confirmado!</h2>
+        <p class="text-textMuted text-sm">Esperando a que el resto de los jugadores confirmen su rol para comenzar la partida...</p>
       </div>
-      
-      <!-- Cards Container -->
-      <div class="flex-1 relative flex items-center justify-center w-full max-h-[450px]">
+    } @else {
+      <!-- Pass and Play -->
+      <div class="w-full max-w-sm flex-1 flex flex-col relative">
         
-        <!-- Secret Content (Provides the height) -->
-        <div class="relative w-full h-[380px] bg-glass backdrop-blur-xl rounded-3xl p-8 flex flex-col items-center justify-center border border-glass-border shadow-2xl z-0">
-          <h3 class="text-xl font-bold text-textMuted mb-2 drop-shadow-sm">{{ 'PLAY.YOU_ARE' | translate }}</h3>
+        <div class="text-center mb-8 z-20 relative bg-glass backdrop-blur-md border border-glass-border rounded-2xl py-4 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.05)] mx-auto w-full">
+          <h2 class="text-4xl font-black text-textPrimary drop-shadow-lg">{{ engine.currentPlayer()?.name }}</h2>
+        </div>
+        
+        <!-- Cards Container -->
+        <div class="flex-1 relative flex items-center justify-center w-full max-h-[450px]">
           
-          @if (engine.currentPlayer()?.isImpostor && engine.currentSettings()?.modeId !== 'infiltrator') {
-            <h1 class="text-4xl font-black text-primary mb-8 uppercase tracking-widest drop-shadow-[0_0_15px_rgb(var(--color-primary)/0.4)]">{{ 'PLAY.IMPOSTOR_TITLE' | translate }}</h1>
-            @if (engine.currentSettings()?.modeId === 'team') {
-              <p class="text-textMuted text-center mb-4">{{ 'PLAY.TEAMMATES' | translate }}</p>
-              <div class="flex flex-wrap justify-center gap-2 mb-6">
-                @if (engine.getTeammates()(engine.currentPlayer()?.id || 0).length > 0) {
-                  @for (mate of engine.getTeammates()(engine.currentPlayer()?.id || 0); track mate.id) {
-                    <span class="bg-primary/20 text-primary font-bold px-3 py-1 rounded-lg border border-primary/50 shadow-[0_0_10px_rgb(var(--color-primary)/0.4)]">
-                      {{ mate.name }}
-                    </span>
+          <!-- Secret Content (Provides the height) -->
+          <div class="relative w-full h-[380px] bg-glass backdrop-blur-xl rounded-3xl p-8 flex flex-col items-center justify-center border border-glass-border shadow-2xl z-0">
+            <h3 class="text-xl font-bold text-textMuted mb-2 drop-shadow-sm">{{ 'PLAY.YOU_ARE' | translate }}</h3>
+            
+            @if (engine.currentPlayer()?.isImpostor && engine.currentSettings()?.modeId !== 'infiltrator') {
+              <h1 class="text-4xl font-black text-primary mb-8 uppercase tracking-widest drop-shadow-[0_0_15px_rgb(var(--color-primary)/0.4)]">{{ 'PLAY.IMPOSTOR_TITLE' | translate }}</h1>
+              @if (engine.currentSettings()?.modeId === 'team') {
+                <p class="text-textMuted text-center mb-4">{{ 'PLAY.TEAMMATES' | translate }}</p>
+                <div class="flex flex-wrap justify-center gap-2 mb-6">
+                  @if (engine.getTeammates()(engine.currentPlayer()?.id || 0).length > 0) {
+                    @for (mate of engine.getTeammates()(engine.currentPlayer()?.id || 0); track mate.id) {
+                      <span class="bg-primary/20 text-primary font-bold px-3 py-1 rounded-lg border border-primary/50 shadow-[0_0_10px_rgb(var(--color-primary)/0.4)]">
+                        {{ mate.name }}
+                      </span>
+                    }
+                  } @else {
+                    <span class="text-textMuted italic">{{ 'PLAY.ALONE_IMPOSTOR' | translate }}</span>
                   }
+                </div>
+              } @else {
+                <p class="text-textMuted text-center mb-6">
+                  @if (engine.currentHint()) {
+                    <span class="font-bold text-primary drop-shadow-md">{{ 'PLAY.HINT_IS' | translate }}</span> {{ engine.currentHint() }}
+                  } @else {
+                    {{ 'PLAY.NO_HINT' | translate }}
+                  }
+                </p>
+              }
+            } @else if (engine.currentPlayer()?.isDetective) {
+              <h1 class="text-4xl font-black text-indigo-400 mb-4 uppercase tracking-widest drop-shadow-[0_0_15px_rgba(129,140,248,0.6)]">{{ 'PLAY.DETECTIVE_TITLE' | translate }}</h1>
+              <p class="text-textMuted text-center mb-6">{{ 'PLAY.DETECTIVE_DESC' | translate }}</p>
+            } @else {
+              <h1 class="text-4xl font-black text-secondary mb-2 uppercase tracking-widest drop-shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)]">{{ 'PLAY.CIVIL_TITLE' | translate }}</h1>
+              <p class="text-textMuted text-center mb-6">{{ 'PLAY.SECRET_WORD_IS' | translate }}</p>
+              <div class="bg-black/40 border border-white/10 px-6 py-4 rounded-xl mb-4 flex justify-center items-center text-center backdrop-blur shadow-inner">
+                @if (engine.currentPlayer()?.isImpostor && engine.currentSettings()?.modeId === 'infiltrator') {
+                  <span class="text-3xl font-bold text-white tracking-wider drop-shadow-md">{{ engine.secretWord()?.fakeWord }}</span>
                 } @else {
-                  <span class="text-textMuted italic">{{ 'PLAY.ALONE_IMPOSTOR' | translate }}</span>
+                  <span class="text-3xl font-bold text-white tracking-wider drop-shadow-md">{{ engine.secretWord()?.word }}</span>
                 }
               </div>
-            } @else {
-              <p class="text-textMuted text-center mb-6">
-                @if (engine.currentHint()) {
-                  <span class="font-bold text-primary drop-shadow-md">{{ 'PLAY.HINT_IS' | translate }}</span> {{ engine.currentHint() }}
-                } @else {
-                  {{ 'PLAY.NO_HINT' | translate }}
+              
+              <p class="text-textMuted text-sm mt-4 text-center">
+                @if (engine.currentSettings()?.gameTypeId === 'word') {
+                  {{ 'PLAY.INSTRUCTION_WORD' | translate }}
+                } @else if (engine.currentSettings()?.gameTypeId === 'question') {
+                  {{ 'PLAY.INSTRUCTION_QUESTION' | translate }}
+                } @else if (engine.currentSettings()?.gameTypeId === 'draw') {
+                  {{ 'PLAY.INSTRUCTION_DRAW' | translate }}
                 }
               </p>
             }
-          } @else if (engine.currentPlayer()?.isDetective) {
-            <h1 class="text-4xl font-black text-indigo-400 mb-4 uppercase tracking-widest drop-shadow-[0_0_15px_rgba(129,140,248,0.6)]">{{ 'PLAY.DETECTIVE_TITLE' | translate }}</h1>
-            <p class="text-textMuted text-center mb-6">{{ 'PLAY.DETECTIVE_DESC' | translate }}</p>
-          } @else {
-            <h1 class="text-4xl font-black text-secondary mb-2 uppercase tracking-widest drop-shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)]">{{ 'PLAY.CIVIL_TITLE' | translate }}</h1>
-            <p class="text-textMuted text-center mb-6">{{ 'PLAY.SECRET_WORD_IS' | translate }}</p>
-            <div class="bg-black/40 border border-white/10 px-6 py-4 rounded-xl mb-4 flex justify-center items-center text-center backdrop-blur shadow-inner">
-              @if (engine.currentPlayer()?.isImpostor && engine.currentSettings()?.modeId === 'infiltrator') {
-                <span class="text-3xl font-bold text-white tracking-wider drop-shadow-md">{{ engine.secretWord()?.fakeWord }}</span>
-              } @else {
-                <span class="text-3xl font-bold text-white tracking-wider drop-shadow-md">{{ engine.secretWord()?.word }}</span>
-              }
-            </div>
-            
-            <p class="text-textMuted text-sm mt-4 text-center">
-              @if (engine.currentSettings()?.gameTypeId === 'word') {
-                {{ 'PLAY.INSTRUCTION_WORD' | translate }}
-              } @else if (engine.currentSettings()?.gameTypeId === 'question') {
-                {{ 'PLAY.INSTRUCTION_QUESTION' | translate }}
-              } @else if (engine.currentSettings()?.gameTypeId === 'draw') {
-                {{ 'PLAY.INSTRUCTION_DRAW' | translate }}
-              }
-            </p>
-          }
 
-        </div>
-        
-        <!-- Slide Cover -->
-        <div 
-          class="absolute inset-0 w-full h-full rounded-3xl p-8 flex flex-col items-center justify-center shadow-2xl cursor-grab active:cursor-grabbing z-10 transition-transform select-none will-change-transform border touch-none"
-          [class]="themeService.currentTheme() === 'infantil' ? 'bg-white border-primary/20' : 'bg-slate-900 border-slate-700 shadow-[0_0_30px_rgba(255,255,255,0.05)]'"
-          [style.transform]="slideTransform()"
-          [class.duration-500]="!isDragging()"
-          [style.transition-timing-function]="!isDragging() ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' : 'none'"
-          (mousedown)="onDragStart($event)"
-          (touchstart)="onDragStart($event)"
-          (contextmenu)="$event.preventDefault()">
-          
-          <!-- Gradient overlay to represent back of the card -->
-          <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 pointer-events-none"></div>
-
-          <!-- Chevron icon pointing up -->
-          <div class="animate-bounce mb-4 bg-primary/20 border border-primary/30 p-3 rounded-full z-20 shadow-lg backdrop-blur-md">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-8 h-8 text-primary drop-shadow-lg">
-             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-            </svg>
           </div>
           
-          <h2 class="text-2xl font-bold text-textPrimary text-center z-20 drop-shadow-md" [innerHTML]="'PLAY.SWIPE_TO_REVEAL' | translate"></h2>
+          <!-- Slide Cover -->
+          <div 
+            class="absolute inset-0 w-full h-full rounded-3xl p-8 flex flex-col items-center justify-center shadow-2xl cursor-grab active:cursor-grabbing z-10 transition-transform select-none will-change-transform border touch-none"
+            [class]="themeService.currentTheme() === 'infantil' ? 'bg-white border-primary/20' : 'bg-slate-900 border-slate-700 shadow-[0_0_30px_rgba(255,255,255,0.05)]'"
+            [style.transform]="slideTransform()"
+            [class.duration-500]="!isDragging()"
+            [style.transition-timing-function]="!isDragging() ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' : 'none'"
+            (mousedown)="onDragStart($event)"
+            (touchstart)="onDragStart($event)"
+            (contextmenu)="$event.preventDefault()">
+            
+            <!-- Gradient overlay to represent back of the card -->
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 pointer-events-none"></div>
+
+            <!-- Chevron icon pointing up -->
+            <div class="animate-bounce mb-4 bg-primary/20 border border-primary/30 p-3 rounded-full z-20 shadow-lg backdrop-blur-md">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-8 h-8 text-primary drop-shadow-lg">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+              </svg>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-textPrimary text-center z-20 drop-shadow-md" [innerHTML]="'PLAY.SWIPE_TO_REVEAL' | translate"></h2>
+          </div>
+          
         </div>
         
-      </div>
-      
-      <div class="mt-8 flex flex-col gap-4 w-full">
-        <div class="h-16 flex flex-col justify-center w-full">
-          @if (isRevealed()) {
-           <app-button-primary (onClick)="nextPlayer()" class="block w-full">
-             {{ isLastPlayer() ? ('PLAY.START_PLAY' | translate) : ('PLAY.NEXT_PLAYER' | translate) }}
-           </app-button-primary>
-          } @else {
-           <div class="text-center text-textMuted text-sm font-semibold">
-             {{ 'PLAY.PLAYER_N_OF_M' | translate: { n: engine.currentPlayerIndex() + 1, m: engine.players().length } }}
-           </div>
+        <div class="mt-8 flex flex-col gap-4 w-full">
+          <div class="h-16 flex flex-col justify-center w-full">
+            @if (isRevealed()) {
+             <app-button-primary (onClick)="nextPlayer()" class="block w-full">
+               {{ engine.isOnline() ? 'LISTO' : (isLastPlayer() ? ('PLAY.START_PLAY' | translate) : ('PLAY.NEXT_PLAYER' | translate)) }}
+             </app-button-primary>
+            } @else {
+             <div class="text-center text-textMuted text-sm font-semibold">
+               {{ engine.isOnline() ? 'DESLIZA HACIA ARRIBA PARA VER TU ROL' : ('PLAY.PLAYER_N_OF_M' | translate: { n: engine.currentPlayerIndex() + 1, m: engine.players().length }) }}
+             </div>
+            }
+          </div>
+          
+          @if (!engine.isOnline()) {
+            <div class="w-full pb-4">
+              <app-button-secondary (onClick)="showChangeWordModal.set(true)" class="block w-full">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-secondary">
+                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+                <span>{{ 'PLAY.CHANGE_WORD' | translate }}</span>
+              </app-button-secondary>
+            </div>
           }
         </div>
-        
-        <div class="w-full pb-4">
-          <app-button-secondary (onClick)="showChangeWordModal.set(true)" class="block w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-secondary">
-             <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-            </svg>
-            <span>{{ 'PLAY.CHANGE_WORD' | translate }}</span>
-          </app-button-secondary>
-        </div>
       </div>
-    </div>
+    }
    }
 
    <!-- MODAL DE CAMBIAR PALABRA -->
@@ -219,20 +234,39 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
    </app-modal>
    </div>
   </div>
- `,
+  `,
   styles: [`
   :host {
    display: block;
    width: 100%;
    height: 100%;
   }
- `]
+  `]
 })
 export class Play implements OnInit {
   router = inject(Router);
   engine = inject(GameEngineService);
   themeService = inject(ThemeService);
   billing = inject(BillingService);
+  socketService = inject(SocketService);
+
+  isHost = computed(() => {
+    if (!this.engine.isOnline()) return true;
+    const myId = this.socketService.myPlayerId();
+    if (!myId) return false;
+    const state = this.socketService.roomState();
+    if (!state) return false;
+    const me = state.players.find((p: any) => p.id === myId);
+    return me ? !!me.isHost : false;
+  });
+
+  constructor() {
+    effect(() => {
+      if (this.engine.isRevealPhaseFinished() && !this.winnerName()) {
+        this.startRoulette();
+      }
+    });
+  };
 
   isRevealed = signal<boolean>(false);
   showChangeWordModal = signal<boolean>(false);
@@ -397,6 +431,14 @@ export class Play implements OnInit {
   }
 
   goToNextPhase() {
+    if (this.engine.isOnline()) {
+      const state = this.socketService.roomState();
+      if (state && state.code && this.isHost()) {
+        this.socketService.startVoting(state.code);
+      }
+      return;
+    }
+
     if (this.engine.currentSettings()?.gameTypeId === 'draw') {
       this.router.navigate(['/draw'], { state: { intentional: true } });
     } else {

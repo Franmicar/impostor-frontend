@@ -13,6 +13,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
 import { HeaderComponent } from '../../shared/components/ui/header.component';
 import { FooterComponent } from '../../shared/components/ui/footer.component';
 import { InputComponent } from '../../shared/components/ui/input.component';
+import { SocketService } from '../../core/services/socket/socket.service';
 
 @Component({
  selector: 'app-vote',
@@ -173,74 +174,103 @@ import { InputComponent } from '../../shared/components/ui/input.component';
       </div>
    </app-modal>
 
-   <!-- HEADER & TIMER -->
-   
-   <!-- TIMER & ACTIONS -->
+   <!-- HEADER & TIMER & ACTIONS -->
    <div class="w-full max-w-md flex flex-col items-center mb-8">
-    @if (timer.isActive() || timer.timeLeftInSeconds() > 0) {
-     <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
-        [class.border-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
-        [class.text-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
-        [class.border-red-500]="timer.timeLeftInSeconds() === 0"
-        [class.text-red-500]="timer.timeLeftInSeconds() === 0">
-      <span class="text-5xl font-black font-mono tracking-wider drop-shadow-md">{{ timer.formattedTime() }}</span>
-      <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">{{ 'VOTE.TIME_REMAINING' | translate }}</span>
-      
-      <div class="flex gap-4 mt-4">
-        @if (timer.isActive()) {
-         <app-icon-button (onClick)="timer.pause()">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" /></svg>
-         </app-icon-button>
-        } @else if (timer.timeLeftInSeconds() > 0) {
-         <app-icon-button (onClick)="timer.resume()">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>
-         </app-icon-button>
-        }
+     @if (isOnline()) {
+      <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
+         [class.border-primary]="onlineTimeSeconds <= 10 && onlineTimeSeconds > 0"
+         [class.text-primary]="onlineTimeSeconds <= 10 && onlineTimeSeconds > 0"
+         [class.border-red-500]="onlineTimeSeconds === 0"
+         [class.text-red-500]="onlineTimeSeconds === 0">
+       <span class="text-5xl font-black font-mono tracking-wider drop-shadow-md">{{ onlineFormattedTime() }}</span>
+       <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">{{ 'VOTE.TIME_REMAINING' | translate }}</span>
       </div>
-     </div>
-    } @else {
-     <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] text-center">
-      <span class="text-xl font-bold text-textMuted drop-shadow-sm">{{ 'VOTE.NO_TIME_LIMIT' | translate }}</span>
-     </div>
-    }
+     } @else if (timer.isActive() || timer.timeLeftInSeconds() > 0) {
+      <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
+         [class.border-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
+         [class.text-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
+         [class.border-red-500]="timer.timeLeftInSeconds() === 0"
+         [class.text-red-500]="timer.timeLeftInSeconds() === 0">
+       <span class="text-5xl font-black font-mono tracking-wider drop-shadow-md">{{ timer.formattedTime() }}</span>
+       <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">{{ 'VOTE.TIME_REMAINING' | translate }}</span>
+       
+       <div class="flex gap-4 mt-4">
+         @if (timer.isActive()) {
+          <app-icon-button (onClick)="timer.pause()">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" /></svg>
+          </app-icon-button>
+         } @else if (timer.timeLeftInSeconds() > 0) {
+          <app-icon-button (onClick)="timer.resume()">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>
+          </app-icon-button>
+         }
+       </div>
+      </div>
+     } @else {
+      <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] text-center">
+       <span class="text-xl font-bold text-textMuted drop-shadow-sm">{{ 'VOTE.NO_TIME_LIMIT' | translate }}</span>
+      </div>
+     }
 
-    <!-- Ver dibujo button -->
-    @if (engine.currentSettings()?.gameTypeId === 'draw' && engine.drawings().length > 0) {
-      <div class="w-full flex flex-row flex-wrap justify-center gap-3 mt-4 px-2">
-        <div class="flex-1 w-full sm:w-auto sm:min-w-[200px]">
-         <app-button-secondary (onClick)="openDrawingModal()">
-           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-           </svg>
-           <span>{{ 'VOTE.VIEW_DRAWING' | translate }}</span>
-         </app-button-secondary>
-        </div>
-        <div class="flex-1 w-full sm:w-auto sm:min-w-[200px]">
-         <app-button-secondary (onClick)="openDrawAgainModal()">
-           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-           </svg>
-           <span>{{ 'VOTE.DRAW_AGAIN' | translate }}</span>
-         </app-button-secondary>
-        </div>
-      </div>
-    }
+     <!-- Ver dibujo button -->
+     @if (engine.currentSettings()?.gameTypeId === 'draw' && engine.drawings().length > 0) {
+       <div class="w-full flex flex-row flex-wrap justify-center gap-3 mt-4 px-2">
+         <div class="flex-1 w-full sm:w-auto sm:min-w-[200px]" [class.w-full]="isOnline()">
+          <app-button-secondary (onClick)="openDrawingModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+            </svg>
+            <span>{{ 'VOTE.VIEW_DRAWING' | translate }}</span>
+          </app-button-secondary>
+         </div>
+         @if (!isOnline()) {
+           <div class="flex-1 w-full sm:w-auto sm:min-w-[200px]">
+            <app-button-secondary (onClick)="openDrawAgainModal()">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+              </svg>
+              <span>{{ 'VOTE.DRAW_AGAIN' | translate }}</span>
+            </app-button-secondary>
+           </div>
+         }
+       </div>
+     }
    </div>
 
    <!-- ALIVE PLAYERS TO VOTE -->
    <main class="w-full max-w-md flex-1">
-    <!-- VOTE_INSTRUCTION is omitted from dictionary but fine omitted here temporarily or replaced with general terms -->
-    
     <div class="grid grid-cols-2 gap-4 pt-4 px-2">
-     @for (player of engine.alivePlayers(); track player.id) {
-      <div 
-       (click)="selectedPlayerId = player.id"
-       class="bg-glass backdrop-blur-md border rounded-2xl p-4 flex flex-col items-center gap-3 transition-all shadow-lg cursor-pointer hover:shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] hover:-translate-y-1"
-       [class.border-primary]="selectedPlayerId === player.id"
-       [class.bg-white/10]="selectedPlayerId === player.id"
-       [class.shadow-[0_0_25px_rgb(var(--color-primary)/0.4)]]="selectedPlayerId === player.id"
-       [class.border-glass-border]="selectedPlayerId !== player.id"
-       [class.hover:border-white/20]="selectedPlayerId !== player.id">
+      @for (player of engine.alivePlayers(); track player.id) {
+       <div 
+        (click)="(!isOnline() || player.id.toString() !== myPlayerId()?.toString()) && (selectedPlayerId = player.id)"
+        class="bg-glass backdrop-blur-md border rounded-2xl p-4 flex flex-col items-center gap-3 transition-all shadow-lg relative"
+        [class.cursor-pointer]="!isOnline() || player.id.toString() !== myPlayerId()?.toString()"
+        [class.cursor-not-allowed]="isOnline() && player.id.toString() === myPlayerId()?.toString()"
+        [class.opacity-60]="isOnline() && player.id.toString() === myPlayerId()?.toString()"
+        [class.hover:shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]]="!isOnline() || player.id.toString() !== myPlayerId()?.toString()"
+        [class.hover:-translate-y-1]="!isOnline() || player.id.toString() !== myPlayerId()?.toString()"
+        [class.border-primary]="selectedPlayerId === player.id"
+        [class.bg-white/10]="selectedPlayerId === player.id"
+        [class.shadow-[0_0_25px_rgb(var(--color-primary)/0.4)]]="selectedPlayerId === player.id"
+        [class.border-glass-border]="selectedPlayerId !== player.id"
+        [class.hover:border-white/20]="selectedPlayerId !== player.id">
+       
+       <!-- Check if player has voted -->
+       @if (isOnline()) {
+         <div class="absolute top-2 right-2 flex gap-1.5 items-center z-10">
+           @if (hasPlayerVoted(player.id)) {
+             <span class="bg-green-500/20 text-green-400 border border-green-500/30 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" title="Votado">
+               ✓
+             </span>
+           }
+           @if (getVotesForPlayer(player.id) > 0) {
+             <span class="bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-black w-5 h-5 rounded-full flex items-center justify-center">
+               {{ getVotesForPlayer(player.id) }}
+             </span>
+           }
+         </div>
+       }
+
        <div class="w-14 h-14 rounded-full flex items-center justify-center border transition-all overflow-hidden relative"
           [class.bg-primary/20]="selectedPlayerId === player.id"
           [class.border-primary]="selectedPlayerId === player.id"
@@ -256,7 +286,9 @@ import { InputComponent } from '../../shared/components/ui/input.component';
          </svg>
         }
        </div>
-       <span class="font-bold text-textPrimary">{{ player.name }}</span>
+       <span class="font-bold text-textPrimary text-center">
+         {{ player.name }}{{ (isOnline() && player.id.toString() === myPlayerId()?.toString()) ? ' (Yo)' : '' }}
+       </span>
       </div>
      }
     </div>
@@ -268,11 +300,11 @@ import { InputComponent } from '../../shared/components/ui/input.component';
      <!-- Votar button -->
      <button 
        (click)="eliminate()"
-       [disabled]="!selectedPlayerId"
+       [disabled]="!selectedPlayerId || (isOnline() && myPlayerId() && hasPlayerVoted(myPlayerId()!))"
        class="flex-1 relative group overflow-hidden py-4 px-2 bg-gradient-to-r from-red-600 to-rose-500 text-white rounded-2xl font-bold text-lg sm:text-xl shadow-[0_0_20px_rgba(225,29,72,0.4)] active:scale-95 transition-all text-center disabled:opacity-50 disabled:shadow-none disabled:grayscale disabled:scale-100 disabled:cursor-not-allowed cursor-pointer uppercase tracking-widest flex items-center justify-center gap-2">
        <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors"></div>
        <span class="relative z-10 drop-shadow-md">
-         {{ 'VOTE.ELIMINATE' | translate }}
+         {{ (isOnline() && myPlayerId() && hasPlayerVoted(myPlayerId()!)) ? '✓' : ('VOTE.ELIMINATE' | translate) }}
        </span>
      </button>
 
@@ -290,7 +322,69 @@ import { InputComponent } from '../../shared/components/ui/input.component';
     </div>
    </app-footer>
 
+    <!-- ONLINE RESOLUTION OVERLAY/MODAL -->
+    @if (isOnline() && roomState()?.status === 'vote-resolved') {
+      <div class="fixed inset-0 bg-black/85 z-[70] flex flex-col items-center justify-center p-6 backdrop-blur-md animate-in fade-in duration-300">
+        <div class="w-full max-w-md bg-glass border border-glass-border rounded-3xl p-6 shadow-2xl flex flex-col items-center text-center">
+          
+          <!-- Tie / Empate -->
+          @if (roomState()?.votingState?.resolution?.isTie) {
+            <div class="w-20 h-20 bg-yellow-500/20 border border-yellow-500/50 rounded-full flex items-center justify-center mb-6 text-yellow-500 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h2 class="text-2xl font-black text-yellow-500 mb-4 tracking-widest uppercase">EMPATE</h2>
+            <p class="text-textMuted text-lg mb-6">Hubo un empate en los votos. Nadie ha sido eliminado esta ronda.</p>
+          }
+          
+          <!-- Detective guess fail -->
+          @else if (roomState()?.votingState?.resolution?.isGuessFail) {
+            <div class="w-20 h-20 bg-red-500/20 border border-red-500/50 rounded-full flex items-center justify-center mb-6 text-red-500 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 class="text-2xl font-black text-red-500 mb-4 tracking-widest uppercase">FALLO DE DETECTIVE</h2>
+            <p class="text-textMuted text-lg mb-6">
+              El detective <span class="font-bold text-red-400">{{ roomState()?.votingState?.resolution?.eliminatedPlayerName }}</span> intentó adivinar la palabra "<span class="font-bold text-white">{{ roomState()?.votingState?.resolution?.guessWord }}</span>" y falló, por lo que es eliminado.
+            </p>
+          }
 
+          <!-- Player eliminated -->
+          @else {
+            @if (roomState()?.votingState?.resolution?.isImpostor) {
+              <div class="w-20 h-20 bg-primary/20 border border-primary/50 rounded-full flex items-center justify-center mb-6 text-pink-500 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h2 class="text-2xl font-black text-primary mb-4 tracking-widest uppercase">IMPOSTOR CAZADO</h2>
+              <p class="text-textMuted text-lg mb-6">
+                ¡Bien hecho! <span class="font-bold text-primary">{{ roomState()?.votingState?.resolution?.eliminatedPlayerName }}</span> era el impostor.
+              </p>
+            } @else {
+              <div class="w-20 h-20 bg-secondary/20 border border-secondary/50 rounded-full flex items-center justify-center mb-6 text-secondary shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h2 class="text-2xl font-black text-secondary mb-4 tracking-widest uppercase">CIVIL ELIMINADO</h2>
+              <p class="text-textMuted text-lg mb-6">
+                El jugador <span class="font-bold text-secondary">{{ roomState()?.votingState?.resolution?.eliminatedPlayerName }}</span> ha sido eliminado, pero NO era un impostor.
+              </p>
+            }
+          }
+
+          <!-- Countdown timer for next round -->
+          <div class="mt-6 flex flex-col items-center">
+            <span class="text-4xl font-mono font-black text-white/90 drop-shadow">{{ roomState()?.votingState?.resolution?.timeLeft }}s</span>
+            <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">Siguiente ronda en...</span>
+          </div>
+
+        </div>
+      </div>
+    }
 
   </div>
  `,
@@ -307,6 +401,7 @@ export class Vote implements OnInit {
  timer = inject(TimerService);
  router = inject(Router);
  billing = inject(BillingService);
+ socketService = inject(SocketService);
 
  selectedPlayerId: number | string | null = null;
 
@@ -323,6 +418,53 @@ export class Vote implements OnInit {
  selectedDetectiveId: number | null = null;
  detectiveGuess: string = '';
  currentDrawingIndex: number = 0;
+
+ isOnline = computed(() => {
+   return !!this.socketService.roomState();
+ });
+
+ roomState = computed(() => {
+   return this.socketService.roomState();
+ });
+
+ myPlayerId = computed(() => {
+   return this.socketService.myPlayerId();
+ });
+
+ hasPlayerVoted(playerId: string | number): boolean {
+   const votes = this.socketService.roomState()?.votingState?.votes;
+   return votes ? !!votes[playerId.toString()] : false;
+ }
+
+ getVotesForPlayer(playerId: string | number): number {
+   const votes = this.socketService.roomState()?.votingState?.votes;
+   if (!votes) return 0;
+   return Object.values(votes).filter(v => v === playerId.toString()).length;
+ }
+
+ onlineFormattedTime(): string {
+   const state = this.roomState();
+   if (!state || !state.votingState) return '00:00';
+   
+   const isResolved = state.status === 'vote-resolved';
+   const seconds = isResolved 
+     ? (state.votingState.resolution?.timeLeft || 0)
+     : (state.votingState.timeLeft || 0);
+
+   const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+   const s = (seconds % 60).toString().padStart(2, '0');
+   return `${m}:${s}`;
+ }
+
+ get onlineTimeSeconds(): number {
+   const state = this.roomState();
+   if (!state || !state.votingState) return 0;
+   
+   const isResolved = state.status === 'vote-resolved';
+   return isResolved 
+     ? (state.votingState.resolution?.timeLeft || 0)
+     : (state.votingState.timeLeft || 0);
+ }
 
  aliveDetectives = computed(() => {
   return this.engine.alivePlayers().filter(p => p.isDetective);
@@ -355,6 +497,10 @@ export class Vote implements OnInit {
  }
 
  ngOnInit() {
+  if (this.isOnline()) {
+    return; // Online mode uses server-authoritative timer
+  }
+
   // Start timer only if it's the first time visiting the vote screen, or read from settings
   if (!this.timer.isActive() && this.timer.timeLeftInSeconds() === 0) {
    const durationStr = this.engine.currentSettings()?.duration || '5';
@@ -367,6 +513,18 @@ export class Vote implements OnInit {
 
  eliminate() {
   if (!this.selectedPlayerId) return;
+
+  if (this.isOnline()) {
+    const code = this.roomState()?.code;
+    if (code) {
+      if (this.selectedPlayerId.toString() === this.myPlayerId()?.toString()) {
+        return;
+      }
+      this.socketService.castVote(code, this.selectedPlayerId.toString());
+      this.selectedPlayerId = null; // Clear selection
+    }
+    return;
+  }
 
   const player = this.engine.alivePlayers().find(p => p.id === this.selectedPlayerId);
   if (!player) return;
@@ -487,6 +645,15 @@ export class Vote implements OnInit {
   const detId = this.selectedDetectiveId || this.aliveDetectives()[0]?.id;
   const det = this.aliveDetectives().find(d => d.id === detId);
   if (!det) return;
+
+  if (this.isOnline()) {
+    const code = this.roomState()?.code;
+    if (code) {
+      this.socketService.submitGuess(code, det.id.toString(), this.detectiveGuess.trim());
+      this.closeDetectiveModal();
+    }
+    return;
+  }
 
   const secretWord = this.engine.secretWord()?.word;
   if (!secretWord) return;

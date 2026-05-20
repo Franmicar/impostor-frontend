@@ -25,6 +25,22 @@ export class RemoteGameEngineService implements IGameEngine {
     return pList.length > 0 && index < pList.length ? pList[index] : null;
   });
 
+  me = computed(() => {
+    const myId = this.socketService.myPlayerId();
+    const payload = this.socketService.rolePayload();
+    const players = this.players();
+    if (!myId) return null;
+    
+    const playerObj = players.find(p => p.id === myId);
+    if (!playerObj) return null;
+
+    return {
+      ...playerObj,
+      isImpostor: payload ? !!payload.isImpostor : !!playerObj.isImpostor,
+      isDetective: payload ? !!payload.isDetective : !!playerObj.isDetective
+    };
+  });
+
   isRevealPhaseFinished = computed(() => {
     const state = this.socketService.roomState();
     return state ? state.status !== 'lobby' && state.status !== 'reveal' : false;

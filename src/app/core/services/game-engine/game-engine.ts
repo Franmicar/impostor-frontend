@@ -31,7 +31,22 @@ export class GameEngineService implements IGameEngine {
   drawings = computed(() => this.activeEngine().drawings());
 
   // Propiedades Computadas
-  currentPlayer = computed(() => this.activeEngine().currentPlayer());
+  currentPlayer = computed(() => {
+    if (this.isOnline()) {
+      if (!this.remoteEngine.isRevealPhaseFinished() && this.remoteEngine.gameStarted()) {
+        return this.remoteEngine.me();
+      }
+    }
+    return this.activeEngine().currentPlayer();
+  });
+  
+  me = computed(() => {
+    if (this.isOnline()) {
+      return this.remoteEngine.me();
+    }
+    return this.currentPlayer();
+  });
+  
   isRevealPhaseFinished = computed(() => this.activeEngine().isRevealPhaseFinished());
   alivePlayers = computed(() => this.activeEngine().alivePlayers());
   currentHint = computed(() => this.activeEngine().currentHint());

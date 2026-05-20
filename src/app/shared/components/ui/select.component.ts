@@ -14,8 +14,11 @@ export interface SelectOption {
   template: `
     <div class="relative w-full min-w-[100px] sm:min-w-[133px] shrink-0">
       <div 
-        (click)="isOpen.set(!isOpen())"
-        class="bg-glass rounded-2xl border border-primary shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] px-3 py-3 flex items-center justify-between hover:bg-white/20 transition-all cursor-pointer">
+        (click)="!disabled() && isOpen.set(!isOpen())"
+        [class.opacity-50]="disabled()"
+        [class.cursor-not-allowed]="disabled()"
+        [class.cursor-pointer]="!disabled()"
+        class="bg-glass rounded-2xl border border-primary shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] px-3 py-3 flex items-center justify-between hover:bg-white/20 transition-all">
         <span class="text-xs sm:text-sm font-medium text-textPrimary select-none">
           {{ selectedLabel() }}
         </span>
@@ -60,6 +63,7 @@ export interface SelectOption {
 export class SelectComponent {
   options = input<SelectOption[]>([]);
   value = input<any>();
+  disabled = input<boolean>(false);
   valueChange = output<any>();
 
   isOpen = signal<boolean>(false);

@@ -202,8 +202,11 @@ export class Results implements OnInit {
     this.ui.setLoading(true);
     try {
       await this.adsService.showInterstitial();
+      const isOnline = this.engine.isOnline();
       this.engine.resetGame();
-      await this.router.navigate(['/setup']);
+      if (!isOnline) {
+        await this.router.navigate(['/setup']);
+      }
     } finally {
       this.ui.setLoading(false);
     }

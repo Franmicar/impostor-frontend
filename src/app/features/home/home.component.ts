@@ -5,6 +5,7 @@ import { ApiService } from '../../core/services/api/api.service';
 import { ThemeService } from '../../core/services/theme.service';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { BillingService } from '../../core/services/billing.service';
+import { GameEngineService } from '../../core/services/game-engine/game-engine';
 
 import { IconButtonComponent } from '../../shared/components/ui/icon-button.component';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
@@ -58,11 +59,9 @@ import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.co
                     {{ 'HOME.PLAY_LOCAL' | translate }}
                 </app-button-primary>
                 
-                <button 
-                    class="w-full py-4 bg-glass border border-glass-border backdrop-blur-md text-textMuted rounded-2xl font-bold text-xl shadow-lg transition-all cursor-not-allowed items-center justify-center flex flex-col">
-                    <span>{{ 'HOME.PLAY_ONLINE' | translate }}</span>
-                    <span class="text-xs font-normal opacity-70">{{ 'HOME.COMING_SOON' | translate }}</span>
-                </button>
+                <app-button-primary (onClick)="playOnline()">
+                    {{ 'HOME.PLAY_ONLINE' | translate }}
+                </app-button-primary>
             </div>
         </div>
     </div>
@@ -81,6 +80,7 @@ export class HomeComponent implements OnInit {
   public themeService = inject(ThemeService);
   public authService = inject(AuthService);
   public billing = inject(BillingService);
+  private gameEngine = inject(GameEngineService);
 
   ngOnInit() {
     // Wake up the backend and prefetch packages so Setup screen is instant
@@ -88,6 +88,12 @@ export class HomeComponent implements OnInit {
   }
 
   startGame() {
+    this.gameEngine.isOnline.set(false);
+    this.router.navigate(['/setup']);
+  }
+
+  playOnline() {
+    this.gameEngine.isOnline.set(true);
     this.router.navigate(['/setup']);
   }
 

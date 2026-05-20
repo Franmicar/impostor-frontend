@@ -1,15 +1,17 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal, inject, effect } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { Preferences } from '@capacitor/preferences';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
   private authService = inject(AuthService);
+  private router = inject(Router);
   private socket: Socket | null = null;
 
   // Estados Reactivos
@@ -17,6 +19,7 @@ export class SocketService {
   roomState = signal<any | null>(null);
   rolePayload = signal<any | null>(null);
   errorMsg = signal<string | null>(null);
+  myPlayerId = signal<string | null>(null);
 
   // Streams de Eventos
   stroke$ = new Subject<any>();
@@ -25,6 +28,43 @@ export class SocketService {
 
   constructor() {
     this.init();
+    this.getPlayerId().then(id => this.myPlayerId.set(id));
+
+    // Redirección centralizada y sincronizada basada en el estado de la sala
+    effect(() => {
+      const state = this.roomState();
+      if (!state) return;
+
+      const currentUrl = this.router.url;
+      const status = state.status;
+
+      if (status === 'lobby') {
+        if (!currentUrl.includes('/setup')) {
+          this.router.navigate(['/setup'], { state: { intentional: true } });
+        }
+      } else if (status === 'reveal' || status === 'play') {
+        if (!currentUrl.includes('/play')) {
+          this.router.navigate(['/play'], { state: { intentional: true } });
+        }
+      } else if (status === 'vote' || status === 'vote-resolved') {
+        if (!currentUrl.includes('/vote')) {
+          this.router.navigate(['/vote'], { state: { intentional: true } });
+        }
+      } else if (status === 'results') {
+        if (!currentUrl.includes('/results')) {
+          const results = state.resultsData || {};
+          this.router.navigate(['/results'], {
+            queryParams: {
+              winner: state.winnerTeam,
+              reason: results.reason,
+              guess: results.guess,
+              detectiveId: results.detectiveId
+            },
+            state: { intentional: true }
+          });
+        }
+      }
+    });
   }
 
   private init() {
@@ -91,14 +131,20 @@ export class SocketService {
 
   async getPlayerId(): Promise<string> {
     const user = this.authService.currentUser;
-    if (user) return user.uid;
-
-    const { value } = await Preferences.get({ key: 'deceptra_device_uuid' });
-    if (value) return value;
-
-    const newUuid = this.generateUuid();
-    await Preferences.set({ key: 'deceptra_device_uuid', value: newUuid });
-    return newUuid;
+    let id: string;
+    if (user) {
+      id = user.uid;
+    } else {
+      const { value } = await Preferences.get({ key: 'deceptra_device_uuid' });
+      if (value) {
+        id = value;
+      } else {
+        id = this.generateUuid();
+        await Preferences.set({ key: 'deceptra_device_uuid', value: id });
+      }
+    }
+    this.myPlayerId.set(id);
+    return id;
   }
 
   private generateUuid(): string {
@@ -170,8 +216,12 @@ export class SocketService {
     this.socket?.emit('submit-drawing', { code, drawing });
   }
 
-  submitVote(code: string, voterId: string, targetId: string) {
-    this.socket?.emit('submit-vote', { code, vote: { voterId, targetId } });
+  startVoting(code: string) {
+    this.socket?.emit('start-voting', { code });
+  }
+
+  castVote(code: string, targetId: string) {
+    this.socket?.emit('cast-vote', { code, targetId });
   }
 
   submitGuess(code: string, detectiveId: string, word: string) {
