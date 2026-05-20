@@ -12,11 +12,12 @@ import { IconButtonComponent } from '../../shared/components/ui/icon-button.comp
 import { ModalComponent } from '../../shared/components/ui/modal.component';
 import { HeaderComponent } from '../../shared/components/ui/header.component';
 import { FooterComponent } from '../../shared/components/ui/footer.component';
+import { InputComponent } from '../../shared/components/ui/input.component';
 
 @Component({
  selector: 'app-vote',
  standalone: true,
- imports: [CommonModule, FormsModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, ModalComponent, HeaderComponent, FooterComponent],
+ imports: [CommonModule, FormsModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, ModalComponent, HeaderComponent, FooterComponent, InputComponent],
  template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col relative w-full">
    <app-header [showBack]="false" [title]="'VOTE.TITLE' | translate"></app-header>
@@ -73,6 +74,7 @@ import { FooterComponent } from '../../shared/components/ui/footer.component';
          <span>{{ 'VOTE.BLANK_CANVAS' | translate }}</span>
        </app-button-secondary>
        <app-button-secondary (onClick)="closeDrawAgainModal()">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
          <span class="uppercase tracking-widest font-bold">{{ 'VOTE.CANCEL' | translate }}</span>
        </app-button-secondary>
      </div>
@@ -141,28 +143,34 @@ import { FooterComponent } from '../../shared/components/ui/footer.component';
          </select>
        }
 
-       <div class="relative w-full mb-6">
-         <input type="text" [(ngModel)]="detectiveGuess" list="packWordsModal" [placeholder]="'VOTE.SECRET_WORD_PH' | translate" class="w-full bg-glass border border-glass-border rounded-lg p-3 text-textPrimary outline-none focus:border-primary backdrop-blur" [disabled]="aliveDetectives().length > 1 && !selectedDetectiveId">
-         <datalist id="packWordsModal">
-           @for (w of uniqueWords; track w) {
-             <option [value]="w">{{ w }}</option>
-           }
-         </datalist>
-       </div>
-       
-       <p class="mb-4 text-sm text-center text-textMuted max-w-xs mx-auto font-medium">{{ 'VOTE.DETECTIVE_FAIL_WARN' | translate }}</p>
-     </div>
+        <div class="relative w-full mb-6">
+          <app-input 
+            [(ngModel)]="detectiveGuess" 
+            list="packWordsModal" 
+            [placeholder]="'VOTE.SECRET_WORD_PH' | translate" 
+            [disabled]="aliveDetectives().length > 1 && !selectedDetectiveId"
+            focusBorder="primary" />
+          <datalist id="packWordsModal">
+            @for (w of uniqueWords; track w) {
+              <option [value]="w">{{ w }}</option>
+            }
+          </datalist>
+        </div>
+        
+        <p class="mb-4 text-sm text-center text-textMuted max-w-xs mx-auto font-medium">{{ 'VOTE.DETECTIVE_FAIL_WARN' | translate }}</p>
+      </div>
 
-     <div modal-footer class="flex flex-col w-full gap-3">
-       <app-button-primary 
-         (onClick)="submitDetectiveGuess()"
-         [disabled]="(aliveDetectives().length > 1 && !selectedDetectiveId) || !isGuessValid">
-         {{ 'VOTE.GUESS_BTN' | translate }}
-       </app-button-primary>
-       <app-button-secondary (onClick)="closeDetectiveModal()">
-         <span class="uppercase tracking-widest font-bold">{{ 'VOTE.CANCEL' | translate }}</span>
-       </app-button-secondary>
-     </div>
+      <div modal-footer class="flex flex-col w-full gap-3">
+        <app-button-primary 
+          (onClick)="submitDetectiveGuess()"
+          [disabled]="(aliveDetectives().length > 1 && !selectedDetectiveId) || !isGuessValid">
+          {{ 'VOTE.GUESS_BTN' | translate }}
+        </app-button-primary>
+        <app-button-secondary (onClick)="closeDetectiveModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+          <span class="uppercase tracking-widest font-bold">{{ 'VOTE.CANCEL' | translate }}</span>
+        </app-button-secondary>
+      </div>
    </app-modal>
 
    <!-- HEADER & TIMER -->

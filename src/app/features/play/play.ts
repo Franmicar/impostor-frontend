@@ -182,13 +182,11 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
         </div>
         
         <div class="w-full pb-4">
-          <app-button-secondary (onClick)="showChangeWordModal.set(true)" class="block w-full text-center">
-            <div class="flex items-center justify-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-secondary">
-               <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-              </svg>
-              <span>{{ 'PLAY.CHANGE_WORD' | translate }}</span>
-            </div>
+          <app-button-secondary (onClick)="showChangeWordModal.set(true)" class="block w-full">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 text-secondary">
+             <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+            <span>{{ 'PLAY.CHANGE_WORD' | translate }}</span>
           </app-button-secondary>
         </div>
       </div>
@@ -214,6 +212,7 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
          {{ 'PLAY.CHANGE_WORD_CONFIRM' | translate }}
        </app-button-primary>
        <app-button-secondary (onClick)="showChangeWordModal.set(false)">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
          <span class="uppercase tracking-widest font-bold">{{ 'COMMON.CANCEL' | translate }}</span>
        </app-button-secondary>
      </div>

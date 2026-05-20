@@ -16,12 +16,13 @@ import { ButtonSecondaryComponent } from '../../../shared/components/ui/button-s
 import { ModalComponent } from '../../../shared/components/ui/modal.component';
 import { HeaderComponent } from '../../../shared/components/ui/header.component';
 import { FooterComponent } from '../../../shared/components/ui/footer.component';
+import { InputComponent } from '../../../shared/components/ui/input.component';
 
 @Component({
  selector: 'app-setup-players',
  standalone: true,
  changeDetection: ChangeDetectionStrategy.OnPush,
- imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent, IconButtonComponent, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent, HeaderComponent, FooterComponent],
+ imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent, IconButtonComponent, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent, HeaderComponent, FooterComponent, InputComponent],
  template: `
   <div class="min-h-dvh flex flex-col bg-transparent text-white">
    
@@ -105,12 +106,11 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
        </button>
        
        <!-- INPUT FIELD -->
-       <input 
-        type="text" 
+       <app-input 
         [(ngModel)]="player.name"
         (ngModelChange)="onPlayerEdited()"
-        maxlength="15"
-        class="flex-1 bg-glass outline-none p-3 rounded-lg text-textPrimary font-medium border border-transparent focus:border-secondary focus:bg-white/10 transition-all placeholder-textMuted min-w-0"
+        [maxlength]="15"
+        focusBorder="secondary"
         [placeholder]="'SETUP_PLAYERS.P_NAME' | translate" />
         
        <!-- DELETE BUTTON -->
@@ -156,117 +156,105 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
      
      <p class="text-sm text-textMuted mb-4">{{ 'SETUP_PLAYERS.SAVE_GROUP_DESC' | translate }}</p>
      
-     <div class="w-full text-left">
-      <input 
-       type="text" 
-       [(ngModel)]="cloudPresetName"
-       [placeholder]="'SETUP_PLAYERS.SAVE_GROUP_PLACEHOLDER' | translate"
-       maxlength="30"
-       class="w-full bg-glass border border-glass-border rounded-xl p-3 text-textPrimary outline-none focus:border-primary transition-colors"
-        />
-      <div class="text-right text-xs text-textMuted mt-1 font-medium">
-       {{ cloudPresetName.length || 0 }}/30
+      <div class="w-full text-left">
+       <app-input 
+        [(ngModel)]="cloudPresetName"
+        [placeholder]="'SETUP_PLAYERS.SAVE_GROUP_PLACEHOLDER' | translate"
+        [maxlength]="30"
+        focusBorder="primary" />
+       <div class="text-right text-xs text-textMuted mt-1 font-medium">
+        {{ cloudPresetName.length || 0 }}/30
+       </div>
       </div>
-     </div>
 
-     <div modal-footer class="flex gap-3 w-full">
-      <button 
-       (click)="showCloudSaveModal = false"
-       class="flex-1 py-3 rounded-xl bg-glass border border-glass-border text-textMuted font-bold shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] hover:bg-white/10 transition-colors uppercase tracking-widest text-sm active:scale-95">
-       {{ 'VOTE.CANCEL' | translate }}
-      </button>
-      <button 
-       (click)="confirmSaveCloud()"
-       [disabled]="!cloudPresetName.trim()"
-       class="relative group overflow-hidden flex-1 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] disabled:opacity-50 disabled:shadow-none transition-all active:scale-95 uppercase tracking-widest text-sm flex items-center justify-center">
-       <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors pointer-events-none"></div>
-       <span class="relative z-10 drop-shadow-md pointer-events-none">
+      <div modal-footer class="flex gap-3 w-full">
+       <app-button-secondary (onClick)="showCloudSaveModal = false" class="flex-1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+        {{ 'VOTE.CANCEL' | translate }}
+       </app-button-secondary>
+       <app-button-primary 
+        (onClick)="confirmSaveCloud()"
+        [disabled]="!cloudPresetName.trim()"
+        class="flex-1">
          {{ 'SETUP.SAVE' | translate }}
-       </span>
-      </button>
-     </div>
-   </app-modal>
+       </app-button-primary>
+      </div>
+    </app-modal>
 
-   <!-- MODAL ALERTAS GENERICO -->
-   <app-modal
-     [isOpen]="alertModal().show"
-     [title]="alertModal().title"
-     [icon]="alertModal().isError ? 'error' : 'success'"
-     (onClose)="alertModal.set({show: false, title: '', message: '', isError: false})">
-     
-     <p class="text-base text-textMuted w-full">
-      {{ alertModal().message }}
-     </p>
-     
-     <button modal-footer
-      (click)="alertModal.set({show: false, title: '', message: '', isError: false})"
-      class="w-full py-4 rounded-2xl font-bold transition-all active:scale-95 uppercase tracking-widest"
-      [ngClass]="alertModal().isError ? 'bg-glass border border-glass-border hover:bg-glass-hover text-textPrimary' : 'bg-gradient-to-r from-primary to-secondary text-white shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]'">
-      {{ 'COMMON.OK' | translate }}
-     </button>
-   </app-modal>
+    <!-- MODAL ALERTAS GENERICO -->
+    <app-modal
+      [isOpen]="alertModal().show"
+      [title]="alertModal().title"
+      [icon]="alertModal().isError ? 'error' : 'success'"
+      (onClose)="alertModal.set({show: false, title: '', message: '', isError: false})">
+      
+      <p class="text-base text-textMuted w-full">
+       {{ alertModal().message }}
+      </p>
+      
+      <app-button-primary modal-footer
+       (onClick)="alertModal.set({show: false, title: '', message: '', isError: false})"
+       class="w-full">
+       {{ 'COMMON.OK' | translate }}
+      </app-button-primary>
+    </app-modal>
 
-   <!-- MODAL CONFIRM DELETE -->
-   <app-modal
-     [isOpen]="deleteConfirmModal().show"
-     [title]="'CONFIRM_DELETE_PRESET.TITLE' | translate"
-     icon="error"
-     (onClose)="deleteConfirmModal.set({show: false, presetId: ''})">
-     
-     <p class="text-base text-textMuted mb-2 w-full">
-      {{ 'CONFIRM_DELETE_PRESET.MESSAGE' | translate }}
-     </p>
-     
-     <div modal-footer class="flex gap-3 w-full">
-      <button 
-       (click)="deleteConfirmModal.set({show: false, presetId: ''})"
-       class="flex-1 py-4 rounded-xl border border-glass-border text-textMuted font-semibold hover:bg-white/5 transition-colors uppercase tracking-widest text-sm">
-       {{ 'CONFIRM_DELETE_PRESET.CANCEL' | translate }}
-      </button>
-      <button 
-       (click)="executeDeletePreset()"
-       class="flex-1 py-4 rounded-xl bg-red-600 text-white font-bold shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:bg-red-500 transition-colors uppercase tracking-widest text-sm">
-       {{ 'CONFIRM_DELETE_PRESET.CONFIRM' | translate }}
-      </button>
-     </div>
-   </app-modal>
+    <!-- MODAL CONFIRM DELETE -->
+    <app-modal
+      [isOpen]="deleteConfirmModal().show"
+      [title]="'CONFIRM_DELETE_PRESET.TITLE' | translate"
+      icon="error"
+      (onClose)="deleteConfirmModal.set({show: false, presetId: ''})">
+      
+      <p class="text-base text-textMuted mb-2 w-full">
+       {{ 'CONFIRM_DELETE_PRESET.MESSAGE' | translate }}
+      </p>
+      
+      <div modal-footer class="flex gap-3 w-full">
+       <app-button-secondary 
+        (onClick)="deleteConfirmModal.set({show: false, presetId: ''})"
+        class="flex-1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+        {{ 'CONFIRM_DELETE_PRESET.CANCEL' | translate }}
+       </app-button-secondary>
+       <button 
+        (click)="executeDeletePreset()"
+        class="flex-1 py-4 rounded-xl bg-red-600 text-white font-bold shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:bg-red-500 transition-colors uppercase tracking-widest text-sm">
+        {{ 'CONFIRM_DELETE_PRESET.CONFIRM' | translate }}
+       </button>
+      </div>
+    </app-modal>
 
-   <!-- MODAL RECORTAR IMAGEN -->
-   <app-modal
-     [isOpen]="showCropModal"
-     [title]="'SETUP_PLAYERS.CROP_TITLE' | translate"
-     [preventCloseOutside]="true"
-     (onClose)="cancelCrop()">
-     
-     <div class="w-full h-64 bg-black/50 border border-slate-700 rounded-xl overflow-hidden relative flex items-center justify-center mb-2">
-      <image-cropper
-       [imageChangedEvent]="imageChangedEvent"
-       [maintainAspectRatio]="true"
-       [aspectRatio]="1 / 1"
-       [resizeToWidth]="200"
-       format="jpeg"
-       (imageCropped)="imageCropped($event)"
-       (loadImageFailed)="loadImageFailed()"
-       style="max-height: 250px; max-width: 100%; margin: auto;"
-      ></image-cropper>
-     </div>
-     
-     <div modal-footer class="flex gap-3 w-full mt-2">
-      <button 
-       (click)="cancelCrop()"
-       class="flex-1 py-4 rounded-xl bg-glass border border-glass-border text-textMuted font-bold shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] hover:bg-white/10 transition-colors uppercase tracking-widest text-sm active:scale-95">
-       {{ 'SETUP_PLAYERS.CROP_CANCEL' | translate }}
-      </button>
-      <button 
-       (click)="confirmCrop()"
-       class="relative group overflow-hidden flex-1 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] transition-all active:scale-95 uppercase tracking-widest text-sm flex items-center justify-center">
-       <div class="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors pointer-events-none"></div>
-       <span class="relative z-10 drop-shadow-md pointer-events-none">
+    <!-- MODAL RECORTAR IMAGEN -->
+    <app-modal
+      [isOpen]="showCropModal"
+      [title]="'SETUP_PLAYERS.CROP_TITLE' | translate"
+      [preventCloseOutside]="true"
+      (onClose)="cancelCrop()">
+      
+      <div class="w-full h-64 bg-black/50 border border-slate-700 rounded-xl overflow-hidden relative flex items-center justify-center mb-2">
+       <image-cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="1 / 1"
+        [resizeToWidth]="200"
+        format="jpeg"
+        (imageCropped)="imageCropped($event)"
+        (loadImageFailed)="loadImageFailed()"
+        style="max-height: 250px; max-width: 100%; margin: auto;"
+       ></image-cropper>
+      </div>
+      
+      <div modal-footer class="flex gap-3 w-full mt-2">
+       <app-button-secondary (onClick)="cancelCrop()" class="flex-1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+        {{ 'SETUP_PLAYERS.CROP_CANCEL' | translate }}
+       </app-button-secondary>
+       <app-button-primary (onClick)="confirmCrop()" class="flex-1">
          {{ 'SETUP_PLAYERS.CROP_APPLY' | translate }}
-       </span>
-      </button>
-     </div>
-   </app-modal>
+       </app-button-primary>
+      </div>
+    </app-modal>
   </div>
  `,
  styles: [`

@@ -1,10 +1,9 @@
-import { Injectable, signal, effect, inject } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Preferences } from '@capacitor/preferences';
-import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
 import { BillingService } from './billing.service';
-import { UiService } from './ui/ui.service';
+import { ThemeAssetLoader } from './theme-asset-loader.service';
 
 export type Theme = 'neon' | 'neon2' | 'infantil' | 'alien' | 'manga';
 
@@ -13,13 +12,12 @@ export type Theme = 'neon' | 'neon2' | 'infantil' | 'alien' | 'manga';
 })
 export class ThemeService {
     private billing = inject(BillingService);
-    private ui = inject(UiService);
+    private assetLoader = inject(ThemeAssetLoader);
     
     // Estado local gestionado con un Signal
     currentTheme = signal<Theme>('neon');
     // Themes that have been downloaded locally
     downloadedThemes = signal<Record<string, boolean>>({});
-    private dataDirBase: string = '';
 
     constructor() {
         this.initTheme();
@@ -36,11 +34,6 @@ export class ThemeService {
     }
 
     private async initTheme() {
-        if (Capacitor.isNativePlatform()) {
-            const uriResult = await Filesystem.getUri({ path: '', directory: Directory.Data });
-            this.dataDirBase = uriResult.uri;
-        }
-
         const { value: downloaded } = await Preferences.get({ key: 'impostor-downloaded-themes' });
         if (downloaded) {
             this.downloadedThemes.set(JSON.parse(downloaded));
@@ -63,76 +56,24 @@ export class ThemeService {
             return;
         }
 
-        this.ui.setLoading(true);
-
         try {
             // Si es un tema remoto que requiere descarga y no está descargado
             if (!this.downloadedThemes()[theme] && (theme === 'alien' || theme === 'manga' || theme === 'infantil')) {
-                await this.downloadThemeAssets(theme);
+                await this.assetLoader.downloadThemeAssets(theme);
+                
+                const current = this.downloadedThemes();
+                current[theme] = true;
+                this.downloadedThemes.set({ ...current });
+                await Preferences.set({ key: 'impostor-downloaded-themes', value: JSON.stringify(current) });
             }
-
-            // Pequeño delay para permitir que la barra de carga se muestre en pantalla y mejore la percepción del cambio de tema
-            await new Promise(resolve => setTimeout(resolve, 400));
 
             this.currentTheme.set(theme);
             this.applyTheme(theme);
             await Preferences.set({ key: 'impostor-theme', value: theme });
         } catch (error) {
             console.error('Error aplicando el tema:', error);
-            // Optionally could emit a UI error event
-        } finally {
-            this.ui.setLoading(false);
         }
     }
-
-    private async downloadThemeAssets(theme: string) {
-        const manifestUrl = `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}/manifest.json`;
-        try {
-            const res = await fetch(manifestUrl);
-            if (!res.ok) throw new Error('Manifest no encontrado');
-            const manifest = await res.json();
-            const assets: string[] = manifest.assets;
-
-            if (Capacitor.isNativePlatform()) {
-                for (const asset of assets) {
-                    const cleanPath = asset.replace(/^\/images\//, '/');
-                    const assetUrl = `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${cleanPath}`;
-                    const response = await fetch(assetUrl);
-                    if (!response.ok) throw new Error('Asset fallido');
-                    
-                    const blob = await response.blob();
-                    const base64 = await this.convertBlobToBase64(blob);
-
-                    const fileName = cleanPath.startsWith('/') ? cleanPath.substring(1) : cleanPath;
-                    
-                    await Filesystem.writeFile({
-                        path: `themes/${theme}/${fileName}`,
-                        data: base64,
-                        directory: Directory.Data,
-                        recursive: true
-                    });
-                }
-            }
-
-            const current = this.downloadedThemes();
-            current[theme] = true;
-            this.downloadedThemes.set({ ...current });
-            await Preferences.set({ key: 'impostor-downloaded-themes', value: JSON.stringify(current) });
-            
-        } catch (error) {
-            console.error('Error downloading theme assets:', error);
-            throw new Error('Failed to download theme');
-        }
-    }
-
-    private convertBlobToBase64 = (blob: Blob) => new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onerror = reject;
-        reader.onload = () => {
-            resolve(reader.result as string);
-        };
-        reader.readAsDataURL(blob);
-    });
 
     private applyTheme(theme: Theme) {
         // Limpiamos clases previas
@@ -152,7 +93,7 @@ export class ThemeService {
             const cleanPath = originalPath.replace(/^\/images\//, '/');
             if (Capacitor.isNativePlatform()) {
                 const fileName = cleanPath.startsWith('/') ? cleanPath.substring(1) : cleanPath;
-                return Capacitor.convertFileSrc(`${this.dataDirBase}/themes/${theme}/${fileName}`);
+                return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${theme}/${fileName}`);
             } else {
                 return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${cleanPath}`;
             }
