@@ -1,11 +1,47 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { GameEngineService, GameSettings } from './game-engine';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { signal } from '@angular/core';
+import { LocalGameEngineService } from './local-game-engine.service';
+import { RemoteGameEngineService } from './remote-game-engine.service';
+import { GameSettings } from './game-engine.interface';
+import { SocketService } from '../socket/socket.service';
 
-describe('GameEngineService', () => {
-  let service: GameEngineService;
+// Mock de SocketService
+const mockSocketService = {
+  roomState: signal<any>(null),
+  rolePayload: signal<any>(null),
+  syncSettings: vi.fn(),
+  startGame: vi.fn(),
+  seeRole: vi.fn(),
+  eliminatePlayer: vi.fn(),
+  resetGame: vi.fn()
+};
+
+// Mock de @angular/core para simular inject() y effect()
+vi.mock('@angular/core', async (importOriginal) => {
+  const original = await importOriginal<any>();
+  return {
+    ...original,
+    inject: (token: any) => {
+      if (token === SocketService) {
+        return mockSocketService;
+      }
+      return null;
+    },
+    effect: (cb: () => any) => {
+      // Ejecutar inmediatamente para simular la primera corrida del efecto reactivo
+      cb();
+      return {
+        destroy: () => {}
+      };
+    }
+  };
+});
+
+describe('LocalGameEngineService', () => {
+  let service: LocalGameEngineService;
 
   beforeEach(() => {
-    service = new GameEngineService();
+    service = new LocalGameEngineService();
   });
 
   it('should initialize with correct default state', () => {
@@ -132,5 +168,58 @@ describe('GameEngineService', () => {
       expect(service.startingPlayerId()).toBeNull();
       expect(service.eliminationsCount()).toBe(0);
     });
+  });
+});
+
+describe('RemoteGameEngineService', () => {
+  let service: RemoteGameEngineService;
+
+  beforeEach(() => {
+    // Reset signals and mocks
+    mockSocketService.roomState.set(null);
+    mockSocketService.rolePayload.set(null);
+    vi.clearAllMocks();
+
+    service = new RemoteGameEngineService();
+  });
+
+  it('should initialize with default states', () => {
+    expect(service.players()).toEqual([]);
+    expect(service.secretWord()).toBeNull();
+    expect(service.currentPlayerIndex()).toBe(0);
+    expect(service.gameStarted()).toBe(false);
+    expect(service.currentSettings()).toBeNull();
+    expect(service.startingPlayerId()).toBeNull();
+    expect(service.eliminationsCount()).toBe(0);
+    expect(service.drawings()).toEqual([]);
+  });
+
+  it('should call socketService methods correctly', () => {
+    mockSocketService.roomState.set({ code: 'ABCD', settings: {} });
+
+    // Test startGame
+    const mockSettings: GameSettings = {
+      playerData: [{ name: 'Alice' }],
+      words: [{ word: 'Test', hint: 'Test' }],
+      numImpostors: 1,
+      numDetectives: 0,
+      modeId: 'normal',
+      gameTypeId: 'word'
+    };
+    service.startGame(mockSettings);
+    expect(mockSocketService.syncSettings).toHaveBeenCalledWith('ABCD', mockSettings);
+    expect(mockSocketService.startGame).toHaveBeenCalledWith('ABCD');
+
+    // Test nextPlayer
+    service.nextPlayer();
+    expect(mockSocketService.seeRole).toHaveBeenCalledWith('ABCD');
+
+    // Test eliminatePlayer
+    service.eliminatePlayer('player1');
+    expect(mockSocketService.eliminatePlayer).toHaveBeenCalledWith('ABCD', 'player1');
+
+    // Test resetGame
+    service.resetGame();
+    expect(mockSocketService.resetGame).toHaveBeenCalledWith('ABCD');
   });
 });

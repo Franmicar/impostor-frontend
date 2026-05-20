@@ -1,5 +1,6 @@
 export const environment = {
     production: false,
+    multiplayerUrl: "http://localhost:3000",
     backendApiKey: "f3c9d7a8b1e64f2aa7d93c5e8f104b7c6a2d91ef5b84c73fa9e2160db4c8a571",
     firebase: {
         apiKey: "AIzaSyCKkebNdh-QNMS6wMJZqbr1gCbZh9v5Hpk",
