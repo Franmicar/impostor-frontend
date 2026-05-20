@@ -109,4 +109,11 @@ export class RemoteGameEngineService implements IGameEngine {
       this.socketService.resetGame(state.code);
     }
   }
+
+  addDrawing(drawing: string) {
+    const state = this.socketService.roomState();
+    if (state && state.code) {
+      this.socketService.submitDrawing(state.code, drawing);
+    }
+  }
 }

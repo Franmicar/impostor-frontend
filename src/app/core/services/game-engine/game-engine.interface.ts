@@ -43,4 +43,5 @@ export interface IGameEngine {
   nextPlayer(): void;
   eliminatePlayer(playerId: number | string): void;
   resetGame(): void;
+  addDrawing(drawing: string): void;
 }

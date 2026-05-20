@@ -166,6 +166,10 @@ export class SocketService {
     this.socket?.emit('draw-stroke', { code, stroke });
   }
 
+  submitDrawing(code: string, drawing: string) {
+    this.socket?.emit('submit-drawing', { code, drawing });
+  }
+
   submitVote(code: string, voterId: string, targetId: string) {
     this.socket?.emit('submit-vote', { code, vote: { voterId, targetId } });
   }

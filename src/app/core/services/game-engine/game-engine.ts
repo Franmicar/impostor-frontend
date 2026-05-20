@@ -3,7 +3,7 @@ import { IGameEngine, Player, GameSettings } from './game-engine.interface';
 import { LocalGameEngineService } from './local-game-engine.service';
 import { RemoteGameEngineService } from './remote-game-engine.service';
 
-export { Player, GameSettings, IGameEngine } from './game-engine.interface';
+export type { Player, GameSettings, IGameEngine } from './game-engine.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -60,5 +60,9 @@ export class GameEngineService implements IGameEngine {
 
   resetGame() {
     this.activeEngine().resetGame();
+  }
+
+  addDrawing(drawing: string) {
+    this.activeEngine().addDrawing(drawing);
   }
 }

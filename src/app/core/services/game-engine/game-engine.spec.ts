@@ -13,7 +13,8 @@ const mockSocketService = {
   startGame: vi.fn(),
   seeRole: vi.fn(),
   eliminatePlayer: vi.fn(),
-  resetGame: vi.fn()
+  resetGame: vi.fn(),
+  submitDrawing: vi.fn()
 };
 
 // Mock de @angular/core para simular inject() y effect()
@@ -168,6 +169,11 @@ describe('LocalGameEngineService', () => {
       expect(service.startingPlayerId()).toBeNull();
       expect(service.eliminationsCount()).toBe(0);
     });
+
+    it('should add drawing to list when addDrawing() is called', () => {
+      service.addDrawing('data:image/png;base64,...');
+      expect(service.drawings()).toEqual(['data:image/png;base64,...']);
+    });
   });
 });
 
@@ -221,5 +227,9 @@ describe('RemoteGameEngineService', () => {
     // Test resetGame
     service.resetGame();
     expect(mockSocketService.resetGame).toHaveBeenCalledWith('ABCD');
+
+    // Test addDrawing
+    service.addDrawing('drawing-data');
+    expect(mockSocketService.submitDrawing).toHaveBeenCalledWith('ABCD', 'drawing-data');
   });
 });

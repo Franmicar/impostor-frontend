@@ -308,7 +308,7 @@ export class Vote implements OnInit {
  router = inject(Router);
  billing = inject(BillingService);
 
- selectedPlayerId: number | null = null;
+ selectedPlayerId: number | string | null = null;
 
  showCivilianEliminatedModal = false;
  showDetectiveModal = false;

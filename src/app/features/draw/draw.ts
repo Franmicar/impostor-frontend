@@ -368,7 +368,7 @@ export class DrawComponent implements AfterViewInit, OnDestroy {
 
   goToVote() {
     if (this.canvasRef) {
-      this.engine.drawings.update(d => [...d, this.canvasRef.nativeElement.toDataURL()]);
+      this.engine.addDrawing(this.canvasRef.nativeElement.toDataURL());
     }
     this.router.navigate(['/vote'], { state: { intentional: true } });
   }

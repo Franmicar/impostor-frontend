@@ -144,4 +144,8 @@ export class LocalGameEngineService implements IGameEngine {
     this.startingPlayerId.set(null);
     this.eliminationsCount.set(0);
   }
+
+  addDrawing(drawing: string) {
+    this.drawings.update(list => [...list, drawing]);
+  }
 }
