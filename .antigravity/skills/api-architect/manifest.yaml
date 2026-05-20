@@ -1,0 +1,16 @@
+id: api-architect
+name: API Architect
+version: 1.0.0
+description: Diseño y validación automática de contratos de API (OpenAPI/Swagger) y schemas de DB.
+dependencies: []
+triggers:
+  files:
+    - "**/api-design*.md"
+    - "**/schema*.sql"
+    - "**/prisma.schema"
+  keywords:
+    - "endpoint design"
+    - "database schema"
+    - "rest api"
+    - "graphql schema"
+tools: []

@@ -1,0 +1,23 @@
+id: startup-validator
+name: Startup Validator
+version: 1.0.0
+description: Validaciones racionales y análisis competitivo automático de ideas de negocio.
+dependencies: []
+triggers:
+  files:
+    - "**/prd*.md"
+    - "**/product-spec.md"
+  keywords:
+    - "business model"
+    - "startup validation"
+    - "competitors"
+    - "pricing strategy"
+tools:
+  - name: competitor_search
+    type: node
+    script: "tools/search-competitors.js"
+    description: "Busca competidores y resúmenes de mercado usando APIs de búsqueda pública."
+  - name: check_domain
+    type: powershell
+    script: "tools/check-domain.ps1"
+    description: "Comprueba la disponibilidad de dominios web para la startup usando peticiones DNS."

@@ -1,0 +1,16 @@
+id: ai-agent-builder
+name: AI Agent Builder
+version: 1.0.0
+description: Desarrollo y orquestación técnica de agentes de IA autónomos y workflows de LLM.
+dependencies:
+  - api-architect
+triggers:
+  files:
+    - "**/agent*.md"
+    - "**/agent-spec.json"
+  keywords:
+    - "prompt engineering"
+    - "agent tools"
+    - "rag pipeline"
+    - "llm chain"
+tools: []

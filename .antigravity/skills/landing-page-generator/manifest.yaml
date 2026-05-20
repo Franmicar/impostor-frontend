@@ -1,0 +1,16 @@
+id: landing-page-generator
+name: Landing Page Generator
+version: 1.0.0
+description: Prototipado rápido y generación de páginas de aterrizaje interactivas de alta conversión.
+dependencies: []
+triggers:
+  files:
+    - "**/landing*.html"
+    - "**/index.html"
+    - "**/mockup*.md"
+  keywords:
+    - "landing page"
+    - "hero section"
+    - "conversion optimization"
+    - "frontend prototype"
+tools: []
