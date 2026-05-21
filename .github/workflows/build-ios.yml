@@ -1,8 +1,6 @@
 name: Build iOS IPA (Capacitor)
 
 on:
-  push:
-    branches: [ "main", "develop" ]
   workflow_dispatch: 
 
 jobs:
