@@ -30,9 +30,6 @@ workflows:
       - name: Sync Capacitor iOS
         script: |
           npx cap sync ios
-      - name: Install CocoaPods
-        script: |
-          cd ios/App && pod install
       - name: Setup Keychain and iOS Certificates
         script: |
           keychain initialize
@@ -43,7 +40,7 @@ workflows:
       - name: Build iOS IPA
         script: |
           xcode-project build-ipa \
-            --workspace ios/App/App.xcworkspace \
+            --project ios/App/App.xcodeproj \
             --scheme App \
             --clean \
             --archive-xcargs "CURRENT_PROJECT_VERSION=$BUILD_NUMBER"
