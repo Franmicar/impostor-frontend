@@ -1,0 +1,51 @@
+# Configuración de compilación para Codemagic
+workflows:
+  ios-release:
+    name: Deceptra iOS Release
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      node: 20.11.0 # Versión de Node.js a utilizar
+      xcode: latest  # Última versión estable de Xcode
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'develop'
+          include: true
+        - pattern: 'main'
+          include: true
+    scripts:
+      - name: Install npm dependencies
+        script: |
+          npm ci
+      - name: Build Angular web assets
+        script: |
+          npm run build
+      - name: Sync Capacitor iOS
+        script: |
+          npx cap sync ios
+      - name: Install CocoaPods
+        script: |
+          cd ios/App && pod install
+      - name: Setup Keychain and iOS Certificates
+        script: |
+          keychain initialize
+          keychain add-certificates --certificate "$CM_CERTIFICATE" --certificate-password "$CM_CERTIFICATE_PASSWORD"
+          xcode-project use-profiles --profiles "$CM_PROVISIONING_PROFILE"
+      - name: Build iOS IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace ios/App/App.xcworkspace \
+            --scheme App \
+            --clean
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      email:
+        recipients:
+          - franmicarrasquilla@gmail.com
+        notify:
+          success: true
+          failure: true
