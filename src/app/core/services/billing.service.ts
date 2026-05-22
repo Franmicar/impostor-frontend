@@ -94,6 +94,8 @@ export class BillingService {
         const offerings = await Purchases.getOfferings();
         if (offerings.current !== null && offerings.current.availablePackages.length !== 0) {
           return offerings.current.availablePackages;
+        } else {
+          console.warn('RevenueCat: offerings.current es null o no tiene paquetes disponibles. Asegúrate de configurar la Oferta Activa (Current Offering) en el panel de RevenueCat.');
         }
       } catch (e) {
         console.error('Error fetching offerings', e);
@@ -111,6 +113,11 @@ export class BillingService {
     try {
       if (Capacitor.isNativePlatform()) {
         if (pkg) {
+          // Evitar crash si es un paquete simulado en nativo
+          if (!pkg.presentedOfferingContext) {
+            console.error('Error: Intentando comprar un paquete simulado en plataforma nativa. Esto ocurre porque no hay una Oferta Activa (Current Offering) configurada en RevenueCat.');
+            return false;
+          }
           const { customerInfo } = await Purchases.purchasePackage({ aPackage: pkg });
           this.updatePremiumStatus(customerInfo);
           return this.isPremium;
