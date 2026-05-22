@@ -200,7 +200,7 @@ export class BillingService {
           return themeId === 'alien' ? this.isThemeAlienOwned : this.isThemeMangaOwned;
         } else {
           // Fallback a compra directa de producto si no está en offerings
-          const productId = themeId === 'alien' ? 'premium_deceptra:theme-alien' : 'premium_deceptra:theme-manga';
+          const productId = themeId === 'alien' ? 'theme_alien' : 'theme_manga';
           const { products } = await Purchases.getProducts({ productIdentifiers: [productId], type: PRODUCT_CATEGORY.NON_SUBSCRIPTION });
           if (products && products.length > 0) {
             const { customerInfo } = await Purchases.purchaseStoreProduct({ product: products[0] });
