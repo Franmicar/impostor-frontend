@@ -87,7 +87,7 @@ import packageJson from '../../../../package.json';
           </button>
           
           <!-- Tema Neón 2 (Premium) -->
-          <button (click)="selectPremiumTheme('neon2')" 
+          <button (click)="selectTheme('neon2')" 
               [class.ring-2]="themeService.currentTheme() === 'neon2'"
               class="ring-yellow-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
             <span class="text-textPrimary text-sm flex items-center gap-2">
@@ -104,16 +104,16 @@ import packageJson from '../../../../package.json';
           </button>
 
           <!-- Tema Alien (Premium) -->
-          <button (click)="selectPremiumTheme('alien')" 
+          <button (click)="selectTheme('alien')" 
               [class.ring-2]="themeService.currentTheme() === 'alien'"
               class="ring-green-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between mt-2">
             <span class="text-textPrimary text-sm flex items-center gap-2">
               {{ 'SETTINGS.THEME_ALIEN' | translate }}
-              @if (!billing.isPremium) {
-                <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO / 5€</span>
+              @if (!billing.isThemeAlienOwned) {
+                <span class="text-[0.6rem] bg-glass border border-green-500/30 text-green-400 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">5€</span>
               }
             </span>
-            @if (!billing.isPremium) {
+            @if (!billing.isThemeAlienOwned) {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-textMuted">
                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
               </svg>
@@ -121,16 +121,16 @@ import packageJson from '../../../../package.json';
           </button>
 
           <!-- Tema Manga (Premium) -->
-          <button (click)="selectPremiumTheme('manga')" 
+          <button (click)="selectTheme('manga')" 
               [class.ring-2]="themeService.currentTheme() === 'manga'"
               class="ring-red-500 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between mt-2">
             <span class="text-textPrimary text-sm flex items-center gap-2">
               {{ 'SETTINGS.THEME_MANGA' | translate }}
-              @if (!billing.isPremium) {
-                <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO / 5€</span>
+              @if (!billing.isThemeMangaOwned) {
+                <span class="text-[0.6rem] bg-glass border border-red-500/30 text-red-400 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">5€</span>
               }
             </span>
-            @if (!billing.isPremium) {
+            @if (!billing.isThemeMangaOwned) {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-textMuted">
                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
               </svg>
@@ -224,6 +224,96 @@ import packageJson from '../../../../package.json';
        {{ 'SETTINGS.CLOSE' | translate }}
      </button>
    </app-modal>
+
+    <!-- MODAL DESBLOQUEO TEMA -->
+    <app-modal
+      [isOpen]="isThemeUnlockModalOpen()"
+      [title]="'SETTINGS.UNLOCK_THEME_TITLE' | translate:{ theme: getThemeName(selectedUnlockTheme()) }"
+      icon="success"
+      (onClose)="closeThemeUnlockModal()">
+      
+      <div class="w-full flex flex-col items-center">
+        <p class="text-sm text-textMuted mb-5 text-center px-2">
+          {{ 'SETTINGS.UNLOCK_THEME_DESC' | translate }}
+        </p>
+        
+        <!-- Card label -->
+        <span class="text-xs font-bold text-primary uppercase tracking-wider mb-2 self-start flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          {{ 'SETTINGS.PREVIEW_LABEL' | translate }}
+        </span>
+
+        <!-- Interactive preview mockup wrapping container with theme class dynamically injected -->
+        <div [className]="'theme-' + selectedUnlockTheme() + ' w-full p-5 rounded-2xl border border-glass-border bg-gradient-to-br from-glass to-black/35 shadow-xl text-left overflow-hidden relative mb-5 transition-all duration-300'">
+          <!-- Mock Game Header -->
+          <div class="flex items-center justify-between pb-2 border-b border-glass-border/30 mb-4">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              <span class="text-[9px] font-black tracking-widest text-textMuted uppercase">DECEPTRA MATCH</span>
+            </div>
+            <span class="text-[9px] text-primary font-mono px-2 py-0.5 rounded border border-primary/20 bg-primary/5">ROUND 2</span>
+          </div>
+          
+          <!-- Mock User Card -->
+          <div class="flex gap-3 mb-4 items-center">
+            <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center border border-primary/20 relative shadow-[0_0_15px_rgba(var(--color-primary),0.1)]">
+              <span class="text-lg">👾</span>
+              <span class="absolute -bottom-1 -right-1 bg-primary text-black text-[8px] font-black w-4 h-4 flex items-center justify-center rounded-full border border-glass-border">1</span>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-textPrimary">AstraPlayer</span>
+                <span class="text-[8px] text-secondary font-bold uppercase tracking-wider bg-secondary/15 px-1.5 py-0.5 rounded border border-secondary/20">CREATOR</span>
+              </div>
+              <div class="text-[9px] text-textMuted mt-1">
+                Word: <span class="text-primary font-extrabold uppercase tracking-wide">Impostor</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mock Action buttons / Swatches -->
+          <div class="grid grid-cols-2 gap-2 text-center">
+            <div class="py-2 rounded-lg bg-primary text-black text-[9px] font-black uppercase tracking-widest shadow-[0_0_10px_rgba(var(--color-primary),0.3)] active:scale-95 transition-all">
+              Select Word
+            </div>
+            <div class="py-2 rounded-lg border border-glass-border text-textPrimary text-[9px] font-extrabold uppercase tracking-widest bg-glass active:scale-95 transition-all">
+              Show Clue
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme Swatches & Description -->
+        <div class="w-full flex items-center justify-between bg-white/5 border border-glass-border/30 rounded-xl p-3.5 mb-6">
+          <div class="text-left flex flex-col gap-0.5">
+            <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider">{{ 'SETTINGS.VISUAL_STYLE' | translate }}</span>
+            <span class="text-xs font-medium text-textPrimary">
+              {{ selectedUnlockTheme() === 'alien' ? ('SETTINGS.THEME_ALIEN_DESC' | translate) : ('SETTINGS.THEME_MANGA_DESC' | translate) }}
+            </span>
+          </div>
+          <div class="flex gap-2">
+            <!-- Primary -->
+            <div [className]="'theme-' + selectedUnlockTheme() + ' flex items-center justify-center w-6 h-6 rounded-full bg-primary border border-white/25 shadow-md relative group'" title="Primary">
+            </div>
+            <!-- Secondary -->
+            <div [className]="'theme-' + selectedUnlockTheme() + ' flex items-center justify-center w-6 h-6 rounded-full bg-secondary border border-white/25 shadow-md relative group'" title="Secondary">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer actions -->
+      <div modal-footer class="w-full flex flex-col gap-2">
+        <button (click)="buyTheme()" class="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(var(--color-secondary),0.4)] active:scale-[0.98] uppercase tracking-wider text-xs flex items-center justify-center gap-2 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          {{ 'SETTINGS.BUY_THEME' | translate }} (5€)
+        </button>
+        <button (click)="goToPremiumPlans()" class="w-full py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-textMuted hover:text-textPrimary rounded-xl font-bold transition-all active:scale-[0.98] uppercase tracking-wider text-[10px] cursor-pointer">
+          {{ 'SETTINGS.VIEW_PRO_PLANS' | translate }}
+        </button>
+      </div>
+    </app-modal>
   </div>
  `
 })
@@ -242,6 +332,8 @@ export class Settings implements OnInit {
   reportType = signal<'bug' | 'suggestion'>('bug');
   isSendingReport = signal(false);
   alertModal = signal({ show: false, title: '', message: '', success: false });
+  isThemeUnlockModalOpen = signal(false);
+  selectedUnlockTheme = signal<'alien' | 'manga'>('alien');
 
   currentLang = 'es';
   appVersion = packageJson.version;
@@ -285,12 +377,76 @@ export class Settings implements OnInit {
     this.options[key] = !this.options[key];
   }
 
-  selectPremiumTheme(theme: Theme) {
-    if (!this.billing.isPremium) {
-      this.router.navigate(['/premium']);
-      return;
+  selectTheme(theme: Theme) {
+    if (theme === 'neon2') {
+      if (!this.billing.isPremium) {
+        this.router.navigate(['/premium']);
+        return;
+      }
+      this.themeService.setTheme(theme);
+    } else if (theme === 'alien') {
+      if (!this.billing.isThemeAlienOwned) {
+        this.openThemeUnlockModal('alien');
+        return;
+      }
+      this.themeService.setTheme(theme);
+    } else if (theme === 'manga') {
+      if (!this.billing.isThemeMangaOwned) {
+        this.openThemeUnlockModal('manga');
+        return;
+      }
+      this.themeService.setTheme(theme);
+    } else {
+      this.themeService.setTheme(theme);
     }
-    this.themeService.setTheme(theme);
+  }
+
+  openThemeUnlockModal(theme: 'alien' | 'manga') {
+    this.selectedUnlockTheme.set(theme);
+    this.isThemeUnlockModalOpen.set(true);
+  }
+
+  closeThemeUnlockModal() {
+    this.isThemeUnlockModalOpen.set(false);
+  }
+
+  async buyTheme() {
+    const theme = this.selectedUnlockTheme();
+    this.uiService.setLoading(true);
+    const success = await this.billing.purchaseTheme(theme);
+    this.uiService.setLoading(false);
+    
+    if (success) {
+      this.closeThemeUnlockModal();
+      this.themeService.setTheme(theme);
+      this.alertModal.set({
+        show: true,
+        title: this.translate.instant('ALERTS.TITLE_SUCCESS'),
+        message: this.translate.instant('PREMIUM.SUCCESS_MSG'),
+        success: true
+      });
+    } else {
+      this.alertModal.set({
+        show: true,
+        title: this.translate.instant('ALERTS.TITLE_ERROR'),
+        message: this.translate.instant('PREMIUM.ERROR_MSG'),
+        success: false
+      });
+    }
+  }
+
+  goToPremiumPlans() {
+    this.closeThemeUnlockModal();
+    this.router.navigate(['/premium']);
+  }
+
+  getThemeName(theme: 'alien' | 'manga'): string {
+    if (theme === 'alien') {
+      return this.translate.instant('SETTINGS.THEME_ALIEN');
+    } else if (theme === 'manga') {
+      return this.translate.instant('SETTINGS.THEME_MANGA');
+    }
+    return '';
   }
 
   goToCustomPackage() {

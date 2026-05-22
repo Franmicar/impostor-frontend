@@ -2,6 +2,7 @@ import { Injectable, signal, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Preferences } from '@capacitor/preferences';
 import { Capacitor } from '@capacitor/core';
+import { combineLatest } from 'rxjs';
 import { BillingService } from './billing.service';
 import { ThemeAssetLoader } from './theme-asset-loader.service';
 
@@ -22,12 +23,20 @@ export class ThemeService {
     constructor() {
         this.initTheme();
 
-        // Suscribirse a cambios premium para revertir tema si caduca
-        this.billing.isPremium$.pipe(
+        // Suscribirse a cambios premium/temas para revertir tema si caduca
+        combineLatest([
+            this.billing.isPremium$,
+            this.billing.isThemeAlienOwned$,
+            this.billing.isThemeMangaOwned$
+        ]).pipe(
             takeUntilDestroyed()
-        ).subscribe(isPremium => {
+        ).subscribe(([isPremium, isAlienOwned, isMangaOwned]) => {
             const t = this.currentTheme();
-            if (!isPremium && (t === 'neon2' || t === 'alien' || t === 'manga')) {
+            if (t === 'neon2' && !isPremium) {
+                this.setTheme('neon');
+            } else if (t === 'alien' && !isAlienOwned) {
+                this.setTheme('neon');
+            } else if (t === 'manga' && !isMangaOwned) {
                 this.setTheme('neon');
             }
         });
@@ -51,8 +60,16 @@ export class ThemeService {
     }
 
     async setTheme(theme: Theme) {
-        if ((theme === 'neon2' || theme === 'alien' || theme === 'manga') && !this.billing.isPremium) {
+        if (theme === 'neon2' && !this.billing.isPremium) {
             console.warn('Requiere plan Premium para usar este tema');
+            return;
+        }
+        if (theme === 'alien' && !this.billing.isThemeAlienOwned) {
+            console.warn('Requiere compra del tema Alien para usarlo');
+            return;
+        }
+        if (theme === 'manga' && !this.billing.isThemeMangaOwned) {
+            console.warn('Requiere compra del tema Manga para usarlo');
             return;
         }
 

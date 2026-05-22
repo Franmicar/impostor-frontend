@@ -74,7 +74,15 @@
     "SUCCESS_MSG": "Thank you for your feedback. We have successfully saved your report.",
     "ERROR_TITLE": "Error",
     "ERROR_MSG": "Could not send the report. Please check your internet connection.",
-    "CLOSE": "Close"
+    "CLOSE": "Close",
+    "UNLOCK_THEME_TITLE": "Unlock {{theme}}",
+    "UNLOCK_THEME_DESC": "Get permanent access to this theme with a one-time purchase. Themes are purchased separately and are not included in the Deceptra Pro subscriptions.",
+    "BUY_THEME": "Buy Theme",
+    "VIEW_PRO_PLANS": "View Pro Subscriptions",
+    "PREVIEW_LABEL": "Preview",
+    "THEME_ALIEN_DESC": "Neon green & purple deep space atmosphere",
+    "THEME_MANGA_DESC": "Retro comic style in grayscale and red",
+    "COLORS": "Colors"
   },
   "SETUP": {
     "TITLE": "Settings",

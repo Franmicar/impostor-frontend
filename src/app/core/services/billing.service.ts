@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
-import { Purchases, LOG_LEVEL } from '@revenuecat/purchases-capacitor';
+import { Purchases, LOG_LEVEL, PRODUCT_CATEGORY } from '@revenuecat/purchases-capacitor';
 import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { inject } from '@angular/core';
@@ -14,6 +14,8 @@ import { getFirestore, doc, getDoc } from 'firebase/firestore';
 export class BillingService {
   private _isPremiumRevenueCat = new BehaviorSubject<boolean>(false);
   private _isPremiumTester = new BehaviorSubject<boolean>(false);
+  private _isThemeAlienOwnedRevenueCat = new BehaviorSubject<boolean>(false);
+  private _isThemeMangaOwnedRevenueCat = new BehaviorSubject<boolean>(false);
 
   private app = initializeApp(environment.firebase);
   private db = getFirestore(this.app);
@@ -22,6 +24,9 @@ export class BillingService {
   public isPremium$ = combineLatest([this._isPremiumRevenueCat, this._isPremiumTester]).pipe(
     map(([revenueCatPremium, testerPremium]) => revenueCatPremium || testerPremium)
   );
+
+  public isThemeAlienOwned$ = this._isThemeAlienOwnedRevenueCat.asObservable();
+  public isThemeMangaOwned$ = this._isThemeMangaOwnedRevenueCat.asObservable();
 
   constructor() {
     // Listen to auth changes manually (effect requires injection context, so we use effect or just subscribe if it was observable, but userSignal is a signal)
@@ -82,10 +87,25 @@ export class BillingService {
     // Asumimos que el entitlement se llama "premium"
     const isEntitled = typeof customerInfo.entitlements.active['premium'] !== 'undefined';
     this._isPremiumRevenueCat.next(isEntitled);
+
+    // Entitlement de temas individuales
+    const isAlienEntitled = typeof customerInfo.entitlements.active['theme_alien'] !== 'undefined' || typeof customerInfo.entitlements.active['alien'] !== 'undefined';
+    this._isThemeAlienOwnedRevenueCat.next(isAlienEntitled);
+
+    const isMangaEntitled = typeof customerInfo.entitlements.active['theme_manga'] !== 'undefined' || typeof customerInfo.entitlements.active['manga'] !== 'undefined';
+    this._isThemeMangaOwnedRevenueCat.next(isMangaEntitled);
   }
 
   get isPremium(): boolean {
     return this._isPremiumRevenueCat.value || this._isPremiumTester.value;
+  }
+
+  get isThemeAlienOwned(): boolean {
+    return this._isThemeAlienOwnedRevenueCat.value || this._isPremiumTester.value;
+  }
+
+  get isThemeMangaOwned(): boolean {
+    return this._isThemeMangaOwnedRevenueCat.value || this._isPremiumTester.value;
   }
 
   async getOfferings() {
@@ -146,15 +166,61 @@ export class BillingService {
       if (Capacitor.isNativePlatform()) {
         const { customerInfo } = await Purchases.restorePurchases();
         this.updatePremiumStatus(customerInfo);
-        return this.isPremium;
+        return true;
       } else {
-        // En web simulamos la restauración si ya había activado algo antes,
-        // o por facilidad lo activamos
+        // En web simulamos la restauración activándolo todo
         this._isPremiumRevenueCat.next(true);
+        this._isThemeAlienOwnedRevenueCat.next(true);
+        this._isThemeMangaOwnedRevenueCat.next(true);
         return true;
       }
     } catch (e) {
       console.error('Error restoring purchases', e);
+    }
+    return false;
+  }
+
+  async purchaseTheme(themeId: 'alien' | 'manga'): Promise<boolean> {
+    try {
+      if (Capacitor.isNativePlatform()) {
+        const offerings = await Purchases.getOfferings();
+        let pkg: any = null;
+        for (const offName of Object.keys(offerings.all)) {
+          const offering = offerings.all[offName];
+          const found = offering.availablePackages.find(p => p.identifier === `theme_${themeId}` || p.identifier === themeId);
+          if (found) {
+            pkg = found;
+            break;
+          }
+        }
+
+        if (pkg) {
+          const { customerInfo } = await Purchases.purchasePackage({ aPackage: pkg });
+          this.updatePremiumStatus(customerInfo);
+          return themeId === 'alien' ? this.isThemeAlienOwned : this.isThemeMangaOwned;
+        } else {
+          // Fallback a compra directa de producto si no está en offerings
+          const productId = themeId === 'alien' ? 'premium_deceptra:theme-alien' : 'premium_deceptra:theme-manga';
+          const { products } = await Purchases.getProducts({ productIdentifiers: [productId], type: PRODUCT_CATEGORY.NON_SUBSCRIPTION });
+          if (products && products.length > 0) {
+            const { customerInfo } = await Purchases.purchaseStoreProduct({ product: products[0] });
+            this.updatePremiumStatus(customerInfo);
+          } else {
+            console.error(`RevenueCat: Product ${productId} not found for purchase.`);
+          }
+          return themeId === 'alien' ? this.isThemeAlienOwned : this.isThemeMangaOwned;
+        }
+      } else {
+        // En web simulamos la compra del tema
+        if (themeId === 'alien') {
+          this._isThemeAlienOwnedRevenueCat.next(true);
+        } else {
+          this._isThemeMangaOwnedRevenueCat.next(true);
+        }
+        return true;
+      }
+    } catch (e) {
+      console.error(`Error in purchaseTheme for ${themeId}`, e);
     }
     return false;
   }

@@ -74,7 +74,15 @@
     "SUCCESS_MSG": "Gracias por tu aporte. Hemos guardado el reporte correctamente.",
     "ERROR_TITLE": "Error",
     "ERROR_MSG": "No se pudo enviar el reporte. Comprueba tu conexión a internet.",
-    "CLOSE": "Cerrar"
+    "CLOSE": "Cerrar",
+    "UNLOCK_THEME_TITLE": "Desbloquear {{theme}}",
+    "UNLOCK_THEME_DESC": "Obtén acceso permanente a este tema con una compra única. Los temas se adquieren por separado y no están incluidos en los planes de suscripción Deceptra Pro.",
+    "BUY_THEME": "Comprar Tema",
+    "VIEW_PRO_PLANS": "Ver Suscripciones Pro",
+    "PREVIEW_LABEL": "Vista Previa",
+    "THEME_ALIEN_DESC": "Atmósfera espacial neon verde y púrpura",
+    "THEME_MANGA_DESC": "Estilo cómic retro en escala de grises y rojo",
+    "COLORS": "Colores"
   },
   "SETUP": {
     "TITLE": "Configuración",

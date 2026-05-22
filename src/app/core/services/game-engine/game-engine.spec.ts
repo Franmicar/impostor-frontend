@@ -1,3 +1,4 @@
+import '@angular/compiler';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { signal } from '@angular/core';
 import { LocalGameEngineService } from './local-game-engine.service';
