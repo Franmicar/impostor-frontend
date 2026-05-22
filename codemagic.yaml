@@ -2,12 +2,14 @@
 workflows:
   ios-release:
     name: Deceptra iOS Release
+    integrations:
+      app_store_connect: app_store_key # Conexión configurada en Codemagic
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
       groups:
         - ios-signing # Importar el grupo de variables de firma
-      node: 20.11.0 # Versión de Node.js a utilizar
+      node: 22.12.0 # Versión de Node.js compatible con Angular v21
       xcode: latest  # Última versión estable de Xcode
       cocoapods: default
     triggering:
@@ -43,10 +45,14 @@ workflows:
           xcode-project build-ipa \
             --workspace ios/App/App.xcworkspace \
             --scheme App \
-            --clean
+            --clean \
+            --archive-xcargs "CURRENT_PROJECT_VERSION=$BUILD_NUMBER"
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
       email:
         recipients:
           - franmicarrasquilla@gmail.com
