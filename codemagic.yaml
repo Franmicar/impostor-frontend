@@ -34,9 +34,15 @@ workflows:
         script: |
           keychain initialize
           echo "$CM_CERTIFICATE" | base64 --decode > /tmp/cert.p12
-          echo "$CM_PROVISIONING_PROFILE" | base64 --decode > /tmp/profile.mobileprovision
           keychain add-certificates --certificate /tmp/cert.p12 --certificate-password "$CM_CERTIFICATE_PASSWORD"
-          xcode-project use-profiles --profiles /tmp/profile.mobileprovision
+          
+          # Decodificar el profile en la ruta estándar de Xcode
+          PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$PROFILES_HOME"
+          echo "$CM_PROVISIONING_PROFILE" | base64 --decode > "$PROFILES_HOME/profile.mobileprovision"
+          
+          # Aplicar el profile al proyecto
+          xcode-project use-profiles --project ios/App/App.xcodeproj
       - name: Build iOS IPA
         script: |
           xcode-project build-ipa \
