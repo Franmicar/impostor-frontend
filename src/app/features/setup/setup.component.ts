@@ -107,7 +107,7 @@ export interface PlayerConfig {
       @if (gameEngine.isOnline() && socketService.roomState()) {
         <!-- Room Code Card -->
         <div class="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl p-4 mb-6 flex flex-col items-center justify-center relative shadow-lg">
-          <span class="text-xs text-textMuted uppercase tracking-widest font-bold mb-1">CÓDIGO DE LA SALA</span>
+          <span class="text-xs text-textMuted uppercase tracking-widest font-bold mb-1">{{ 'SETUP.ROOM_CODE' | translate }}</span>
           <div class="flex items-center gap-3">
             <span class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-widest drop-shadow-[0_0_10px_rgb(var(--color-primary)/0.4)]">
               {{ socketService.roomState().code }}
@@ -123,8 +123,8 @@ export interface PlayerConfig {
         <!-- Connected Players Grid -->
         <div class="bg-glass border border-glass-border rounded-2xl p-4 mb-6 shadow-lg">
           <div class="flex items-center justify-between mb-3 pl-1">
-            <span class="text-xs font-bold text-textMuted uppercase tracking-widest">Jugadores en sala ({{ socketService.roomState().players.length }})</span>
-            <span class="text-xs text-secondary font-medium">Lobby Multijugador</span>
+            <span class="text-xs font-bold text-textMuted uppercase tracking-widest">{{ 'SETUP.PLAYERS_IN_ROOM' | translate: { count: socketService.roomState().players.length } }}</span>
+            <span class="text-xs text-secondary font-medium">{{ 'SETUP.MULTIPLAYER_LOBBY' | translate }}</span>
           </div>
           <div class="grid grid-cols-2 gap-3 max-h-48 overflow-y-auto custom-scrollbar pr-1">
             @for (player of socketService.roomState().players; track player.id) {
@@ -142,9 +142,9 @@ export interface PlayerConfig {
                   }
                 </div>
                 <div class="flex flex-col truncate">
-                  <span class="text-sm font-semibold text-textPrimary truncate leading-tight">{{ player.name }}{{ player.id === socketService.myPlayerId() ? ' (Yo)' : '' }}</span>
+                  <span class="text-sm font-semibold text-textPrimary truncate leading-tight">{{ player.name }}{{ player.id === socketService.myPlayerId() ? ('COMMON.ME' | translate) : '' }}</span>
                   <span class="text-[10px] text-textMuted leading-none mt-0.5">
-                    {{ player.isHost ? 'Anfitrión' : 'Jugador' }}
+                    {{ player.isHost ? ('SETUP.HOST' | translate) : ('SETUP.PLAYER' | translate) }}
                   </span>
                 </div>
               </div>
@@ -406,7 +406,7 @@ export interface PlayerConfig {
       <app-button-primary 
         (onClick)="startGame()"
         [disabled]="(gameEngine.isOnline() && !isHost()) || !canStart() || uiService.isLoading()">
-        {{ (gameEngine.isOnline() && !isHost()) ? 'ESPERANDO AL ANFITRIÓN' : ('SETUP.START_GAME' | translate) }}
+        {{ (gameEngine.isOnline() && !isHost()) ? ('COMMON.WAITING_HOST' | translate | uppercase) : ('SETUP.START_GAME' | translate) }}
       </app-button-primary>
      </app-footer>
     }
@@ -453,7 +453,7 @@ export interface PlayerConfig {
 
     <!-- ================= CONNECT VIEW (ONLINE) ================= -->
     @case ('online-connect') {
-      <app-header [showBack]="true" title="Multijugador" (onBack)="goBack()"></app-header>
+      <app-header [showBack]="true" [title]="'SETUP.MULTIPLAYER' | translate" (onBack)="goBack()"></app-header>
       <main class="flex-1 px-6 flex flex-col justify-center max-w-md mx-auto w-full gap-6 pb-20 pt-10">
         
         <div class="text-center mb-4">
@@ -462,31 +462,31 @@ export interface PlayerConfig {
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-.778.099-1.533.284-2.253" />
             </svg>
           </div>
-          <h2 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-md">PARTIDA EN LÍNEA</h2>
-          <p class="text-sm text-textMuted mt-1">Conéctate con tus amigos en tiempo real</p>
+          <h2 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-md">{{ 'SETUP.MULTIPLAYER_TITLE' | translate }}</h2>
+          <p class="text-sm text-textMuted mt-1">{{ 'SETUP.MULTIPLAYER_DESC' | translate }}</p>
         </div>
 
         <!-- Connection Card -->
         <div class="bg-glass border border-glass-border rounded-3xl p-6 shadow-2xl flex flex-col gap-5">
           <!-- Input Nombre -->
           <div class="flex flex-col gap-2">
-            <label class="text-xs font-bold text-textMuted uppercase tracking-widest pl-1">Tu Nombre</label>
+            <label class="text-xs font-bold text-textMuted uppercase tracking-widest pl-1">{{ 'SETUP.YOUR_NAME' | translate }}</label>
             <input 
               type="text" 
               [value]="playerName()"
               (input)="playerName.set($any($event.target).value)" 
-              placeholder="Introduce tu nombre..." 
+              [placeholder]="'SETUP.YOUR_NAME_PH' | translate" 
               class="w-full bg-slate-950/50 border border-glass-border focus:border-primary text-white rounded-2xl px-4 py-3 text-lg font-medium outline-none transition-all placeholder:text-textMuted/50 focus:shadow-[0_0_15px_rgb(var(--color-primary)/0.2)]" />
           </div>
 
           <!-- Input Código (Unirse) -->
           <div class="flex flex-col gap-2 mt-2">
-            <label class="text-xs font-bold text-textMuted uppercase tracking-widest pl-1">Código de Sala (Opcional)</label>
+            <label class="text-xs font-bold text-textMuted uppercase tracking-widest pl-1">{{ 'SETUP.ROOM_CODE_OPTIONAL' | translate }}</label>
             <input 
               type="text" 
               [value]="joinRoomCode()"
               (input)="joinRoomCode.set($any($event.target).value)" 
-              placeholder="Código de 4 letras..." 
+              [placeholder]="'SETUP.ROOM_CODE_PH' | translate" 
               maxlength="4"
               class="w-full bg-slate-950/50 border border-glass-border focus:border-secondary text-white rounded-2xl px-4 py-3 text-lg font-bold tracking-widest uppercase text-center outline-none transition-all placeholder:text-textMuted/50 focus:shadow-[0_0_15px_rgb(var(--color-secondary)/0.2)]" />
           </div>
@@ -495,18 +495,18 @@ export interface PlayerConfig {
           @if (isConnecting()) {
             <div class="flex items-center justify-center gap-3 py-4 text-secondary font-bold">
               <div class="w-5 h-5 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
-              <span>Conectando...</span>
+              <span>{{ 'SETUP.CONNECTING' | translate }}</span>
             </div>
           } @else {
             <div class="flex flex-col gap-3 mt-4">
               <!-- Join Button if Code entered -->
               @if (joinRoomCode().trim().length >= 4) {
                 <app-button-primary (onClick)="joinOnlineRoom()">
-                  UNIRSE A SALA
+                  {{ 'SETUP.JOIN_ROOM' | translate }}
                 </app-button-primary>
               } @else {
                 <app-button-primary (onClick)="createOnlineRoom()">
-                  CREAR SALA
+                  {{ 'SETUP.CREATE_ROOM' | translate }}
                 </app-button-primary>
               }
             </div>
@@ -542,7 +542,7 @@ export interface PlayerConfig {
        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-secondary">
          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
        </svg>
-       <span class="text-xs font-semibold tracking-wide">Código copiado al portapapeles</span>
+       <span class="text-xs font-semibold tracking-wide">{{ 'COMMON.COPIED_CLIPBOARD' | translate }}</span>
      </div>
    }
 

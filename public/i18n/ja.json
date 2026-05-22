@@ -119,7 +119,22 @@
     "SAVE": "保存",
     "WARNING_CANNOT_START": "プレイヤー、インポスター、または単語が不足しています。",
     "PREMIUM_BANNER_TITLE": "プレミアムを購入",
-    "PREMIUM_BANNER_DESC": "広告を削除して限定テーマをゲット"
+    "PREMIUM_BANNER_DESC": "広告を削除して限定テーマをゲット",
+    "ROOM_CODE": "ルームコード",
+    "PLAYERS_IN_ROOM": "ルーム内のプレイヤー ({{ count }})",
+    "MULTIPLAYER_LOBBY": "マルチプレイヤーロビー",
+    "HOST": "ホスト",
+    "PLAYER": "プレイヤー",
+    "MULTIPLAYER_TITLE": "オンラインマッチ",
+    "MULTIPLAYER_DESC": "リアルタイムで友達とつながる",
+    "YOUR_NAME": "あなたの名前",
+    "YOUR_NAME_PH": "名前を入力...",
+    "ROOM_CODE_OPTIONAL": "ルームコード (任意)",
+    "ROOM_CODE_PH": "4文字のコード...",
+    "CONNECTING": "接続中...",
+    "JOIN_ROOM": "参加する",
+    "CREATE_ROOM": "ルーム作成",
+    "MULTIPLAYER": "マルチプレイヤー"
   },
   "SETUP_PLAYERS": {
     "TITLE": "プレイヤー",
@@ -163,7 +178,7 @@
     "HINT_IS": "ヒント:",
     "NO_HINT": "今回はヒントなし。",
     "SECRET_WORD_IS": "秘密の言葉:",
-    "DECIDING_TURN": "開始プレイヤー決定中...",
+    "DECIDING_TURN": "ターン決定中",
     "ALL_ROLES_SEEN": "全員が役割を確認しました",
     "STARTS": "開始:",
     "STARTS_DRAW": "描き始め:",
@@ -184,7 +199,11 @@
     "CHANGE_WORD": "単語を変更",
     "CHANGE_WORD_TITLE": "単語の変更",
     "CHANGE_WORD_DESC": "プレイ中の単語を変更してもよろしいですか？<br><br><strong>ラウンド全体が最初から再スタートします：</strong> 新しい単語が割り当てられ、役割がランダムに再配分され、最初のプレイヤーからカードを再度確認する必要があります。",
-    "CHANGE_WORD_CONFIRM": "はい、再スタート"
+    "CHANGE_WORD_CONFIRM": "はい、再スタート",
+    "ROLE_CONFIRMED": "役職確認済！",
+    "WAITING_OTHERS_CONFIRM": "他のプレイヤーが役職を確認してゲームが始まるのを待っています...",
+    "READY": "準備完了",
+    "SWIPE_UP_ROLE": "上にスワイプして役職を見る"
   },
   "DRAW": {
     "TITLE": "描く",
@@ -224,7 +243,16 @@
     "DRAW_AGAIN_TITLE": "続けて描く？",
     "DRAW_AGAIN_DESC": "続行または新しく開始。",
     "RESUME_DRAWING": "続ける",
-    "BLANK_CANVAS": "白紙キャンバス"
+    "BLANK_CANVAS": "白紙キャンバス",
+    "TIE_TITLE": "引き分け",
+    "TIE_DESC": "投票が同数でした。このラウンドでは誰も追放されません。",
+    "DETECTIVE_FAILED_TITLE": "探偵の失敗",
+    "DETECTIVE_FAILED_DESC": "探偵の <span class=\"font-bold text-red-400\">{{ name }}</span> は単語「<span class=\"font-bold text-white\">{{ word }}</span>」を当てようとして失敗し、追放されました。",
+    "IMPOSTOR_CAUGHT_TITLE": "インポスター捕獲",
+    "IMPOSTOR_CAUGHT_DESC_ONLINE": "よくやった！ <span class=\"font-bold text-primary\">{{ name }}</span> はインポスターでした。",
+    "CIVIL_ELIMINATED_TITLE": "市民追放",
+    "CIVIL_ELIMINATED_DESC_ONLINE": "プレイヤー <span class=\"font-bold text-secondary\">{{ name }}</span> は追放されましたが、インポスターではありませんでした。",
+    "NEXT_ROUND_IN": "次のラウンドまで..."
   },
   "RESULTS": {
     "WIN_IMPOSTORS": "インポスターの勝利！",
@@ -254,7 +282,10 @@
   "COMMON": {
     "OK": "OK",
     "CANCEL": "キャンセル",
-    "LOADING": "読み込み中..."
+    "LOADING": "読み込み中...",
+    "WAITING_HOST": "ホストを待っています...",
+    "ME": "(自分)",
+    "COPIED_CLIPBOARD": "コードがクリップボードにコピーされました"
   },
   "CONFIRM_DELETE_PRESET": {
     "TITLE": "グループ削除",
@@ -310,5 +341,12 @@
     "SAVING": "保存中...",
     "SAVE_SUCCESS": "クラウドに正常に保存されました。",
     "SAVE_ERROR": "保存エラー。"
+  },
+  "AUTH_PROFILE": {
+    "LOGIN": "ログイン",
+    "LOGOUT_TITLE": "ログアウト",
+    "LOGOUT_CONFIRM": "現在のセッションからログアウトしてもよろしいですか？",
+    "LOGOUT_BTN": "終了",
+    "ACCOUNT_OPTIONS": "アカウントオプション"
   }
 }

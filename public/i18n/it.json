@@ -119,7 +119,22 @@
     "SAVE": "Salva",
     "WARNING_CANNOT_START": "Mancano giocatori, impostori o parole.",
     "PREMIUM_BANNER_TITLE": "Acquista Premium",
-    "PREMIUM_BANNER_DESC": "Rimuovi le pubblicità e ottieni temi esclusivi"
+    "PREMIUM_BANNER_DESC": "Rimuovi le pubblicità e ottieni temi esclusivi",
+    "ROOM_CODE": "CODICE STANZA",
+    "PLAYERS_IN_ROOM": "Giocatori nella stanza ({{ count }})",
+    "MULTIPLAYER_LOBBY": "Lobby Multigiocatore",
+    "HOST": "Host",
+    "PLAYER": "Giocatore",
+    "MULTIPLAYER_TITLE": "PARTITA ONLINE",
+    "MULTIPLAYER_DESC": "Connettiti con i tuoi amici in tempo reale",
+    "YOUR_NAME": "Il Tuo Nome",
+    "YOUR_NAME_PH": "Inserisci il tuo nome...",
+    "ROOM_CODE_OPTIONAL": "Codice Stanza (Opzionale)",
+    "ROOM_CODE_PH": "Codice di 4 lettere...",
+    "CONNECTING": "Connessione in corso...",
+    "JOIN_ROOM": "UNISCITI",
+    "CREATE_ROOM": "CREA STANZA",
+    "MULTIPLAYER": "Multigiocatore"
   },
   "SETUP_PLAYERS": {
     "TITLE": "Giocatori",
@@ -163,7 +178,7 @@
     "HINT_IS": "Indizio:",
     "NO_HINT": "Nessun indizio.",
     "SECRET_WORD_IS": "La parola è:",
-    "DECIDING_TURN": "Decidendo chi inizia...",
+    "DECIDING_TURN": "DECISIONE TURNO",
     "ALL_ROLES_SEEN": "Tutti hanno visto il ruolo",
     "STARTS": "Inizia:",
     "STARTS_DRAW": "Inizia a disegnare:",
@@ -184,7 +199,11 @@
     "CHANGE_WORD": "Cambia parola",
     "CHANGE_WORD_TITLE": "Cambia Parola",
     "CHANGE_WORD_DESC": "Sei sicuro di voler cambiare la parola con cui stai giocando?<br><br><strong>Questo riavvierà l'intero round dall'inizio:</strong> Verrà assegnata una nuova parola, i ruoli verranno ridistribuiti casualmente e tutti dovranno rivedere la propria carta a partire dal primo giocatore.",
-    "CHANGE_WORD_CONFIRM": "SÌ, RIAVVIA"
+    "CHANGE_WORD_CONFIRM": "SÌ, RIAVVIA",
+    "ROLE_CONFIRMED": "Ruolo Confermato!",
+    "WAITING_OTHERS_CONFIRM": "In attesa che il resto dei giocatori confermi il proprio ruolo per iniziare la partita...",
+    "READY": "PRONTO",
+    "SWIPE_UP_ROLE": "SCORRI VERSO L'ALTO PER VEDERE IL TUO RUOLO"
   },
   "DRAW": {
     "TITLE": "Disegna",
@@ -224,7 +243,16 @@
     "DRAW_AGAIN_TITLE": "Continuare?",
     "DRAW_AGAIN_DESC": "Riprendi o ricomincia.",
     "RESUME_DRAWING": "Continua",
-    "BLANK_CANVAS": "Canvas vuoto"
+    "BLANK_CANVAS": "Canvas vuoto",
+    "TIE_TITLE": "PAREGGIO",
+    "TIE_DESC": "C'è stato un pareggio nei voti. Nessuno è stato eliminato in questo turno.",
+    "DETECTIVE_FAILED_TITLE": "FALLIMENTO DEL DETECTIVE",
+    "DETECTIVE_FAILED_DESC": "Il detective <span class=\"font-bold text-red-400\">{{ name }}</span> ha provato a indovinare la parola \"<span class=\"font-bold text-white\">{{ word }}</span>\" e ha fallito, quindi viene eliminato.",
+    "IMPOSTOR_CAUGHT_TITLE": "IMPOSTORE CATTURATO",
+    "IMPOSTOR_CAUGHT_DESC_ONLINE": "Ben fatto! <span class=\"font-bold text-primary\">{{ name }}</span> era l'impostore.",
+    "CIVIL_ELIMINATED_TITLE": "CIVILE ELIMINATO",
+    "CIVIL_ELIMINATED_DESC_ONLINE": "Il giocatore <span class=\"font-bold text-secondary\">{{ name }}</span> è stato eliminato, ma NON era un impostore.",
+    "NEXT_ROUND_IN": "Prossimo turno in..."
   },
   "RESULTS": {
     "WIN_IMPOSTORS": "Vincono gli impostori!",
@@ -254,7 +282,10 @@
   "COMMON": {
     "OK": "OK",
     "CANCEL": "Annulla",
-    "LOADING": "Caricamento..."
+    "LOADING": "Caricamento...",
+    "WAITING_HOST": "In attesa dell'host...",
+    "ME": "(Io)",
+    "COPIED_CLIPBOARD": "Codice copiato negli appunti"
   },
   "CONFIRM_DELETE_PRESET": {
     "TITLE": "Elimina gruppo",
@@ -310,5 +341,12 @@
     "SAVING": "Salvataggio...",
     "SAVE_SUCCESS": "Salvato sul cloud con successo.",
     "SAVE_ERROR": "Errore di salvataggio."
+  },
+  "AUTH_PROFILE": {
+    "LOGIN": "Accedi",
+    "LOGOUT_TITLE": "Disconnetti",
+    "LOGOUT_CONFIRM": "Sei sicuro di voler uscire dalla sessione attuale?",
+    "LOGOUT_BTN": "Esci",
+    "ACCOUNT_OPTIONS": "Opzioni account"
   }
 }

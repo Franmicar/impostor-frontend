@@ -287,7 +287,7 @@ import { SocketService } from '../../core/services/socket/socket.service';
         }
        </div>
        <span class="font-bold text-textPrimary text-center">
-         {{ player.name }}{{ (isOnline() && player.id.toString() === myPlayerId()?.toString()) ? ' (Yo)' : '' }}
+         {{ player.name }}{{ (isOnline() && player.id.toString() === myPlayerId()?.toString()) ? ('COMMON.ME' | translate) : '' }}
        </span>
       </div>
      }
@@ -334,8 +334,8 @@ import { SocketService } from '../../core/services/socket/socket.service';
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h2 class="text-2xl font-black text-yellow-500 mb-4 tracking-widest uppercase">EMPATE</h2>
-            <p class="text-textMuted text-lg mb-6">Hubo un empate en los votos. Nadie ha sido eliminado esta ronda.</p>
+            <h2 class="text-2xl font-black text-yellow-500 mb-4 tracking-widest uppercase">{{ 'VOTE.TIE_TITLE' | translate }}</h2>
+            <p class="text-textMuted text-lg mb-6">{{ 'VOTE.TIE_DESC' | translate }}</p>
           }
           
           <!-- Detective guess fail -->
@@ -345,10 +345,8 @@ import { SocketService } from '../../core/services/socket/socket.service';
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 class="text-2xl font-black text-red-500 mb-4 tracking-widest uppercase">FALLO DE DETECTIVE</h2>
-            <p class="text-textMuted text-lg mb-6">
-              El detective <span class="font-bold text-red-400">{{ roomState()?.votingState?.resolution?.eliminatedPlayerName }}</span> intentó adivinar la palabra "<span class="font-bold text-white">{{ roomState()?.votingState?.resolution?.guessWord }}</span>" y falló, por lo que es eliminado.
-            </p>
+            <h2 class="text-2xl font-black text-red-500 mb-4 tracking-widest uppercase">{{ 'VOTE.DETECTIVE_FAILED_TITLE' | translate }}</h2>
+            <p class="text-textMuted text-lg mb-6" [innerHTML]="'VOTE.DETECTIVE_FAILED_DESC' | translate: { name: roomState()?.votingState?.resolution?.eliminatedPlayerName, word: roomState()?.votingState?.resolution?.guessWord }"></p>
           }
 
           <!-- Player eliminated -->
@@ -359,27 +357,23 @@ import { SocketService } from '../../core/services/socket/socket.service';
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h2 class="text-2xl font-black text-primary mb-4 tracking-widest uppercase">IMPOSTOR CAZADO</h2>
-              <p class="text-textMuted text-lg mb-6">
-                ¡Bien hecho! <span class="font-bold text-primary">{{ roomState()?.votingState?.resolution?.eliminatedPlayerName }}</span> era el impostor.
-              </p>
+              <h2 class="text-2xl font-black text-primary mb-4 tracking-widest uppercase">{{ 'VOTE.IMPOSTOR_CAUGHT_TITLE' | translate }}</h2>
+              <p class="text-textMuted text-lg mb-6" [innerHTML]="'VOTE.IMPOSTOR_CAUGHT_DESC_ONLINE' | translate: { name: roomState()?.votingState?.resolution?.eliminatedPlayerName }"></p>
             } @else {
               <div class="w-20 h-20 bg-secondary/20 border border-secondary/50 rounded-full flex items-center justify-center mb-6 text-secondary shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h2 class="text-2xl font-black text-secondary mb-4 tracking-widest uppercase">CIVIL ELIMINADO</h2>
-              <p class="text-textMuted text-lg mb-6">
-                El jugador <span class="font-bold text-secondary">{{ roomState()?.votingState?.resolution?.eliminatedPlayerName }}</span> ha sido eliminado, pero NO era un impostor.
-              </p>
+              <h2 class="text-2xl font-black text-secondary mb-4 tracking-widest uppercase">{{ 'VOTE.CIVIL_ELIMINATED_TITLE' | translate }}</h2>
+              <p class="text-textMuted text-lg mb-6" [innerHTML]="'VOTE.CIVIL_ELIMINATED_DESC_ONLINE' | translate: { name: roomState()?.votingState?.resolution?.eliminatedPlayerName }"></p>
             }
           }
 
           <!-- Countdown timer for next round -->
           <div class="mt-6 flex flex-col items-center">
             <span class="text-4xl font-mono font-black text-white/90 drop-shadow">{{ roomState()?.votingState?.resolution?.timeLeft }}s</span>
-            <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">Siguiente ronda en...</span>
+            <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">{{ 'VOTE.NEXT_ROUND_IN' | translate }}</span>
           </div>
 
         </div>

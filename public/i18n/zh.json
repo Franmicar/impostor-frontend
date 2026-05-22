@@ -119,7 +119,22 @@
     "SAVE": "保存",
     "WARNING_CANNOT_START": "玩家、冒名者或词语不足，无法开始。",
     "PREMIUM_BANNER_TITLE": "购买高级版",
-    "PREMIUM_BANNER_DESC": "移除广告并获取专属主题"
+    "PREMIUM_BANNER_DESC": "移除广告并获取专属主题",
+    "ROOM_CODE": "房间代码",
+    "PLAYERS_IN_ROOM": "房间内的玩家 ({{ count }})",
+    "MULTIPLAYER_LOBBY": "多人游戏大厅",
+    "HOST": "房主",
+    "PLAYER": "玩家",
+    "MULTIPLAYER_TITLE": "在线对战",
+    "MULTIPLAYER_DESC": "实时与朋友连接",
+    "YOUR_NAME": "你的名字",
+    "YOUR_NAME_PH": "输入你的名字...",
+    "ROOM_CODE_OPTIONAL": "房间代码 (可选)",
+    "ROOM_CODE_PH": "4个字母的代码...",
+    "CONNECTING": "连接中...",
+    "JOIN_ROOM": "加入房间",
+    "CREATE_ROOM": "创建房间",
+    "MULTIPLAYER": "多人游戏"
   },
   "SETUP_PLAYERS": {
     "TITLE": "玩家",
@@ -163,7 +178,7 @@
     "HINT_IS": "提示：",
     "NO_HINT": "本局没有提示。",
     "SECRET_WORD_IS": "秘密词语：",
-    "DECIDING_TURN": "决定先手...",
+    "DECIDING_TURN": "决定回合",
     "ALL_ROLES_SEEN": "所有玩家已查看身份",
     "STARTS": "开始发言：",
     "STARTS_DRAW": "开始绘画：",
@@ -184,7 +199,11 @@
     "CHANGE_WORD": "更换词语",
     "CHANGE_WORD_TITLE": "更换词语",
     "CHANGE_WORD_DESC": "确定要更换正在游玩的词语吗？<br><br><strong>这将使整个回合从头开始：</strong> 系统将分配一个新词，随机重新分配角色，所有人必须从第一名玩家开始重新查看身份卡。",
-    "CHANGE_WORD_CONFIRM": "是的，重新开始"
+    "CHANGE_WORD_CONFIRM": "是的，重新开始",
+    "ROLE_CONFIRMED": "身份已确认！",
+    "WAITING_OTHERS_CONFIRM": "等待其他玩家确认身份即可开始游戏...",
+    "READY": "准备",
+    "SWIPE_UP_ROLE": "向上滑动查看身份"
   },
   "DRAW": {
     "TITLE": "画画",
@@ -224,7 +243,16 @@
     "DRAW_AGAIN_TITLE": "继续绘画？",
     "DRAW_AGAIN_DESC": "继续或重新开始。",
     "RESUME_DRAWING": "继续",
-    "BLANK_CANVAS": "空白画布"
+    "BLANK_CANVAS": "空白画布",
+    "TIE_TITLE": "平局",
+    "TIE_DESC": "票数平局。本轮无人被淘汰。",
+    "DETECTIVE_FAILED_TITLE": "侦探失败",
+    "DETECTIVE_FAILED_DESC": "侦探 <span class=\"font-bold text-red-400\">{{ name }}</span> 试图猜出单词 \"<span class=\"font-bold text-white\">{{ word }}</span>\" 并失败了，因此被淘汰。",
+    "IMPOSTOR_CAUGHT_TITLE": "冒充者被抓",
+    "IMPOSTOR_CAUGHT_DESC_ONLINE": "干得好！<span class=\"font-bold text-primary\">{{ name }}</span> 是冒充者。",
+    "CIVIL_ELIMINATED_TITLE": "平民被淘汰",
+    "CIVIL_ELIMINATED_DESC_ONLINE": "玩家 <span class=\"font-bold text-secondary\">{{ name }}</span> 被淘汰，但不是冒充者。",
+    "NEXT_ROUND_IN": "下一轮..."
   },
   "RESULTS": {
     "WIN_IMPOSTORS": "冒名者胜利！",
@@ -254,7 +282,10 @@
   "COMMON": {
     "OK": "确定",
     "CANCEL": "取消",
-    "LOADING": "加载中..."
+    "LOADING": "加载中...",
+    "WAITING_HOST": "正在等待房主...",
+    "ME": "(我)",
+    "COPIED_CLIPBOARD": "代码已复制到剪贴板"
   },
   "CONFIRM_DELETE_PRESET": {
     "TITLE": "删除分组",
@@ -310,5 +341,12 @@
     "SAVING": "保存中...",
     "SAVE_SUCCESS": "成功保存到云端。",
     "SAVE_ERROR": "保存时出错。"
+  },
+  "AUTH_PROFILE": {
+    "LOGIN": "登录",
+    "LOGOUT_TITLE": "注销",
+    "LOGOUT_CONFIRM": "您确定要注销当前会话吗？",
+    "LOGOUT_BTN": "退出",
+    "ACCOUNT_OPTIONS": "帐户选项"
   }
 }

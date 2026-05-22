@@ -119,7 +119,22 @@
     "PREMIUM_BANNER_DESC": "Supprimez les publicités et obtenez des thèmes exclusifs",
     "DURATION_INFO": "Définissez si vous voulez une limite de temps globale pour débattre. En mode dessin, le temps de chaque joueur est configuré séparément dans l'option Temps du tour.",
     "DRAW_TIME": "Temps du tour",
-    "SECS": "Secondes"
+    "SECS": "Secondes",
+    "ROOM_CODE": "CODE DU SALON",
+    "PLAYERS_IN_ROOM": "Joueurs dans le salon ({{ count }})",
+    "MULTIPLAYER_LOBBY": "Lobby Multijoueur",
+    "HOST": "Hôte",
+    "PLAYER": "Joueur",
+    "MULTIPLAYER_TITLE": "PARTIE EN LIGNE",
+    "MULTIPLAYER_DESC": "Connectez-vous avec vos amis en temps réel",
+    "YOUR_NAME": "Votre Nom",
+    "YOUR_NAME_PH": "Entrez votre nom...",
+    "ROOM_CODE_OPTIONAL": "Code du salon (Optionnel)",
+    "ROOM_CODE_PH": "Code à 4 lettres...",
+    "CONNECTING": "Connexion...",
+    "JOIN_ROOM": "REJOINDRE",
+    "CREATE_ROOM": "CRÉER SALON",
+    "MULTIPLAYER": "Multijoueur"
   },
   "SETUP_PLAYERS": {
     "TITLE": "Joueurs",
@@ -163,7 +178,7 @@
     "HINT_IS": "Indice :",
     "NO_HINT": "Il n'y a pas d'indices cette fois. Bonne chance.",
     "SECRET_WORD_IS": "Le mot secret est :",
-    "DECIDING_TURN": "Décider qui commence...",
+    "DECIDING_TURN": "DÉCISION DU TOUR",
     "ALL_ROLES_SEEN": "Tous les joueurs ont vu leur rôle",
     "STARTS": "Commence à parler :",
     "STARTS_DRAW": "Commence à dessiner :",
@@ -184,7 +199,11 @@
     "CHANGE_WORD": "Changer le mot",
     "CHANGE_WORD_TITLE": "Changer le mot",
     "CHANGE_WORD_DESC": "Êtes-vous sûr de vouloir changer le mot avec lequel vous jouez ?<br><br><strong>Cela recommencera toute la manche depuis le début :</strong> Un nouveau mot sera attribué, les rôles seront redistribués aléatoirement, et tout le monde devra revoir sa carte en commençant par le premier joueur.",
-    "CHANGE_WORD_CONFIRM": "OUI, RECOMMENCER"
+    "CHANGE_WORD_CONFIRM": "OUI, RECOMMENCER",
+    "ROLE_CONFIRMED": "Rôle Confirmé !",
+    "WAITING_OTHERS_CONFIRM": "En attente que le reste des joueurs confirment leur rôle pour commencer la partie...",
+    "READY": "PRÊT",
+    "SWIPE_UP_ROLE": "FAITES GLISSER VERS LE HAUT POUR VOIR VOTRE RÔLE"
   },
   "DRAW": {
     "TITLE": "Dessiner",
@@ -224,7 +243,16 @@
     "DRAW_AGAIN_TITLE": "Continuer à dessiner ?",
     "DRAW_AGAIN_DESC": "Commencez avec une toile vierge ou continuez depuis le dernier tour.",
     "RESUME_DRAWING": "Continuer le dessin",
-    "BLANK_CANVAS": "Toile vierge"
+    "BLANK_CANVAS": "Toile vierge",
+    "TIE_TITLE": "ÉGALITÉ",
+    "TIE_DESC": "Il y a eu une égalité dans les votes. Personne n'a été éliminé à ce tour.",
+    "DETECTIVE_FAILED_TITLE": "ÉCHEC DU DÉTECTIVE",
+    "DETECTIVE_FAILED_DESC": "Le détective <span class=\"font-bold text-red-400\">{{ name }}</span> a essayé de deviner le mot \"<span class=\"font-bold text-white\">{{ word }}</span>\" et a échoué, il est donc éliminé.",
+    "IMPOSTOR_CAUGHT_TITLE": "IMPOSTEUR ATTRAPÉ",
+    "IMPOSTOR_CAUGHT_DESC_ONLINE": "Bien joué ! <span class=\"font-bold text-primary\">{{ name }}</span> était l'imposteur.",
+    "CIVIL_ELIMINATED_TITLE": "CIVIL ÉLIMINÉ",
+    "CIVIL_ELIMINATED_DESC_ONLINE": "Le joueur <span class=\"font-bold text-secondary\">{{ name }}</span> a été éliminé, mais n'était PAS un imposteur.",
+    "NEXT_ROUND_IN": "Prochain tour dans..."
   },
   "RESULTS": {
     "WIN_IMPOSTORS": "Victoire des Imposteurs!",
@@ -254,7 +282,10 @@
   "COMMON": {
     "OK": "OK",
     "CANCEL": "Annuler",
-    "LOADING": "Chargement..."
+    "LOADING": "Chargement...",
+    "WAITING_HOST": "En attente de l'hôte...",
+    "ME": "(Moi)",
+    "COPIED_CLIPBOARD": "Code copié dans le presse-papiers"
   },
   "CONFIRM_DELETE_PRESET": {
     "TITLE": "Supprimer le groupe",
@@ -310,5 +341,12 @@
     "SAVING": "Sauvegarde en cours...",
     "SAVE_SUCCESS": "Sauvegardé dans le cloud avec succès.",
     "SAVE_ERROR": "Erreur lors de la sauvegarde."
+  },
+  "AUTH_PROFILE": {
+    "LOGIN": "Connexion",
+    "LOGOUT_TITLE": "Déconnexion",
+    "LOGOUT_CONFIRM": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "LOGOUT_BTN": "Quitter",
+    "ACCOUNT_OPTIONS": "Options du compte"
   }
 }

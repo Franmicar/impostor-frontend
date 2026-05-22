@@ -119,7 +119,22 @@
     "SAVE": "Desar",
     "WARNING_CANNOT_START": "Falten jugadors, impostors o un paquet de paraules per començar.",
     "PREMIUM_BANNER_TITLE": "Comprar Premium",
-    "PREMIUM_BANNER_DESC": "Elimina anuncis i aconsegueix temes exclusius"
+    "PREMIUM_BANNER_DESC": "Elimina anuncis i aconsegueix temes exclusius",
+    "ROOM_CODE": "CODI DE LA SALA",
+    "PLAYERS_IN_ROOM": "Jugadors a la sala ({{ count }})",
+    "MULTIPLAYER_LOBBY": "Lobby Multijugador",
+    "HOST": "Amfitrió",
+    "PLAYER": "Jugador",
+    "MULTIPLAYER_TITLE": "PARTIDA EN LÍNIA",
+    "MULTIPLAYER_DESC": "Connecta't amb els teus amics en temps real",
+    "YOUR_NAME": "El Teu Nom",
+    "YOUR_NAME_PH": "Introdueix el teu nom...",
+    "ROOM_CODE_OPTIONAL": "Codi de Sala (Opcional)",
+    "ROOM_CODE_PH": "Codi de 4 lletres...",
+    "CONNECTING": "Connectant...",
+    "JOIN_ROOM": "UNIR-SE",
+    "CREATE_ROOM": "CREAR SALA",
+    "MULTIPLAYER": "Multijugador"
   },
   "SETUP_PLAYERS": {
     "TITLE": "Jugadors",
@@ -161,7 +176,7 @@
     "HINT_IS": "Pista:",
     "NO_HINT": "Aquesta vegada no hi ha pistes. Molta sort.",
     "SECRET_WORD_IS": "La paraula secreta és:",
-    "DECIDING_TURN": "Decidint qui comença...",
+    "DECIDING_TURN": "DECIDINT TORN",
     "ALL_ROLES_SEEN": "Tots els jugadors han vist el seu rol",
     "STARTS": "Comença a parlar:",
     "STARTS_DRAW": "Comença a dibuixar:",
@@ -184,7 +199,11 @@
     "CHANGE_WORD_DESC": "Estàs segur que vols canviar la paraula amb què esteu jugant?<br><br><strong>Això reiniciarà tota la ronda des del principi:</strong> S'assignarà una paraula nova, els rols es redistribuiran aleatòriament i tots haureu de tornar a veure la vostra targeta començant pel primer jugador.",
     "CHANGE_WORD_CONFIRM": "SÍ, REINICIAR",
     "ROLE_AND_WORD": "Rol i paraula",
-    "WHO_STARTS": "¿Qui comença?"
+    "WHO_STARTS": "¿Qui comença?",
+    "ROLE_CONFIRMED": "Rol Confirmat!",
+    "WAITING_OTHERS_CONFIRM": "Esperant que la resta dels jugadors confirmin el seu rol per començar la partida...",
+    "READY": "LLEST",
+    "SWIPE_UP_ROLE": "LLISCA CAP AMUNT PER VEURE EL TEU ROL"
   },
   "DRAW": {
     "NO_ACTIVE_GAME": "No hi ha partida activa ara mateix.",
@@ -224,7 +243,16 @@
     "DRAW_AGAIN_TITLE": "Continuar dibuixant?",
     "DRAW_AGAIN_DESC": "Pots començar un llenç en blanc o seguir des d'on ho vau deixar l'última ronda.",
     "RESUME_DRAWING": "Continuar dibuix",
-    "BLANK_CANVAS": "Llenç en blanc"
+    "BLANK_CANVAS": "Llenç en blanc",
+    "TIE_TITLE": "EMPAT",
+    "TIE_DESC": "Hi ha hagut un empat en els vots. Ningú no ha estat eliminat aquesta ronda.",
+    "DETECTIVE_FAILED_TITLE": "ERROR DEL DETECTIU",
+    "DETECTIVE_FAILED_DESC": "El detectiu <span class=\"font-bold text-red-400\">{{ name }}</span> ha intentat endevinar la paraula \"<span class=\"font-bold text-white\">{{ word }}</span>\" i ha fallat, de manera que és eliminat.",
+    "IMPOSTOR_CAUGHT_TITLE": "IMPOSTOR CAÇAT",
+    "IMPOSTOR_CAUGHT_DESC_ONLINE": "Molt bé! <span class=\"font-bold text-primary\">{{ name }}</span> era l'impostor.",
+    "CIVIL_ELIMINATED_TITLE": "CIVIL ELIMINAT",
+    "CIVIL_ELIMINATED_DESC_ONLINE": "El jugador <span class=\"font-bold text-secondary\">{{ name }}</span> ha estat eliminat, però NO era un impostor.",
+    "NEXT_ROUND_IN": "Següent ronda en..."
   },
   "RESULTS": {
     "WIN_IMPOSTORS": "Victòria dels Impostors!",
@@ -254,7 +282,10 @@
   "COMMON": {
     "OK": "D'acord",
     "CANCEL": "Cancel·lar",
-    "LOADING": "Carregant..."
+    "LOADING": "Carregant...",
+    "WAITING_HOST": "Esperant a l'amfitrió...",
+    "ME": "(Jo)",
+    "COPIED_CLIPBOARD": "Codi copiat al porta-retalls"
   },
   "CONFIRM_DELETE_PRESET": {
     "TITLE": "Eliminar grup",
@@ -310,5 +341,12 @@
     "SAVING": "Desant...",
     "SAVE_SUCCESS": "Desat amb èxit al núvol.",
     "SAVE_ERROR": "Error en desar."
+  },
+  "AUTH_PROFILE": {
+    "LOGIN": "Iniciar Sessió",
+    "LOGOUT_TITLE": "Tancar Sessió",
+    "LOGOUT_CONFIRM": "Estàs segur que vols tancar la teva sessió actual?",
+    "LOGOUT_BTN": "Sortir",
+    "ACCOUNT_OPTIONS": "Opcions de compte"
   }
 }

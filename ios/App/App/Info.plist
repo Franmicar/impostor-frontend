@@ -50,7 +50,7 @@
 	<key>GADIsAdManagerApp</key>
 	<true/>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<string>ca-app-pub-1746046862148380~9985547676</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -60,5 +60,18 @@
 	</array>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Este identificador se utilizará para mostrarte anuncios personalizados según tus intereses.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Google Sign-In</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.129602075786-98p7lhlhrmk2t2hbvkofbdge6r59aeg2</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

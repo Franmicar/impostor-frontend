@@ -56,8 +56,8 @@
     "THEME_NEON": "Neon / Cyberpunk",
     "THEME_INFANTIL": "Kids (Family friendly)",
     "THEME_NEON_2": "Neon 2",
-      "THEME_ALIEN": "Alien Theme",
-      "THEME_MANGA": "Manga Theme",
+    "THEME_ALIEN": "Alien Theme",
+    "THEME_MANGA": "Manga Theme",
     "CONTENT": "Content",
     "CUSTOM_PACKAGES": "Custom Packages",
     "SUPPORT_CONTACT": "Support & Contact",
@@ -119,7 +119,22 @@
     "SAVE": "Save",
     "WARNING_CANNOT_START": "Players, impostors, or a word package are missing to start.",
     "PREMIUM_BANNER_TITLE": "Buy Premium",
-    "PREMIUM_BANNER_DESC": "Remove ads and get exclusive themes"
+    "PREMIUM_BANNER_DESC": "Remove ads and get exclusive themes",
+    "ROOM_CODE": "ROOM CODE",
+    "PLAYERS_IN_ROOM": "Players in room ({{ count }})",
+    "MULTIPLAYER_LOBBY": "Multiplayer Lobby",
+    "HOST": "Host",
+    "PLAYER": "Player",
+    "MULTIPLAYER_TITLE": "ONLINE MATCH",
+    "MULTIPLAYER_DESC": "Connect with friends in real time",
+    "YOUR_NAME": "Your Name",
+    "YOUR_NAME_PH": "Enter your name...",
+    "ROOM_CODE_OPTIONAL": "Room Code (Optional)",
+    "ROOM_CODE_PH": "4-letter code...",
+    "CONNECTING": "Connecting...",
+    "JOIN_ROOM": "JOIN ROOM",
+    "CREATE_ROOM": "CREATE ROOM",
+    "MULTIPLAYER": "Multiplayer"
   },
   "SETUP_PLAYERS": {
     "TITLE": "Players",
@@ -163,7 +178,7 @@
     "HINT_IS": "Hint:",
     "NO_HINT": "No hints this time. Good luck.",
     "SECRET_WORD_IS": "The secret word is:",
-    "DECIDING_TURN": "Deciding who starts...",
+    "DECIDING_TURN": "DECIDING TURN",
     "ALL_ROLES_SEEN": "All players have seen their role",
     "STARTS": "Starts talking:",
     "STARTS_DRAW": "Starts drawing:",
@@ -184,7 +199,11 @@
     "CHANGE_WORD": "Change word",
     "CHANGE_WORD_TITLE": "Change Word",
     "CHANGE_WORD_DESC": "Are you sure you want to change the word you are playing with?<br><br><strong>This will restart the entire round from scratch:</strong> A new word will be assigned, roles will be redistributed randomly, and everyone will have to see their card again starting from the first player.",
-    "CHANGE_WORD_CONFIRM": "YES, RESTART"
+    "CHANGE_WORD_CONFIRM": "YES, RESTART",
+    "ROLE_CONFIRMED": "Role Confirmed!",
+    "WAITING_OTHERS_CONFIRM": "Waiting for the rest of the players to confirm their roles to start...",
+    "READY": "READY",
+    "SWIPE_UP_ROLE": "SWIPE UP TO SEE YOUR ROLE"
   },
   "DRAW": {
     "TITLE": "Draw",
@@ -224,7 +243,16 @@
     "DRAW_AGAIN_TITLE": "Continue drawing?",
     "DRAW_AGAIN_DESC": "You can start with a blank canvas or continue from the previous round.",
     "RESUME_DRAWING": "Resume drawing",
-    "BLANK_CANVAS": "Blank canvas"
+    "BLANK_CANVAS": "Blank canvas",
+    "TIE_TITLE": "TIE",
+    "TIE_DESC": "There was a tie in votes. Nobody was eliminated this round.",
+    "DETECTIVE_FAILED_TITLE": "DETECTIVE FAILED",
+    "DETECTIVE_FAILED_DESC": "Detective <span class=\"font-bold text-red-400\">{{ name }}</span> tried to guess the word \"<span class=\"font-bold text-white\">{{ word }}</span>\" and failed, so they are eliminated.",
+    "IMPOSTOR_CAUGHT_TITLE": "IMPOSTOR CAUGHT",
+    "IMPOSTOR_CAUGHT_DESC_ONLINE": "Well done! <span class=\"font-bold text-primary\">{{ name }}</span> was the impostor.",
+    "CIVIL_ELIMINATED_TITLE": "CIVILIAN ELIMINATED",
+    "CIVIL_ELIMINATED_DESC_ONLINE": "Player <span class=\"font-bold text-secondary\">{{ name }}</span> was eliminated, but was NOT an impostor.",
+    "NEXT_ROUND_IN": "Next round in..."
   },
   "RESULTS": {
     "WIN_IMPOSTORS": "Impostors Win!",
@@ -254,7 +282,10 @@
   "COMMON": {
     "OK": "OK",
     "CANCEL": "Cancel",
-    "LOADING": "Loading..."
+    "LOADING": "Loading...",
+    "WAITING_HOST": "Waiting for host...",
+    "ME": "(Me)",
+    "COPIED_CLIPBOARD": "Code copied to clipboard"
   },
   "CONFIRM_DELETE_PRESET": {
     "TITLE": "Delete group",
@@ -310,5 +341,12 @@
     "SAVING": "Saving...",
     "SAVE_SUCCESS": "Successfully saved to the cloud.",
     "SAVE_ERROR": "Error saving."
+  },
+  "AUTH_PROFILE": {
+    "LOGIN": "Login",
+    "LOGOUT_TITLE": "Log Out",
+    "LOGOUT_CONFIRM": "Are you sure you want to log out of your current session?",
+    "LOGOUT_BTN": "Log Out",
+    "ACCOUNT_OPTIONS": "Account Options"
   }
 }

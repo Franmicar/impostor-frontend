@@ -56,8 +56,8 @@
     "THEME_NEON": "Neón / Cyberpunk",
     "THEME_INFANTIL": "Infantil (Familiar)",
     "THEME_NEON_2": "Neón 2",
-      "THEME_ALIEN": "Tema Alien",
-      "THEME_MANGA": "Tema Manga",
+    "THEME_ALIEN": "Tema Alien",
+    "THEME_MANGA": "Tema Manga",
     "CONTENT": "Contenido",
     "CUSTOM_PACKAGES": "Paquetes Personalizados",
     "SUPPORT_CONTACT": "Soporte y Contacto",
@@ -119,7 +119,22 @@
     "SAVE": "Guardar",
     "WARNING_CANNOT_START": "Faltan jugadores, impostores o un paquete de palabras para empezar.",
     "PREMIUM_BANNER_TITLE": "Comprar Premium",
-    "PREMIUM_BANNER_DESC": "Quitar anuncios y temas exclusivos"
+    "PREMIUM_BANNER_DESC": "Quitar anuncios y temas exclusivos",
+    "ROOM_CODE": "CÓDIGO DE LA SALA",
+    "PLAYERS_IN_ROOM": "Jugadores en sala ({{ count }})",
+    "MULTIPLAYER_LOBBY": "Lobby Multijugador",
+    "HOST": "Anfitrión",
+    "PLAYER": "Jugador",
+    "MULTIPLAYER_TITLE": "PARTIDA EN LÍNEA",
+    "MULTIPLAYER_DESC": "Conéctate con tus amigos en tiempo real",
+    "YOUR_NAME": "Tu Nombre",
+    "YOUR_NAME_PH": "Introduce tu nombre...",
+    "ROOM_CODE_OPTIONAL": "Código de Sala (Opcional)",
+    "ROOM_CODE_PH": "Código de 4 letras...",
+    "CONNECTING": "Conectando...",
+    "JOIN_ROOM": "UNIRSE A SALA",
+    "CREATE_ROOM": "CREAR SALA",
+    "MULTIPLAYER": "Multijugador"
   },
   "SETUP_PLAYERS": {
     "TITLE": "Jugadores",
@@ -163,7 +178,7 @@
     "HINT_IS": "Pista:",
     "NO_HINT": "Esta vez no hay pistas. Buena suerte.",
     "SECRET_WORD_IS": "La palabra secreta es:",
-    "DECIDING_TURN": "Decidiendo quién empieza...",
+    "DECIDING_TURN": "DECIDIENDO TURNO",
     "ALL_ROLES_SEEN": "Todos los jugadores han visto su rol",
     "STARTS": "Empieza a hablar:",
     "STARTS_DRAW": "Comienza a dibujar:",
@@ -184,7 +199,11 @@
     "CHANGE_WORD": "Cambiar palabra",
     "CHANGE_WORD_TITLE": "Cambiar Palabra",
     "CHANGE_WORD_DESC": "¿Seguro que quieres cambiar la palabra con la que estáis jugando?<br><br><strong>Esto reiniciará toda la ronda desde cero:</strong> Se asignará una nueva palabra, se volverán a repartir los roles de forma aleatoria, y todos tendrán que volver a ver su tarjeta desde el primer jugador.",
-    "CHANGE_WORD_CONFIRM": "SÍ, REINICIAR"
+    "CHANGE_WORD_CONFIRM": "SÍ, REINICIAR",
+    "ROLE_CONFIRMED": "¡Rol Confirmado!",
+    "WAITING_OTHERS_CONFIRM": "Esperando a que el resto de los jugadores confirmen su rol para comenzar la partida...",
+    "READY": "LISTO",
+    "SWIPE_UP_ROLE": "DESLIZA HACIA ARRIBA PARA VER TU ROL"
   },
   "DRAW": {
     "TITLE": "Dibuja",
@@ -224,7 +243,16 @@
     "DRAW_AGAIN_TITLE": "¿Continuar dibujando?",
     "DRAW_AGAIN_DESC": "Puedes empezar un lienzo en blanco o seguir dibujando donde lo dejasteis en la ronda anterior.",
     "RESUME_DRAWING": "Continuar dibujo",
-    "BLANK_CANVAS": "Lienzo en blanco"
+    "BLANK_CANVAS": "Lienzo en blanco",
+    "TIE_TITLE": "EMPATE",
+    "TIE_DESC": "Hubo un empate en los votos. Nadie ha sido eliminado esta ronda.",
+    "DETECTIVE_FAILED_TITLE": "FALLO DE DETECTIVE",
+    "DETECTIVE_FAILED_DESC": "El detective <span class=\"font-bold text-red-400\">{{ name }}</span> intentó adivinar la palabra \"<span class=\"font-bold text-white\">{{ word }}</span>\" y falló, por lo que es eliminado.",
+    "IMPOSTOR_CAUGHT_TITLE": "IMPOSTOR CAZADO",
+    "IMPOSTOR_CAUGHT_DESC_ONLINE": "¡Bien hecho! <span class=\"font-bold text-primary\">{{ name }}</span> era el impostor.",
+    "CIVIL_ELIMINATED_TITLE": "CIVIL ELIMINADO",
+    "CIVIL_ELIMINATED_DESC_ONLINE": "El jugador <span class=\"font-bold text-secondary\">{{ name }}</span> ha sido eliminado, pero NO era un impostor.",
+    "NEXT_ROUND_IN": "Siguiente ronda en..."
   },
   "RESULTS": {
     "WIN_IMPOSTORS": "¡Victoria de los Impostores!",
@@ -254,7 +282,10 @@
   "COMMON": {
     "OK": "Aceptar",
     "CANCEL": "Cancelar",
-    "LOADING": "Cargando..."
+    "LOADING": "Cargando...",
+    "WAITING_HOST": "Esperando al anfitrión...",
+    "ME": "(Yo)",
+    "COPIED_CLIPBOARD": "Código copiado al portapapeles"
   },
   "CONFIRM_DELETE_PRESET": {
     "TITLE": "Eliminar grupo",
@@ -310,5 +341,12 @@
     "SAVING": "Guardando...",
     "SAVE_SUCCESS": "Guardado con éxito en la nube.",
     "SAVE_ERROR": "Error al guardar."
+  },
+  "AUTH_PROFILE": {
+    "LOGIN": "Login",
+    "LOGOUT_TITLE": "Cerrar Sesión",
+    "LOGOUT_CONFIRM": "¿Estás seguro de que quieres cerrar tu sesión actual?",
+    "LOGOUT_BTN": "Salir",
+    "ACCOUNT_OPTIONS": "Opciones de cuenta"
   }
 }

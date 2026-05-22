@@ -119,7 +119,22 @@
     "SAVE": "Speichern",
     "WARNING_CANNOT_START": "Zu wenige Spieler, Impostoren oder keine Wortpakete.",
     "PREMIUM_BANNER_TITLE": "Premium kaufen",
-    "PREMIUM_BANNER_DESC": "Entferne Werbung und erhalte exklusive Themes"
+    "PREMIUM_BANNER_DESC": "Entferne Werbung und erhalte exklusive Themes",
+    "ROOM_CODE": "RAUMCODE",
+    "PLAYERS_IN_ROOM": "Spieler im Raum ({{ count }})",
+    "MULTIPLAYER_LOBBY": "Multiplayer-Lobby",
+    "HOST": "Host",
+    "PLAYER": "Spieler",
+    "MULTIPLAYER_TITLE": "ONLINE-SPIEL",
+    "MULTIPLAYER_DESC": "Verbinde dich in Echtzeit mit deinen Freunden",
+    "YOUR_NAME": "Dein Name",
+    "YOUR_NAME_PH": "Gib deinen Namen ein...",
+    "ROOM_CODE_OPTIONAL": "Raumcode (Optional)",
+    "ROOM_CODE_PH": "4-stelliger Code...",
+    "CONNECTING": "Verbinde...",
+    "JOIN_ROOM": "BEITRETEN",
+    "CREATE_ROOM": "RAUM ERSTELLEN",
+    "MULTIPLAYER": "Multiplayer"
   },
   "SETUP_PLAYERS": {
     "TITLE": "Spieler",
@@ -161,7 +176,7 @@
     "HINT_IS": "Hinweis:",
     "NO_HINT": "Kein Hinweis dieses Mal.",
     "SECRET_WORD_IS": "Das geheime Wort ist:",
-    "DECIDING_TURN": "Bestimme Startspieler...",
+    "DECIDING_TURN": "ZUG WIRD ENTSCHIEDEN",
     "ALL_ROLES_SEEN": "Alle haben ihre Rolle gesehen",
     "STARTS": "Beginnt:",
     "STARTS_DRAW": "Beginnt zu zeichnen:",
@@ -184,7 +199,11 @@
     "CHANGE_WORD_DESC": "Bist du sicher, dass du das Wort ändern möchtest, mit dem ihr spielt?<br><br><strong>Dies startet die gesamte Runde von vorne:</strong> Ein neues Wort wird zugewiesen, die Rollen werden zufällig neu verteilt, und jeder muss seine Karte vom ersten Spieler an erneut ansehen.",
     "CHANGE_WORD_CONFIRM": "JA, NEUSTART",
     "ROLE_AND_WORD": "Rolle und Wort",
-    "WHO_STARTS": "Wer fängt an?"
+    "WHO_STARTS": "Wer fängt an?",
+    "ROLE_CONFIRMED": "Rolle Bestätigt!",
+    "WAITING_OTHERS_CONFIRM": "Warten auf die anderen Spieler, um ihre Rollen zu bestätigen, bevor das Spiel beginnt...",
+    "READY": "BEREIT",
+    "SWIPE_UP_ROLE": "NACH OBEN WISCHEN, UM DEINE ROLLE ZU SEHEN"
   },
   "DRAW": {
     "NO_ACTIVE_GAME": "Kein aktives Spiel.",
@@ -224,7 +243,16 @@
     "DRAW_AGAIN_TITLE": "Weiter zeichnen?",
     "DRAW_AGAIN_DESC": "Fortsetzen oder neu starten.",
     "RESUME_DRAWING": "Fortsetzen",
-    "BLANK_CANVAS": "Leere Fläche"
+    "BLANK_CANVAS": "Leere Fläche",
+    "TIE_TITLE": "UNENTSCHIEDEN",
+    "TIE_DESC": "Es gab ein Unentschieden bei den Abstimmungen. Niemand wurde in dieser Runde eliminiert.",
+    "DETECTIVE_FAILED_TITLE": "FEHLSCHLAG DES DETEKTIVS",
+    "DETECTIVE_FAILED_DESC": "Der Detektiv <span class=\"font-bold text-red-400\">{{ name }}</span> hat versucht, das Wort \"<span class=\"font-bold text-white\">{{ word }}</span>\" zu erraten und ist gescheitert, weshalb er eliminiert wird.",
+    "IMPOSTOR_CAUGHT_TITLE": "IMPOSTOR GEFASST",
+    "IMPOSTOR_CAUGHT_DESC_ONLINE": "Gut gemacht! <span class=\"font-bold text-primary\">{{ name }}</span> war der Impostor.",
+    "CIVIL_ELIMINATED_TITLE": "ZIVILIST ELIMINIERT",
+    "CIVIL_ELIMINATED_DESC_ONLINE": "Der Spieler <span class=\"font-bold text-secondary\">{{ name }}</span> wurde eliminiert, war aber KEIN Impostor.",
+    "NEXT_ROUND_IN": "Nächste Runde in..."
   },
   "RESULTS": {
     "WIN_IMPOSTORS": "Impostoren gewinnen!",
@@ -254,7 +282,10 @@
   "COMMON": {
     "OK": "OK",
     "CANCEL": "Abbrechen",
-    "LOADING": "Laden..."
+    "LOADING": "Laden...",
+    "WAITING_HOST": "Warten auf den Host...",
+    "ME": "(Ich)",
+    "COPIED_CLIPBOARD": "Code in die Zwischenablage kopiert"
   },
   "CONFIRM_DELETE_PRESET": {
     "TITLE": "Gruppe löschen",
@@ -310,5 +341,12 @@
     "SAVING": "Speichern...",
     "SAVE_SUCCESS": "Erfolgreich in der Cloud gespeichert.",
     "SAVE_ERROR": "Fehler beim Speichern."
+  },
+  "AUTH_PROFILE": {
+    "LOGIN": "Anmelden",
+    "LOGOUT_TITLE": "Abmelden",
+    "LOGOUT_CONFIRM": "Bist du sicher, dass du dich abmelden möchtest?",
+    "LOGOUT_BTN": "Verlassen",
+    "ACCOUNT_OPTIONS": "Konto-Optionen"
   }
 }

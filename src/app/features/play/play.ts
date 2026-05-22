@@ -71,7 +71,7 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
          [disabled]="engine.isOnline() && !isHost()"
          class="block w-full">
          @if (engine.isOnline() && !isHost()) {
-           Esperando al anfitrión...
+           {{ 'COMMON.WAITING_HOST' | translate }}
          } @else if (engine.currentSettings()?.gameTypeId === 'draw') {
           {{ 'PLAY.PLAY_BTN_DRAW' | translate }}
          } @else {
@@ -85,8 +85,8 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
       <!-- Waiting for others screen (Online Mode) -->
       <div class="flex-grow flex flex-col items-center justify-center text-center p-8 bg-glass border border-glass-border rounded-3xl backdrop-blur-md max-w-sm mx-auto w-full my-auto z-10">
         <div class="w-16 h-16 border-4 border-secondary border-t-transparent rounded-full animate-spin mb-6 shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)]"></div>
-        <h2 class="text-2xl font-bold text-textPrimary mb-2 tracking-wide">¡Rol Confirmado!</h2>
-        <p class="text-textMuted text-sm">Esperando a que el resto de los jugadores confirmen su rol para comenzar la partida...</p>
+        <h2 class="text-2xl font-bold text-textPrimary mb-2 tracking-wide">{{ 'PLAY.ROLE_CONFIRMED' | translate }}</h2>
+        <p class="text-textMuted text-sm">{{ 'PLAY.WAITING_OTHERS_CONFIRM' | translate }}</p>
       </div>
     } @else {
       <!-- Pass and Play -->
@@ -184,11 +184,11 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
           <div class="h-16 flex flex-col justify-center w-full">
             @if (isRevealed()) {
              <app-button-primary (onClick)="nextPlayer()" class="block w-full">
-               {{ engine.isOnline() ? 'LISTO' : (isLastPlayer() ? ('PLAY.START_PLAY' | translate) : ('PLAY.NEXT_PLAYER' | translate)) }}
+               {{ engine.isOnline() ? ('PLAY.READY' | translate) : (isLastPlayer() ? ('PLAY.START_PLAY' | translate) : ('PLAY.NEXT_PLAYER' | translate)) }}
              </app-button-primary>
             } @else {
              <div class="text-center text-textMuted text-sm font-semibold">
-               {{ engine.isOnline() ? 'DESLIZA HACIA ARRIBA PARA VER TU ROL' : ('PLAY.PLAYER_N_OF_M' | translate: { n: engine.currentPlayerIndex() + 1, m: engine.players().length }) }}
+               {{ engine.isOnline() ? ('PLAY.SWIPE_UP_ROLE' | translate) : ('PLAY.PLAYER_N_OF_M' | translate: { n: engine.currentPlayerIndex() + 1, m: engine.players().length }) }}
              </div>
             }
           </div>

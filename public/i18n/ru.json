@@ -119,7 +119,22 @@
     "SAVE": "Сохранить",
     "WARNING_CANNOT_START": "Недостаточно игроков, импосторов или слов.",
     "PREMIUM_BANNER_TITLE": "Купить Premium",
-    "PREMIUM_BANNER_DESC": "Уберите рекламу и получите эксклюзивные темы"
+    "PREMIUM_BANNER_DESC": "Уберите рекламу и получите эксклюзивные темы",
+    "ROOM_CODE": "КОД КОМНАТЫ",
+    "PLAYERS_IN_ROOM": "Игроков в комнате ({{ count }})",
+    "MULTIPLAYER_LOBBY": "Многопользовательское лобби",
+    "HOST": "Хост",
+    "PLAYER": "Игрок",
+    "MULTIPLAYER_TITLE": "ОНЛАЙН ИГРА",
+    "MULTIPLAYER_DESC": "Играй с друзьями в реальном времени",
+    "YOUR_NAME": "Твое имя",
+    "YOUR_NAME_PH": "Введи свое имя...",
+    "ROOM_CODE_OPTIONAL": "Код комнаты (необязательно)",
+    "ROOM_CODE_PH": "Код из 4 букв...",
+    "CONNECTING": "Подключение...",
+    "JOIN_ROOM": "ПРИСОЕДИНИТЬСЯ",
+    "CREATE_ROOM": "СОЗДАТЬ КОМНАТУ",
+    "MULTIPLAYER": "Многопользовательская"
   },
   "SETUP_PLAYERS": {
     "TITLE": "Игроки",
@@ -163,7 +178,7 @@
     "HINT_IS": "Подсказка:",
     "NO_HINT": "Подсказок нет.",
     "SECRET_WORD_IS": "Секретное слово:",
-    "DECIDING_TURN": "Выбор первого игрока...",
+    "DECIDING_TURN": "ОПРЕДЕЛЕНИЕ ХОДА",
     "ALL_ROLES_SEEN": "Все увидели свои роли",
     "STARTS": "Начинает:",
     "STARTS_DRAW": "Начинает рисовать:",
@@ -184,7 +199,11 @@
     "CHANGE_WORD": "Сменить слово",
     "CHANGE_WORD_TITLE": "Сменить слово",
     "CHANGE_WORD_DESC": "Вы уверены, что хотите изменить слово, с которым играете?<br><br><strong>Это перезапустит весь раунд с нуля:</strong> Будет назначено новое слово, роли будут перераспределены случайным образом, и всем придется снова посмотреть свою карту, начиная с первого игрока.",
-    "CHANGE_WORD_CONFIRM": "ДА, ПЕРЕЗАПУСТИТЬ"
+    "CHANGE_WORD_CONFIRM": "ДА, ПЕРЕЗАПУСТИТЬ",
+    "ROLE_CONFIRMED": "Роль Подтверждена!",
+    "WAITING_OTHERS_CONFIRM": "Ожидаем, пока остальные игроки подтвердят свои роли для начала игры...",
+    "READY": "ГОТОВ",
+    "SWIPE_UP_ROLE": "СВАЙПНИ ВВЕРХ, ЧТОБЫ УВИДЕТЬ СВОЮ РОЛЬ"
   },
   "DRAW": {
     "TITLE": "Рисовать",
@@ -224,7 +243,16 @@
     "DRAW_AGAIN_TITLE": "Продолжить рисование?",
     "DRAW_AGAIN_DESC": "Продолжить или начать заново.",
     "RESUME_DRAWING": "Продолжить",
-    "BLANK_CANVAS": "Пустой холст"
+    "BLANK_CANVAS": "Пустой холст",
+    "TIE_TITLE": "НИЧЬЯ",
+    "TIE_DESC": "Голоса разделились поровну. Никто не был исключен в этом раунде.",
+    "DETECTIVE_FAILED_TITLE": "ПРОВАЛ ДЕТЕКТИВА",
+    "DETECTIVE_FAILED_DESC": "Детектив <span class=\"font-bold text-red-400\">{{ name }}</span> попытался угадать слово \"<span class=\"font-bold text-white\">{{ word }}</span>\" и потерпел неудачу, поэтому он исключен.",
+    "IMPOSTOR_CAUGHT_TITLE": "САМОЗВАНЕЦ ПОЙМАН",
+    "IMPOSTOR_CAUGHT_DESC_ONLINE": "Отличная работа! <span class=\"font-bold text-primary\">{{ name }}</span> был самозванцем.",
+    "CIVIL_ELIMINATED_TITLE": "МИРНЫЙ ЖИТЕЛЬ ИСКЛЮЧЕН",
+    "CIVIL_ELIMINATED_DESC_ONLINE": "Игрок <span class=\"font-bold text-secondary\">{{ name }}</span> был исключен, но он НЕ был самозванцем.",
+    "NEXT_ROUND_IN": "Следующий раунд через..."
   },
   "RESULTS": {
     "WIN_IMPOSTORS": "Победа импосторов!",
@@ -254,7 +282,10 @@
   "COMMON": {
     "OK": "ОК",
     "CANCEL": "Отмена",
-    "LOADING": "Загрузка..."
+    "LOADING": "Загрузка...",
+    "WAITING_HOST": "Ожидание хоста...",
+    "ME": "(Я)",
+    "COPIED_CLIPBOARD": "Код скопирован в буфер обмена"
   },
   "CONFIRM_DELETE_PRESET": {
     "TITLE": "Удалить группу",
@@ -310,5 +341,12 @@
     "SAVING": "Сохранение...",
     "SAVE_SUCCESS": "Успешно сохранено в облаке.",
     "SAVE_ERROR": "Ошибка при сохранении."
+  },
+  "AUTH_PROFILE": {
+    "LOGIN": "Войти",
+    "LOGOUT_TITLE": "Выйти",
+    "LOGOUT_CONFIRM": "Вы уверены, что хотите выйти из текущего сеанса?",
+    "LOGOUT_BTN": "Выйти",
+    "ACCOUNT_OPTIONS": "Настройки аккаунта"
   }
 }
