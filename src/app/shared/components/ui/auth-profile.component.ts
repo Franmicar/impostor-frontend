@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angu
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { ThemeService } from '../../../core/services/theme.service';
 import { ModalComponent } from './modal.component';
 import { ButtonPrimaryComponent } from './button-primary.component';
 
@@ -12,7 +13,7 @@ import { ButtonPrimaryComponent } from './button-primary.component';
   imports: [CommonModule, TranslateModule, ModalComponent, ButtonPrimaryComponent],
   template: `
     @if (authService.userSignal()) {
-      <img [src]="authService.userSignal()?.photoURL || '/images/default-avatar.png'" 
+      <img [src]="authService.userSignal()?.photoURL || themeService.resolveAsset('shared.default_avatar')" 
            referrerpolicy="no-referrer" 
            [class]="avatarSize() + ' rounded-full border-2 border-secondary shadow-[0_0_10px_rgb(var(--color-secondary)/0.4)] cursor-pointer hover:scale-105 transition-transform'" 
            (click)="isLogoutModalOpen.set(true)" 
@@ -47,6 +48,7 @@ import { ButtonPrimaryComponent } from './button-primary.component';
 })
 export class AuthProfileComponent {
   authService = inject(AuthService);
+  themeService = inject(ThemeService);
   isLogoutModalOpen = signal(false);
 
   avatarSize = input<string>('w-10 h-10');

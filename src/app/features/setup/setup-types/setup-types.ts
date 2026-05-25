@@ -36,7 +36,7 @@ import { FooterComponent } from '../../../shared/components/ui/footer.component'
       
       <!-- Icon based on type -->
       <div class="setup-img-box flex-shrink-0 flex items-center justify-center mr-4 rounded-xl overflow-hidden" style="width: 72px; height: 72px;">
-        <img [src]="themeService.getImagePath('/images/types/' + type.id + '.png')" alt="" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 neon-dynamic-img">
+        <img [src]="themeService.resolveAsset('types.' + type.id)" alt="" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 neon-dynamic-img">
       </div>
       
       <div class="flex flex-col flex-1 justify-center">

@@ -5,6 +5,7 @@ import { Capacitor } from '@capacitor/core';
 import { combineLatest } from 'rxjs';
 import { BillingService } from './billing.service';
 import { ThemeAssetLoader } from './theme-asset-loader.service';
+import { ASSET_KEYS, LOCAL_ASSET_MAPPING } from '../config/assets.config';
 
 export type Theme = 'neon' | 'neon2' | 'infantil' | 'alien' | 'manga';
 
@@ -117,5 +118,32 @@ export class ThemeService {
         }
         
         return originalPath;
+    }
+
+    resolveAsset(key: string): string {
+        const theme = this.currentTheme() as string;
+        
+        // Determinar la ruta por defecto a partir del key
+        let defaultPath = LOCAL_ASSET_MAPPING[key];
+        if (!defaultPath && key.startsWith('packages.')) {
+            defaultPath = `/images/packages/${key.substring(9)}.png`;
+        }
+        
+        if (!defaultPath) {
+            console.warn(`Asset key "${key}" not registered in LOCAL_ASSET_MAPPING`);
+            return '/images/default-avatar.png'; // safe fallback
+        }
+        
+        if (this.downloadedThemes()[theme]) {
+            const cleanPath = defaultPath.replace(/^\/images\//, '/');
+            if (Capacitor.isNativePlatform()) {
+                const fileName = cleanPath.startsWith('/') ? cleanPath.substring(1) : cleanPath;
+                return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${theme}/${fileName}`);
+            } else {
+                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${cleanPath}`;
+            }
+        }
+        
+        return defaultPath;
     }
 }

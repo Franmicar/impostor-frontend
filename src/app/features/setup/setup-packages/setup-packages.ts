@@ -264,33 +264,8 @@ export class SetupPackages {
 
   getPackageImage(pkg: Package): string {
     if (pkg.imageId) {
-      // Just map directly the ID provided by the seed to the package folder.
-      // Cleanest implementation for scaling
-      const idMap: Record<string, string> = {
-        'fiesta_epica': '/images/packages/fiesta_epica.png',
-        'nerd_tecnologia': '/images/packages/nerd_tecnologia.png',
-        'comida_deliciosa': '/images/packages/comida_deliciosa.png',
-        'peliculas_culto': '/images/packages/peliculas_culto.png',
-        'mundo_animal': '/images/packages/mundo_animal.png',
-        'manga_anime': '/images/packages/manga_anime.png',
-        'bichos': '/images/packages/bichos.png',
-        'deportes': '/images/packages/deportes.png',
-        'hogar': '/images/packages/hogar.png',
-        'videojuegos': '/images/packages/videojuegos.png',
-        'paises': '/images/packages/paises.png',
-        'musica': '/images/packages/musica.png',
-        'profesiones': '/images/packages/profesiones.png',
-        'marcas': '/images/packages/marcas.png',
-        'fantasia': '/images/packages/fantasia_mitologia.png',
-        'celebridades': '/images/packages/celebridades.png',
-        'ciencia': '/images/packages/ciencia_espacio.png',
-        'superheroes': '/images/packages/superheroes.png'
-      };
-
-      let imagePath = idMap[pkg.imageId] || `/images/packages/${pkg.imageId}.png`;
-      return this.themeService.getImagePath(imagePath);
+      return this.themeService.resolveAsset(`packages.${pkg.imageId}`);
     }
-
-    return this.themeService.getImagePath('/images/packages/fiesta_epica.png'); // Fallback
+    return this.themeService.resolveAsset('packages.fiesta_epica'); // Fallback
   }
 }

@@ -30,8 +30,9 @@ Esta *skill* contiene las reglas y convenciones de obligado cumplimiento para el
 
 ## 5. Assets & Imágenes Visuales
 - **Regla estricta:** Al generar, referenciar o trasladar cualquier imagen, logo, favicon o screenshot dentro del código del frontend, **SIEMPRE** deben colocarse y rutearse estáticamente dentro de la carpeta `public/` (ej. `public/assets` o `public/icons`). En las configuraciones PWA modernas de Angular no se utiliza `src/assets`.
-- **Regla estricta:** Todas las imágenes o logos generados por IA para este proyecto (ya sean para frontend o assets móviles) deben usar indefectiblemente los estándares y lógica de prompt definidos en la skill interna `/nanobanana-ppt-skills`.
-- Mantén la estética del proyecto definida en Tailwind: "Glassmorfismo oscuro" con acentos neón ("Rosa Primario" `#f20db9` y "Cyan Secundario" `#0df2f2`).
+- **Regla estricta:** Todas las imágenes o logos generados por IA para este proyecto (ya sean para frontend o assets móviles) deben usar indefectiblemente los estándares, paletas y el pipeline de validación descritos en [IMAGE_GENERATION.md](file:///c:/Users/dj_ra/OneDrive/Documentos/Proyectos/impostor-words/impostor-frontend/.antigravity/skills/impostor-words-rules/IMAGE_GENERATION.md).
+- Mantén la estética del proyecto definida en Tailwind: "Glassmorfismo oscuro" con acentos neón ("Rosa Primario" `#f20db9` y "Cyan Secundario" `#0df2f2`), adaptándose cromáticamente según el tema activo siguiendo las fichas artísticas del skill.
+
 
 ## 6. Frontend: Angular & Capacitor (Nueva v1.5.0)
 - **Persistencia (Regla estricta):** Está PROHIBIDO usar `localStorage`, `sessionStorage` o cookies para el estado de la aplicación. Debes utilizar siempre **`@capacitor/preferences`** para garantizar la persistencia de los datos nativos en la app móvil.

@@ -164,8 +164,8 @@ export interface PlayerConfig {
         [class.cursor-pointer]="isHost()"
         class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors first:rounded-t-2xl">
         <div class="flex items-center gap-3">
-         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
-          <img [src]="themeService.getImagePath('/images/setup/mode.png')" alt="" class="w-full h-full object-cover neon-dynamic-img">
+         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+          <img [src]="themeService.resolveAsset('setup.mode')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
           {{ 'SETUP.GAME_MODE' | translate }}
@@ -189,8 +189,8 @@ export interface PlayerConfig {
         [class.cursor-pointer]="isHost()"
         class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors border-b border-glass-border">
         <div class="flex items-center gap-3">
-         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
-          <img [src]="themeService.getImagePath('/images/setup/type.png')" alt="" class="w-full h-full object-cover neon-dynamic-img">
+         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+          <img [src]="themeService.resolveAsset('setup.type')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
           {{ 'SETUP.GAME_TYPE' | translate }}
@@ -214,8 +214,8 @@ export interface PlayerConfig {
         [class.cursor-pointer]="!gameEngine.isOnline()"
         class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors">
         <div class="flex items-center gap-3">
-         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
-          <img [src]="themeService.getImagePath('/images/setup/players.png')" alt="" class="w-full h-full object-cover neon-dynamic-img">
+         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+          <img [src]="themeService.resolveAsset('setup.players')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
           {{ 'SETUP.PLAYERS' | translate }}
@@ -238,8 +238,8 @@ export interface PlayerConfig {
        @if (gameMode().id !== 'chaos' && gameMode().id !== 'fast') {
          <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors">
           <div class="flex items-center gap-3">
-           <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
-            <img [src]="themeService.getImagePath('/images/setup/impostors.png')" alt="" class="w-full h-full object-contain p-1 neon-dynamic-img">
+           <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+            <img [src]="themeService.resolveAsset('setup.impostors')" alt="" class="w-full h-full object-cover neon-dynamic-img">
            </div>
            <span class="font-semibold text-textPrimary flex items-center gap-2">
             {{ 'SETUP.IMPOSTORS' | translate }}
@@ -264,8 +264,8 @@ export interface PlayerConfig {
        @if (gameMode().id === 'detective') {
         <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors">
           <div class="flex items-center gap-3">
-           <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
-            <img [src]="themeService.getImagePath('/images/setup/detectives.png')" alt="" class="w-full h-full object-contain p-1 neon-dynamic-img">
+           <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+            <img [src]="themeService.resolveAsset('setup.detectives')" alt="" class="w-full h-full object-cover neon-dynamic-img">
            </div>
            <span class="font-semibold text-textPrimary flex items-center gap-2">
              {{ 'SETUP.DETECTIVES' | translate }}
@@ -290,8 +290,8 @@ export interface PlayerConfig {
        @if (gameMode().id !== 'team' && gameMode().id !== 'infiltrator') {
          <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors">
           <div class="flex items-center gap-3">
-           <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
-            <img [src]="themeService.getImagePath('/images/setup/hints.png')" alt="" class="w-full h-full object-contain p-1 neon-dynamic-img">
+           <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+            <img [src]="themeService.resolveAsset('setup.hints')" alt="" class="w-full h-full object-cover neon-dynamic-img">
            </div>
            <span class="font-semibold text-textPrimary flex flex-col justify-center">
              <span class="flex items-center gap-2">
@@ -319,8 +319,8 @@ export interface PlayerConfig {
         [class.cursor-pointer]="isHost()"
         class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer">
         <div class="flex items-center gap-3">
-         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
-          <img [src]="themeService.getImagePath('/images/setup/package.png')" alt="" class="w-full h-full object-cover neon-dynamic-img">
+         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+          <img [src]="themeService.resolveAsset('setup.package')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
           {{ 'SETUP.PACKAGES' | translate }}
@@ -348,8 +348,8 @@ export interface PlayerConfig {
        <!-- DURACION -->
        <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors" [class.last:rounded-b-2xl]="gameType().id !== 'draw'" [class.border-b]="gameType().id === 'draw'" [class.border-glass-border]="gameType().id === 'draw'">
         <div class="flex items-center gap-3">
-         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
-          <img [src]="themeService.getImagePath('/images/setup/duration.png')" alt="" class="w-full h-full object-contain p-1 neon-dynamic-img">
+         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+          <img [src]="themeService.resolveAsset('setup.duration')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
           {{ 'SETUP.DURATION' | translate }}
@@ -371,8 +371,8 @@ export interface PlayerConfig {
        @if(gameType().id === 'draw') {
        <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors last:rounded-b-2xl">
         <div class="flex items-center gap-3">
-         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
-          <img [src]="themeService.getImagePath('/images/setup/turn_time.png')" alt="" class="w-full h-full object-contain p-1 neon-dynamic-img">
+         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+          <img [src]="themeService.resolveAsset('setup.turn_time')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
           {{ 'SETUP.DRAW_TIME' | translate }}

@@ -110,7 +110,7 @@
   }
 
   img.neon-dynamic-img:not(.rounded-full) {
-    border-radius: 15px;
+    border-radius: 10px;
   }
 
   /* Aplicar filtro a las imágenes cuando el tema sea neon2 para que sean verde/amarillo */
@@ -210,6 +210,82 @@
     background: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Premium Theme (Alien) Setup Image Box */
+  .theme-alien .setup-img-box {
+    position: relative;
+    border-radius: 22px;
+    background:
+      radial-gradient(circle at 50% 35%, rgba(57, 255, 20, 0.2) 0%, transparent 55%),
+      radial-gradient(circle at 50% 70%, rgba(171, 71, 188, 0.15) 0%, transparent 60%),
+      linear-gradient(145deg, #040806, #0e1e12 60%, #020406);
+    border: 1px solid rgba(57, 255, 20, 0.25);
+    box-shadow:
+      inset 0 0 25px rgba(57, 255, 20, 0.15),
+      inset 0 0 60px rgba(171, 71, 188, 0.08),
+      0 0 10px rgba(57, 255, 20, 0.2),
+      0 10px 25px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+  }
+
+  .theme-alien .setup-img-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: 
+      linear-gradient(rgba(57, 255, 20, 0.08) 50%, transparent 50%),
+      linear-gradient(90deg, rgba(57, 255, 20, 0.08) 50%, transparent 50%);
+    background-size: 4px 4px;
+    z-index: 0;
+  }
+
+  .theme-alien .setup-img-box::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(120deg,
+        rgba(57, 255, 20, 0.5),
+        rgba(171, 71, 188, 0.5));
+    opacity: 0.2;
+    filter: blur(8px);
+    z-index: 0;
+  }
+
+  .theme-alien .setup-img-box>* {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Premium Theme (Manga) Setup Image Box */
+  .theme-manga .setup-img-box {
+    position: relative;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fafafa, #e0e0e0);
+    border: 2.5px solid #000000;
+    box-shadow: 4px 4px 0px 0px #000000;
+    overflow: hidden;
+  }
+
+  .theme-manga .setup-img-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: 
+      radial-gradient(circle, #333333 12%, transparent 13%),
+      radial-gradient(circle, #333333 12%, transparent 13%);
+    background-size: 6px 6px;
+    background-position: 0 0, 3px 3px;
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  .theme-manga .setup-img-box>* {
+    position: relative;
+    z-index: 1;
   }
 
   html,
