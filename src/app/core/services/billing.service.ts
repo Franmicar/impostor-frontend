@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, effect } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Purchases, LOG_LEVEL, PRODUCT_CATEGORY } from '@revenuecat/purchases-capacitor';
 import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { inject } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
@@ -32,15 +31,13 @@ export class BillingService {
     // Listen to auth changes manually (effect requires injection context, so we use effect or just subscribe if it was observable, but userSignal is a signal)
     // Actually, we can just use effect inside constructor:
     // Wait, let's fetch tester status when login happens:
-    import('@angular/core').then(core => {
-      core.effect(() => {
-        const user = this.auth.userSignal();
-        if (user) {
-          this.checkTesterStatus(user.uid);
-        } else {
-          this._isPremiumTester.next(false);
-        }
-      });
+    effect(() => {
+      const user = this.auth.userSignal();
+      if (user) {
+        this.checkTesterStatus(user.uid);
+      } else {
+        this._isPremiumTester.next(false);
+      }
     });
   }
 

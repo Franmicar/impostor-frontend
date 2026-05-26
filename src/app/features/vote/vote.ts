@@ -1,8 +1,9 @@
-import { Component, inject, signal, computed, HostListener, OnInit } from '@angular/core';
+import { Component, inject, signal, computed, HostListener, OnInit, OnDestroy, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { GameEngineService, Player } from '../../core/services/game-engine/game-engine';
 import { TimerService } from '../../core/services/timer/timer.service';
 import { BillingService } from '../../core/services/billing.service';
@@ -14,6 +15,9 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
 import { FooterComponent } from '../../shared/components/ui/footer.component';
 import { InputComponent } from '../../shared/components/ui/input.component';
 import { SocketService } from '../../core/services/socket/socket.service';
+import { ThemeService } from '../../core/services/theme.service';
+import { VoiceChatService } from '../../core/services/voice-chat/voice-chat.service';
+
 
 @Component({
  selector: 'app-vote',
@@ -176,16 +180,80 @@ import { SocketService } from '../../core/services/socket/socket.service';
 
    <!-- HEADER & TIMER & ACTIONS -->
    <div class="w-full max-w-md flex flex-col items-center mb-8">
-     @if (isOnline()) {
-      <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
-         [class.border-primary]="onlineTimeSeconds <= 10 && onlineTimeSeconds > 0"
-         [class.text-primary]="onlineTimeSeconds <= 10 && onlineTimeSeconds > 0"
-         [class.border-red-500]="onlineTimeSeconds === 0"
-         [class.text-red-500]="onlineTimeSeconds === 0">
-       <span class="text-5xl font-black font-mono tracking-wider drop-shadow-md">{{ onlineFormattedTime() }}</span>
-       <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">{{ 'VOTE.TIME_REMAINING' | translate }}</span>
-      </div>
-     } @else if (timer.isActive() || timer.timeLeftInSeconds() > 0) {
+      @if (isOnline()) {
+       <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
+          [class.border-primary]="onlineTimeSeconds <= 10 && onlineTimeSeconds > 0"
+          [class.text-primary]="onlineTimeSeconds <= 10 && onlineTimeSeconds > 0"
+          [class.border-red-500]="onlineTimeSeconds === 0"
+          [class.text-red-500]="onlineTimeSeconds === 0">
+        <span class="text-5xl font-black font-mono tracking-wider drop-shadow-md">{{ onlineFormattedTime() }}</span>
+        <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">{{ 'VOTE.TIME_REMAINING' | translate }}</span>
+       </div>
+
+       <!-- VOICE CHAT FLOATING CARD -->
+       <div class="w-full mt-4 bg-glass border border-glass-border rounded-2xl p-3 flex items-center justify-between shadow-lg backdrop-blur-lg animate-in fade-in duration-300">
+         <div class="flex items-center gap-2.5">
+           <!-- Connected/Connecting pulsing indicator -->
+           <div class="relative flex h-3 w-3">
+             @if (voiceChatService.isConnected()) {
+               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+               <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+             } @else {
+               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+               <span class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
+             }
+           </div>
+           
+           <div class="flex flex-col">
+             <span class="text-[10px] text-textMuted font-bold uppercase tracking-wider">Chat de Voz</span>
+             <span class="text-xs font-semibold">
+               @if (voiceChatService.isConnected()) {
+                 {{ voiceChatService.isMuted() ? 'Silenciado' : 'Hablando...' }}
+               } @else {
+                 Conectando...
+               }
+             </span>
+           </div>
+         </div>
+
+         <!-- Controls: Mute Toggle + Push to Talk -->
+         <div class="flex items-center gap-2">
+           <!-- Toggle mute button -->
+           <button 
+             (click)="voiceChatService.toggleMute()"
+             [disabled]="!voiceChatService.isConnected()"
+             class="w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+             [class.bg-red-500/20]="voiceChatService.isMuted()"
+             [class.text-red-400]="voiceChatService.isMuted()"
+             [class.border-red-500/30]="voiceChatService.isMuted()"
+             [class.border]="true"
+             [class.bg-primary/20]="!voiceChatService.isMuted()"
+             [class.text-primary]="!voiceChatService.isMuted()"
+             [class.border-primary/30]="!voiceChatService.isMuted()"
+             [title]="voiceChatService.isMuted() ? 'Activar Micrófono' : 'Silenciar Micrófono'">
+             @if (voiceChatService.isMuted()) {
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
+             } @else {
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" /></svg>
+             }
+           </button>
+
+           <!-- Push to talk button -->
+           <button 
+             (mousedown)="startPushToTalk($event)"
+             (mouseup)="stopPushToTalk($event)"
+             (mouseleave)="stopPushToTalk($event)"
+             (touchstart)="startPushToTalk($event)"
+             (touchend)="stopPushToTalk($event)"
+             [disabled]="!voiceChatService.isConnected()"
+             class="px-2.5 h-9 rounded-xl bg-glass border border-glass-border flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest active:bg-primary/20 active:border-primary/50 transition-all select-none disabled:opacity-50 disabled:pointer-events-none text-textPrimary"
+             title="Mantener para hablar (Push to Talk)">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" /></svg>
+             <span>PTT</span>
+           </button>
+         </div>
+       </div>
+      } @else if (timer.isActive() || timer.timeLeftInSeconds() > 0) {
       <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
          [class.border-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
          [class.text-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
@@ -243,18 +311,25 @@ import { SocketService } from '../../core/services/socket/socket.service';
       @for (player of engine.alivePlayers(); track player.id) {
        <div 
         (click)="(!isOnline() || player.id.toString() !== myPlayerId()?.toString()) && (selectedPlayerId = player.id)"
-        class="bg-glass backdrop-blur-md border rounded-2xl p-4 flex flex-col items-center gap-3 transition-all shadow-lg relative"
+        class="bg-glass backdrop-blur-md border rounded-2xl p-4 flex flex-col items-center gap-3 transition-all shadow-lg relative overflow-visible"
         [class.cursor-pointer]="!isOnline() || player.id.toString() !== myPlayerId()?.toString()"
         [class.cursor-not-allowed]="isOnline() && player.id.toString() === myPlayerId()?.toString()"
         [class.opacity-60]="isOnline() && player.id.toString() === myPlayerId()?.toString()"
-        [class.hover:shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]]="!isOnline() || player.id.toString() !== myPlayerId()?.toString()"
+        [class.hover:shadow-[0_0_20px_rgb(var(--color-primary)/0.4)]]="(!isOnline() || player.id.toString() !== myPlayerId()?.toString()) && (!isOnline() || !isPlayerSpeaking(player.id))"
         [class.hover:-translate-y-1]="!isOnline() || player.id.toString() !== myPlayerId()?.toString()"
-        [class.border-primary]="selectedPlayerId === player.id"
+        [class.border-primary]="selectedPlayerId === player.id && (!isOnline() || !isPlayerSpeaking(player.id))"
         [class.bg-white/10]="selectedPlayerId === player.id"
-        [class.shadow-[0_0_25px_rgb(var(--color-primary)/0.4)]]="selectedPlayerId === player.id"
-        [class.border-glass-border]="selectedPlayerId !== player.id"
-        [class.hover:border-white/20]="selectedPlayerId !== player.id">
+        [class.shadow-[0_0_25px_rgb(var(--color-primary)/0.4)]]="selectedPlayerId === player.id && (!isOnline() || !isPlayerSpeaking(player.id))"
+        [class.border-green-500]="isOnline() && isPlayerSpeaking(player.id)"
+        [class.shadow-[0_0_20px_#22c55e]]="isOnline() && isPlayerSpeaking(player.id)"
+        [class.border-glass-border]="selectedPlayerId !== player.id && (!isOnline() || !isPlayerSpeaking(player.id))"
+        [class.hover:border-white/20]="selectedPlayerId !== player.id && (!isOnline() || !isPlayerSpeaking(player.id))">
        
+       <!-- Active speaking glow expanding effect -->
+       @if (isOnline() && isPlayerSpeaking(player.id)) {
+         <span class="absolute inset-0 rounded-2xl border-2 border-green-500/80 animate-ping opacity-60 pointer-events-none z-0"></span>
+       }
+
        <!-- Check if player has voted -->
        @if (isOnline()) {
          <div class="absolute top-2 right-2 flex gap-1.5 items-center z-10">
@@ -271,24 +346,58 @@ import { SocketService } from '../../core/services/socket/socket.service';
          </div>
        }
 
-       <div class="w-14 h-14 rounded-full flex items-center justify-center border transition-all overflow-hidden relative"
-          [class.bg-primary/20]="selectedPlayerId === player.id"
-          [class.border-primary]="selectedPlayerId === player.id"
-          [class.bg-white/5]="selectedPlayerId !== player.id"
-          [class.border-white/10]="selectedPlayerId !== player.id">
-        @if (player.photoUrl) {
-         <img [src]="player.photoUrl" class="w-full h-full object-cover">
-        } @else {
-         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transition-colors"
-            [class.text-primary]="selectedPlayerId === player.id"
-            [class.text-textMuted]="selectedPlayerId !== player.id">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-         </svg>
-        }
-       </div>
+       <div class="relative">
+          <div class="w-14 h-14 rounded-full flex items-center justify-center border transition-all overflow-hidden"
+             [class.bg-primary/20]="selectedPlayerId === player.id"
+             [class.border-primary]="selectedPlayerId === player.id"
+             [class.bg-white/5]="selectedPlayerId !== player.id"
+             [class.border-white/10]="selectedPlayerId !== player.id">
+            <img [src]="player.photoUrl || themeService.resolveAsset('shared.default_avatar')" class="w-full h-full object-cover">
+          </div>
+          
+          <!-- Mic status badge overlay -->
+          @if (isOnline()) {
+            <div class="absolute bottom-0 right-0 w-5 h-5 rounded-full flex items-center justify-center border shadow-md z-10"
+              [class.bg-red-500]="isPlayerMuted(player.id)"
+              [class.border-red-600]="isPlayerMuted(player.id)"
+              [class.bg-green-500]="!isPlayerMuted(player.id) && isPlayerSpeaking(player.id)"
+              [class.border-green-600]="!isPlayerMuted(player.id) && isPlayerSpeaking(player.id)"
+              [class.bg-slate-700]="!isPlayerMuted(player.id) && !isPlayerSpeaking(player.id)"
+              [class.border-slate-800]="!isPlayerMuted(player.id) && !isPlayerSpeaking(player.id)">
+              @if (isPlayerMuted(player.id)) {
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3 text-white"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3 text-white"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" /></svg>
+              }
+            </div>
+          }
+        </div>
        <span class="font-bold text-textPrimary text-center">
          {{ player.name }}{{ (isOnline() && player.id.toString() === myPlayerId()?.toString()) ? ('COMMON.ME' | translate) : '' }}
        </span>
+
+       <!-- Local volume slider for other players -->
+        @if (isOnline() && player.id.toString() !== myPlayerId()?.toString() && selectedPlayerId === player.id) {
+          <div class="w-full mt-2 flex flex-col items-center gap-1 z-20" (click)="$event.stopPropagation()">
+            <span class="text-[9px] text-textMuted uppercase tracking-wider font-bold">Volumen Local</span>
+            <div class="flex items-center gap-1 w-full">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-textMuted shrink-0">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75 19.5 12m0 0 2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6 4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+              </svg>
+              <input 
+                type="range" 
+                min="0" 
+                max="1" 
+                step="0.05" 
+                [value]="getPlayerVolume(player.id)" 
+                (input)="setPlayerVolume(player.id, $event)"
+                class="flex-1 min-w-0 w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-textMuted shrink-0">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+              </svg>
+            </div>
+          </div>
+        }
       </div>
      }
     </div>
@@ -390,12 +499,41 @@ import { SocketService } from '../../core/services/socket/socket.service';
   }
  `
 })
-export class Vote implements OnInit {
+export class Vote implements OnInit, OnDestroy {
  engine = inject(GameEngineService);
  timer = inject(TimerService);
  router = inject(Router);
  billing = inject(BillingService);
  socketService = inject(SocketService);
+ themeService = inject(ThemeService);
+ voiceChatService = inject(VoiceChatService);
+
+ private voiceSub: Subscription | null = null;
+
+ constructor() {
+   // Suscribirse reactivamente al chat de voz LiveKit cuando la partida esté online
+   effect(() => {
+     const onlineState = this.isOnline();
+     if (onlineState) {
+       if (!this.voiceSub) {
+         this.voiceSub = this.socketService.voiceToken$.subscribe(({ token, serverUrl }) => {
+           console.log('VoiceChat: Connecting to LiveKit Room...', serverUrl);
+           this.voiceChatService.connectToRoom(token, serverUrl).catch(err => {
+             console.error('VoiceChat: Connection failed:', err);
+           });
+         });
+       }
+     } else {
+       if (this.voiceSub) {
+         this.voiceSub.unsubscribe();
+         this.voiceSub = null;
+       }
+       this.voiceChatService.disconnect().catch(err => {
+         console.error('VoiceChat: Disconnect failed:', err);
+       });
+     }
+   });
+ }
 
  selectedPlayerId: number | string | null = null;
 
@@ -503,6 +641,15 @@ export class Vote implements OnInit {
     this.timer.start(durationNum);
    }
   }
+ }
+
+ ngOnDestroy() {
+   if (this.voiceSub) {
+     this.voiceSub.unsubscribe();
+   }
+   this.voiceChatService.disconnect().catch(err => {
+     console.error('VoiceChat: Disconnect failed:', err);
+   });
  }
 
  eliminate() {
@@ -749,4 +896,36 @@ export class Vote implements OnInit {
    return false;
   }
  }
+
+  isPlayerMuted(playerId: string | number): boolean {
+    const idStr = playerId.toString();
+    if (idStr === this.myPlayerId()?.toString()) {
+      return this.voiceChatService.isMuted();
+    }
+    return this.voiceChatService.participantStatus()[idStr]?.isMuted ?? true;
+  }
+
+  isPlayerSpeaking(playerId: string | number): boolean {
+    return this.voiceChatService.activeSpeakers().includes(playerId.toString());
+  }
+
+  getPlayerVolume(playerId: string | number): number {
+    return this.voiceChatService.participantStatus()[playerId.toString()]?.volume ?? 1.0;
+  }
+
+  setPlayerVolume(playerId: string | number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const volume = parseFloat(input.value);
+    this.voiceChatService.setVolume(playerId.toString(), volume);
+  }
+
+  startPushToTalk(event: Event) {
+    event.preventDefault();
+    this.voiceChatService.setMuted(false);
+  }
+
+  stopPushToTalk(event: Event) {
+    event.preventDefault();
+    this.voiceChatService.setMuted(true);
+  }
 }

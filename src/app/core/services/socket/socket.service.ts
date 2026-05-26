@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { Preferences } from '@capacitor/preferences';
-import { Subject } from 'rxjs';
+import { Subject, ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -25,10 +25,33 @@ export class SocketService {
   stroke$ = new Subject<any>();
   playerVoted$ = new Subject<any>();
   guessResult$ = new Subject<any>();
+  voiceToken$ = new ReplaySubject<{ token: string; serverUrl: string }>(1);
 
   constructor() {
     this.init();
-    this.getPlayerId().then(id => this.myPlayerId.set(id));
+
+    // Sincronizar dinámicamente el ID del jugador con el estado de autenticación
+    effect(() => {
+      const user = this.authService.userSignal();
+      if (user) {
+        this.myPlayerId.set(user.uid);
+      } else {
+        // Cargar UUID local para modo invitado/offline
+        Preferences.get({ key: 'deceptra_device_uuid' }).then(({ value }) => {
+          if (value) {
+            this.myPlayerId.set(value);
+          } else {
+            const newId = this.generateUuid();
+            Preferences.set({ key: 'deceptra_device_uuid', value: newId }).then(() => {
+              this.myPlayerId.set(newId);
+            });
+          }
+        });
+      }
+    });
+
+    // Conectarse automáticamente si refresca en mitad de partida online
+    this.checkAutoConnect();
 
     // Redirección centralizada y sincronizada basada en el estado de la sala
     effect(() => {
@@ -111,6 +134,10 @@ export class SocketService {
 
     this.socket.on('guess-result', (result) => {
       this.guessResult$.next(result);
+    });
+
+    this.socket.on('voice-token', (payload) => {
+      this.voiceToken$.next(payload);
     });
   }
 
@@ -230,6 +257,15 @@ export class SocketService {
 
   resetGame(code: string) {
     this.socket?.emit('reset-game', { code });
+  }
+
+  private async checkAutoConnect() {
+    const { value: code } = await Preferences.get({ key: 'deceptra_last_room_code' });
+    const { value: name } = await Preferences.get({ key: 'deceptra_player_name' });
+    if (code && name) {
+      console.log('SocketService: Detectado código de sala guardado, auto-conectando...');
+      this.connect();
+    }
   }
 
   private async tryAutoRejoin() {

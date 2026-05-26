@@ -9,6 +9,8 @@ import { BillingService } from '../../../core/services/billing.service';
 import { CloudPresetsService, Preset } from '../../../core/services/cloud-presets/cloud-presets.service';
 import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ThemeService } from '../../../core/services/theme.service';
+
 
 import { IconButtonComponent } from '../../../shared/components/ui/icon-button.component';
 import { ButtonPrimaryComponent } from '../../../shared/components/ui/button-primary.component';
@@ -90,15 +92,8 @@ import { InputComponent } from '../../../shared/components/ui/input.component';
        <button 
         (click)="triggerImageUpload(i)"
         class="w-12 h-12 rounded-full overflow-hidden shrink-0 border border-glass-border bg-white/5 hover:border-secondary transition-colors relative group shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-        @if (player.photoUrl) {
-         <img [src]="player.photoUrl" class="w-full h-full object-cover" />
-        } @else {
-         <div class="w-full h-full flex items-center justify-center backdrop-blur-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-textMuted">
-           <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-          </svg>
-         </div>
-        }
+        <img [src]="player.photoUrl || themeService.resolveAsset('shared.default_avatar')" class="w-full h-full object-cover" />
+
         <!-- Overlay Hover para subir nueva foto -->
         <div class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-white"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" /></svg>
@@ -309,7 +304,8 @@ export class SetupPlayers {
  presetsService = inject(CloudPresetsService);
  cdr = inject(ChangeDetectorRef);
  translate = inject(TranslateService);
-  billing = inject(BillingService);
+ billing = inject(BillingService);
+ themeService = inject(ThemeService);
 
  localPlayers: PlayerConfig[] = [];
  cloudPresets = signal<Preset[]>([]);

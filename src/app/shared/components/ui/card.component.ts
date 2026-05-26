@@ -32,6 +32,7 @@ import { CommonModule } from '@angular/common';
         <span class="text-sm font-medium text-textMuted mt-1">
           {{ description() }}
         </span>
+        <ng-content></ng-content>
       </div>
 
       <!-- Optional Extra Element on Far Right -->

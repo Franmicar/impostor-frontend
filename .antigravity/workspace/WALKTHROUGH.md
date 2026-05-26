@@ -14,24 +14,29 @@ Este documento es la guía y paseo de arquitectura técnica ("walkthrough") para
 ```text
 src/app/
 ├── core/
-│   ├── guards/          # Guardianes de ruta (como 'prevent-exit-guard' para atrapar escapes accidentales en botones Back de navegador)
+│   ├── guards/          # Guardianes de ruta (como 'prevent-exit-guard' para evitar salidas accidentales)
+│   ├── models/          # Modelos de datos (e.g. profile.model.ts)
 │   └── services/        # Servicios (Singleton)
-│       ├── api/         # Inyección HttpClient a backend remoto para buscar y descargar los paquetes de palabras
-│       ├── game-engine/ # Componente Maestro en memoria (Gestión de Roles, votaciones, estado y pases de pantalla)
-│       ├── timer/       # Contador asíncrono con observables para dominar la pantalla de votación
-│       └── confirm/     # Servicio UI re-aprovechable promesando modales nativos con Tailwind
+│       ├── api/         # Inyección HttpClient para llamadas de red al backend
+│       ├── game-engine/ # Componente Maestro en memoria (Gestión de Roles, votaciones, estado)
+│       ├── profile/     # Servicio de perfil (Google Login, subida de foto a Firebase Storage, Firestore, cola de sync offline)
+│       ├── voice-chat/  # Conexión WebRTC en sala remota con LiveKit para chat de voz en vivo
+│       ├── socket/      # Sincronización bidireccional en tiempo real para modo online con Socket.io
+│       ├── timer/       # Contador asíncrono con observables para la fase de discusión
+│       └── confirm/     # Servicio UI reutilizable para modales de confirmación
 ├── features/            # Dominios tipo "Páginas" Standalone
-│   ├── home/            # Bienvenida
-│   ├── rules/           # Normas y descripciones funcionales de cada modo
-│   ├── setup/           # UI de creación (Sliders lógicos de balanceo, Inputs, Fetch de categorías conjuntas)
-│   ├── play/            # Fase vital drag & drop / La Ruleta CSS para el turno de palabra
-│   ├── vote/            # Selección mutua contra impostores y ventana de acierto para "Detective"
-│   └── results/         # Destino de cierre calculando queryParams
-└── shared/              # Fragmentos pequeños reutilizables (Menús de confirmación base)
+│   ├── home/            # Pantalla de bienvenida
+│   ├── profile/         # Gestión de perfil de usuario, recortador de avatar (ngx-image-cropper) y progreso de nivel
+│   ├── rules/           # Normas de juego y explicaciones de roles
+│   ├── setup/           # UI de configuración inicial (sliders de balanceo de partida, inputs de jugadores)
+│   ├── play/            # Fase de visualización de cartas y Ruleta CSS para turnos
+│   ├── vote/            # Fase de discusión y votación con chat de voz en tiempo real
+│   └── results/         # Pantalla final calculando estadísticas de victoria
+└── shared/              # Fragmentos pequeños reutilizables (Header, Footer, AuthProfileComponent)
 ```
 
 ## 4. Flujo de Aplicación 
-1. **Arranque (Bootstrapping)**: La aplicación arranca enteramente en `main.ts/app.ts` enlazando proveedores troncales de Router y la máquina `TranslateService`.
+1. **Arranque (Bootstrapping)**: La aplicación arranca enteramente en `main.ts/app.ts` enlazando proveedores troncales de Router, Capacitor y la máquina `TranslateService`.
 2. **Setup y Configuración (`/setup`)**: 
    - A través de validaciones, el anfitrión configura la partida seleccionando entre las diferentes dinámicas (Tipo "Palabras", "Preguntas" o "Dibujo"). Si algo en las combinaciones (Modo de juego vs Cantidad de detectives, por ejemplo) es incoherente el slider del Setup no se lo permitirá. 
    - Cuando se verifica llama `GameEngineService.startGame()`, combinando el Tipo de Juego estipulado, asignando roles aleatoriamente, repartiendo palabras señuelo a impostores según el "Game Mode" y movilizando a los usuarios sin demora.
@@ -41,10 +46,16 @@ src/app/
    - En ese punto una Ruleta basada íntegramente en interpolaciones matemáticas de array y duraciones calculadas CSS anima durante 4 segundos quién inicia.
 4. **Debate y Sangre (`/vote`)**:
    - Protegido fuertemente bajo la guardia del navegador contra cierres en falso.  
+   - En partidas online, se inicializa el **Chat de Voz WebRTC** a través de `VoiceChatService`, conectando al servidor de LiveKit de manera segura para permitir la interacción por voz de los jugadores en la fase de votación.
    - Modales en paralelo abren nuevas opciones condicionadas bajo el modo de la partida (El botón "Resolver" de los Detectives no sale en Partida Normal o Caos sin Detectives).  
    - Según expide la lógica de los votos o penalizaciones, salta el método iterativo `checkWinConditions()` de `GameEngine` para comprobar si existe victoria local y enviarnos por tubo a `router.navigate()`.
-5. **Muro de Resultados (`/results`)**:
+5. **Perfil de Usuario (`/profile`)**:
+   - Si el usuario está autenticado con Google, puede editar sus datos. La UI permite cambiar el nombre, apellidos, color de avatar e iniciales reactivas en tiempo real.
+   - El recortador integrado (`ngx-image-cropper`) procesa fotos locales del dispositivo, las redimensiona a un tamaño ligero de `200x200` y las sube a Firebase Storage para no colapsar la base de datos Firestore.
+   - Soporta guardado y sincronización offline en segundo plano (Preferences).
+6. **Muro de Resultados (`/results`)**:
    - Lee el final de esa URL y expinta el resultado en función del modo fallado/ganado junto con qué agentes estaban implicados.
+
 
 ## 5. El Corazón (Signals de Motor)
 Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton `GameEngineService`:
@@ -166,4 +177,30 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Mejoras en el Tema Infantil y Carga:** Rediseño adaptativo y dinámico para el fondo del footer y la pantalla de carga global. Se han eliminado los colores oscuros Cyberpunk fijos (`slate-900` y brillos neón) en favor de variables CSS integradas (`--footer-gradient-via` y `--loading-bg`). En el tema Infantil, ahora el footer se funde sobre celeste claro (`sky-50`) y la pantalla de carga usa un fondo celeste suave (`sky-100` con 95% de opacidad) con brillos y texto en naranja y azul, logrando total coherencia estética.
 - **Sincronización Completa de Traducciones (i18n):** Limpieza, depuración y eliminación de claves de traducción obsoletas en todos los idiomas del proyecto, asegurando archivos de traducción sincronizados y consistentes.
 - **Incremento de Versión:** Actualización coordinada a la versión `1.5.3` tanto en `package.json` como en `android/app/build.gradle` de Capacitor para la preparación y publicación de la release.
+
+### Versión 2.0.0
+- **Sistema de Perfiles de Usuario (`ProfileService` & `ProfileComponent`):**
+  - Implementación completa de la pantalla de perfil (`/profile`) con soporte para Google Login usando autenticación de Capacitor Firebase.
+  - Creación de un editor de perfil interactivo para modificar apodo, nombre, apellidos y color de avatar de forma reactiva con iniciales dinámicas.
+  - Integración del plugin de recorte de imágenes (`ngx-image-cropper`) en el cliente, permitiendo redimensionar fotos de avatares a `200x200` y subirlas a Firebase Storage.
+  - Cola de persistencia sin conexión (`impostor_pending_profile_{uid}`) a través de `Preferences` para guardar cambios locales y sincronizarlos cuando vuelva la conexión.
+  - Fallback seguro para evitar pantallas de carga infinitas en caso de errores de permisos o fallas de red con Firestore.
+- **Chat de Voz Social en Tiempo Real (`VoiceChatService`):**
+  - Integración técnica del cliente WebRTC mediante el SDK **LiveKit Client**.
+  - Conexión dinámica y automática durante la fase de discusión y votación (`/vote`).
+  - Gestión interactiva de estados de micrófono de jugadores, indicación visual de locutor activo (burbujas de audio flotantes) y control deslizante de volumen local de alta responsividad.
+- **Sincronización Multijugador Authoritative (`SocketService` & `GameEngine`):**
+  - Sincronización del estado de juego multijugador online bidireccional mediante sockets.
+  - Autoreconexión silenciosa de salas y restauración del estado de partida tras recargas de página inesperadas.
+  - Unificación de identidad de jugadores emparejando la ID del socket con la ID de Google Auth (si están logueados) o UUID de dispositivo local para evitar incoherencias en llamadas WebRTC.
+- **Generación de Assets Nativos Multiplataforma:**
+  - Regeneración completa de iconos adaptativos y pantallas de carga nativos (iOS y Android) desde el archivo maestro `icon.png` de `1024x1024` píxeles usando Capacitor Assets.
+- **Traducción del Botón de Guardado de Perfil:**
+  - Corrección de la clave de traducción del botón de guardado en el pie de página (`'SAVE'` en inglés -> `'PROFILE.SAVE'`).
+  - Inyección de la clave de traducción `"SAVE"` correspondiente en los 10 ficheros JSON de internacionalización del proyecto.
+- **Alineación de Versión y Empaquetado:**
+  - Incremento coordinado a la versión `2.0.0` (Android `versionCode 15`, iOS Xcode `2.0.0`).
+  - Ejecución de `npx cap sync` para el empaquetado nativo y limpieza de archivos temporales/scripts de depuración obsoletos en `scratch/`.
+
+
 

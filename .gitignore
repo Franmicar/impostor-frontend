@@ -51,3 +51,9 @@ Thumbs.db
 *.pem
 *.p12
 *.mobileprovision
+
+# Theme assets source and local previews
+/themes-source/
+/public/themes/
+/scratch/backups/
+

@@ -42,5 +42,9 @@ export const routes: Routes = [
         path: 'premium',
         loadComponent: () => import('./features/premium/premium.component').then(m => m.PremiumComponent)
     },
+    {
+        path: 'profile',
+        loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent)
+    },
     { path: '**', redirectTo: '' }
 ];

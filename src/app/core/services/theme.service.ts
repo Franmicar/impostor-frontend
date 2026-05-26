@@ -44,9 +44,20 @@ export class ThemeService {
     }
 
     private async initTheme() {
-        const { value: downloaded } = await Preferences.get({ key: 'impostor-downloaded-themes' });
-        if (downloaded) {
-            this.downloadedThemes.set(JSON.parse(downloaded));
+        const isLocalDev = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+        if (isLocalDev) {
+            this.downloadedThemes.set({
+                'infantil': true,
+                'alien': true,
+                'manga': true,
+                'neon': true,
+                'neon2': true
+            });
+        } else {
+            const { value: downloaded } = await Preferences.get({ key: 'impostor-downloaded-themes' });
+            if (downloaded) {
+                this.downloadedThemes.set(JSON.parse(downloaded));
+            }
         }
 
         const { value } = await Preferences.get({ key: 'impostor-theme' });
@@ -75,6 +86,14 @@ export class ThemeService {
         }
 
         try {
+            const isLocalDev = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+            if (isLocalDev) {
+                this.currentTheme.set(theme);
+                this.applyTheme(theme);
+                await Preferences.set({ key: 'impostor-theme', value: theme });
+                return;
+            }
+
             // Si es un tema remoto que requiere descarga y no está descargado
             if (!this.downloadedThemes()[theme] && (theme === 'alien' || theme === 'manga' || theme === 'infantil')) {
                 await this.assetLoader.downloadThemeAssets(theme);
@@ -107,6 +126,16 @@ export class ThemeService {
     getImagePath(originalPath: string): string {
         const theme = this.currentTheme() as string;
         
+        if (theme === 'neon' || theme === 'neon2' || originalPath.includes('default-avatar.png')) {
+            return originalPath;
+        }
+        
+        const isLocalDev = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+        if (isLocalDev) {
+            const cleanPath = originalPath.replace(/^\/images\//, '/');
+            return `/themes/${theme}${cleanPath}`;
+        }
+
         if (this.downloadedThemes()[theme]) {
             const cleanPath = originalPath.replace(/^\/images\//, '/');
             if (Capacitor.isNativePlatform()) {
@@ -133,7 +162,17 @@ export class ThemeService {
             console.warn(`Asset key "${key}" not registered in LOCAL_ASSET_MAPPING`);
             return '/images/default-avatar.png'; // safe fallback
         }
+
+        if (theme === 'neon' || theme === 'neon2' || (key.startsWith('shared.') && key !== 'shared.default_avatar')) {
+            return defaultPath;
+        }
         
+        const isLocalDev = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+        if (isLocalDev) {
+            const cleanPath = defaultPath.replace(/^\/images\//, '/');
+            return `/themes/${theme}${cleanPath}`;
+        }
+
         if (this.downloadedThemes()[theme]) {
             const cleanPath = defaultPath.replace(/^\/images\//, '/');
             if (Capacitor.isNativePlatform()) {

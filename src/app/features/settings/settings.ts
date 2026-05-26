@@ -103,7 +103,7 @@ import packageJson from '../../../../package.json';
             }
           </button>
 
-          <!-- Tema Alien (Premium) -->
+          <!-- Tema Alien (Premium) [Desactivado para v2.1]
           <button (click)="selectTheme('alien')" 
               [class.ring-2]="themeService.currentTheme() === 'alien'"
               class="ring-green-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between mt-2">
@@ -119,8 +119,9 @@ import packageJson from '../../../../package.json';
               </svg>
             }
           </button>
+          -->
 
-          <!-- Tema Manga (Premium) -->
+          <!-- Tema Manga (Premium) [Desactivado para v2.1]
           <button (click)="selectTheme('manga')" 
               [class.ring-2]="themeService.currentTheme() === 'manga'"
               class="ring-red-500 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between mt-2">
@@ -136,6 +137,7 @@ import packageJson from '../../../../package.json';
               </svg>
             }
           </button>
+          -->
         </div>
       </div>
 
