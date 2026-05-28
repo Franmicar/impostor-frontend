@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    multiplayerUrl: "https://deceptra-multiplayer.onrender.com",
+    multiplayerUrl: "http://localhost:3001",
     backendApiKey: "f3c9d7a8b1e64f2aa7d93c5e8f104b7c6a2d91ef5b84c73fa9e2160db4c8a571",
     revenueCatAndroidKey: "goog_wzmKXIzHpxpbxcPSmLIAevDjxtD",
     firebase: {
@@ -13,3 +13,5 @@ export const environment = {
         measurementId: "G-RJ24X9MK1L"
     }
 };
+
+
