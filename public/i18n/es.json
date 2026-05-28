@@ -337,7 +337,12 @@
     "DB_ACCESS_FAIL": "Fallo de acceso a DB",
     "FATAL_DB_ERROR": "Error Fatal BD",
     "UPDATE_ERROR": "Error actualizando",
-    "SAVE_ERROR_DB": "Error guardando"
+    "SAVE_ERROR_DB": "Error guardando",
+    "SOCKET_SALA_NO_ENCONTRADA": "La sala no existe o ha sido cerrada.",
+    "SOCKET_SALA_LLENA": "La sala está llena (máximo 12 jugadores).",
+    "SOCKET_PARTIDA_YA_EMPEZADA": "La partida ya ha comenzado en esta sala.",
+    "SOCKET_MINIMO_3_JUGADORES": "Se necesitan al menos 3 jugadores preparados para iniciar la partida.",
+    "SOCKET_LISTA_PALABRAS_VACIA": "No hay palabras configuradas para esta sala. Cambia de ajustes para sincronizar paquetes."
   },
   "PREMIUM": {
     "RESTORE": "Restaurar",

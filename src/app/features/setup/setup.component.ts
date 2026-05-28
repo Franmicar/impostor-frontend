@@ -773,7 +773,16 @@ export class SetupComponent implements OnInit {
         }
       }
     });
+
+    effect(() => {
+      const error = this.socketService.errorMsg();
+      if (error) {
+        this.showAlert('ALERTS.TITLE_ERROR', `ALERTS.SOCKET_${error}`, true);
+        this.socketService.errorMsg.set(null);
+      }
+    });
   }
+
 
   async ngOnInit() {
     await this.apiService.fetchPackages();

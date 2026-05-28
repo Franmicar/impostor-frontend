@@ -92,7 +92,7 @@ import { InputComponent } from '../../../shared/components/ui/input.component';
         class="w-12 h-12 rounded-full shrink-0 border border-glass-border bg-white/5 hover:border-secondary transition-colors relative group shadow-[0_0_15px_rgba(255,255,255,0.05)] flex items-center justify-center cursor-pointer">
         
         <app-avatar
-          [avatarId]="player.photoUrl || themeService.resolveAsset('shared.default_avatar')"
+          [avatarId]="player.photoUrl || ''"
           [avatarColor]="player.avatarColor || '#06b6d4'"
           [avatarFrame]="player.avatarFrame"
           [nickname]="player.name || '?'"

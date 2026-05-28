@@ -314,7 +314,12 @@
     "DB_ACCESS_FAIL": "数据库访问失败",
     "FATAL_DB_ERROR": "致命数据库错误",
     "UPDATE_ERROR": "更新错误",
-    "SAVE_ERROR_DB": "保存错误"
+    "SAVE_ERROR_DB": "保存错误",
+    "SOCKET_SALA_NO_ENCONTRADA": "The room does not exist or has been closed.",
+    "SOCKET_SALA_LLENA": "The room is full (maximum 12 players).",
+    "SOCKET_PARTIDA_YA_EMPEZADA": "The game has already started in this room.",
+    "SOCKET_MINIMO_3_JUGADORES": "At least 3 ready players are required to start the game.",
+    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages."
   },
   "PREMIUM": {
     "RESTORE": "恢复",

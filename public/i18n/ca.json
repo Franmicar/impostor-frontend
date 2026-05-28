@@ -314,7 +314,12 @@
     "DB_ACCESS_FAIL": "Fallada d'accés a BD",
     "FATAL_DB_ERROR": "Error Fatal BD",
     "UPDATE_ERROR": "Error actualitzant",
-    "SAVE_ERROR_DB": "Error desant"
+    "SAVE_ERROR_DB": "Error desant",
+    "SOCKET_SALA_NO_ENCONTRADA": "The room does not exist or has been closed.",
+    "SOCKET_SALA_LLENA": "The room is full (maximum 12 players).",
+    "SOCKET_PARTIDA_YA_EMPEZADA": "The game has already started in this room.",
+    "SOCKET_MINIMO_3_JUGADORES": "At least 3 ready players are required to start the game.",
+    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages."
   },
   "PREMIUM": {
     "RESTORE": "Restaurar",

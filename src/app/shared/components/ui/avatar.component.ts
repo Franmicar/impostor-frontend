@@ -47,10 +47,13 @@ export class AvatarComponent {
   // Compute avatar URL dynamically
   avatarUrl = computed(() => {
     const id = this.avatarId();
-    if (id && !id.startsWith('/images/default-avatar')) {
+    if (id) {
+      if (id.startsWith('/images/default-avatar')) {
+        return null;
+      }
       return id;
     }
-    return null;
+    return this.themeService.getDefaultAvatarAsset(this.themeService.currentTheme());
   });
 
   // Compute frame URL dynamically

@@ -353,7 +353,7 @@ import { AvatarComponent } from '../../shared/components/ui/avatar.component';
                [class.bg-white/5]="selectedPlayerId !== player.id"
                [class.border-white/10]="selectedPlayerId !== player.id">
               <app-avatar
-                [avatarId]="player.photoUrl || themeService.resolveAsset('shared.default_avatar')"
+                [avatarId]="player.photoUrl || ''"
                 [avatarFrame]="themeService.currentTheme()"
                 [nickname]="player.name || '?'"
                 avatarSize="w-14 h-14"

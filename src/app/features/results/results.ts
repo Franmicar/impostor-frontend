@@ -1,7 +1,8 @@
-import { Component, inject, OnInit, signal, DestroyRef, computed } from '@angular/core';
+import { Component, inject, OnInit, signal, DestroyRef, computed, effect } from '@angular/core';
+
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GameEngineService } from '../../core/services/game-engine/game-engine';
 import { AdsService } from '../../core/services/ads.service';
@@ -11,11 +12,13 @@ import { UiService } from '../../core/services/ui/ui.service';
 import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primary.component';
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { SocketService } from '../../core/services/socket/socket.service';
+import { ModalComponent } from '../../shared/components/ui/modal.component';
 
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent],
+  imports: [CommonModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent],
+
   template: `
   <!-- Fixed Background -->
   <div class="fixed inset-0 z-30" [ngClass]="backgroundClass()"></div>
@@ -220,6 +223,24 @@ import { SocketService } from '../../core/services/socket/socket.service';
       </div>
     </div>
    }
+    
+    <!-- ALERT MODAL -->
+    <app-modal
+      [isOpen]="alertModal().show"
+      [title]="alertModal().title"
+      [icon]="alertModal().isError ? 'error' : 'info'"
+      (onClose)="alertModal.set({ show: false, title: '', message: '', isError: false })">
+      
+      <p class="text-sm text-textMuted mb-4 w-full text-center font-normal">
+        {{ alertModal().message }}
+      </p>
+      
+      <div modal-footer class="w-full">
+        <app-button-primary (onClick)="alertModal.set({ show: false, title: '', message: '', isError: false })">
+          {{ 'COMMON.ACCEPT' | translate }}
+        </app-button-primary>
+      </div>
+    </app-modal>
   </div>
  `,
   styles: `
@@ -241,7 +262,30 @@ export class Results implements OnInit {
   destroyRef = inject(DestroyRef);
   socketService = inject(SocketService);
 
+  translate = inject(TranslateService);
+
+  alertModal = signal<{ show: boolean, title: string, message: string, isError: boolean }>({
+    show: false, title: '', message: '', isError: false
+  });
+
+  constructor() {
+    effect(() => {
+      const error = this.socketService.errorMsg();
+      if (error) {
+        this.showAlert('ALERTS.TITLE_ERROR', `ALERTS.SOCKET_${error}`, true);
+        this.socketService.errorMsg.set(null);
+      }
+    });
+  }
+
+  showAlert(titleKey: string, messageKey: string, isError: boolean = false, params?: any) {
+    const title = this.translate.instant(titleKey);
+    const message = this.translate.instant(messageKey, params);
+    this.alertModal.set({ show: true, title, message, isError });
+  }
+
   showRoles = false;
+
 
   // Reactividad para parámetros de la ruta
   winner = signal<'impostors' | 'town' | null>(null);
