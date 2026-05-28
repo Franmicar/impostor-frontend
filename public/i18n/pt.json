@@ -54,10 +54,12 @@
     "DEV_INFO": "Desenvolvido para o melhor ambiente de festa.",
     "VISUAL_STYLE": "Estilo Visual",
     "THEME_NEON": "Neon / Cyberpunk",
-    "THEME_INFANTIL": "Crianças (Familiar)",
+    "THEME_INFANTIL": "Crianças",
     "THEME_NEON_2": "Neon 2",
-    "THEME_ALIEN": "Tema Alien",
-    "THEME_MANGA": "Tema Mangá",
+    "THEME_ALIEN": "Alien",
+    "THEME_MANGA": "Mangá",
+    "INCLUDES_AVATARS": "5 Avatares",
+    "INCLUDES_FRAME": "1 Moldura",
     "CONTENT": "Conteúdo",
     "CUSTOM_PACKAGES": "Pacotes Personalizados",
     "SUPPORT_CONTACT": "Suporte e Contacto",
@@ -149,7 +151,10 @@
     "CROP_TITLE": "Recortar Imagem",
     "CROP_CANCEL": "Cancelar",
     "CROP_APPLY": "Aplicar",
-    "EDIT_GROUP_BTN": "Editar grupo"
+    "EDIT_GROUP_BTN": "Editar grupo",
+    "PLAYER_N": "Jogador {{n}}",
+    "EDITED_GROUP": "Grupo Editado",
+    "SELECT_AVATAR": "Selecionar Avatar"
   },
   "SETUP_PACKAGES": {
     "TITLE": "Pacotes",
@@ -271,7 +276,9 @@
     "WIN_DETS_TITLE": "Detetives",
     "WIN_CIVS_TITLE": "Civis",
     "LOSERS_WARN": "Os eliminados perdem.",
-    "PLAY_AGAIN": "Jogar novamente"
+    "PLAY_AGAIN": "Jogar novamente",
+    "LOADING_RESULTS_TITLE": "Obtendo resultados...",
+    "LOADING_RESULTS_SUB": "Sincronizando o estado do jogo com o servidor."
   },
   "CONFIRM": {
     "TITLE": "SAIR DA PARTIDA?",
@@ -302,7 +309,12 @@
     "SAVE_ERROR": "Erro ao guardar.",
     "IMAGE_TOO_LARGE": "Imagem demasiado grande.",
     "NO_WORDS": "Sem palavras válidas.",
-    "START_ERROR": "Erro ao iniciar."
+    "START_ERROR": "Erro ao iniciar.",
+    "API_ERROR": "Erro API",
+    "DB_ACCESS_FAIL": "Falha de acesso ao BD",
+    "FATAL_DB_ERROR": "Erro Fatal BD",
+    "UPDATE_ERROR": "Erro ao atualizar",
+    "SAVE_ERROR_DB": "Erro ao salvar"
   },
   "PREMIUM": {
     "RESTORE": "Restaurar",
@@ -389,6 +401,18 @@
     "ACH_3_TITLE": "Olho de Detetive",
     "ACH_3_DESC": "Adivinhe a palavra secreta jogando como Detetive.",
     "ACH_4_TITLE": "Estilo Deceptra",
-    "ACH_4_DESC": "Compre seu primeiro tema personalizado na loja."
+    "ACH_4_DESC": "Compre seu primeiro tema personalizado na loja.",
+    "CUSTOMIZE_AVATAR": "Personalizar Avatar"
+  },
+  "AVATAR_PICKER": {
+    "TITLE": "Personalizar Avatar",
+    "TAB_AVATAR": "Avatar",
+    "TAB_FRAME": "Moldura",
+    "INITIAL_AVATAR": "Avatar com Inicial",
+    "INITIAL_COLOR": "Cor da Inicial",
+    "PHOTO_AVATAR": "AVATAR COM FOTO",
+    "GAME_AVATARS": "Avatares do jogo",
+    "AVATAR_FRAMES": "Molduras de avatar",
+    "NO_FRAME": "Sem Moldura"
   }
 }

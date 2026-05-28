@@ -6,6 +6,7 @@ import {
     signInWithPopup,
     signInWithCredential,
     GoogleAuthProvider,
+    OAuthProvider,
     onAuthStateChanged,
     signOut,
     User
@@ -49,6 +50,35 @@ export class AuthService {
             }
         } catch (error) {
             console.error('Error durante el login con Google', error);
+            throw error;
+        } finally {
+            this.ui.setLoading(false);
+        }
+    }
+
+    async loginWithApple() {
+        this.ui.setLoading(true);
+        try {
+            if (Capacitor.isNativePlatform()) {
+                const result = await FirebaseAuthentication.signInWithApple();
+                const idToken = (result.credential as any)?.idToken;
+                const rawNonce = (result.credential as any)?.nonce;
+                if (idToken) {
+                    const provider = new OAuthProvider('apple.com');
+                    const credential = provider.credential({
+                        idToken: idToken,
+                        rawNonce: rawNonce
+                    });
+                    await signInWithCredential(this.auth, credential);
+                } else {
+                    throw new Error("No idToken found in native Apple Sign-In");
+                }
+            } else {
+                const provider = new OAuthProvider('apple.com');
+                await signInWithPopup(this.auth, provider);
+            }
+        } catch (error) {
+            console.error('Error durante el login con Apple', error);
             throw error;
         } finally {
             this.ui.setLoading(false);

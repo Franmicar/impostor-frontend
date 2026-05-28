@@ -366,6 +366,7 @@ export class ProfileService {
       nickname: displayName ? displayName.replace(/\s+/g, '_') : 'guest_' + Math.floor(1000 + Math.random() * 9000),
       avatarId: photoURL || '/images/default-avatar.png',
       avatarColor: '#06b6d4', // Cyan theme default
+      avatarFrame: '',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };

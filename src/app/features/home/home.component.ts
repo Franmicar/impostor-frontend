@@ -42,10 +42,12 @@ import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.co
 
         <div class="w-full max-w-md my-auto pt-24 pb-8 flex flex-col items-center">
             <!-- New Character Mask Image -->
-            <img [src]="themeService.resolveAsset('home.impostor_mask')" alt="Impostor Mask" class="w-48 h-48 sm:w-56 sm:h-56 object-cover rounded-full shadow-[0_0_30px_rgb(var(--color-secondary)/0.4)] border-2 border-primary mb-6 animate-pulse neon-dynamic-img" />
+            <div class="w-60 h-60 sm:w-72 sm:h-72 rounded-full border-2 border-primary shadow-[0_0_30px_rgb(var(--color-secondary)/0.4)] overflow-hidden mb-6 flex items-center justify-center animate-pulse">
+                <img [src]="themeService.resolveAsset('home.impostor_mask')" alt="Impostor Mask" class="w-full h-full object-cover rounded-full neon-dynamic-img" />
+            </div>
             
             <!-- Game Title using Gradient Text Effect -->
-            <h1 class="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-2 drop-shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] text-center tracking-tight pb-4">
+            <h1 class="text-[3.5rem] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary drop-shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] text-center tracking-tight">
                 {{ 'HOME.TITLE' | translate }}
             </h1>
             

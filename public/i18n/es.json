@@ -54,10 +54,10 @@
     "DEV_INFO": "Desarrollado para el mejor ambiente de fiesta.",
     "VISUAL_STYLE": "Estilo Visual",
     "THEME_NEON": "Neón / Cyberpunk",
-    "THEME_INFANTIL": "Infantil (Familiar)",
+    "THEME_INFANTIL": "Infantil",
     "THEME_NEON_2": "Neón 2",
-    "THEME_ALIEN": "Tema Alien",
-    "THEME_MANGA": "Tema Manga",
+    "THEME_ALIEN": "Alien",
+    "THEME_MANGA": "Manga",
     "CONTENT": "Contenido",
     "CUSTOM_PACKAGES": "Paquetes Personalizados",
     "SUPPORT_CONTACT": "Soporte y Contacto",
@@ -77,14 +77,20 @@
     "CLOSE": "Cerrar",
     "UNLOCK_THEME_TITLE": "Desbloquear {{theme}}",
     "UNLOCK_THEME_DESC": "Obtén acceso permanente a este tema con una compra única. Los temas se adquieren por separado y no están incluidos en los planes de suscripción Deceptra Pro.",
+    "UNLOCK_THEME_DESC_PRO": "Este tema está incluido de forma exclusiva en tu suscripción Deceptra Pro. ¡Suscríbete para desbloquear este y otros beneficios!",
+    "UNLOCK_THEME_DESC_FREE": "Este tema es completamente gratuito. ¡Pruébalo ahora para darle un estilo familiar y divertido a tus partidas!",
+    "APPLY_THEME": "Aplicar Tema",
     "BUY_THEME": "Comprar Tema",
     "VIEW_PRO_PLANS": "Ver Suscripciones Pro",
     "PREVIEW_LABEL": "Vista Previa",
     "THEME_ALIEN_DESC": "Atmósfera espacial neon verde y púrpura",
     "THEME_MANGA_DESC": "Estilo cómic retro en escala de grises y rojo",
+    "INCLUDES_AVATARS": "5 Avatares",
+    "INCLUDES_FRAME": "1 Marco",
     "COLORS": "Colores"
   },
   "SETUP": {
+    "HOST_CONFIGURING": "El anfitrión está configurando la siguiente partida...",
     "TITLE": "Configuración",
     "TITLE_MAIN": "Configuración de partida",
     "GAME_MODE": "Modo de juego",
@@ -157,7 +163,11 @@
     "CROP_TITLE": "Recortar Imagen",
     "CROP_CANCEL": "Cancelar",
     "CROP_APPLY": "Aplicar",
-    "EDIT_GROUP_BTN": "Editar grupo"
+    "EDIT_GROUP_BTN": "Editar grupo",
+    "SELECT_AVATAR": "Seleccionar Avatar",
+    "UPLOAD_CUSTOM": "Subir Foto Personalizada",
+    "PLAYER_N": "Jugador {{n}}",
+    "EDITED_GROUP": "Grupo Editado"
   },
   "SETUP_PACKAGES": {
     "TITLE": "Paquetes",
@@ -279,7 +289,19 @@
     "WIN_DETS_TITLE": "Detectives (Ganadores)",
     "WIN_CIVS_TITLE": "Civiles Supervivientes (Ganadores)",
     "LOSERS_WARN": "Los civiles eliminados han perdido la partida.",
-    "PLAY_AGAIN": "Volver a Jugar"
+    "PLAY_AGAIN": "Volver a Jugar",
+    "REMATCH_LOBBY": "Sala de Revancha",
+    "WAITING_HOST_DECISION": "Esperando decisión del anfitrión...",
+    "CHANGE_SETTINGS": "Cambiar Ajustes",
+    "START_GAME": "Empezar Partida",
+    "PLAYER_STATUS_READY": "Preparado",
+    "PLAYER_STATUS_WAITING": "Esperando...",
+    "PLAYER_STATUS_DISCONNECTED": "Desconectado",
+    "PLAYER_STATUS_LEFT": "Abandonó sala",
+    "REMATCH_TITLE": "Revancha Multijugador",
+    "MIN_PLAYERS_ERROR": "Se necesitan al menos 3 jugadores",
+    "LOADING_RESULTS_TITLE": "Obteniendo resultados...",
+    "LOADING_RESULTS_SUB": "Sincronizando el estado de la partida con el servidor."
   },
   "CONFIRM": {
     "TITLE": "¿ABANDONAR PARTIDA?",
@@ -310,7 +332,12 @@
     "SAVE_ERROR": "Hubo un error guardando el grupo. Revisa tu conexión a internet.",
     "IMAGE_TOO_LARGE": "La imagen es demasiado grande. Intenta con una imagen de menor tamaño.",
     "NO_WORDS": "Los paquetes seleccionados no tienen palabras válidas para iniciar.",
-    "START_ERROR": "Hubo un error al iniciar la partida. Revisa la conexión."
+    "START_ERROR": "Hubo un error al iniciar la partida. Revisa la conexión.",
+    "API_ERROR": "Error API",
+    "DB_ACCESS_FAIL": "Fallo de acceso a DB",
+    "FATAL_DB_ERROR": "Error Fatal BD",
+    "UPDATE_ERROR": "Error actualizando",
+    "SAVE_ERROR_DB": "Error guardando"
   },
   "PREMIUM": {
     "RESTORE": "Restaurar",
@@ -332,7 +359,9 @@
     "RESTORE_ERROR_MSG": "No se encontraron compras activas.",
     "PLAN_MONTHLY": "Plan Mensual",
     "PLAN_THREE_MONTH": "Plan Trimestral",
-    "PLAN_ANNUAL": "Plan Anual"
+    "PLAN_ANNUAL": "Plan Anual",
+    "EULA": "Condiciones de uso (EULA)",
+    "PRIVACY_POLICY": "Política de privacidad"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "Paquete personalizado",
@@ -352,12 +381,15 @@
   },
   "AUTH_PROFILE": {
     "LOGIN": "Login",
+    "LOGIN_GOOGLE": "Iniciar sesión con Google",
+    "LOGIN_APPLE": "Iniciar sesión con Apple",
     "LOGOUT_TITLE": "Cerrar Sesión",
     "LOGOUT_CONFIRM": "¿Estás seguro de que quieres cerrar tu sesión actual?",
     "LOGOUT_BTN": "Salir",
     "ACCOUNT_OPTIONS": "Opciones de cuenta"
   },
   "PROFILE": {
+    "CUSTOMIZE_AVATAR": "Personalizar Avatar",
     "TITLE": "Perfil",
     "EDIT_ACCOUNT": "Editar Cuenta",
     "NICKNAME": "Apodo",
@@ -398,5 +430,16 @@
     "ACH_3_DESC": "Acierta la palabra secreta jugando como detective.",
     "ACH_4_TITLE": "Estilo Deceptra",
     "ACH_4_DESC": "Compra tu primer tema personalizado en la tienda."
+  },
+  "AVATAR_PICKER": {
+    "TITLE": "Personalizar Avatar",
+    "TAB_AVATAR": "Avatar",
+    "TAB_FRAME": "Marco",
+    "INITIAL_AVATAR": "Avatar con Inicial",
+    "INITIAL_COLOR": "Color de Inicial",
+    "PHOTO_AVATAR": "AVATAR CON FOTO",
+    "GAME_AVATARS": "Avatares del juego",
+    "AVATAR_FRAMES": "Marcos de avatar",
+    "NO_FRAME": "Sin Marco"
   }
 }

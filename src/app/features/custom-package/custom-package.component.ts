@@ -24,7 +24,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
     <div class="flex flex-col items-center justify-center p-8 bg-glass rounded-xl text-center">
       <h3 class="text-xl font-bold text-pink-500 mb-2">{{ 'CUSTOM_PACKAGE.REQ_SUBSCRIPTION_TITLE' | translate }}</h3>
       <p class="text-textMuted">{{ 'CUSTOM_PACKAGE.REQ_SUBSCRIPTION_DESC' | translate }}</p>
-      <button (click)="buyPremium()" class="mt-4 px-6 py-2 bg-gradient-to-r from-primary to-secondary rounded-lg font-bold shadow-lg">{{ 'PREMIUM.SUBSCRIBE' | translate }}</button>
+      <button (click)="buyPremium()" class="mt-4 px-3 py-2 bg-gradient-to-r from-primary to-secondary rounded-lg font-bold shadow-lg">{{ 'PREMIUM.SUBSCRIBE' | translate }}</button>
     </div>
    } @else {
     <div class="bg-glass rounded-xl p-4 mb-4 border border-glass-border">

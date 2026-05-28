@@ -26,7 +26,8 @@ export const ASSET_KEYS = {
   TYPE_DRAW: 'types.draw',
 
   // Shared
-  DEFAULT_AVATAR: 'shared.default_avatar'
+  DEFAULT_AVATAR: 'shared.default_avatar',
+  AVATAR_FRAME: 'shared.avatar_frame'
 } as const;
 
 export const LOCAL_ASSET_MAPPING: Record<string, string> = {
@@ -58,6 +59,7 @@ export const LOCAL_ASSET_MAPPING: Record<string, string> = {
 
   // Shared
   [ASSET_KEYS.DEFAULT_AVATAR]: '/images/default-avatar.png',
+  [ASSET_KEYS.AVATAR_FRAME]: '/images/neon_frame.png',
 
   // Package overrides
   'packages.fantasia': '/images/packages/fantasia_mitologia.png',

@@ -132,4 +132,32 @@ export class RemoteGameEngineService implements IGameEngine {
       this.socketService.submitDrawing(state.code, drawing);
     }
   }
+
+  requestRematch() {
+    const state = this.socketService.roomState();
+    if (state && state.code) {
+      this.socketService.requestRematch(state.code);
+    }
+  }
+
+  playerReady() {
+    const state = this.socketService.roomState();
+    if (state && state.code) {
+      this.socketService.playerReady(state.code);
+    }
+  }
+
+  goToSetup() {
+    const state = this.socketService.roomState();
+    if (state && state.code) {
+      this.socketService.goToSetup(state.code);
+    }
+  }
+
+  startRematch() {
+    const state = this.socketService.roomState();
+    if (state && state.code) {
+      this.socketService.startRematch(state.code);
+    }
+  }
 }

@@ -7,9 +7,9 @@ import { PlayerConfig } from '../setup.component';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { BillingService } from '../../../core/services/billing.service';
 import { CloudPresetsService, Preset } from '../../../core/services/cloud-presets/cloud-presets.service';
-import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ThemeService } from '../../../core/services/theme.service';
+import { AvatarPickerModalComponent } from '../../../shared/components/ui/avatar-picker-modal.component';
+import { AvatarComponent } from '../../../shared/components/ui/avatar.component';
 
 
 import { IconButtonComponent } from '../../../shared/components/ui/icon-button.component';
@@ -24,7 +24,7 @@ import { InputComponent } from '../../../shared/components/ui/input.component';
  selector: 'app-setup-players',
  standalone: true,
  changeDetection: ChangeDetectionStrategy.OnPush,
- imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, ImageCropperComponent, IconButtonComponent, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent, HeaderComponent, FooterComponent, InputComponent],
+ imports: [CommonModule, FormsModule, DragDropModule, TranslateModule, IconButtonComponent, ButtonPrimaryComponent, ButtonSecondaryComponent, ModalComponent, HeaderComponent, FooterComponent, InputComponent, AvatarPickerModalComponent, AvatarComponent],
  template: `
   <div class="min-h-dvh flex flex-col bg-transparent text-white">
    
@@ -87,15 +87,19 @@ import { InputComponent } from '../../../shared/components/ui/input.component';
         </app-icon-button>
        </div>
        
-       <!-- AVATAR UPLOAD -->
-       <input type="file" [id]="'file-upload-' + i" accept="image/*" class="hidden" (change)="onFileSelected($event, player)" />
        <button 
-        (click)="triggerImageUpload(i)"
-        class="w-12 h-12 rounded-full overflow-hidden shrink-0 border border-glass-border bg-white/5 hover:border-secondary transition-colors relative group shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-        <img [src]="player.photoUrl || themeService.resolveAsset('shared.default_avatar')" class="w-full h-full object-cover" />
+        (click)="openAvatarPicker(player, i)"
+        class="w-12 h-12 rounded-full shrink-0 border border-glass-border bg-white/5 hover:border-secondary transition-colors relative group shadow-[0_0_15px_rgba(255,255,255,0.05)] flex items-center justify-center cursor-pointer">
+        
+        <app-avatar
+          [avatarId]="player.photoUrl || themeService.resolveAsset('shared.default_avatar')"
+          [avatarColor]="player.avatarColor || '#06b6d4'"
+          [avatarFrame]="player.avatarFrame"
+          [nickname]="player.name || '?'"
+          avatarSize="w-12 h-12"></app-avatar>
 
-        <!-- Overlay Hover para subir nueva foto -->
-        <div class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center">
+        <!-- Overlay Hover para subir nueva foto/seleccionar avatar -->
+        <div class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center rounded-full z-20">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-white"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" /></svg>
         </div>
        </button>
@@ -194,6 +198,16 @@ import { InputComponent } from '../../../shared/components/ui/input.component';
       </app-button-primary>
     </app-modal>
 
+    <!-- TOAST DE ÉXITO -->
+    @if (showSuccessToast()) {
+      <div class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white px-5 py-3 rounded-full border border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.3)] backdrop-blur-md z-50 flex items-center gap-2 animate-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-green-500">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+        <span class="text-xs font-semibold tracking-wide">{{ toastMessage() }}</span>
+      </div>
+    }
+
     <!-- MODAL CONFIRM DELETE -->
     <app-modal
       [isOpen]="deleteConfirmModal().show"
@@ -220,37 +234,19 @@ import { InputComponent } from '../../../shared/components/ui/input.component';
       </div>
     </app-modal>
 
-    <!-- MODAL RECORTAR IMAGEN -->
-    <app-modal
-      [isOpen]="showCropModal"
-      [title]="'SETUP_PLAYERS.CROP_TITLE' | translate"
-      [preventCloseOutside]="true"
-      (onClose)="cancelCrop()">
-      
-      <div class="w-full h-64 bg-black/50 border border-slate-700 rounded-xl overflow-hidden relative flex items-center justify-center mb-2">
-       <image-cropper
-        [imageChangedEvent]="imageChangedEvent"
-        [maintainAspectRatio]="true"
-        [aspectRatio]="1 / 1"
-        [resizeToWidth]="200"
-        format="jpeg"
-        (imageCropped)="imageCropped($event)"
-        (loadImageFailed)="loadImageFailed()"
-        style="max-height: 250px; max-width: 100%; margin: auto;"
-       ></image-cropper>
-      </div>
-      
-      <div modal-footer class="flex gap-3 w-full mt-2">
-       <app-button-secondary (onClick)="cancelCrop()" class="flex-1">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
-        {{ 'SETUP_PLAYERS.CROP_CANCEL' | translate }}
-       </app-button-secondary>
-       <app-button-primary (onClick)="confirmCrop()" class="flex-1">
-         {{ 'SETUP_PLAYERS.CROP_APPLY' | translate }}
-       </app-button-primary>
-      </div>
-    </app-modal>
-  </div>
+     <!-- MODAL SELECTOR DE AVATAR -->
+     <app-avatar-picker-modal
+       [isOpen]="showAvatarPickerModal"
+       [title]="'SETUP_PLAYERS.SELECT_AVATAR' | translate"
+       [avatarId]="currentPlayerForAvatar?.photoUrl || ''"
+       [avatarFrame]="currentPlayerForAvatar?.avatarFrame || ''"
+       [avatarColor]="currentPlayerForAvatar?.avatarColor || '#06b6d4'"
+       [nickname]="currentPlayerForAvatar?.name || ''"
+       (onClose)="showAvatarPickerModal = false"
+       (onCustomPhotoCropped)="onLocalPlayerPhotoCropped($event)"
+       (onSave)="saveLocalPlayerAvatar($event)">
+     </app-avatar-picker-modal>
+   </div>
  `,
  styles: [`
   /* Custom Scrollbar to match duration select */
@@ -318,21 +314,50 @@ export class SetupPlayers {
  alertModal = signal<{ show: boolean, title: string, message: string, isError: boolean }>({
   show: false, title: '', message: '', isError: false
  });
+ showSuccessToast = signal(false);
+ toastMessage = signal('');
 
  deleteConfirmModal = signal<{ show: boolean, presetId: string }>({ show: false, presetId: '' });
 
- // Cropper Modals
- showCropModal = false;
- imageChangedEvent: any = '';
- currentPlayerToCrop: PlayerConfig | null = null;
- croppedImageBlob: Blob | null | undefined = null;
- sanitizer = inject(DomSanitizer);
+  // Avatar Picker Modals
+  showAvatarPickerModal = false;
+  currentPlayerForAvatar: PlayerConfig | null = null;
+  currentPlayerIndexForAvatar: number | null = null;
 
  showAlert(titleKey: string, messageKey: string, isError: boolean = false, params?: any) {
   const title = this.translate.instant(titleKey);
   const message = this.translate.instant(messageKey, params);
   this.alertModal.set({ show: true, title, message, isError });
  }
+
+  openAvatarPicker(player: PlayerConfig, index: number) {
+   this.currentPlayerForAvatar = player;
+   this.currentPlayerIndexForAvatar = index;
+   this.showAvatarPickerModal = true;
+  }
+
+  onLocalPlayerPhotoCropped(blob: Blob) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      if (this.currentPlayerForAvatar) {
+        this.currentPlayerForAvatar.photoUrl = e.target.result;
+        this.onPlayerEdited();
+        this.cdr.detectChanges();
+      }
+    };
+    reader.readAsDataURL(blob);
+  }
+
+  saveLocalPlayerAvatar(selection: { avatarId: string; avatarColor: string; avatarFrame: string }) {
+    if (this.currentPlayerForAvatar) {
+      this.currentPlayerForAvatar.photoUrl = selection.avatarId;
+      this.currentPlayerForAvatar.avatarColor = selection.avatarColor;
+      this.currentPlayerForAvatar.avatarFrame = selection.avatarFrame;
+      this.onPlayerEdited();
+      this.cdr.detectChanges();
+    }
+    this.showAvatarPickerModal = false;
+  }
 
  constructor() {
   effect(() => {
@@ -342,7 +367,7 @@ export class SetupPlayers {
      this.cloudPresets.set(p);
     }).catch(e => {
      console.error("Error cargando presets", e);
-     this.alertModal.set({ show: true, title: 'Error API', message: e.message || 'Fallo de acceso a DB', isError: true });
+     this.alertModal.set({ show: true, title: this.translate.instant('ALERTS.API_ERROR'), message: e.message || this.translate.instant('ALERTS.DB_ACCESS_FAIL'), isError: true });
     });
    } else {
     this.cloudPresets.set([]); // limpiar si cierra sesión
@@ -401,17 +426,19 @@ export class SetupPlayers {
  async executeEditPreset() {
   const presetId = this.selectedPresetId();
   const existingPreset = this.cloudPresets().find(p => p.id === presetId);
-  const presetName = existingPreset ? existingPreset.name : 'Grupo Editado';
+  const presetName = existingPreset ? existingPreset.name : this.translate.instant('SETUP_PLAYERS.EDITED_GROUP');
   
   const cleanPlayers = JSON.parse(JSON.stringify(this.localPlayers));
   try {
    await this.presetsService.savePreset(presetName, cleanPlayers, presetId || undefined);
    const p = await this.presetsService.getUserPresets();
    this.cloudPresets.set(p);
-   this.showAlert('ALERTS.TITLE_SUCCESS', 'ALERTS.SAVE_SUCCESS', false, { name: presetName });
+   this.toastMessage.set(this.translate.instant('ALERTS.SAVE_SUCCESS', { name: presetName }));
+   this.showSuccessToast.set(true);
+   setTimeout(() => this.showSuccessToast.set(false), 3000);
   } catch(error: any) {
    console.error("Firebase update error: ", error);
-   this.alertModal.set({ show: true, title: 'Error Fatal BD', message: error?.message || 'Error actualizando', isError: true });
+   this.alertModal.set({ show: true, title: this.translate.instant('ALERTS.FATAL_DB_ERROR'), message: error?.message || this.translate.instant('ALERTS.UPDATE_ERROR'), isError: true });
   }
  }
 
@@ -430,14 +457,16 @@ export class SetupPlayers {
      this.selectedPresetId.set(newPreset.id);
     }
 
-    this.showAlert('ALERTS.TITLE_SUCCESS', 'ALERTS.SAVE_SUCCESS', false, { name: presetName });
+    this.toastMessage.set(this.translate.instant('ALERTS.SAVE_SUCCESS', { name: presetName }));
+    this.showSuccessToast.set(true);
+    setTimeout(() => this.showSuccessToast.set(false), 3000);
    } catch (error: any) {
     console.error("Firebase save error: ", error);
     if (error?.message === 'LIMIT_REACHED') {
      this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.LIMIT_REACHED', true);
     } else {
      // Mostramos el mensaje exacto para saber por qué falla en vez de traducción
-     this.alertModal.set({ show: true, title: 'Error Fatal BD', message: error?.message || 'Error guardando', isError: true });
+     this.alertModal.set({ show: true, title: this.translate.instant('ALERTS.FATAL_DB_ERROR'), message: error?.message || this.translate.instant('ALERTS.SAVE_ERROR_DB'), isError: true });
     }
    }
    this.showCloudSaveModal = false;
@@ -448,9 +477,9 @@ export class SetupPlayers {
   if (this.selectedPresetId() === preset.id) {
    this.selectedPresetId.set(null);
    this.localPlayers = [
-    { id: '1', name: 'Jugador 1' },
-    { id: '2', name: 'Jugador 2' },
-    { id: '3', name: 'Jugador 3' }
+    { id: '1', name: this.translate.instant('SETUP_PLAYERS.PLAYER_N', { n: 1 }) },
+    { id: '2', name: this.translate.instant('SETUP_PLAYERS.PLAYER_N', { n: 2 }) },
+    { id: '3', name: this.translate.instant('SETUP_PLAYERS.PLAYER_N', { n: 3 }) }
    ];
    return;
   }
@@ -464,63 +493,6 @@ export class SetupPlayers {
   const nextId = new Date().getTime().toString();
   this.localPlayers.push({ id: nextId, name: '' });
   this.onPlayerEdited();
- }
-
- triggerImageUpload(index: number) {
-  const fileInput = document.getElementById(`file-upload-${index}`) as HTMLInputElement;
-  if (fileInput) {
-   fileInput.click();
-  }
- }
-
- onFileSelected(event: any, player: PlayerConfig) {
-  const file = event.target.files?.[0];
-  if (file) {
-   // Relax initial validation from 1MB to 5MB since we will crop and scale it down anyway
-   if (file.size > 5 * 1024 * 1024) {
-    this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.IMAGE_TOO_LARGE', true);
-    return;
-   }
-   this.currentPlayerToCrop = player;
-   this.imageChangedEvent = event;
-   this.showCropModal = true;
-  }
- }
-
- imageCropped(event: ImageCroppedEvent) {
-  this.croppedImageBlob = event.blob;
- }
-
- loadImageFailed() {
-  this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.IMAGE_TOO_LARGE', true);
-  this.cancelCrop();
- }
-
- cancelCrop() {
-  this.showCropModal = false;
-  this.imageChangedEvent = '';
-  this.currentPlayerToCrop = null;
-  this.croppedImageBlob = null;
-
-  // Reset inputs so the same file could be selected again
-  const inputs = document.querySelectorAll('input[type="file"]');
-  inputs.forEach(input => (input as HTMLInputElement).value = '');
- }
-
- confirmCrop() {
-  if (this.croppedImageBlob && this.currentPlayerToCrop) {
-   const reader = new FileReader();
-   reader.onload = (e: any) => {
-    if (this.currentPlayerToCrop) {
-     this.currentPlayerToCrop.photoUrl = e.target.result;
-    }
-    this.cancelCrop();
-    this.cdr.detectChanges(); // Ensure the view is updated synchronously after async load
-   };
-   reader.readAsDataURL(this.croppedImageBlob);
-  } else {
-   this.cancelCrop();
-  }
  }
 
  removePlayer(index: number) {
@@ -538,8 +510,10 @@ export class SetupPlayers {
  save() {
   const validatedPlayers = this.localPlayers.map((p, i) => ({
    id: p.id,
-   name: p.name.trim() || `Jugador ${i + 1}`,
-   photoUrl: p.photoUrl
+   name: p.name.trim() || this.translate.instant('SETUP_PLAYERS.PLAYER_N', { n: i + 1 }),
+   photoUrl: p.photoUrl,
+   avatarColor: p.avatarColor,
+   avatarFrame: p.avatarFrame
   }));
 
   this.onChange.emit(validatedPlayers);

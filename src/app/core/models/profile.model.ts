@@ -4,6 +4,7 @@ export interface UserProfile {
   nickname: string;
   avatarId: string;
   avatarColor: string;
+  avatarFrame?: string;
   createdAt: string;
   updatedAt: string;
 }

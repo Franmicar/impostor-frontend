@@ -44,7 +44,13 @@ export class ThemeService {
     }
 
     private async initTheme() {
-        const isLocalDev = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+        const isLocalDev = typeof window !== 'undefined' && (
+            window.location.hostname === 'localhost' || 
+            window.location.hostname === '127.0.0.1' || 
+            window.location.hostname.startsWith('192.168.') || 
+            window.location.hostname.startsWith('10.') || 
+            window.location.hostname.startsWith('172.')
+        );
         if (isLocalDev) {
             this.downloadedThemes.set({
                 'infantil': true,
@@ -86,7 +92,13 @@ export class ThemeService {
         }
 
         try {
-            const isLocalDev = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+            const isLocalDev = typeof window !== 'undefined' && (
+                window.location.hostname === 'localhost' || 
+                window.location.hostname === '127.0.0.1' || 
+                window.location.hostname.startsWith('192.168.') || 
+                window.location.hostname.startsWith('10.') || 
+                window.location.hostname.startsWith('172.')
+            );
             if (isLocalDev) {
                 this.currentTheme.set(theme);
                 this.applyTheme(theme);
@@ -130,11 +142,6 @@ export class ThemeService {
             return originalPath;
         }
         
-        const isLocalDev = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-        if (isLocalDev) {
-            const cleanPath = originalPath.replace(/^\/images\//, '/');
-            return `/themes/${theme}${cleanPath}`;
-        }
 
         if (this.downloadedThemes()[theme]) {
             const cleanPath = originalPath.replace(/^\/images\//, '/');
@@ -150,12 +157,20 @@ export class ThemeService {
     }
 
     resolveAsset(key: string): string {
-        const theme = this.currentTheme() as string;
-        
+        if (key === 'shared.avatar_frame') {
+            return this.getFrameAsset(this.currentTheme());
+        }
+        if (key === 'shared.default_avatar') {
+            return this.getDefaultAvatarAsset(this.currentTheme());
+        }
+
         // Determinar la ruta por defecto a partir del key
         let defaultPath = LOCAL_ASSET_MAPPING[key];
         if (!defaultPath && key.startsWith('packages.')) {
             defaultPath = `/images/packages/${key.substring(9)}.png`;
+        }
+        if (!defaultPath && key.startsWith('avatars.')) {
+            defaultPath = `/images/avatars/${key.substring(8)}.png`;
         }
         
         if (!defaultPath) {
@@ -163,26 +178,91 @@ export class ThemeService {
             return '/images/default-avatar.png'; // safe fallback
         }
 
-        if (theme === 'neon' || theme === 'neon2' || (key.startsWith('shared.') && key !== 'shared.default_avatar')) {
+        // Determinar a qué tema pertenece este asset específico
+        let assetTheme = this.currentTheme() as string;
+        if (key.startsWith('avatars.')) {
+            const name = key.substring(8);
+            const idx = name.indexOf('_');
+            if (idx > 0) {
+                const prefix = name.substring(0, idx);
+                if (prefix === 'neon' || prefix === 'neon2' || prefix === 'alien' || prefix === 'manga' || prefix === 'infantil') {
+                    assetTheme = prefix;
+                }
+            }
+        }
+
+
+        if (assetTheme === 'neon' || assetTheme === 'neon2' || (key.startsWith('shared.') && key !== 'shared.default_avatar' && key !== 'shared.avatar_frame')) {
             return defaultPath;
         }
         
-        const isLocalDev = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-        if (isLocalDev) {
-            const cleanPath = defaultPath.replace(/^\/images\//, '/');
-            return `/themes/${theme}${cleanPath}`;
-        }
 
-        if (this.downloadedThemes()[theme]) {
+        if (this.downloadedThemes()[assetTheme]) {
             const cleanPath = defaultPath.replace(/^\/images\//, '/');
             if (Capacitor.isNativePlatform()) {
                 const fileName = cleanPath.startsWith('/') ? cleanPath.substring(1) : cleanPath;
-                return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${theme}/${fileName}`);
+                return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${assetTheme}/${fileName}`);
             } else {
-                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${cleanPath}`;
+                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${assetTheme}${cleanPath}`;
             }
         }
         
         return defaultPath;
+    }
+
+    getThemeAvatars(theme?: Theme): string[] {
+        const t = theme || this.currentTheme();
+        if (t === 'neon') {
+            return ['neon_hacker', 'neon_dj', 'neon_cyborg', 'neon_male', 'neon_female'];
+        }
+        if (t === 'neon2') {
+            return ['neon2_hacker', 'neon2_dj', 'neon2_cyborg', 'neon2_male', 'neon2_female'];
+        }
+        if (t === 'alien') {
+            return ['alien_male', 'alien_female', 'alien_grey', 'alien_larva', 'alien_nebula'];
+        }
+        if (t === 'manga') {
+            return ['manga_male', 'manga_female', 'manga_detective', 'manga_impostor', 'manga_chibi'];
+        }
+        if (t === 'infantil') {
+            return ['infantil_male', 'infantil_female', 'infantil_toy', 'infantil_dino', 'infantil_bear'];
+        }
+        return [];
+    }
+
+    getFrameAsset(themeName: string): string {
+        const t = themeName || this.currentTheme();
+        if (t === 'neon') {
+            return '/images/neon_frame.png';
+        }
+        if (t === 'neon2') {
+            return '/images/neon2_frame.png';
+        }
+        if (this.downloadedThemes()[t]) {
+            if (Capacitor.isNativePlatform()) {
+                return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${t}/${t}_frame.png`);
+            } else {
+                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${t}/${t}_frame.png`;
+            }
+        }
+        return '/images/neon_frame.png'; // safe fallback
+    }
+
+    getDefaultAvatarAsset(themeName: string): string {
+        const t = themeName || this.currentTheme();
+        if (t === 'neon') {
+            return '/images/default-avatar.png';
+        }
+        if (t === 'neon2') {
+            return '/images/neon2_default_avatar.png';
+        }
+        if (this.downloadedThemes()[t]) {
+            if (Capacitor.isNativePlatform()) {
+                return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${t}/default-avatar.png`);
+            } else {
+                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${t}/default-avatar.png`;
+            }
+        }
+        return '/images/default-avatar.png'; // safe fallback
     }
 }

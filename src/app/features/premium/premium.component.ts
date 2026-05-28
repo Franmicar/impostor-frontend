@@ -101,6 +101,13 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
       }
      </div>
     }
+    
+    <!-- EULA & Privacy Policy Links -->
+    <div class="flex justify-center gap-4 text-[10px] text-textMuted mt-8 mb-4 px-2 select-none">
+     <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" class="hover:underline hover:text-textPrimary transition-colors">{{ 'PREMIUM.EULA' | translate }}</a>
+     <span>•</span>
+     <a href="https://impostor-backend.vercel.app/api/privacy" target="_blank" class="hover:underline hover:text-textPrimary transition-colors">{{ 'PREMIUM.PRIVACY_POLICY' | translate }}</a>
+    </div>
    </div>
 
    <!-- Footer action -->
@@ -127,6 +134,16 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
        {{ 'PREMIUM.CLOSE' | translate }}
      </button>
    </app-modal>
+
+   <!-- TOAST DE ÉXITO -->
+   @if (showSuccessToast()) {
+     <div class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white px-5 py-3 rounded-full border border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.3)] backdrop-blur-md z-50 flex items-center gap-2 animate-bounce">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-green-500">
+         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+       </svg>
+       <span class="text-xs font-semibold tracking-wide">{{ toastMessage() }}</span>
+     </div>
+   }
   </div>
  `,
  styles: [`
@@ -145,6 +162,8 @@ export class PremiumComponent implements OnInit {
  selectedPlan = signal<any | null>(null);
  isLoading = signal(true);
  alertModal = signal({show: false, title: '', message: '', success: false});
+ showSuccessToast = signal(false);
+ toastMessage = signal('');
 
  async ngOnInit() {
   this.isLoading.set(true);
@@ -175,7 +194,12 @@ export class PremiumComponent implements OnInit {
   this.isLoading.set(false);
   
   if (success) {
-   this.alertModal.set({show: true, title: this.translate.instant('PREMIUM.SUCCESS_TITLE'), message: this.translate.instant('PREMIUM.SUCCESS_MSG'), success: true});
+    this.toastMessage.set(this.translate.instant('PREMIUM.SUCCESS_MSG'));
+    this.showSuccessToast.set(true);
+    setTimeout(() => {
+     this.showSuccessToast.set(false);
+     this.goBack();
+    }, 3000);
   } else {
    this.alertModal.set({show: true, title: this.translate.instant('PREMIUM.ERROR_TITLE'), message: this.translate.instant('PREMIUM.ERROR_MSG'), success: false});
   }
@@ -186,7 +210,12 @@ export class PremiumComponent implements OnInit {
   const success = await this.billing.restorePurchases();
   this.isLoading.set(false);
   if (success) {
-   this.alertModal.set({show: true, title: this.translate.instant('PREMIUM.RESTORE_TITLE'), message: this.translate.instant('PREMIUM.RESTORE_MSG'), success: true});
+    this.toastMessage.set(this.translate.instant('PREMIUM.RESTORE_MSG'));
+    this.showSuccessToast.set(true);
+    setTimeout(() => {
+     this.showSuccessToast.set(false);
+     this.goBack();
+    }, 3000);
   } else {
    this.alertModal.set({show: true, title: this.translate.instant('PREMIUM.ERROR_TITLE'), message: this.translate.instant('PREMIUM.RESTORE_ERROR_MSG'), success: false});
   }

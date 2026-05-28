@@ -1,13 +1,13 @@
-import { Component, inject, signal, computed, ViewChild, ElementRef, ChangeDetectorRef, effect } from '@angular/core';
+import { Component, inject, signal, computed, ChangeDetectorRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
+import { Capacitor } from '@capacitor/core';
 
 import { AuthService } from '../../core/services/auth/auth.service';
 import { ProfileService } from '../../core/services/profile/profile.service';
-import { ThemeService } from '../../core/services/theme.service';
+import { ThemeService, Theme } from '../../core/services/theme.service';
 import { UiService } from '../../core/services/ui/ui.service';
 
 import { HeaderComponent } from '../../shared/components/ui/header.component';
@@ -17,6 +17,8 @@ import { ButtonPrimaryComponent } from '../../shared/components/ui/button-primar
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
 import { FooterComponent } from '../../shared/components/ui/footer.component';
+import { AvatarPickerModalComponent } from '../../shared/components/ui/avatar-picker-modal.component';
+import { AvatarComponent } from '../../shared/components/ui/avatar.component';
 
 import { CompleteUserProfile } from '../../core/models/profile.model';
 
@@ -27,14 +29,15 @@ import { CompleteUserProfile } from '../../core/models/profile.model';
     CommonModule,
     FormsModule,
     TranslateModule,
-    ImageCropperComponent,
     HeaderComponent,
     CardComponent,
     InputComponent,
     ButtonPrimaryComponent,
     ButtonSecondaryComponent,
     ModalComponent,
-    FooterComponent
+    FooterComponent,
+    AvatarPickerModalComponent,
+    AvatarComponent
   ],
   template: `
     <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary">
@@ -47,42 +50,53 @@ import { CompleteUserProfile } from '../../core/models/profile.model';
           @if (profileService.profileSignal(); as completeProfile) {
             
             <!-- SECCIÓN 1: CABECERA DE IDENTIDAD -->
-            <app-card class="relative flex flex-col items-center p-6 text-center">
-              
-              <!-- Foto de perfil o avatar procedural -->
-              <div class="group relative w-24 h-24 mb-4">
-                @if (completeProfile.profile.avatarId && !completeProfile.profile.avatarId.startsWith('/images/default-avatar')) {
-                  <img [src]="completeProfile.profile.avatarId" 
-                       class="w-full h-full rounded-full object-cover border-2 border-secondary shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)]"
-                       alt="Avatar" />
-                } @else {
-                  <!-- Fallback: Inicial de apodo con color de fondo dinámico -->
-                  <div [style.background]="editFields.avatarColor || '#06b6d4'" 
-                       class="w-full h-full rounded-full flex items-center justify-center text-white text-4xl font-black border-2 border-secondary shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] transition-all">
-                    {{ editFields.nickname ? editFields.nickname.charAt(0).toUpperCase() : '?' }}
+            <app-card class="relative block w-full">
+              <div class="flex flex-col items-center justify-center text-center w-full py-2">
+                <!-- Foto de perfil o avatar procedural -->
+                <div class="group relative w-24 h-24 mt-6 mb-4 flex items-center justify-center cursor-pointer" (click)="openAvatarPicker()">
+                  <app-avatar
+                    [avatarId]="editFields.avatarId"
+                    [avatarColor]="editFields.avatarColor || '#06b6d4'"
+                    [avatarFrame]="editFields.avatarFrame"
+                    [nickname]="editFields.nickname || editFields.firstName || '?'"
+                    avatarSize="w-24 h-24"></app-avatar>
+
+                  <!-- Overlay para personalizar (sombra hover) -->
+                  <div class="absolute inset-0 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white z-20">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Color selector for the initials fallback (visible only if letter avatar is chosen) -->
+                @if (!editFields.avatarId || editFields.avatarId.startsWith('/images/default-avatar')) {
+                  <div class="flex flex-col items-center space-y-1.5 w-full mb-4">
+                    <span class="text-[10px] font-bold text-textMuted uppercase tracking-wider">{{ 'AVATAR_PICKER.INITIAL_COLOR' | translate }}</span>
+                    <div class="flex justify-center gap-2.5 flex-wrap">
+                      @for (color of avatarColors; track color) {
+                        <button (click)="editFields.avatarColor = color" 
+                                [style.background-color]="color"
+                                [class.ring-2]="editFields.avatarColor === color"
+                                class="w-7 h-7 rounded-full border border-white/20 ring-secondary cursor-pointer transform hover:scale-110 active:scale-95 transition-all">
+                        </button>
+                      }
+                    </div>
                   </div>
                 }
 
-                <!-- Overlay para subir foto -->
-                <button (click)="triggerPhotoUpload()" 
-                        class="absolute inset-0 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white cursor-pointer">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
-                  </svg>
-                </button>
-                <input type="file" #photoInput class="hidden" accept="image/*" (change)="onFileSelected($event)" />
-              </div>
-
-              <!-- Nivel y Progresión -->
-              <div class="w-full mt-2">
-                <div class="flex justify-between text-xs font-bold uppercase tracking-wider mb-1 px-1">
-                  <span class="text-secondary">{{ 'PROFILE.LEVEL' | translate }} {{ completeProfile.progression.level }}</span>
-                  <span class="text-textMuted">{{ getLevelXP(completeProfile.progression.xp) }} / 100 XP</span>
-                </div>
-                <div class="w-full h-2 bg-black/40 rounded-full border border-glass-border overflow-hidden">
-                  <div class="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500" 
-                       [style.width.%]="getLevelXP(completeProfile.progression.xp)"></div>
+                <!-- Nivel y Progresión -->
+                <div class="flex flex-col items-center w-full space-y-1.5">
+                  <span class="text-secondary text-xs font-bold uppercase tracking-wider">
+                    {{ 'PROFILE.LEVEL' | translate }} {{ completeProfile.progression.level }}
+                  </span>
+                  <span class="text-textMuted text-xs font-bold uppercase tracking-wider">
+                    {{ getLevelXP(completeProfile.progression.xp) }} / 100 XP
+                  </span>
+                  <div class="w-full max-w-[160px] h-2 bg-black/40 rounded-full border border-glass-border overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500" 
+                         [style.width.%]="getLevelXP(completeProfile.progression.xp)"></div>
+                  </div>
                 </div>
               </div>
             </app-card>
@@ -128,19 +142,6 @@ import { CompleteUserProfile } from '../../core/models/profile.model';
                   </app-input>
                 </div>
 
-                <!-- Color de Avatar (Selector visual rápido) -->
-                <div class="flex flex-col space-y-1.5">
-                  <label class="text-xs font-bold text-textMuted uppercase tracking-wide">{{ 'PROFILE.AVATAR_COLOR' | translate }}</label>
-                  <div class="flex justify-between items-center py-2 px-1">
-                    @for (color of avatarColors; track color) {
-                      <button (click)="editFields.avatarColor = color" 
-                              [style.background-color]="color"
-                              [class.ring-2]="editFields.avatarColor === color"
-                              class="w-8 h-8 rounded-full border border-white/20 ring-secondary cursor-pointer transform hover:scale-110 active:scale-95 transition-all">
-                      </button>
-                    }
-                  </div>
-                </div>
               </div>
             </app-card>
 
@@ -242,7 +243,7 @@ import { CompleteUserProfile } from '../../core/models/profile.model';
         } @else {
           <!-- SECCIÓN: INICIO DE SESIÓN REQUERIDO -->
           <div class="flex-1 flex flex-col items-center justify-center py-16 text-center">
-            <app-card class="max-w-sm p-8 flex flex-col items-center">
+            <app-card class="max-w-sm p-8 flex flex-col items-center w-full">
               <span class="text-5xl mb-4 animate-bounce">🔑</span>
               <h2 class="text-lg font-black uppercase tracking-wider mb-2 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
                 {{ 'PROFILE.LOGIN_REQUIRED_TITLE' | translate }}
@@ -250,9 +251,19 @@ import { CompleteUserProfile } from '../../core/models/profile.model';
               <p class="text-xs text-textMuted mb-6 leading-relaxed">
                 {{ 'PROFILE.LOGIN_REQUIRED_DESC' | translate }}
               </p>
-              <app-button-primary (onClick)="authService.loginWithGoogle()" class="w-full">
-                {{ 'AUTH_PROFILE.LOGIN' | translate }}
-              </app-button-primary>
+              
+              <div class="flex flex-col gap-3 w-full">
+                <app-button-primary (onClick)="authService.loginWithGoogle()" class="w-full">
+                  {{ 'AUTH_PROFILE.LOGIN_GOOGLE' | translate }}
+                </app-button-primary>
+                
+                @if (isIOS) {
+                  <button (click)="authService.loginWithApple()" class="w-full py-4 bg-white text-black font-bold rounded-2xl active:scale-95 transition-all text-center cursor-pointer uppercase tracking-widest flex items-center justify-center gap-2.5 text-xs shadow-md border border-slate-200">
+                    <svg class="w-4 h-4 fill-current text-black" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.22.67-2.94 1.5-.62.71-1.16 1.85-1.02 2.97 1.12.09 2.27-.56 2.97-1.41z"/></svg>
+                    {{ 'AUTH_PROFILE.LOGIN_APPLE' | translate }}
+                  </button>
+                }
+              </div>
             </app-card>
           </div>
         }
@@ -286,36 +297,28 @@ import { CompleteUserProfile } from '../../core/models/profile.model';
         </app-button-primary>
       </app-modal>
 
-      <!-- MODAL RECORTAR IMAGEN -->
-      <app-modal
-        [isOpen]="showCropModal"
-        [title]="'SETUP_PLAYERS.CROP_TITLE' | translate"
-        [preventCloseOutside]="true"
-        (onClose)="cancelCrop()">
-        
-        <div class="w-full h-64 bg-black/50 border border-slate-700 rounded-xl overflow-hidden relative flex items-center justify-center mb-2">
-          <image-cropper
-            [imageChangedEvent]="imageChangedEvent"
-            [maintainAspectRatio]="true"
-            [aspectRatio]="1 / 1"
-            [resizeToWidth]="200"
-            format="jpeg"
-            (imageCropped)="onImageCropped($event)"
-            (loadImageFailed)="loadImageFailed()"
-            style="max-height: 250px; max-width: 100%; margin: auto;"
-          ></image-cropper>
+      <!-- TOAST DE ÉXITO AL GUARDAR PERFIL -->
+      @if (showSuccessToast()) {
+        <div class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white px-5 py-3 rounded-full border border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.3)] backdrop-blur-md z-50 flex items-center gap-2 animate-bounce">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-green-500">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+          <span class="text-xs font-semibold tracking-wide">{{ 'CUSTOM_PACKAGE.SAVE_SUCCESS' | translate }}</span>
         </div>
-        
-        <div modal-footer class="flex gap-3 w-full mt-2">
-          <app-button-secondary (onClick)="cancelCrop()" class="flex-1">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
-            {{ 'SETUP_PLAYERS.CROP_CANCEL' | translate }}
-          </app-button-secondary>
-          <app-button-primary (onClick)="confirmCrop()" class="flex-1">
-            {{ 'SETUP_PLAYERS.CROP_APPLY' | translate }}
-          </app-button-primary>
-        </div>
-      </app-modal>
+      }
+
+      <!-- MODAL SELECTOR DE AVATAR -->
+      <app-avatar-picker-modal
+        [isOpen]="showAvatarPickerModal"
+        [title]="'PROFILE.CUSTOMIZE_AVATAR' | translate"
+        [avatarId]="editFields.avatarId"
+        [avatarFrame]="editFields.avatarFrame"
+        [avatarColor]="editFields.avatarColor"
+        [nickname]="editFields.nickname"
+        (onClose)="showAvatarPickerModal = false"
+        (onCustomPhotoCropped)="onProfilePhotoCropped($event)"
+        (onSave)="saveProfileAvatar($event)">
+      </app-avatar-picker-modal>
 
       <!-- MODAL DE CIERRE DE SESIÓN -->
       <app-modal
@@ -344,12 +347,13 @@ import { CompleteUserProfile } from '../../core/models/profile.model';
     /* Scrollbar */
     .custom-scrollbar::-webkit-scrollbar {
       width: 4px;
+      height: 4px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
       background: transparent;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.2);
       border-radius: 99px;
     }
   `]
@@ -357,12 +361,13 @@ import { CompleteUserProfile } from '../../core/models/profile.model';
 export class ProfileComponent {
   authService = inject(AuthService);
   profileService = inject(ProfileService);
+  themeService = inject(ThemeService);
   private router = inject(Router);
   private uiService = inject(UiService);
   private translate = inject(TranslateService);
   private cdr = inject(ChangeDetectorRef);
 
-  @ViewChild('photoInput') photoInput!: ElementRef<HTMLInputElement>;
+  isIOS = Capacitor.getPlatform() === 'ios';
 
   // Tab control signal (offline / online statistics)
   statsTab = signal<'offline' | 'online'>('offline');
@@ -372,7 +377,9 @@ export class ProfileComponent {
     nickname: '',
     firstName: '',
     lastName: '',
-    avatarColor: ''
+    avatarColor: '',
+    avatarId: '',
+    avatarFrame: ''
   };
 
   // State control signals
@@ -381,11 +388,10 @@ export class ProfileComponent {
   nicknameError = signal<string | null>(null);
   isLogoutModalOpen = signal(false);
   alertModal = signal({ show: false, title: '', message: '', isError: false });
+  showSuccessToast = signal(false);
 
-  // Cropping variables
-  showCropModal = false;
-  imageChangedEvent: any = '';
-  croppedImageBlob: Blob | null = null;
+  // Avatar Picker
+  showAvatarPickerModal = false;
 
   // Preset avatar colors
   avatarColors = ['#06b6d4', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
@@ -407,6 +413,8 @@ export class ProfileComponent {
         this.editFields.firstName = completeProfile.profile.firstName || '';
         this.editFields.lastName = completeProfile.profile.lastName || '';
         this.editFields.avatarColor = completeProfile.profile.avatarColor || '#06b6d4';
+        this.editFields.avatarId = completeProfile.profile.avatarId || '';
+        this.editFields.avatarFrame = completeProfile.profile.avatarFrame || '';
         this.cdr.detectChanges();
       }
     });
@@ -451,7 +459,9 @@ export class ProfileComponent {
       this.editFields.nickname.trim() !== (completeProfile.profile.nickname || '') ||
       this.editFields.firstName.trim() !== (completeProfile.profile.firstName || '') ||
       this.editFields.lastName.trim() !== (completeProfile.profile.lastName || '') ||
-      this.editFields.avatarColor !== (completeProfile.profile.avatarColor || '#06b6d4')
+      this.editFields.avatarColor !== (completeProfile.profile.avatarColor || '#06b6d4') ||
+      this.editFields.avatarId !== (completeProfile.profile.avatarId || '') ||
+      this.editFields.avatarFrame !== (completeProfile.profile.avatarFrame || '')
     );
   }
 
@@ -500,12 +510,16 @@ export class ProfileComponent {
     if (
       this.editFields.firstName !== current.profile.firstName ||
       this.editFields.lastName !== current.profile.lastName ||
-      this.editFields.avatarColor !== current.profile.avatarColor
+      this.editFields.avatarColor !== current.profile.avatarColor ||
+      this.editFields.avatarId !== current.profile.avatarId ||
+      this.editFields.avatarFrame !== current.profile.avatarFrame
     ) {
       const success = await this.profileService.updateProfile({
         firstName: this.editFields.firstName,
         lastName: this.editFields.lastName,
-        avatarColor: this.editFields.avatarColor
+        avatarColor: this.editFields.avatarColor,
+        avatarId: this.editFields.avatarId,
+        avatarFrame: this.editFields.avatarFrame
       });
       if (!success && navigator.onLine) {
         this.isProfileSaving.set(false);
@@ -515,7 +529,8 @@ export class ProfileComponent {
     }
 
     this.isProfileSaving.set(false);
-    this.showAlert('ALERTS.TITLE_SUCCESS', 'CUSTOM_PACKAGE.SAVE_SUCCESS', false);
+    this.showSuccessToast.set(true);
+    setTimeout(() => this.showSuccessToast.set(false), 3000);
   }
 
   showAlert(titleKey: string, messageKey: string, isError: boolean = false) {
@@ -540,52 +555,27 @@ export class ProfileComponent {
 
   // --- Photo Upload & Cropper Handlers ---
 
-  triggerPhotoUpload() {
-    this.photoInput.nativeElement.click();
+  openAvatarPicker() {
+    this.showAvatarPickerModal = true;
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Validate file size up to 5MB
-      if (file.size > 5 * 1024 * 1024) {
-        this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.IMAGE_TOO_LARGE', true);
-        return;
-      }
-      this.imageChangedEvent = event;
-      this.showCropModal = true;
+  async onProfilePhotoCropped(blob: Blob) {
+    this.uiService.setLoading(true);
+    const downloadURL = await this.profileService.uploadAvatarPhoto(blob);
+    this.uiService.setLoading(false);
+
+    if (downloadURL) {
+      this.editFields.avatarId = downloadURL;
+    } else {
+      this.showAlert('ALERTS.TITLE_ERROR', 'PROFILE.UPLOAD_FAILED', true);
     }
   }
 
-  onImageCropped(event: ImageCroppedEvent) {
-    this.croppedImageBlob = event.blob || null;
-  }
-
-  loadImageFailed() {
-    this.showAlert('ALERTS.TITLE_ERROR', 'ALERTS.IMAGE_TOO_LARGE', true);
-    this.cancelCrop();
-  }
-
-  cancelCrop() {
-    this.showCropModal = false;
-    this.imageChangedEvent = '';
-    this.croppedImageBlob = null;
-    if (this.photoInput) {
-      this.photoInput.nativeElement.value = '';
-    }
-  }
-
-  async confirmCrop() {
-    if (this.croppedImageBlob) {
-      this.uiService.setLoading(true);
-      const downloadURL = await this.profileService.uploadAvatarPhoto(this.croppedImageBlob);
-      this.uiService.setLoading(false);
-      this.cancelCrop();
-      
-      if (!downloadURL) {
-        this.showAlert('ALERTS.TITLE_ERROR', 'PROFILE.UPLOAD_FAILED', true);
-      }
-    }
+  saveProfileAvatar(selection: { avatarId: string; avatarColor: string; avatarFrame: string }) {
+    this.editFields.avatarId = selection.avatarId;
+    this.editFields.avatarColor = selection.avatarColor;
+    this.editFields.avatarFrame = selection.avatarFrame;
+    this.showAvatarPickerModal = false;
   }
 
   // --- Session Logout ---

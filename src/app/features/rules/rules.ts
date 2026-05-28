@@ -12,7 +12,7 @@ import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.co
   <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary">
    <app-header [showBack]="true" [title]="'RULES.TITLE' | translate" (onBack)="goBack()">
     <div header-extra>
-      <app-auth-profile avatarSize="w-8 h-8"></app-auth-profile>
+      <app-auth-profile avatarSize="w-10 h-10"></app-auth-profile>
     </div>
    </app-header>
 

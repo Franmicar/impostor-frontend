@@ -44,4 +44,8 @@ export interface IGameEngine {
   eliminatePlayer(playerId: number | string): void;
   resetGame(): void;
   addDrawing(drawing: string): void;
+  requestRematch?(): void;
+  playerReady?(): void;
+  goToSetup?(): void;
+  startRematch?(): void;
 }

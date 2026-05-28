@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
       [disabled]="disabled() || isLoading()"
       [type]="type()"
       [ngClass]="{
-        'py-3 px-6 text-lg rounded-2xl w-full': size() === 'large',
+        'py-3 px-3 text-lg rounded-2xl w-full': size() === 'large',
         'py-1.5 px-3 text-[0.65rem] rounded-xl': size() === 'small'
       }"
       class="relative group overflow-hidden bg-gradient-to-r from-primary to-secondary text-white font-bold uppercase shadow-[0_0_20px_rgb(var(--color-primary)/0.4)] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap">

@@ -54,10 +54,12 @@
     "DEV_INFO": "Entwickelt für die beste Party-Atmosphäre.",
     "VISUAL_STYLE": "Visueller Stil",
     "THEME_NEON": "Neon / Cyberpunk",
-    "THEME_INFANTIL": "Kinder (Familienfreundlich)",
+    "THEME_INFANTIL": "Kinder",
     "THEME_NEON_2": "Neon 2",
-    "THEME_ALIEN": "Alien-Thema",
-    "THEME_MANGA": "Manga-Thema",
+    "THEME_ALIEN": "Alien",
+    "THEME_MANGA": "Manga",
+    "INCLUDES_AVATARS": "5 Avatare",
+    "INCLUDES_FRAME": "1 Rahmen",
     "CONTENT": "Inhalt",
     "CUSTOM_PACKAGES": "Benutzerdefinierte Pakete",
     "SUPPORT_CONTACT": "Support & Kontakt",
@@ -149,7 +151,10 @@
     "CROP_TITLE": "Bild zuschneiden",
     "CROP_CANCEL": "Abbrechen",
     "CROP_APPLY": "Anwenden",
-    "EDIT_GROUP_BTN": "Gruppe bearbeiten"
+    "EDIT_GROUP_BTN": "Gruppe bearbeiten",
+    "PLAYER_N": "Spieler {{n}}",
+    "EDITED_GROUP": "Bearbeitete Gruppe",
+    "SELECT_AVATAR": "Avatar auswählen"
   },
   "SETUP_PACKAGES": {
     "TITLE": "Pakete",
@@ -271,7 +276,9 @@
     "WIN_DETS_TITLE": "Detektive",
     "WIN_CIVS_TITLE": "Zivilisten",
     "LOSERS_WARN": "Eliminierte verlieren.",
-    "PLAY_AGAIN": "Nochmal spielen"
+    "PLAY_AGAIN": "Nochmal spielen",
+    "LOADING_RESULTS_TITLE": "Ergebnisse abrufen...",
+    "LOADING_RESULTS_SUB": "Spielstatus mit dem Server synchronisieren."
   },
   "CONFIRM": {
     "TITLE": "SPIEL VERLASSEN?",
@@ -302,7 +309,12 @@
     "SAVE_ERROR": "Speicherfehler.",
     "IMAGE_TOO_LARGE": "Bild zu groß.",
     "NO_WORDS": "Keine gültigen Wörter.",
-    "START_ERROR": "Startfehler."
+    "START_ERROR": "Startfehler.",
+    "API_ERROR": "API-Fehler",
+    "DB_ACCESS_FAIL": "DB-Zugriff fehlgeschlagen",
+    "FATAL_DB_ERROR": "Fataler DB-Fehler",
+    "UPDATE_ERROR": "Aktualisierungsfehler",
+    "SAVE_ERROR_DB": "Speicherfehler"
   },
   "PREMIUM": {
     "RESTORE": "Wiederherstellen",
@@ -389,6 +401,18 @@
     "ACH_3_TITLE": "Auge des Detektivs",
     "ACH_3_DESC": "Errate das geheime Wort, wenn du als Detektiv spielst.",
     "ACH_4_TITLE": "Deceptra-Stil",
-    "ACH_4_DESC": "Kaufe dein erstes benutzerdefiniertes Thema im Shop."
+    "ACH_4_DESC": "Kaufe dein erstes benutzerdefiniertes Thema im Shop.",
+    "CUSTOMIZE_AVATAR": "Avatar anpassen"
+  },
+  "AVATAR_PICKER": {
+    "TITLE": "Avatar anpassen",
+    "TAB_AVATAR": "Avatar",
+    "TAB_FRAME": "Rahmen",
+    "INITIAL_AVATAR": "Avatar mit Initiale",
+    "INITIAL_COLOR": "Initialenfarbe",
+    "PHOTO_AVATAR": "FOTO AVATAR",
+    "GAME_AVATARS": "Spiel-Avatare",
+    "AVATAR_FRAMES": "Avatar-Rahmen",
+    "NO_FRAME": "Kein Rahmen"
   }
 }

@@ -234,7 +234,7 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: 
+    background:
       linear-gradient(rgba(57, 255, 20, 0.08) 50%, transparent 50%),
       linear-gradient(90deg, rgba(57, 255, 20, 0.08) 50%, transparent 50%);
     background-size: 4px 4px;
@@ -265,7 +265,7 @@
     border-radius: 12px;
     background: linear-gradient(135deg, #fafafa, #e0e0e0);
     border: 2.5px solid #000000;
-    box-shadow: 4px 4px 0px 0px #000000;
+    box-shadow: 2px 2px 0px 0px #000000;
     overflow: hidden;
   }
 
@@ -274,7 +274,7 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: 
+    background:
       radial-gradient(circle, #333333 12%, transparent 13%),
       radial-gradient(circle, #333333 12%, transparent 13%);
     background-size: 6px 6px;
@@ -315,6 +315,7 @@
   .footer-gradient-bg {
     background: linear-gradient(to top, var(--app-bg-to) 0%, var(--footer-gradient-via) 60%, transparent 100%);
   }
+
   .loading-overlay-bg {
     background-color: var(--loading-bg);
   }

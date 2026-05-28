@@ -38,6 +38,8 @@ export interface PlayerConfig {
   id: string;
   name: string;
   photoUrl?: string;
+  avatarColor?: string;
+  avatarFrame?: string;
 }
 
 @Component({
@@ -59,7 +61,7 @@ export interface PlayerConfig {
      <!-- Header -->
      <app-header [showBack]="true" [title]="'Deceptra'" (onBack)="goBack()">
       <div header-extra>
-        <app-auth-profile avatarSize="w-8 h-8" [showLoginButton]="true"></app-auth-profile>
+        <app-auth-profile avatarSize="w-10 h-10" [showLoginButton]="true"></app-auth-profile>
       </div>
      </app-header>
      <main class="flex-1 px-4 relative custom-scrollbar pt-2 sm:pt-4">
@@ -105,6 +107,18 @@ export interface PlayerConfig {
 
       <!-- ONLINE LOBBY / PLAYERS LIST -->
       @if (gameEngine.isOnline() && socketService.roomState()) {
+        @if (!isHost()) {
+          <div class="bg-glass border border-primary/30 rounded-2xl p-4 mb-6 flex items-center gap-4 shadow-lg animate-pulse">
+            <div class="relative flex h-3.5 w-3.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-primary"></span>
+            </div>
+            <span class="text-sm font-semibold text-textPrimary">
+              {{ 'SETUP.HOST_CONFIGURING' | translate }}
+            </span>
+          </div>
+        }
+
         <!-- Room Code Card -->
         <div class="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl p-4 mb-6 flex flex-col items-center justify-center relative shadow-lg">
           <span class="text-xs text-textMuted uppercase tracking-widest font-bold mb-1">{{ 'SETUP.ROOM_CODE' | translate }}</span>
@@ -164,7 +178,7 @@ export interface PlayerConfig {
         [class.cursor-pointer]="isHost()"
         class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors first:rounded-t-2xl">
         <div class="flex items-center gap-3">
-         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.resolveAsset('setup.mode')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
@@ -189,7 +203,7 @@ export interface PlayerConfig {
         [class.cursor-pointer]="isHost()"
         class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors border-b border-glass-border">
         <div class="flex items-center gap-3">
-         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.resolveAsset('setup.type')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
@@ -214,7 +228,7 @@ export interface PlayerConfig {
         [class.cursor-pointer]="!gameEngine.isOnline()"
         class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors">
         <div class="flex items-center gap-3">
-         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.resolveAsset('setup.players')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
@@ -238,7 +252,7 @@ export interface PlayerConfig {
        @if (gameMode().id !== 'chaos' && gameMode().id !== 'fast') {
          <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors">
           <div class="flex items-center gap-3">
-           <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+           <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
             <img [src]="themeService.resolveAsset('setup.impostors')" alt="" class="w-full h-full object-cover neon-dynamic-img">
            </div>
            <span class="font-semibold text-textPrimary flex items-center gap-2">
@@ -248,7 +262,7 @@ export interface PlayerConfig {
             </app-icon-button-mini>
            </span>
           </div>
-          <div class="flex items-center gap-4 text-textPrimary">
+          <div class="flex items-center gap-2 text-textPrimary">
            @if (isHost()) {
              <app-icon-button-mini (onClick)="changeImpostors(-1)"><span class="text-[1.5rem] pb-[0.05rem] font-medium">&minus;</span></app-icon-button-mini>
            }
@@ -264,7 +278,7 @@ export interface PlayerConfig {
        @if (gameMode().id === 'detective') {
         <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors">
           <div class="flex items-center gap-3">
-           <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+           <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
             <img [src]="themeService.resolveAsset('setup.detectives')" alt="" class="w-full h-full object-cover neon-dynamic-img">
            </div>
            <span class="font-semibold text-textPrimary flex items-center gap-2">
@@ -274,7 +288,7 @@ export interface PlayerConfig {
              </app-icon-button-mini>
            </span>
           </div>
-          <div class="flex items-center gap-4 text-textPrimary">
+          <div class="flex items-center gap-2 text-textPrimary">
           @if (isHost()) {
             <app-icon-button-mini (onClick)="changeDetectives(-1)"><span class="text-[1.5rem] pb-[0.05rem] font-medium">&minus;</span></app-icon-button-mini>
           }
@@ -290,7 +304,7 @@ export interface PlayerConfig {
        @if (gameMode().id !== 'team' && gameMode().id !== 'infiltrator') {
          <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors">
           <div class="flex items-center gap-3">
-           <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+           <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
             <img [src]="themeService.resolveAsset('setup.hints')" alt="" class="w-full h-full object-cover neon-dynamic-img">
            </div>
            <span class="font-semibold text-textPrimary flex flex-col justify-center">
@@ -319,7 +333,7 @@ export interface PlayerConfig {
         [class.cursor-pointer]="isHost()"
         class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer">
         <div class="flex items-center gap-3">
-         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.resolveAsset('setup.package')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
@@ -348,7 +362,7 @@ export interface PlayerConfig {
        <!-- DURACION -->
        <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors" [class.last:rounded-b-2xl]="gameType().id !== 'draw'" [class.border-b]="gameType().id === 'draw'" [class.border-glass-border]="gameType().id === 'draw'">
         <div class="flex items-center gap-3">
-         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.resolveAsset('setup.duration')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
@@ -371,7 +385,7 @@ export interface PlayerConfig {
        @if(gameType().id === 'draw') {
        <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-white/5 transition-colors last:rounded-b-2xl">
         <div class="flex items-center gap-3">
-         <div class="flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
+         <div class="setup-img-box flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden w-12 h-12 sm:w-[72px] sm:h-[72px]">
           <img [src]="themeService.resolveAsset('setup.turn_time')" alt="" class="w-full h-full object-cover neon-dynamic-img">
          </div>
          <span class="font-semibold text-textPrimary flex items-center gap-2">
@@ -669,8 +683,8 @@ export class SetupComponent implements OnInit {
     const minDetectives = isDetectiveMode ? 1 : 0;
     const minPlayers = isDetectiveMode ? 4 : 3;
 
-    const currentPlayersCount = this.gameEngine.isOnline() 
-      ? (this.socketService.roomState()?.players?.length || 0) 
+    const currentPlayersCount = this.gameEngine.isOnline()
+      ? (this.socketService.roomState()?.players?.length || 0)
       : this.players().length;
 
     if (this.gameEngine.isOnline()) {

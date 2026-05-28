@@ -54,10 +54,10 @@
     "DEV_INFO": "Developed for the best party atmosphere.",
     "VISUAL_STYLE": "Visual Style",
     "THEME_NEON": "Neon / Cyberpunk",
-    "THEME_INFANTIL": "Kids (Family friendly)",
+    "THEME_INFANTIL": "Kids",
     "THEME_NEON_2": "Neon 2",
-    "THEME_ALIEN": "Alien Theme",
-    "THEME_MANGA": "Manga Theme",
+    "THEME_ALIEN": "Alien",
+    "THEME_MANGA": "Manga",
     "CONTENT": "Content",
     "CUSTOM_PACKAGES": "Custom Packages",
     "SUPPORT_CONTACT": "Support & Contact",
@@ -77,14 +77,20 @@
     "CLOSE": "Close",
     "UNLOCK_THEME_TITLE": "Unlock {{theme}}",
     "UNLOCK_THEME_DESC": "Get permanent access to this theme with a one-time purchase. Themes are purchased separately and are not included in the Deceptra Pro subscriptions.",
+    "UNLOCK_THEME_DESC_PRO": "This theme is exclusively included in your Deceptra Pro subscription. Subscribe to unlock this and other benefits!",
+    "UNLOCK_THEME_DESC_FREE": "This theme is completely free. Try it now to give your games a fun, family-friendly style!",
+    "APPLY_THEME": "Apply Theme",
     "BUY_THEME": "Buy Theme",
     "VIEW_PRO_PLANS": "View Pro Subscriptions",
     "PREVIEW_LABEL": "Preview",
     "THEME_ALIEN_DESC": "Neon green & purple deep space atmosphere",
     "THEME_MANGA_DESC": "Retro comic style in grayscale and red",
+    "INCLUDES_AVATARS": "5 Avatars",
+    "INCLUDES_FRAME": "1 Frame",
     "COLORS": "Colors"
   },
   "SETUP": {
+    "HOST_CONFIGURING": "The host is configuring the next game...",
     "TITLE": "Settings",
     "TITLE_MAIN": "Game Setup",
     "GAME_MODE": "Game Mode",
@@ -157,7 +163,11 @@
     "CROP_TITLE": "Crop Image",
     "CROP_CANCEL": "Cancel",
     "CROP_APPLY": "Apply",
-    "EDIT_GROUP_BTN": "Edit group"
+    "EDIT_GROUP_BTN": "Edit group",
+    "SELECT_AVATAR": "Select Avatar",
+    "UPLOAD_CUSTOM": "Upload Custom Photo",
+    "PLAYER_N": "Player {{n}}",
+    "EDITED_GROUP": "Edited Group"
   },
   "SETUP_PACKAGES": {
     "TITLE": "Packages",
@@ -279,7 +289,19 @@
     "WIN_DETS_TITLE": "Detectives (Winners)",
     "WIN_CIVS_TITLE": "Surviving Civilians (Winners)",
     "LOSERS_WARN": "Eliminated civilians have lost the game.",
-    "PLAY_AGAIN": "Play Again"
+    "PLAY_AGAIN": "Play Again",
+    "REMATCH_LOBBY": "Rematch Lobby",
+    "WAITING_HOST_DECISION": "Waiting for host decision...",
+    "CHANGE_SETTINGS": "Change Settings",
+    "START_GAME": "Start Game",
+    "PLAYER_STATUS_READY": "Ready",
+    "PLAYER_STATUS_WAITING": "Waiting...",
+    "PLAYER_STATUS_DISCONNECTED": "Disconnected",
+    "PLAYER_STATUS_LEFT": "Left lobby",
+    "REMATCH_TITLE": "Multiplayer Rematch",
+    "MIN_PLAYERS_ERROR": "At least 3 players are required",
+    "LOADING_RESULTS_TITLE": "Getting results...",
+    "LOADING_RESULTS_SUB": "Synchronizing game state with the server."
   },
   "CONFIRM": {
     "TITLE": "LEAVE GAME?",
@@ -310,7 +332,12 @@
     "SAVE_ERROR": "There was an error saving the group. Check your internet connection.",
     "IMAGE_TOO_LARGE": "The image is too large. Try a smaller image size.",
     "NO_WORDS": "The selected packages don't have valid words to start.",
-    "START_ERROR": "There was an error starting the game. Check your internet connection."
+    "START_ERROR": "There was an error starting the game. Check your internet connection.",
+    "API_ERROR": "API Error",
+    "DB_ACCESS_FAIL": "DB Access Failed",
+    "FATAL_DB_ERROR": "Fatal DB Error",
+    "UPDATE_ERROR": "Update Error",
+    "SAVE_ERROR_DB": "Save Error"
   },
   "PREMIUM": {
     "RESTORE": "Restore",
@@ -332,7 +359,9 @@
     "RESTORE_ERROR_MSG": "No active purchases found.",
     "PLAN_MONTHLY": "Monthly Plan",
     "PLAN_THREE_MONTH": "Quarterly Plan",
-    "PLAN_ANNUAL": "Annual Plan"
+    "PLAN_ANNUAL": "Annual Plan",
+    "EULA": "Terms of Use (EULA)",
+    "PRIVACY_POLICY": "Privacy Policy"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "Custom Package",
@@ -352,12 +381,15 @@
   },
   "AUTH_PROFILE": {
     "LOGIN": "Login",
+    "LOGIN_GOOGLE": "Sign in with Google",
+    "LOGIN_APPLE": "Sign in with Apple",
     "LOGOUT_TITLE": "Log Out",
     "LOGOUT_CONFIRM": "Are you sure you want to log out of your current session?",
     "LOGOUT_BTN": "Log Out",
     "ACCOUNT_OPTIONS": "Account Options"
   },
   "PROFILE": {
+    "CUSTOMIZE_AVATAR": "Customize Avatar",
     "TITLE": "Profile",
     "EDIT_ACCOUNT": "Edit Account",
     "NICKNAME": "Nickname",
@@ -398,5 +430,16 @@
     "ACH_3_DESC": "Guess the secret word playing as a Detective.",
     "ACH_4_TITLE": "Deceptra Style",
     "ACH_4_DESC": "Buy your first custom theme in the store."
+  },
+  "AVATAR_PICKER": {
+    "TITLE": "Customize Avatar",
+    "TAB_AVATAR": "Avatar",
+    "TAB_FRAME": "Frame",
+    "INITIAL_AVATAR": "Initials Avatar",
+    "INITIAL_COLOR": "Initials Color",
+    "PHOTO_AVATAR": "PHOTO AVATAR",
+    "GAME_AVATARS": "Game Avatars",
+    "AVATAR_FRAMES": "Avatar Frames",
+    "NO_FRAME": "No Frame"
   }
 }

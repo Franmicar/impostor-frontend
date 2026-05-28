@@ -54,10 +54,12 @@
     "DEV_INFO": "Développé pour la meilleure ambiance de fête.",
     "VISUAL_STYLE": "Style visuel",
     "THEME_NEON": "Néon / Cyberpunk",
-    "THEME_INFANTIL": "Enfants (Familial)",
+    "THEME_INFANTIL": "Enfants",
     "THEME_NEON_2": "Néon 2",
-    "THEME_ALIEN": "Thème Alien",
-    "THEME_MANGA": "Thème Manga",
+    "THEME_ALIEN": "Alien",
+    "THEME_MANGA": "Manga",
+    "INCLUDES_AVATARS": "5 Avatars",
+    "INCLUDES_FRAME": "1 Cadre",
     "CONTENT": "Contenu",
     "CUSTOM_PACKAGES": "Forfaits personnalisés",
     "SUPPORT_CONTACT": "Support & Contact",
@@ -149,7 +151,10 @@
     "CROP_TITLE": "Recadrer l'image",
     "CROP_CANCEL": "Annuler",
     "CROP_APPLY": "Appliquer",
-    "EDIT_GROUP_BTN": "Modifier le groupe"
+    "EDIT_GROUP_BTN": "Modifier le groupe",
+    "PLAYER_N": "Joueur {{n}}",
+    "EDITED_GROUP": "Groupe modifié",
+    "SELECT_AVATAR": "Sélectionner un avatar"
   },
   "SETUP_PACKAGES": {
     "TITLE": "Forfaits",
@@ -271,7 +276,9 @@
     "WIN_DETS_TITLE": "Détectives (Gagnants)",
     "WIN_CIVS_TITLE": "Civils Survivants (Gagnants)",
     "LOSERS_WARN": "Les civils éliminés ont perdu la partie.",
-    "PLAY_AGAIN": "Rejouer"
+    "PLAY_AGAIN": "Rejouer",
+    "LOADING_RESULTS_TITLE": "Obtention des résultats...",
+    "LOADING_RESULTS_SUB": "Synchronisation de l'état de la partie avec le serveur."
   },
   "CONFIRM": {
     "TITLE": "QUITTER LA PARTIE?",
@@ -302,7 +309,12 @@
     "SAVE_ERROR": "Une erreur s'est produite lors de l'enregistrement. Vérifiez votre connexion Internet.",
     "IMAGE_TOO_LARGE": "L'image est trop grande. Essayez avec une image plus petite.",
     "NO_WORDS": "Les forfaits sélectionnés n'ont pas de mots valides pour commencer.",
-    "START_ERROR": "Une erreur s'est produite lors du démarrage du jeu. Vérifiez votre connexion."
+    "START_ERROR": "Une erreur s'est produite lors du démarrage du jeu. Vérifiez votre connexion.",
+    "API_ERROR": "Erreur API",
+    "DB_ACCESS_FAIL": "Échec d'accès à la BD",
+    "FATAL_DB_ERROR": "Erreur BD Fatale",
+    "UPDATE_ERROR": "Erreur de mise à jour",
+    "SAVE_ERROR_DB": "Erreur de sauvegarde"
   },
   "PREMIUM": {
     "RESTORE": "Restaurer",
@@ -389,6 +401,18 @@
     "ACH_3_TITLE": "Œil de Détective",
     "ACH_3_DESC": "Devinez le mot secret en jouant en tant que Détective.",
     "ACH_4_TITLE": "Style Deceptra",
-    "ACH_4_DESC": "Achetez votre premier thème personnalisé dans la boutique."
+    "ACH_4_DESC": "Achetez votre premier thème personnalisé dans la boutique.",
+    "CUSTOMIZE_AVATAR": "Personnaliser l'avatar"
+  },
+  "AVATAR_PICKER": {
+    "TITLE": "Personnaliser l'avatar",
+    "TAB_AVATAR": "Avatar",
+    "TAB_FRAME": "Cadre",
+    "INITIAL_AVATAR": "Avatar avec initiale",
+    "INITIAL_COLOR": "Couleur de l'initiale",
+    "PHOTO_AVATAR": "AVATAR PHOTO",
+    "GAME_AVATARS": "Avatars du jeu",
+    "AVATAR_FRAMES": "Cadres d'avatar",
+    "NO_FRAME": "Pas de cadre"
   }
 }

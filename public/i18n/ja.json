@@ -54,10 +54,12 @@
     "DEV_INFO": "最高のパーティー体験のために開発されました。",
     "VISUAL_STYLE": "ビジュアルスタイル",
     "THEME_NEON": "ネオン / サイバーパンク",
-    "THEME_INFANTIL": "キッズ（ファミリー向け）",
+    "THEME_INFANTIL": "キッズ",
     "THEME_NEON_2": "ネオン 2",
-    "THEME_ALIEN": "エイリアンテーマ",
-    "THEME_MANGA": "マンガテーマ",
+    "THEME_ALIEN": "エイリアン",
+    "THEME_MANGA": "マンガ",
+    "INCLUDES_AVATARS": "5つのアバター",
+    "INCLUDES_FRAME": "1つのフレーム",
     "CONTENT": "コンテンツ",
     "CUSTOM_PACKAGES": "カスタムパック",
     "SUPPORT_CONTACT": "サポート＆お問い合わせ",
@@ -149,7 +151,10 @@
     "CROP_TITLE": "画像を切り抜き",
     "CROP_CANCEL": "キャンセル",
     "CROP_APPLY": "適用",
-    "EDIT_GROUP_BTN": "グループを編集"
+    "EDIT_GROUP_BTN": "グループを編集",
+    "PLAYER_N": "プレイヤー {{n}}",
+    "EDITED_GROUP": "編集済みグループ",
+    "SELECT_AVATAR": "アバターを選択"
   },
   "SETUP_PACKAGES": {
     "TITLE": "パック",
@@ -271,7 +276,9 @@
     "WIN_DETS_TITLE": "探偵",
     "WIN_CIVS_TITLE": "市民",
     "LOSERS_WARN": "脱落者は敗北。",
-    "PLAY_AGAIN": "もう一度"
+    "PLAY_AGAIN": "もう一度",
+    "LOADING_RESULTS_TITLE": "結果を取得中...",
+    "LOADING_RESULTS_SUB": "サーバーとゲームの状態を同期しています。"
   },
   "CONFIRM": {
     "TITLE": "ゲームを終了しますか？",
@@ -302,7 +309,12 @@
     "SAVE_ERROR": "保存エラー。",
     "IMAGE_TOO_LARGE": "画像が大きすぎます。",
     "NO_WORDS": "有効な単語がありません。",
-    "START_ERROR": "開始エラー。"
+    "START_ERROR": "開始エラー。",
+    "API_ERROR": "APIエラー",
+    "DB_ACCESS_FAIL": "DBアクセス失敗",
+    "FATAL_DB_ERROR": "致命的なDBエラー",
+    "UPDATE_ERROR": "更新エラー",
+    "SAVE_ERROR_DB": "保存エラー"
   },
   "PREMIUM": {
     "RESTORE": "復元",
@@ -389,6 +401,18 @@
     "ACH_3_TITLE": "探偵の目",
     "ACH_3_DESC": "探偵としてプレイして秘密の言葉を当てる。",
     "ACH_4_TITLE": "Deceptraスタイル",
-    "ACH_4_DESC": "ストアで最初のカスタムテーマを購入する。"
+    "ACH_4_DESC": "ストアで最初のカスタムテーマを購入する。",
+    "CUSTOMIZE_AVATAR": "アバターをカスタマイズ"
+  },
+  "AVATAR_PICKER": {
+    "TITLE": "アバターをカスタマイズ",
+    "TAB_AVATAR": "アバター",
+    "TAB_FRAME": "フレーム",
+    "INITIAL_AVATAR": "イニシャルアバター",
+    "INITIAL_COLOR": "イニシャルの色",
+    "PHOTO_AVATAR": "写真アバター",
+    "GAME_AVATARS": "ゲームアバター",
+    "AVATAR_FRAMES": "アバターフレーム",
+    "NO_FRAME": "フレームなし"
   }
 }

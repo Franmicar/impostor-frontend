@@ -259,6 +259,22 @@ export class SocketService {
     this.socket?.emit('reset-game', { code });
   }
 
+  requestRematch(code: string) {
+    this.socket?.emit('request-rematch', { code });
+  }
+
+  playerReady(code: string) {
+    this.socket?.emit('player-ready', { code });
+  }
+
+  goToSetup(code: string) {
+    this.socket?.emit('go-to-setup', { code });
+  }
+
+  startRematch(code: string) {
+    this.socket?.emit('start-rematch', { code });
+  }
+
   private async checkAutoConnect() {
     const { value: code } = await Preferences.get({ key: 'deceptra_last_room_code' });
     const { value: name } = await Preferences.get({ key: 'deceptra_player_name' });

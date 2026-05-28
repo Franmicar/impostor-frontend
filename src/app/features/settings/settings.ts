@@ -25,7 +25,7 @@ import packageJson from '../../../../package.json';
    <!-- HEADER -->
    <app-header [showBack]="true" [title]="'SETTINGS.TITLE' | translate" (onBack)="goBack()">
     <div header-extra>
-      <app-auth-profile avatarSize="w-8 h-8"></app-auth-profile>
+      <app-auth-profile avatarSize="w-10 h-10"></app-auth-profile>
     </div>
    </app-header>
 
@@ -57,14 +57,14 @@ import packageJson from '../../../../package.json';
 
       <div class="flex items-center justify-between py-3 border-t border-slate-700/50 cursor-pointer" (click)="toggleOption('vibration')">
         <span class="text-textPrimary">{{ 'SETTINGS.VIBRATION' | translate }}</span>
-        <div class="w-12 h-6 rounded-full transition-colors flex items-center px-1" [ngClass]="options.vibration ? 'bg-cyan-500' : 'bg-slate-600'">
+        <div class="w-12 h-6 rounded-full transition-colors flex items-center px-1" [ngClass]="options.vibration ? 'bg-secondary' : 'bg-slate-600'">
           <div class="w-4 h-4 bg-white rounded-full shadow-sm transition-transform" [ngClass]="options.vibration ? 'translate-x-6' : 'translate-x-0'"></div>
         </div>
       </div>
 
       <div class="flex items-center justify-between py-3 border-t border-slate-700/50 cursor-pointer" (click)="toggleOption('sound')">
         <span class="text-textPrimary">{{ 'SETTINGS.SOUND' | translate }}</span>
-        <div class="w-12 h-6 rounded-full transition-colors flex items-center px-1" [ngClass]="options.sound ? 'bg-cyan-500' : 'bg-slate-600'">
+        <div class="w-12 h-6 rounded-full transition-colors flex items-center px-1" [ngClass]="options.sound ? 'bg-secondary' : 'bg-slate-600'">
           <div class="w-4 h-4 bg-white rounded-full shadow-sm transition-transform" [ngClass]="options.sound ? 'translate-x-6' : 'translate-x-0'"></div>
         </div>
       </div>
@@ -80,7 +80,7 @@ import packageJson from '../../../../package.json';
             <span class="text-textPrimary text-sm">{{ 'SETTINGS.THEME_NEON' | translate }}</span>
           </button>
           <!-- Tema Infantil -->
-          <button (click)="themeService.setTheme('infantil')" 
+          <button (click)="selectTheme('infantil')" 
               [class.ring-2]="themeService.currentTheme() === 'infantil'"
               class="ring-orange-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
             <span class="text-textPrimary text-sm">{{ 'SETTINGS.THEME_INFANTIL' | translate }}</span>
@@ -103,14 +103,14 @@ import packageJson from '../../../../package.json';
             }
           </button>
 
-          <!-- Tema Alien (Premium) [Desactivado para v2.1]
+          <!-- Tema Alien (Premium) -->
           <button (click)="selectTheme('alien')" 
               [class.ring-2]="themeService.currentTheme() === 'alien'"
-              class="ring-green-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between mt-2">
+              class="ring-green-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
             <span class="text-textPrimary text-sm flex items-center gap-2">
               {{ 'SETTINGS.THEME_ALIEN' | translate }}
               @if (!billing.isThemeAlienOwned) {
-                <span class="text-[0.6rem] bg-glass border border-green-500/30 text-green-400 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">5€</span>
+                <span class="text-[0.6rem] bg-glass border border-glass-border text-secondary px-2 py-0.5 rounded-lg font-bold shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] uppercase tracking-wider select-none">5€</span>
               }
             </span>
             @if (!billing.isThemeAlienOwned) {
@@ -119,16 +119,15 @@ import packageJson from '../../../../package.json';
               </svg>
             }
           </button>
-          -->
-
-          <!-- Tema Manga (Premium) [Desactivado para v2.1]
+ 
+          <!-- Tema Manga (Premium) -->
           <button (click)="selectTheme('manga')" 
               [class.ring-2]="themeService.currentTheme() === 'manga'"
-              class="ring-red-500 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between mt-2">
+              class="ring-red-500 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
             <span class="text-textPrimary text-sm flex items-center gap-2">
               {{ 'SETTINGS.THEME_MANGA' | translate }}
               @if (!billing.isThemeMangaOwned) {
-                <span class="text-[0.6rem] bg-glass border border-red-500/30 text-red-400 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">5€</span>
+                <span class="text-[0.6rem] bg-glass border border-glass-border text-secondary px-2 py-0.5 rounded-lg font-bold shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] uppercase tracking-wider select-none">5€</span>
               }
             </span>
             @if (!billing.isThemeMangaOwned) {
@@ -137,7 +136,6 @@ import packageJson from '../../../../package.json';
               </svg>
             }
           </button>
-          -->
         </div>
       </div>
 
@@ -213,30 +211,39 @@ import packageJson from '../../../../package.json';
      </div>
    </app-modal>
 
-   <!-- MODAL ALERTA -->
-   <app-modal
-     [isOpen]="alertModal().show"
-     [title]="alertModal().title"
-     [icon]="alertModal().success ? 'success' : 'error'"
-     (onClose)="alertModal.set({show: false, title: '', message: '', success: false})">
-     
-     <p class="text-base text-textMuted mb-2 w-full text-center">{{ alertModal().message }}</p>
-     
-     <button modal-footer (click)="alertModal.set({show: false, title: '', message: '', success: false})" class="w-full py-4 bg-glass hover:bg-glass-hover border border-glass-border text-textPrimary rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest cursor-pointer">
-       {{ 'SETTINGS.CLOSE' | translate }}
-     </button>
-   </app-modal>
+    <!-- MODAL ALERTA -->
+    <app-modal
+      [isOpen]="alertModal().show"
+      [title]="alertModal().title"
+      [icon]="alertModal().success ? 'success' : 'error'"
+      (onClose)="alertModal.set({show: false, title: '', message: '', success: false})">
+      
+      <p class="text-base text-textMuted mb-2 w-full text-center">{{ alertModal().message }}</p>
+      
+      <button modal-footer (click)="alertModal.set({show: false, title: '', message: '', success: false})" class="w-full py-4 bg-glass hover:bg-glass-hover border border-glass-border text-textPrimary rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest cursor-pointer">
+        {{ 'SETTINGS.CLOSE' | translate }}
+      </button>
+    </app-modal>
+
+    <!-- TOAST DE ÉXITO -->
+    @if (showSuccessToast()) {
+      <div class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white px-5 py-3 rounded-full border border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.3)] backdrop-blur-md z-50 flex items-center gap-2 animate-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-green-500">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+        <span class="text-xs font-semibold tracking-wide">{{ toastMessage() }}</span>
+      </div>
+    }
 
     <!-- MODAL DESBLOQUEO TEMA -->
     <app-modal
       [isOpen]="isThemeUnlockModalOpen()"
       [title]="'SETTINGS.UNLOCK_THEME_TITLE' | translate:{ theme: getThemeName(selectedUnlockTheme()) }"
-      icon="success"
       (onClose)="closeThemeUnlockModal()">
       
       <div class="w-full flex flex-col items-center">
         <p class="text-sm text-textMuted mb-5 text-center px-2">
-          {{ 'SETTINGS.UNLOCK_THEME_DESC' | translate }}
+          {{ getThemeUnlockDescKey(selectedUnlockTheme()) | translate }}
         </p>
         
         <!-- Card label -->
@@ -245,75 +252,91 @@ import packageJson from '../../../../package.json';
           {{ 'SETTINGS.PREVIEW_LABEL' | translate }}
         </span>
 
-        <!-- Interactive preview mockup wrapping container with theme class dynamically injected -->
-        <div [className]="'theme-' + selectedUnlockTheme() + ' w-full p-5 rounded-2xl border border-glass-border bg-gradient-to-br from-glass to-black/35 shadow-xl text-left overflow-hidden relative mb-5 transition-all duration-300'">
-          <!-- Mock Game Header -->
-          <div class="flex items-center justify-between pb-2 border-b border-glass-border/30 mb-4">
-            <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-              <span class="text-[9px] font-black tracking-widest text-textMuted uppercase">DECEPTRA MATCH</span>
-            </div>
-            <span class="text-[9px] text-primary font-mono px-2 py-0.5 rounded border border-primary/20 bg-primary/5">ROUND 2</span>
-          </div>
-          
-          <!-- Mock User Card -->
-          <div class="flex gap-3 mb-4 items-center">
-            <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center border border-primary/20 relative shadow-[0_0_15px_rgba(var(--color-primary),0.1)]">
-              <span class="text-lg">👾</span>
-              <span class="absolute -bottom-1 -right-1 bg-primary text-black text-[8px] font-black w-4 h-4 flex items-center justify-center rounded-full border border-glass-border">1</span>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-textPrimary">AstraPlayer</span>
-                <span class="text-[8px] text-secondary font-bold uppercase tracking-wider bg-secondary/15 px-1.5 py-0.5 rounded border border-secondary/20">CREATOR</span>
-              </div>
-              <div class="text-[9px] text-textMuted mt-1">
-                Word: <span class="text-primary font-extrabold uppercase tracking-wide">Impostor</span>
-              </div>
-            </div>
-          </div>
+        <!-- Preview Carousel Container -->
+        <div class="relative w-full h-80 sm:h-96 bg-black/40 rounded-2xl border border-glass-border overflow-hidden mb-4 flex items-center justify-center select-none shadow-inner">
+          <!-- Slide Images -->
+          <img 
+            [src]="getPreviewImage(selectedUnlockTheme(), currentSlide())" 
+            alt="Theme Preview" 
+            class="h-full w-full object-contain pointer-events-none transition-all duration-300" 
+          />
 
-          <!-- Mock Action buttons / Swatches -->
-          <div class="grid grid-cols-2 gap-2 text-center">
-            <div class="py-2 rounded-lg bg-primary text-black text-[9px] font-black uppercase tracking-widest shadow-[0_0_10px_rgba(var(--color-primary),0.3)] active:scale-95 transition-all">
-              Select Word
+          <!-- Left Arrow Button -->
+          <button 
+            (click)="currentSlide.set(currentSlide() === 0 ? 1 : 0)" 
+            class="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 border border-glass-border text-textPrimary flex items-center justify-center active:scale-95 transition-all shadow-lg cursor-pointer z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+
+          <!-- Right Arrow Button -->
+          <button 
+            (click)="currentSlide.set(currentSlide() === 0 ? 1 : 0)" 
+            class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 border border-glass-border text-textPrimary flex items-center justify-center active:scale-95 transition-all shadow-lg cursor-pointer z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-secondary">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+
+          <!-- Slide dots -->
+          <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+            <div 
+              (click)="currentSlide.set(0)"
+              class="w-2 h-2 rounded-full cursor-pointer transition-all duration-300 shadow-[0_0_5px_rgba(255,255,255,0.2)]" 
+              [class.bg-secondary]="currentSlide() === 0" 
+              [class.bg-white/40]="currentSlide() !== 0">
             </div>
-            <div class="py-2 rounded-lg border border-glass-border text-textPrimary text-[9px] font-extrabold uppercase tracking-widest bg-glass active:scale-95 transition-all">
-              Show Clue
+            <div 
+              (click)="currentSlide.set(1)"
+              class="w-2 h-2 rounded-full cursor-pointer transition-all duration-300 shadow-[0_0_5px_rgba(255,255,255,0.2)]" 
+              [class.bg-secondary]="currentSlide() === 1" 
+              [class.bg-white/40]="currentSlide() !== 1">
             </div>
           </div>
         </div>
 
-        <!-- Theme Swatches & Description -->
-        <div class="w-full flex items-center justify-between bg-white/5 border border-glass-border/30 rounded-xl p-3.5 mb-6">
-          <div class="text-left flex flex-col gap-0.5">
-            <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider">{{ 'SETTINGS.VISUAL_STYLE' | translate }}</span>
-            <span class="text-xs font-medium text-textPrimary">
-              {{ selectedUnlockTheme() === 'alien' ? ('SETTINGS.THEME_ALIEN_DESC' | translate) : ('SETTINGS.THEME_MANGA_DESC' | translate) }}
-            </span>
+        <!-- Reward Info Grid -->
+        <div class="w-full grid grid-cols-2 gap-3 mb-6">
+          <div class="bg-glass border border-glass-border/30 rounded-2xl p-4 flex flex-col items-center text-center shadow-md relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="text-3xl mb-1.5 select-none animate-pulse-slow">👤</span>
+            <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider mb-0.5 select-none">{{ 'SETTINGS.VISUAL_STYLE' | translate }}</span>
+            <span class="text-sm font-black text-textPrimary select-none">{{ 'SETTINGS.INCLUDES_AVATARS' | translate }}</span>
           </div>
-          <div class="flex gap-2">
-            <!-- Primary -->
-            <div [className]="'theme-' + selectedUnlockTheme() + ' flex items-center justify-center w-6 h-6 rounded-full bg-primary border border-white/25 shadow-md relative group'" title="Primary">
-            </div>
-            <!-- Secondary -->
-            <div [className]="'theme-' + selectedUnlockTheme() + ' flex items-center justify-center w-6 h-6 rounded-full bg-secondary border border-white/25 shadow-md relative group'" title="Secondary">
-            </div>
+          <div class="bg-glass border border-glass-border/30 rounded-2xl p-4 flex flex-col items-center text-center shadow-md relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="text-3xl mb-1.5 select-none animate-pulse-slow">🖼️</span>
+            <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider mb-0.5 select-none">{{ 'SETTINGS.VISUAL_STYLE' | translate }}</span>
+            <span class="text-sm font-black text-textPrimary select-none">{{ 'SETTINGS.INCLUDES_FRAME' | translate }}</span>
           </div>
         </div>
       </div>
 
       <!-- Footer actions -->
       <div modal-footer class="w-full flex flex-col gap-2">
-        <button (click)="buyTheme()" class="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(var(--color-secondary),0.4)] active:scale-[0.98] uppercase tracking-wider text-xs flex items-center justify-center gap-2 cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-          {{ 'SETTINGS.BUY_THEME' | translate }} (5€)
-        </button>
-        <button (click)="goToPremiumPlans()" class="w-full py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-textMuted hover:text-textPrimary rounded-xl font-bold transition-all active:scale-[0.98] uppercase tracking-wider text-[10px] cursor-pointer">
-          {{ 'SETTINGS.VIEW_PRO_PLANS' | translate }}
-        </button>
+        @if (selectedUnlockTheme() === 'infantil') {
+          <button (click)="themeService.setTheme('infantil'); closeThemeUnlockModal()" class="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(var(--color-secondary),0.4)] active:scale-[0.98] uppercase tracking-wider text-xs flex items-center justify-center cursor-pointer">
+            {{ 'SETTINGS.APPLY_THEME' | translate }}
+          </button>
+          <button (click)="closeThemeUnlockModal()" class="w-full py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-textMuted hover:text-textPrimary rounded-xl font-bold transition-all active:scale-[0.98] uppercase tracking-wider text-[10px] cursor-pointer">
+            {{ 'COMMON.CANCEL' | translate }}
+          </button>
+        } @else if (selectedUnlockTheme() === 'neon2') {
+          <button (click)="goToPremiumPlans()" class="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(var(--color-secondary),0.4)] active:scale-[0.98] uppercase tracking-wider text-xs flex items-center justify-center cursor-pointer">
+            {{ 'PREMIUM.SUBSCRIBE' | translate }}
+          </button>
+          <button (click)="closeThemeUnlockModal()" class="w-full py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-textMuted hover:text-textPrimary rounded-xl font-bold transition-all active:scale-[0.98] uppercase tracking-wider text-[10px] cursor-pointer">
+            {{ 'COMMON.CANCEL' | translate }}
+          </button>
+        } @else {
+          <button (click)="buyTheme()" class="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(var(--color-secondary),0.4)] active:scale-[0.98] uppercase tracking-wider text-xs flex items-center justify-center cursor-pointer">
+            {{ 'SETTINGS.BUY_THEME' | translate }} (5€)
+          </button>
+          <button (click)="closeThemeUnlockModal()" class="w-full py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-textMuted hover:text-textPrimary rounded-xl font-bold transition-all active:scale-[0.98] uppercase tracking-wider text-[10px] cursor-pointer">
+            {{ 'COMMON.CANCEL' | translate }}
+          </button>
+        }
       </div>
     </app-modal>
   </div>
@@ -334,8 +357,11 @@ export class Settings implements OnInit {
   reportType = signal<'bug' | 'suggestion'>('bug');
   isSendingReport = signal(false);
   alertModal = signal({ show: false, title: '', message: '', success: false });
+  showSuccessToast = signal(false);
+  toastMessage = signal('');
   isThemeUnlockModalOpen = signal(false);
-  selectedUnlockTheme = signal<'alien' | 'manga'>('alien');
+  selectedUnlockTheme = signal<'alien' | 'manga' | 'neon2' | 'infantil'>('alien');
+  currentSlide = signal(0);
 
   currentLang = 'es';
   appVersion = packageJson.version;
@@ -380,9 +406,13 @@ export class Settings implements OnInit {
   }
 
   selectTheme(theme: Theme) {
+    if (theme === 'infantil') {
+      this.openThemeUnlockModal('infantil');
+      return;
+    }
     if (theme === 'neon2') {
       if (!this.billing.isPremium) {
-        this.router.navigate(['/premium']);
+        this.openThemeUnlockModal('neon2');
         return;
       }
       this.themeService.setTheme(theme);
@@ -403,17 +433,42 @@ export class Settings implements OnInit {
     }
   }
 
-  openThemeUnlockModal(theme: 'alien' | 'manga') {
+  openThemeUnlockModal(theme: 'alien' | 'manga' | 'neon2' | 'infantil') {
     this.selectedUnlockTheme.set(theme);
+    this.currentSlide.set(0);
     this.isThemeUnlockModalOpen.set(true);
+  }
+
+  getPreviewImage(theme: 'alien' | 'manga' | 'neon2' | 'infantil', slide: number): string {
+    if (theme === 'alien') {
+      return slide === 0 ? '/images/preview_alien_home.png' : '/images/preview_alien_setup.png';
+    } else if (theme === 'manga') {
+      return slide === 0 ? '/images/preview_manga_home.png' : '/images/preview_manga_setup.png';
+    } else if (theme === 'neon2') {
+      return slide === 0 ? '/images/preview_neon2_home.png' : '/images/preview_neon2_setup.png';
+    } else if (theme === 'infantil') {
+      return slide === 0 ? '/images/preview_infantil_home.png' : '/images/preview_infantil_setup.png';
+    }
+    return '';
   }
 
   closeThemeUnlockModal() {
     this.isThemeUnlockModalOpen.set(false);
   }
 
+  getThemeUnlockDescKey(theme: 'alien' | 'manga' | 'neon2' | 'infantil'): string {
+    if (theme === 'neon2') {
+      return 'SETTINGS.UNLOCK_THEME_DESC_PRO';
+    } else if (theme === 'infantil') {
+      return 'SETTINGS.UNLOCK_THEME_DESC_FREE';
+    }
+    return 'SETTINGS.UNLOCK_THEME_DESC';
+  }
+
   async buyTheme() {
     const theme = this.selectedUnlockTheme();
+    if (theme === 'neon2' || theme === 'infantil') return;
+
     this.uiService.setLoading(true);
     const success = await this.billing.purchaseTheme(theme);
     this.uiService.setLoading(false);
@@ -421,12 +476,9 @@ export class Settings implements OnInit {
     if (success) {
       this.closeThemeUnlockModal();
       this.themeService.setTheme(theme);
-      this.alertModal.set({
-        show: true,
-        title: this.translate.instant('ALERTS.TITLE_SUCCESS'),
-        message: this.translate.instant('PREMIUM.SUCCESS_MSG'),
-        success: true
-      });
+      this.toastMessage.set(this.translate.instant('PREMIUM.SUCCESS_MSG'));
+      this.showSuccessToast.set(true);
+      setTimeout(() => this.showSuccessToast.set(false), 3000);
     } else {
       this.alertModal.set({
         show: true,
@@ -442,11 +494,15 @@ export class Settings implements OnInit {
     this.router.navigate(['/premium']);
   }
 
-  getThemeName(theme: 'alien' | 'manga'): string {
+  getThemeName(theme: 'alien' | 'manga' | 'neon2' | 'infantil'): string {
     if (theme === 'alien') {
       return this.translate.instant('SETTINGS.THEME_ALIEN');
     } else if (theme === 'manga') {
       return this.translate.instant('SETTINGS.THEME_MANGA');
+    } else if (theme === 'neon2') {
+      return this.translate.instant('SETTINGS.THEME_NEON_2');
+    } else if (theme === 'infantil') {
+      return this.translate.instant('SETTINGS.THEME_INFANTIL');
     }
     return '';
   }
@@ -483,12 +539,9 @@ export class Settings implements OnInit {
     this.closeReportModal();
 
     if (success) {
-      this.alertModal.set({
-        show: true,
-        title: this.translate.instant('SETTINGS.SUCCESS_TITLE'),
-        message: this.translate.instant('SETTINGS.SUCCESS_MSG'),
-        success: true
-      });
+      this.toastMessage.set(this.translate.instant('SETTINGS.SUCCESS_MSG'));
+      this.showSuccessToast.set(true);
+      setTimeout(() => this.showSuccessToast.set(false), 3000);
     } else {
       this.alertModal.set({
         show: true,

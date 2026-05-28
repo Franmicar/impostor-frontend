@@ -39,7 +39,7 @@ export class GameEngineService implements IGameEngine {
   }
 
   // Motor activo basado en el modo
-  private activeEngine = computed(() => {
+  private activeEngine = computed<IGameEngine>(() => {
     return this.isOnline() ? this.remoteEngine : this.localEngine;
   });
 
@@ -102,5 +102,29 @@ export class GameEngineService implements IGameEngine {
 
   addDrawing(drawing: string) {
     this.activeEngine().addDrawing(drawing);
+  }
+
+  requestRematch() {
+    if (this.activeEngine().requestRematch) {
+      this.activeEngine().requestRematch!();
+    }
+  }
+
+  playerReady() {
+    if (this.activeEngine().playerReady) {
+      this.activeEngine().playerReady!();
+    }
+  }
+
+  goToSetup() {
+    if (this.activeEngine().goToSetup) {
+      this.activeEngine().goToSetup!();
+    }
+  }
+
+  startRematch() {
+    if (this.activeEngine().startRematch) {
+      this.activeEngine().startRematch!();
+    }
   }
 }

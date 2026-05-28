@@ -54,10 +54,12 @@
     "DEV_INFO": "Desenvolupat per al millor ambient de festa.",
     "VISUAL_STYLE": "Estil Visual",
     "THEME_NEON": "Neó / Cyberpunk",
-    "THEME_INFANTIL": "Infantil (Familiar)",
+    "THEME_INFANTIL": "Infantil",
     "THEME_NEON_2": "Neó 2",
-    "THEME_ALIEN": "Tema Alien",
-    "THEME_MANGA": "Tema Manga",
+    "THEME_ALIEN": "Alien",
+    "THEME_MANGA": "Manga",
+    "INCLUDES_AVATARS": "5 Avatars",
+    "INCLUDES_FRAME": "1 Marc",
     "CONTENT": "Contingut",
     "CUSTOM_PACKAGES": "Paquets Personalitzats",
     "SUPPORT_CONTACT": "Suport i Contacte",
@@ -149,7 +151,10 @@
     "CROP_TITLE": "Retallar Imatge",
     "CROP_CANCEL": "Cancel·lar",
     "CROP_APPLY": "Aplicar",
-    "EDIT_GROUP_BTN": "Editar grup"
+    "EDIT_GROUP_BTN": "Editar grup",
+    "PLAYER_N": "Jugador {{n}}",
+    "EDITED_GROUP": "Grup Editat",
+    "SELECT_AVATAR": "Seleccionar Avatar"
   },
   "SETUP_PACKAGES": {
     "TITLE": "Paquets",
@@ -271,7 +276,9 @@
     "WIN_DETS_TITLE": "Detectius (Guanyadors)",
     "WIN_CIVS_TITLE": "Civils Supervivents (Guanyadors)",
     "LOSERS_WARN": "Els civils eliminats han perdut la partida.",
-    "PLAY_AGAIN": "Tornar a jugar"
+    "PLAY_AGAIN": "Tornar a jugar",
+    "LOADING_RESULTS_TITLE": "Obtenint resultats...",
+    "LOADING_RESULTS_SUB": "Sincronitzant l'estat de la partida amb el servidor."
   },
   "CONFIRM": {
     "TITLE": "ABANDONAR PARTIDA?",
@@ -302,7 +309,12 @@
     "SAVE_ERROR": "Hi ha hagut un error en desar el grup. Revisa la teva connexió a internet.",
     "IMAGE_TOO_LARGE": "La imatge és massa gran. Intenta-ho amb una imatge de menor mida.",
     "NO_WORDS": "Els paquets seleccionats no tenen paraules vàlides per començar.",
-    "START_ERROR": "Hi ha hagut un error en iniciar la partida. Revisa la connexió."
+    "START_ERROR": "Hi ha hagut un error en iniciar la partida. Revisa la connexió.",
+    "API_ERROR": "Error API",
+    "DB_ACCESS_FAIL": "Fallada d'accés a BD",
+    "FATAL_DB_ERROR": "Error Fatal BD",
+    "UPDATE_ERROR": "Error actualitzant",
+    "SAVE_ERROR_DB": "Error desant"
   },
   "PREMIUM": {
     "RESTORE": "Restaurar",
@@ -389,6 +401,18 @@
     "ACH_3_TITLE": "Ull de Detectiu",
     "ACH_3_DESC": "Encerta la paraula secreta jugant com a detectiu.",
     "ACH_4_TITLE": "Estil Deceptra",
-    "ACH_4_DESC": "Compra el teu primer tema personalitzat a la botiga."
+    "ACH_4_DESC": "Compra el teu primer tema personalitzat a la botiga.",
+    "CUSTOMIZE_AVATAR": "Personalitzar Avatar"
+  },
+  "AVATAR_PICKER": {
+    "TITLE": "Personalitzar Avatar",
+    "TAB_AVATAR": "Avatar",
+    "TAB_FRAME": "Marc",
+    "INITIAL_AVATAR": "Avatar amb Inicial",
+    "INITIAL_COLOR": "Color d'Inicial",
+    "PHOTO_AVATAR": "AVATAR AMB FOTO",
+    "GAME_AVATARS": "Avatars del joc",
+    "AVATAR_FRAMES": "Marcs d'avatar",
+    "NO_FRAME": "Sense Marc"
   }
 }

@@ -54,10 +54,12 @@
     "DEV_INFO": "Создано для лучших вечеринок.",
     "VISUAL_STYLE": "Визуальный стиль",
     "THEME_NEON": "Неон / Киберпанк",
-    "THEME_INFANTIL": "Детская (Для семьи)",
+    "THEME_INFANTIL": "Детская",
     "THEME_NEON_2": "Неон 2",
-    "THEME_ALIEN": "Тема Пришельцы",
-    "THEME_MANGA": "Тема Манга",
+    "THEME_ALIEN": "Пришельцы",
+    "THEME_MANGA": "Манга",
+    "INCLUDES_AVATARS": "5 Аватаров",
+    "INCLUDES_FRAME": "1 Рамка",
     "CONTENT": "Контент",
     "CUSTOM_PACKAGES": "Пользовательские пакеты",
     "SUPPORT_CONTACT": "Поддержка и Контакты",
@@ -149,7 +151,10 @@
     "CROP_TITLE": "Обрезать изображение",
     "CROP_CANCEL": "Отмена",
     "CROP_APPLY": "Применить",
-    "EDIT_GROUP_BTN": "Изменить группу"
+    "EDIT_GROUP_BTN": "Изменить группу",
+    "PLAYER_N": "Игрок {{n}}",
+    "EDITED_GROUP": "Измененная группа",
+    "SELECT_AVATAR": "Выбрать аватар"
   },
   "SETUP_PACKAGES": {
     "TITLE": "Пакеты",
@@ -271,7 +276,9 @@
     "WIN_DETS_TITLE": "Детективы",
     "WIN_CIVS_TITLE": "Мирные",
     "LOSERS_WARN": "Выбывшие проиграли.",
-    "PLAY_AGAIN": "Играть снова"
+    "PLAY_AGAIN": "Играть снова",
+    "LOADING_RESULTS_TITLE": "Получение результатов...",
+    "LOADING_RESULTS_SUB": "Синхронизация состояния игры с сервером."
   },
   "CONFIRM": {
     "TITLE": "ВЫЙТИ ИЗ ИГРЫ?",
@@ -302,7 +309,12 @@
     "SAVE_ERROR": "Ошибка сохранения.",
     "IMAGE_TOO_LARGE": "Изображение слишком большое.",
     "NO_WORDS": "Нет подходящих слов.",
-    "START_ERROR": "Ошибка запуска."
+    "START_ERROR": "Ошибка запуска.",
+    "API_ERROR": "Ошибка API",
+    "DB_ACCESS_FAIL": "Сбой доступа к БД",
+    "FATAL_DB_ERROR": "Критическая ошибка БД",
+    "UPDATE_ERROR": "Ошибка обновления",
+    "SAVE_ERROR_DB": "Ошибка сохранения"
   },
   "PREMIUM": {
     "RESTORE": "Восстановить",
@@ -389,6 +401,18 @@
     "ACH_3_TITLE": "Глаз детектива",
     "ACH_3_DESC": "Угадайте секретное слово, играя за детектива.",
     "ACH_4_TITLE": "Стиль Deceptra",
-    "ACH_4_DESC": "Купите свою первую пользовательскую тему в магазине."
+    "ACH_4_DESC": "Купите свою первую пользовательскую тему в магазине.",
+    "CUSTOMIZE_AVATAR": "Настроить аватар"
+  },
+  "AVATAR_PICKER": {
+    "TITLE": "Настроить аватар",
+    "TAB_AVATAR": "Аватар",
+    "TAB_FRAME": "Рамка",
+    "INITIAL_AVATAR": "Аватар с инициалом",
+    "INITIAL_COLOR": "Цвет инициала",
+    "PHOTO_AVATAR": "ФОТО АВАТАР",
+    "GAME_AVATARS": "Аватары игры",
+    "AVATAR_FRAMES": "Рамки аватаров",
+    "NO_FRAME": "Без рамки"
   }
 }

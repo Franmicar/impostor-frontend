@@ -54,10 +54,12 @@
     "DEV_INFO": "为最佳派对体验而打造。",
     "VISUAL_STYLE": "视觉风格",
     "THEME_NEON": "霓虹 / 赛博朋克",
-    "THEME_INFANTIL": "儿童（适合家庭）",
+    "THEME_INFANTIL": "儿童",
     "THEME_NEON_2": "霓虹 2",
-    "THEME_ALIEN": "外星人主题",
-    "THEME_MANGA": "漫画主题",
+    "THEME_ALIEN": "外星人",
+    "THEME_MANGA": "漫画",
+    "INCLUDES_AVATARS": "5 个头像",
+    "INCLUDES_FRAME": "1 个边框",
     "CONTENT": "内容",
     "CUSTOM_PACKAGES": "自定义词包",
     "SUPPORT_CONTACT": "支持与联系",
@@ -149,7 +151,10 @@
     "CROP_TITLE": "裁剪图片",
     "CROP_CANCEL": "取消",
     "CROP_APPLY": "应用",
-    "EDIT_GROUP_BTN": "编辑分组"
+    "EDIT_GROUP_BTN": "编辑分组",
+    "PLAYER_N": "玩家 {{n}}",
+    "EDITED_GROUP": "编辑组",
+    "SELECT_AVATAR": "选择头像"
   },
   "SETUP_PACKAGES": {
     "TITLE": "词包",
@@ -271,7 +276,9 @@
     "WIN_DETS_TITLE": "侦探",
     "WIN_CIVS_TITLE": "平民",
     "LOSERS_WARN": "被淘汰者失败。",
-    "PLAY_AGAIN": "再来一局"
+    "PLAY_AGAIN": "再来一局",
+    "LOADING_RESULTS_TITLE": "正在获取结果...",
+    "LOADING_RESULTS_SUB": "正在与服务器同步游戏状态。"
   },
   "CONFIRM": {
     "TITLE": "退出游戏？",
@@ -302,7 +309,12 @@
     "SAVE_ERROR": "保存失败。",
     "IMAGE_TOO_LARGE": "图片过大。",
     "NO_WORDS": "没有可用词语。",
-    "START_ERROR": "启动失败。"
+    "START_ERROR": "启动失败。",
+    "API_ERROR": "API错误",
+    "DB_ACCESS_FAIL": "数据库访问失败",
+    "FATAL_DB_ERROR": "致命数据库错误",
+    "UPDATE_ERROR": "更新错误",
+    "SAVE_ERROR_DB": "保存错误"
   },
   "PREMIUM": {
     "RESTORE": "恢复",
@@ -389,6 +401,18 @@
     "ACH_3_TITLE": "侦探之眼",
     "ACH_3_DESC": "在扮演侦探时猜出秘密单词。",
     "ACH_4_TITLE": "Deceptra风格",
-    "ACH_4_DESC": "在商店购买你的第一个自定义主题。"
+    "ACH_4_DESC": "在商店购买你的第一个自定义主题。",
+    "CUSTOMIZE_AVATAR": "自定义头像"
+  },
+  "AVATAR_PICKER": {
+    "TITLE": "自定义头像",
+    "TAB_AVATAR": "头像",
+    "TAB_FRAME": "边框",
+    "INITIAL_AVATAR": "首字母头像",
+    "INITIAL_COLOR": "首字母颜色",
+    "PHOTO_AVATAR": "照片头像",
+    "GAME_AVATARS": "游戏头像",
+    "AVATAR_FRAMES": "头像边框",
+    "NO_FRAME": "无边框"
   }
 }

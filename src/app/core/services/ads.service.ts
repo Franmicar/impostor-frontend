@@ -21,6 +21,14 @@ export class AdsService {
   async initialize() {
     if (Capacitor.isNativePlatform()) {
       try {
+        // Solicitar el consentimiento de rastreo (ATT) en iOS antes de inicializar anuncios
+        if (Capacitor.getPlatform() === 'ios') {
+          const trackingInfo = await AdMob.trackingAuthorizationStatus();
+          if (trackingInfo.status === 'notDetermined') {
+            await AdMob.requestTrackingAuthorization();
+          }
+        }
+
         await AdMob.initialize({});
         this.isAdMobInitialized = true;
 

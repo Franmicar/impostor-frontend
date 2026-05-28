@@ -28,9 +28,7 @@ export class BillingService {
   public isThemeMangaOwned$ = this._isThemeMangaOwnedRevenueCat.asObservable();
 
   constructor() {
-    // Listen to auth changes manually (effect requires injection context, so we use effect or just subscribe if it was observable, but userSignal is a signal)
-    // Actually, we can just use effect inside constructor:
-    // Wait, let's fetch tester status when login happens:
+    // Listen to auth changes manually (effect requires injection context)
     effect(() => {
       const user = this.auth.userSignal();
       if (user) {
@@ -81,6 +79,7 @@ export class BillingService {
   }
 
   private updatePremiumStatus(customerInfo: any) {
+
     // Asumimos que el entitlement se llama "premium"
     const isEntitled = typeof customerInfo.entitlements.active['premium'] !== 'undefined';
     this._isPremiumRevenueCat.next(isEntitled);

@@ -17,12 +17,12 @@ import { InputComponent } from '../../shared/components/ui/input.component';
 import { SocketService } from '../../core/services/socket/socket.service';
 import { ThemeService } from '../../core/services/theme.service';
 import { VoiceChatService } from '../../core/services/voice-chat/voice-chat.service';
-
+import { AvatarComponent } from '../../shared/components/ui/avatar.component';
 
 @Component({
  selector: 'app-vote',
  standalone: true,
- imports: [CommonModule, FormsModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, ModalComponent, HeaderComponent, FooterComponent, InputComponent],
+ imports: [CommonModule, FormsModule, TranslateModule, ButtonPrimaryComponent, ButtonSecondaryComponent, IconButtonComponent, ModalComponent, HeaderComponent, FooterComponent, InputComponent, AvatarComponent],
  template: `
   <div class="min-h-dvh bg-transparent text-textPrimary flex flex-col relative w-full">
    <app-header [showBack]="false" [title]="'VOTE.TITLE' | translate"></app-header>
@@ -346,14 +346,20 @@ import { VoiceChatService } from '../../core/services/voice-chat/voice-chat.serv
          </div>
        }
 
-       <div class="relative">
-          <div class="w-14 h-14 rounded-full flex items-center justify-center border transition-all overflow-hidden"
-             [class.bg-primary/20]="selectedPlayerId === player.id"
-             [class.border-primary]="selectedPlayerId === player.id"
-             [class.bg-white/5]="selectedPlayerId !== player.id"
-             [class.border-white/10]="selectedPlayerId !== player.id">
-            <img [src]="player.photoUrl || themeService.resolveAsset('shared.default_avatar')" class="w-full h-full object-cover">
-          </div>
+       <div class="relative flex items-center justify-center">
+            <div class="rounded-full flex items-center justify-center border transition-all relative"
+               [class.bg-primary/20]="selectedPlayerId === player.id"
+               [class.border-primary]="selectedPlayerId === player.id"
+               [class.bg-white/5]="selectedPlayerId !== player.id"
+               [class.border-white/10]="selectedPlayerId !== player.id">
+              <app-avatar
+                [avatarId]="player.photoUrl || themeService.resolveAsset('shared.default_avatar')"
+                [avatarFrame]="themeService.currentTheme()"
+                [nickname]="player.name || '?'"
+                avatarSize="w-14 h-14"
+                borderClass=""
+                shadowClass=""></app-avatar>
+            </div>
           
           <!-- Mic status badge overlay -->
           @if (isOnline()) {
