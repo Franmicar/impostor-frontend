@@ -169,8 +169,15 @@ export class PremiumComponent implements OnInit {
   this.isLoading.set(true);
   const packages = await this.billing.getOfferings();
   
+  // Keep only subscription packages (Monthly, Quarterly, Annual)
+  const subscriptionPackages = packages.filter(p => 
+    p.packageType === 'MONTHLY' || 
+    p.packageType === 'THREE_MONTH' || 
+    p.packageType === 'ANNUAL'
+  );
+
   // Sort packages: Monthly, Quarterly, Annual
-  const sorted = [...packages].sort((a, b) => {
+  const sorted = [...subscriptionPackages].sort((a, b) => {
     const order: any = { 'MONTHLY': 1, 'THREE_MONTH': 2, 'ANNUAL': 3 };
     const orderA = order[a.packageType] || 9;
     const orderB = order[b.packageType] || 9;

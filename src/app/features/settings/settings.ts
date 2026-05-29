@@ -110,7 +110,7 @@ import packageJson from '../../../../package.json';
             <span class="text-textPrimary text-sm flex items-center gap-2">
               {{ 'SETTINGS.THEME_ALIEN' | translate }}
               @if (!billing.isThemeAlienOwned) {
-                <span class="text-[0.6rem] bg-glass border border-glass-border text-secondary px-2 py-0.5 rounded-lg font-bold shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] uppercase tracking-wider select-none">5€</span>
+                <span class="text-[0.6rem] bg-glass border border-glass-border text-secondary px-2 py-0.5 rounded-lg font-bold shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] uppercase tracking-wider select-none">4.99€</span>
               }
             </span>
             @if (!billing.isThemeAlienOwned) {
@@ -127,7 +127,7 @@ import packageJson from '../../../../package.json';
             <span class="text-textPrimary text-sm flex items-center gap-2">
               {{ 'SETTINGS.THEME_MANGA' | translate }}
               @if (!billing.isThemeMangaOwned) {
-                <span class="text-[0.6rem] bg-glass border border-glass-border text-secondary px-2 py-0.5 rounded-lg font-bold shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] uppercase tracking-wider select-none">5€</span>
+                <span class="text-[0.6rem] bg-glass border border-glass-border text-secondary px-2 py-0.5 rounded-lg font-bold shadow-[0_0_15px_rgb(var(--color-primary)/0.4)] uppercase tracking-wider select-none">4.99€</span>
               }
             </span>
             @if (!billing.isThemeMangaOwned) {
@@ -331,7 +331,7 @@ import packageJson from '../../../../package.json';
           </button>
         } @else {
           <button (click)="buyTheme()" class="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(var(--color-secondary),0.4)] active:scale-[0.98] uppercase tracking-wider text-xs flex items-center justify-center cursor-pointer">
-            {{ 'SETTINGS.BUY_THEME' | translate }} (5€)
+            {{ 'SETTINGS.BUY_THEME' | translate }} (4.99€)
           </button>
           <button (click)="closeThemeUnlockModal()" class="w-full py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-textMuted hover:text-textPrimary rounded-xl font-bold transition-all active:scale-[0.98] uppercase tracking-wider text-[10px] cursor-pointer">
             {{ 'COMMON.CANCEL' | translate }}
