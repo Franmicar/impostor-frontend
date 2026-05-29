@@ -237,7 +237,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
       
       <div modal-footer class="w-full">
         <app-button-primary (onClick)="alertModal.set({ show: false, title: '', message: '', isError: false })">
-          {{ 'COMMON.ACCEPT' | translate }}
+          {{ 'COMMON.OK' | translate }}
         </app-button-primary>
       </div>
     </app-modal>

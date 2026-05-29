@@ -757,7 +757,7 @@ export class SetupComponent implements OnInit {
     effect(() => {
       if (this.gameEngine.isOnline() && this.isHost()) {
         const state = this.socketService.roomState();
-        if (state && state.code) {
+        if (state && state.code && state.status === 'lobby') {
           const settings = {
             playerData: [],
             words: [],
