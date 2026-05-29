@@ -202,5 +202,18 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
   - Incremento coordinado a la versión `2.0.0` (Android `versionCode 15`, iOS Xcode `2.0.0`).
   - Ejecución de `npx cap sync` para el empaquetado nativo y limpieza de archivos temporales/scripts de depuración obsoletos en `scratch/`.
 
+### Versión 2.1.0
+- **Integración de Clave RevenueCat iOS**: Configuración de la clave de producción real (`appl_oluTSHNzbYXkQiXaXQKFVEDEuxB`) en `environment.ts` para habilitar las compras y restauraciones de suscripciones en dispositivos de Apple.
+- **Rematch Lobby y Sincronización Multiplayer**: Refactor del flujo online y local post-partida en `/results`. Implementación de ready-check con estados listos de jugadores en tiempo real, sincronización del anfitrión y mitigación de condiciones de carrera al guardar ajustes.
+- **Refactorización de Imágenes, Avatares y Marcos**: 
+  - Extracción del modal de edición de avatar a un componente compartido y reutilizable `AvatarPickerModalComponent` para simplificar y limpiar código redundante.
+  - Recolor físico mediante script de los avatares y marcos para el tema *Neon 2* (reemplazando los filtros CSS incompatibles con multijugador).
+  - Eliminación de marcos por defecto para jugadores locales y soporte de visualización sin marcos.
+  - Cambio a `object-contain` en marcos de avatar y eliminación de `overflow-hidden` en el recortador de fotos para evitar recortes visuales.
+- **Toasts Informativos Temporales**: Sustitución de los modales bloqueantes de éxito por Toasts animados temporales al guardar perfil, presets locales, reportar errores o realizar compras.
+- **QoL en UI y Ruleta**: Reducción de fuentes e incremento de padding lateral (`pl-10`) en las etiquetas de la ruleta para evitar que los nombres se solapen con el pin central. Ajuste de espaciados en Settings y micrófono silenciado en tiempo de votación.
+- **Aplazamiento de Estadísticas y Logros (v2.2.0)**: Ocultación temporal mediante comentarios de las tarjetas de logros y estadísticas en `/profile`, postergando su activación para el próximo ciclo.
+
+
 
 
