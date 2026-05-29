@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, computed, effect } from '@angular/core';
+import { Component, inject, OnInit, signal, computed, effect, untracked } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
@@ -756,18 +756,26 @@ export class SetupComponent implements OnInit {
 
     effect(() => {
       if (this.gameEngine.isOnline() && this.isHost()) {
-        const state = this.socketService.roomState();
+        const numImpostors = this.impostors();
+        const numDetectives = this.detectives();
+        const modeId = this.gameMode().id;
+        const gameTypeId = this.gameType().id;
+        const duration = this.duration();
+        const hints = this.hints();
+        const drawTurnTime = this.drawTurnTime();
+
+        const state = untracked(() => this.socketService.roomState());
         if (state && state.code && state.status === 'lobby') {
           const settings = {
             playerData: [],
             words: [],
-            numImpostors: this.impostors(),
-            numDetectives: this.detectives(),
-            modeId: this.gameMode().id,
-            gameTypeId: this.gameType().id as 'word' | 'question' | 'draw',
-            duration: this.duration(),
-            hints: this.hints(),
-            drawTurnTime: this.drawTurnTime()
+            numImpostors,
+            numDetectives,
+            modeId,
+            gameTypeId: gameTypeId as 'word' | 'question' | 'draw',
+            duration,
+            hints,
+            drawTurnTime
           };
           this.socketService.syncSettings(state.code, settings);
         }
