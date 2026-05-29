@@ -278,7 +278,8 @@
     "LOSERS_WARN": "Eliminati perdono.",
     "PLAY_AGAIN": "Rigioca",
     "LOADING_RESULTS_TITLE": "Ottenimento dei risultati...",
-    "LOADING_RESULTS_SUB": "Sincronizzazione dello stato del gioco con il server."
+    "LOADING_RESULTS_SUB": "Sincronizzazione dello stato del gioco con il server.",
+    "CHANGE_SETTINGS": "Modifica impostazioni"
   },
   "CONFIRM": {
     "TITLE": "USCIRE?",

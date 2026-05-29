@@ -278,7 +278,8 @@
     "LOSERS_WARN": "Выбывшие проиграли.",
     "PLAY_AGAIN": "Играть снова",
     "LOADING_RESULTS_TITLE": "Получение результатов...",
-    "LOADING_RESULTS_SUB": "Синхронизация состояния игры с сервером."
+    "LOADING_RESULTS_SUB": "Синхронизация состояния игры с сервером.",
+    "CHANGE_SETTINGS": "Изменить настройки"
   },
   "CONFIRM": {
     "TITLE": "ВЫЙТИ ИЗ ИГРЫ?",

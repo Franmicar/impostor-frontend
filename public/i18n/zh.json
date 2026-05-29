@@ -278,7 +278,8 @@
     "LOSERS_WARN": "被淘汰者失败。",
     "PLAY_AGAIN": "再来一局",
     "LOADING_RESULTS_TITLE": "正在获取结果...",
-    "LOADING_RESULTS_SUB": "正在与服务器同步游戏状态。"
+    "LOADING_RESULTS_SUB": "正在与服务器同步游戏状态。",
+    "CHANGE_SETTINGS": "更改设置"
   },
   "CONFIRM": {
     "TITLE": "退出游戏？",

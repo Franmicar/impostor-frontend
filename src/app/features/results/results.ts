@@ -114,12 +114,17 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
      }
 
       <div class="mt-6 w-full flex flex-col gap-3">
-        @if (!engine.isOnline()) {
-          <!-- Local Game Play Again -->
-          <app-button-primary (onClick)="playAgain()">
-           {{ 'RESULTS.PLAY_AGAIN' | translate }}
-          </app-button-primary>
-        } @else {
+         @if (!engine.isOnline()) {
+           <!-- Local Game Rematch / Setup Buttons -->
+           <div class="flex flex-col gap-3 w-full">
+             <app-button-primary (onClick)="playAgain()">
+              {{ 'RESULTS.PLAY_AGAIN' | translate }}
+             </app-button-primary>
+             <app-button-secondary (onClick)="goToSetupLocal()">
+              {{ 'RESULTS.CHANGE_SETTINGS' | translate }}
+             </app-button-secondary>
+           </div>
+         } @else {
           <!-- Online Game Rematch Lobby -->
           @if (socketService.roomState()?.rematchState; as rematch) {
             
@@ -410,10 +415,28 @@ export class Results implements OnInit {
     try {
       await this.adsService.showInterstitial();
       const isOnline = this.engine.isOnline();
-      this.engine.resetGame();
       if (!isOnline) {
-        await this.router.navigate(['/setup']);
+        const settings = this.engine.currentSettings();
+        if (settings) {
+          this.engine.startGame(settings);
+          await this.router.navigate(['/play']);
+        } else {
+          await this.router.navigate(['/setup']);
+        }
+      } else {
+        this.engine.resetGame();
       }
+    } finally {
+      this.ui.setLoading(false);
+    }
+  }
+
+  async goToSetupLocal() {
+    this.ui.setLoading(true);
+    try {
+      await this.adsService.showInterstitial();
+      this.engine.resetGame();
+      await this.router.navigate(['/setup']);
     } finally {
       this.ui.setLoading(false);
     }

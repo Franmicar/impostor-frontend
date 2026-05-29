@@ -278,7 +278,8 @@
     "LOSERS_WARN": "脱落者は敗北。",
     "PLAY_AGAIN": "もう一度",
     "LOADING_RESULTS_TITLE": "結果を取得中...",
-    "LOADING_RESULTS_SUB": "サーバーとゲームの状態を同期しています。"
+    "LOADING_RESULTS_SUB": "サーバーとゲームの状態を同期しています。",
+    "CHANGE_SETTINGS": "設定変更"
   },
   "CONFIRM": {
     "TITLE": "ゲームを終了しますか？",

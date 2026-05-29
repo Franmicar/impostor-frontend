@@ -278,7 +278,8 @@
     "LOSERS_WARN": "Os eliminados perdem.",
     "PLAY_AGAIN": "Jogar novamente",
     "LOADING_RESULTS_TITLE": "Obtendo resultados...",
-    "LOADING_RESULTS_SUB": "Sincronizando o estado do jogo com o servidor."
+    "LOADING_RESULTS_SUB": "Sincronizando o estado do jogo com o servidor.",
+    "CHANGE_SETTINGS": "Alterar configurações"
   },
   "CONFIRM": {
     "TITLE": "SAIR DA PARTIDA?",

@@ -619,6 +619,7 @@ export class SetupComponent implements OnInit {
   hints = signal<string>('none'); // none, all, first
   duration = signal<string>('5'); // en minutos, '0' = Sin tiempo
   drawTurnTime = signal<number>(10); // en segundos
+  isRestored = signal<boolean>(false);
 
   selectedPackages = signal<string[]>(['mock-3', 'mock-5']);
   selectedPresetId = signal<string | null>(null);
@@ -715,7 +716,9 @@ export class SetupComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      this.saveState();
+      if (this.isRestored()) {
+        this.saveState();
+      }
     });
 
     effect(() => {
@@ -858,6 +861,8 @@ export class SetupComponent implements OnInit {
       }
     } catch (e) {
       console.warn('Could not restore setup state', e);
+    } finally {
+      this.isRestored.set(true);
     }
   }
 

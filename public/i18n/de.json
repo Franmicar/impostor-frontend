@@ -278,7 +278,8 @@
     "LOSERS_WARN": "Eliminierte verlieren.",
     "PLAY_AGAIN": "Nochmal spielen",
     "LOADING_RESULTS_TITLE": "Ergebnisse abrufen...",
-    "LOADING_RESULTS_SUB": "Spielstatus mit dem Server synchronisieren."
+    "LOADING_RESULTS_SUB": "Spielstatus mit dem Server synchronisieren.",
+    "CHANGE_SETTINGS": "Einstellungen ändern"
   },
   "CONFIRM": {
     "TITLE": "SPIEL VERLASSEN?",

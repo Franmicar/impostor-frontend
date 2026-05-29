@@ -43,9 +43,9 @@ import { HeaderComponent } from '../../shared/components/ui/header.component';
           [style.transition-timing-function]="'cubic-bezier(0.15, 0.85, 0.15, 1)'"
           [style.background]="wheelGradient()">
          @for (p of engine.players(); track p.id; let i = $index) {
-           <div class="absolute top-[calc(50%-14px)] left-1/2 w-1/2 h-[28px] origin-left flex items-center justify-end pr-6 text-white font-bold tracking-wider drop-shadow-md z-10"
+           <div class="absolute top-[calc(50%-14px)] left-1/2 w-1/2 h-[28px] origin-left flex items-center justify-end pr-4 pl-10 text-white font-bold tracking-wider drop-shadow-md z-10"
              [style.transform]="'rotate(' + ((i + 0.5) * (360 / engine.players().length) - 90) + 'deg)'">
-             <span class="truncate max-w-[140px]" style="font-size: 1.6rem;">{{ p.name }}</span>
+             <span class="truncate max-w-[110px]" style="font-size: 1.2rem;">{{ p.name }}</span>
            </div>
          }
        </div>

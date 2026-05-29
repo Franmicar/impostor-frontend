@@ -278,7 +278,8 @@
     "LOSERS_WARN": "Els civils eliminats han perdut la partida.",
     "PLAY_AGAIN": "Tornar a jugar",
     "LOADING_RESULTS_TITLE": "Obtenint resultats...",
-    "LOADING_RESULTS_SUB": "Sincronitzant l'estat de la partida amb el servidor."
+    "LOADING_RESULTS_SUB": "Sincronitzant l'estat de la partida amb el servidor.",
+    "CHANGE_SETTINGS": "Canviar ajustos"
   },
   "CONFIRM": {
     "TITLE": "ABANDONAR PARTIDA?",

@@ -278,7 +278,8 @@
     "LOSERS_WARN": "Les civils éliminés ont perdu la partie.",
     "PLAY_AGAIN": "Rejouer",
     "LOADING_RESULTS_TITLE": "Obtention des résultats...",
-    "LOADING_RESULTS_SUB": "Synchronisation de l'état de la partie avec le serveur."
+    "LOADING_RESULTS_SUB": "Synchronisation de l'état de la partie avec le serveur.",
+    "CHANGE_SETTINGS": "Modifier les paramètres"
   },
   "CONFIRM": {
     "TITLE": "QUITTER LA PARTIE?",
