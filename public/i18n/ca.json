@@ -320,7 +320,8 @@
     "SOCKET_SALA_LLENA": "The room is full (maximum 12 players).",
     "SOCKET_PARTIDA_YA_EMPEZADA": "The game has already started in this room.",
     "SOCKET_MINIMO_3_JUGADORES": "At least 3 ready players are required to start the game.",
-    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages."
+    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages.",
+    "LOGIN_ERROR": "No s'ha pogut iniciar sessió. Si us plau, torna-ho a provar."
   },
   "PREMIUM": {
     "RESTORE": "Restaurar",
@@ -365,7 +366,9 @@
     "LOGOUT_TITLE": "Tancar Sessió",
     "LOGOUT_CONFIRM": "Estàs segur que vols tancar la teva sessió actual?",
     "LOGOUT_BTN": "Sortir",
-    "ACCOUNT_OPTIONS": "Opcions de compte"
+    "ACCOUNT_OPTIONS": "Opcions de compte",
+    "LOGIN_GOOGLE": "Inicia sessió amb Google",
+    "LOGIN_APPLE": "Inicia sessió amb Apple"
   },
   "PROFILE": {
     "TITLE": "Perfil",

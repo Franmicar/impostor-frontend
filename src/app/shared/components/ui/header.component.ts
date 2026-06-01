@@ -9,7 +9,7 @@ import { TextHeaderComponent } from './text-header.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconButtonComponent, TextHeaderComponent],
   template: `
-    <header class="flex items-center justify-between py-6 px-4 relative z-10 w-full min-h-[80px]">
+    <header class="flex items-center justify-between pt-[calc(1.5rem+env(safe-area-inset-top,0px))] pb-6 px-4 relative z-10 w-full min-h-[80px]">
       <!-- Back Button Space -->
       <div class="flex shrink-0 justify-start relative z-20">
         @if (showBack()) {

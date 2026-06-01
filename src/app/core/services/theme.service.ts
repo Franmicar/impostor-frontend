@@ -44,7 +44,7 @@ export class ThemeService {
     }
 
     private async initTheme() {
-        const isLocalDev = typeof window !== 'undefined' && (
+        const isLocalDev = typeof window !== 'undefined' && !Capacitor.isNativePlatform() && (
             window.location.hostname === 'localhost' || 
             window.location.hostname === '127.0.0.1' || 
             window.location.hostname.startsWith('192.168.') || 
@@ -92,7 +92,7 @@ export class ThemeService {
         }
 
         try {
-            const isLocalDev = typeof window !== 'undefined' && (
+            const isLocalDev = typeof window !== 'undefined' && !Capacitor.isNativePlatform() && (
                 window.location.hostname === 'localhost' || 
                 window.location.hostname === '127.0.0.1' || 
                 window.location.hostname.startsWith('192.168.') || 
@@ -138,22 +138,21 @@ export class ThemeService {
     getImagePath(originalPath: string): string {
         const theme = this.currentTheme() as string;
         
+        if (originalPath.startsWith('http') || originalPath.startsWith('blob:') || originalPath.startsWith('data:') || originalPath.startsWith('content:') || originalPath.startsWith('file:')) {
+            return originalPath;
+        }
+
         if (theme === 'neon' || theme === 'neon2' || originalPath.includes('default-avatar.png')) {
             return originalPath;
         }
         
-
-        if (this.downloadedThemes()[theme]) {
-            const cleanPath = originalPath.replace(/^\/images\//, '/');
-            if (Capacitor.isNativePlatform()) {
-                const fileName = cleanPath.startsWith('/') ? cleanPath.substring(1) : cleanPath;
-                return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${theme}/${fileName}`);
-            } else {
-                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${cleanPath}`;
-            }
+        const cleanPath = originalPath.replace(/^\/images\//, '/');
+        if (this.downloadedThemes()[theme] && Capacitor.isNativePlatform()) {
+            const fileName = cleanPath.startsWith('/') ? cleanPath.substring(1) : cleanPath;
+            return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${theme}/${fileName}`);
+        } else {
+            return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${theme}${cleanPath}`;
         }
-        
-        return originalPath;
     }
 
     resolveAsset(key: string): string {
@@ -196,18 +195,13 @@ export class ThemeService {
             return defaultPath;
         }
         
-
-        if (this.downloadedThemes()[assetTheme]) {
-            const cleanPath = defaultPath.replace(/^\/images\//, '/');
-            if (Capacitor.isNativePlatform()) {
-                const fileName = cleanPath.startsWith('/') ? cleanPath.substring(1) : cleanPath;
-                return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${assetTheme}/${fileName}`);
-            } else {
-                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${assetTheme}${cleanPath}`;
-            }
+        const cleanPath = defaultPath.replace(/^\/images\//, '/');
+        if (this.downloadedThemes()[assetTheme] && Capacitor.isNativePlatform()) {
+            const fileName = cleanPath.startsWith('/') ? cleanPath.substring(1) : cleanPath;
+            return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${assetTheme}/${fileName}`);
+        } else {
+            return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${assetTheme}${cleanPath}`;
         }
-        
-        return defaultPath;
     }
 
     getThemeAvatars(theme?: Theme): string[] {
@@ -238,14 +232,11 @@ export class ThemeService {
         if (t === 'neon2') {
             return '/images/neon2_frame.png';
         }
-        if (this.downloadedThemes()[t]) {
-            if (Capacitor.isNativePlatform()) {
-                return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${t}/${t}_frame.png`);
-            } else {
-                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${t}/${t}_frame.png`;
-            }
+        if (this.downloadedThemes()[t] && Capacitor.isNativePlatform()) {
+            return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${t}/${t}_frame.png`);
+        } else {
+            return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${t}/${t}_frame.png`;
         }
-        return '/images/neon_frame.png'; // safe fallback
     }
 
     getDefaultAvatarAsset(themeName: string): string {
@@ -256,13 +247,10 @@ export class ThemeService {
         if (t === 'neon2') {
             return '/images/neon2_default_avatar.png';
         }
-        if (this.downloadedThemes()[t]) {
-            if (Capacitor.isNativePlatform()) {
-                return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${t}/default-avatar.png`);
-            } else {
-                return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${t}/default-avatar.png`;
-            }
+        if (this.downloadedThemes()[t] && Capacitor.isNativePlatform()) {
+            return Capacitor.convertFileSrc(`${this.assetLoader.getDataDirBase()}/themes/${t}/default-avatar.png`);
+        } else {
+            return `https://pub-837e7a3cc573402186a8d3e2323727e2.r2.dev/themes/${t}/default-avatar.png`;
         }
-        return '/images/default-avatar.png'; // safe fallback
     }
 }

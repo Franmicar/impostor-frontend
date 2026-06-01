@@ -447,16 +447,38 @@ export class Results implements OnInit {
     return me ? !!me.isHost : false;
   }
 
-  requestRematch() {
-    this.engine.requestRematch();
+  async requestRematch() {
+    this.ui.setLoading(true);
+    try {
+      if (this.adsService.shouldShowRematchAd()) {
+        await this.adsService.showInterstitial();
+      }
+      this.engine.requestRematch();
+    } finally {
+      this.ui.setLoading(false);
+    }
   }
 
-  playerReady() {
-    this.engine.playerReady();
+  async playerReady() {
+    this.ui.setLoading(true);
+    try {
+      if (this.adsService.shouldShowRematchAd()) {
+        await this.adsService.showInterstitial();
+      }
+      this.engine.playerReady();
+    } finally {
+      this.ui.setLoading(false);
+    }
   }
 
-  goToSetup() {
-    this.engine.goToSetup();
+  async goToSetup() {
+    this.ui.setLoading(true);
+    try {
+      await this.adsService.showInterstitial();
+      this.engine.goToSetup();
+    } finally {
+      this.ui.setLoading(false);
+    }
   }
 
   startRematch() {
@@ -564,6 +586,7 @@ export class Results implements OnInit {
   async exitGame() {
     this.ui.setLoading(true);
     try {
+      await this.adsService.showInterstitial();
       if (this.engine.isOnline()) {
         this.socketService.disconnect();
       }

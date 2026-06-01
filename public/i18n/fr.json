@@ -320,7 +320,8 @@
     "SOCKET_SALA_LLENA": "The room is full (maximum 12 players).",
     "SOCKET_PARTIDA_YA_EMPEZADA": "The game has already started in this room.",
     "SOCKET_MINIMO_3_JUGADORES": "At least 3 ready players are required to start the game.",
-    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages."
+    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages.",
+    "LOGIN_ERROR": "Échec de la connexion. Veuillez réessayer."
   },
   "PREMIUM": {
     "RESTORE": "Restaurer",
@@ -365,7 +366,9 @@
     "LOGOUT_TITLE": "Déconnexion",
     "LOGOUT_CONFIRM": "Êtes-vous sûr de vouloir vous déconnecter ?",
     "LOGOUT_BTN": "Quitter",
-    "ACCOUNT_OPTIONS": "Options du compte"
+    "ACCOUNT_OPTIONS": "Options du compte",
+    "LOGIN_GOOGLE": "Se connecter avec Google",
+    "LOGIN_APPLE": "Se connecter avec Apple"
   },
   "PROFILE": {
     "TITLE": "Profil",

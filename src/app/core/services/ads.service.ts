@@ -13,6 +13,7 @@ export class AdsService {
   private readonly bannerAdId = 'ca-app-pub-3940256099942544/6300978111'; // ID Test de Banner
   private readonly interstitialAdId = 'ca-app-pub-3940256099942544/1033173712'; // ID Test de Interstitial
   private destroyRef = inject(DestroyRef);
+  private rematchAdCounter = 0;
 
   constructor(
     private billing: BillingService
@@ -108,5 +109,11 @@ export class AdsService {
         resolve(); // Continue game flow if ad fails
       }
     });
+  }
+
+  shouldShowRematchAd(): boolean {
+    if (!this.isAdMobInitialized || this.billing.isPremium) return false;
+    this.rematchAdCounter++;
+    return this.rematchAdCounter % 2 === 0;
   }
 }

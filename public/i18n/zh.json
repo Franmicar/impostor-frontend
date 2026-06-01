@@ -320,7 +320,8 @@
     "SOCKET_SALA_LLENA": "The room is full (maximum 12 players).",
     "SOCKET_PARTIDA_YA_EMPEZADA": "The game has already started in this room.",
     "SOCKET_MINIMO_3_JUGADORES": "At least 3 ready players are required to start the game.",
-    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages."
+    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages.",
+    "LOGIN_ERROR": "登录失败。请重试。"
   },
   "PREMIUM": {
     "RESTORE": "恢复",
@@ -365,7 +366,9 @@
     "LOGOUT_TITLE": "注销",
     "LOGOUT_CONFIRM": "您确定要注销当前会话吗？",
     "LOGOUT_BTN": "退出",
-    "ACCOUNT_OPTIONS": "帐户选项"
+    "ACCOUNT_OPTIONS": "帐户选项",
+    "LOGIN_GOOGLE": "使用 Google 登录",
+    "LOGIN_APPLE": "使用 Apple 登录"
   },
   "PROFILE": {
     "TITLE": "个人资料",

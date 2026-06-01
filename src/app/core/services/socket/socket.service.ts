@@ -1,4 +1,4 @@
-import { Injectable, signal, inject, effect } from '@angular/core';
+import { Injectable, signal, inject, effect, isDevMode } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../auth/auth.service';
@@ -91,7 +91,8 @@ export class SocketService {
   }
 
   private init() {
-    this.socket = io(environment.multiplayerUrl, {
+    const url = isDevMode() ? environment.multiplayerUrl : 'https://deceptra-multiplayer.onrender.com';
+    this.socket = io(url, {
       autoConnect: false,
       reconnection: true,
       reconnectionAttempts: 10,

@@ -320,7 +320,8 @@
     "SOCKET_SALA_LLENA": "The room is full (maximum 12 players).",
     "SOCKET_PARTIDA_YA_EMPEZADA": "The game has already started in this room.",
     "SOCKET_MINIMO_3_JUGADORES": "At least 3 ready players are required to start the game.",
-    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages."
+    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages.",
+    "LOGIN_ERROR": "Не удалось войти. Пожалуйста, попробуйте еще раз."
   },
   "PREMIUM": {
     "RESTORE": "Восстановить",
@@ -365,7 +366,9 @@
     "LOGOUT_TITLE": "Выйти",
     "LOGOUT_CONFIRM": "Вы уверены, что хотите выйти из текущего сеанса?",
     "LOGOUT_BTN": "Выйти",
-    "ACCOUNT_OPTIONS": "Настройки аккаунта"
+    "ACCOUNT_OPTIONS": "Настройки аккаунта",
+    "LOGIN_GOOGLE": "Войти через Google",
+    "LOGIN_APPLE": "Войти через Apple"
   },
   "PROFILE": {
     "TITLE": "Профиль",

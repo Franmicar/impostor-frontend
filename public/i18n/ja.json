@@ -320,7 +320,8 @@
     "SOCKET_SALA_LLENA": "The room is full (maximum 12 players).",
     "SOCKET_PARTIDA_YA_EMPEZADA": "The game has already started in this room.",
     "SOCKET_MINIMO_3_JUGADORES": "At least 3 ready players are required to start the game.",
-    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages."
+    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages.",
+    "LOGIN_ERROR": "サインインに失敗しました。もう一度お試しください。"
   },
   "PREMIUM": {
     "RESTORE": "復元",
@@ -365,7 +366,9 @@
     "LOGOUT_TITLE": "ログアウト",
     "LOGOUT_CONFIRM": "現在のセッションからログアウトしてもよろしいですか？",
     "LOGOUT_BTN": "終了",
-    "ACCOUNT_OPTIONS": "アカウントオプション"
+    "ACCOUNT_OPTIONS": "アカウントオプション",
+    "LOGIN_GOOGLE": "Googleでサインイン",
+    "LOGIN_APPLE": "Appleでサインイン"
   },
   "PROFILE": {
     "TITLE": "プロフィール",

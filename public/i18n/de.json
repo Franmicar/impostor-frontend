@@ -320,7 +320,8 @@
     "SOCKET_SALA_LLENA": "The room is full (maximum 12 players).",
     "SOCKET_PARTIDA_YA_EMPEZADA": "The game has already started in this room.",
     "SOCKET_MINIMO_3_JUGADORES": "At least 3 ready players are required to start the game.",
-    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages."
+    "SOCKET_LISTA_PALABRAS_VACIA": "No words are configured for this room. Change settings to sync word packages.",
+    "LOGIN_ERROR": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut."
   },
   "PREMIUM": {
     "RESTORE": "Wiederherstellen",
@@ -365,7 +366,9 @@
     "LOGOUT_TITLE": "Abmelden",
     "LOGOUT_CONFIRM": "Bist du sicher, dass du dich abmelden möchtest?",
     "LOGOUT_BTN": "Verlassen",
-    "ACCOUNT_OPTIONS": "Konto-Optionen"
+    "ACCOUNT_OPTIONS": "Konto-Optionen",
+    "LOGIN_GOOGLE": "Mit Google anmelden",
+    "LOGIN_APPLE": "Mit Apple anmelden"
   },
   "PROFILE": {
     "TITLE": "Profil",
