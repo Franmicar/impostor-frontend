@@ -214,6 +214,15 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **QoL en UI y Ruleta**: Reducción de fuentes e incremento de padding lateral (`pl-10`) en las etiquetas de la ruleta para evitar que los nombres se solapen con el pin central. Ajuste de espaciados en Settings y micrófono silenciado en tiempo de votación.
 - **Aplazamiento de Estadísticas y Logros (v2.2.0)**: Ocultación temporal mediante comentarios de las tarjetas de logros y estadísticas en `/profile`, postergando su activación para el próximo ciclo.
 
+### Versión 2.1.1
+- **Actualización de Precios de Temas**: Cambio de los precios de compra individuales de los temas Alien y Manga a 4.99€ en los archivos de traducciones y ajustes.
+- **Ignorar Carpetas en Vercel**: Adición de `.vercelignore` para evitar que Vercel intente compilar o procesar las carpetas nativas `android/` e `ios/`.
+- **Alineación de Versión**: Incremento a la versión `2.1.1` (Android `versionCode 17`, iOS Xcode `2.1.1`).
 
-
-
+### Versión 2.1.2
+- **Dinámica de Sockets Multiplayer**: Endpoint de red adaptativo en `SocketService` usando `isDevMode()` para usar localhost en desarrollo local y la URL de producción en Render en compilaciones nativas de producción.
+- **Carga de Temas y CDN Fallback**: Exclusión de plataformas nativas Capacitor del bypass de desarrollo local y fallback automático a la CDN pública de Cloudflare R2 si no existen los archivos locales de temas secundarios.
+- **Ajuste de Cabecera iOS**: Integración de padding superior dinámico (`env(safe-area-inset-top)`) en `HeaderComponent` para evitar solapes con la Dynamic Island.
+- **Control en Login de Apple**: Bloque `try-catch` alrededor del inicio de sesión nativo de Apple para reportar errores visuales en caso de cancelaciones o fallos.
+- **Monetización AdMob en Online**: Anuncios intersticiales configurados al salir de la partida online, volver a configuración o cada dos intentos de revancha ("Rematch") para incentivar la compra de Premium.
+- **Control de Versiones y Distribución**: Versión establecida en `2.1.2` (Android `versionCode 18`, iOS Xcode `CURRENT_PROJECT_VERSION = 18`).
