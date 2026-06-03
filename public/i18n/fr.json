@@ -76,7 +76,8 @@
     "SUCCESS_MSG": "Merci pour vos commentaires. Nous avons bien enregistré votre rapport.",
     "ERROR_TITLE": "Erreur",
     "ERROR_MSG": "Impossible d'envoyer le rapport. Veuillez vérifier votre connexion Internet.",
-    "CLOSE": "Fermer"
+    "CLOSE": "Fermer",
+    "LEGAL": "Conditions et confidentialité"
   },
   "SETUP": {
     "TITLE": "Paramètres",

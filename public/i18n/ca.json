@@ -76,7 +76,8 @@
     "SUCCESS_MSG": "Gràcies per la teva aportació. Hem desat l'informe correctament.",
     "ERROR_TITLE": "Error",
     "ERROR_MSG": "No s'ha pogut enviar l'informe. Comprova la teva connexió a internet.",
-    "CLOSE": "Tancar"
+    "CLOSE": "Tancar",
+    "LEGAL": "Condicions i política"
   },
   "SETUP": {
     "TITLE": "Configuració",

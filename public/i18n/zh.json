@@ -76,7 +76,8 @@
     "SUCCESS_MSG": "感谢您的反馈。我们已成功保存您的报告。",
     "ERROR_TITLE": "错误",
     "ERROR_MSG": "无法发送报告。请检查您的网络连接。",
-    "CLOSE": "关闭"
+    "CLOSE": "关闭",
+    "LEGAL": "条款与隐私认证"
   },
   "SETUP": {
     "TITLE": "设置",

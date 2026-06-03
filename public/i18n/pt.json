@@ -76,7 +76,8 @@
     "SUCCESS_MSG": "Obrigado pelo teu feedback. Guardámos o teu relatório com sucesso.",
     "ERROR_TITLE": "Erro",
     "ERROR_MSG": "Não foi possível enviar o relatório. Verifica a tua ligação à Internet.",
-    "CLOSE": "Fechar"
+    "CLOSE": "Fechar",
+    "LEGAL": "Termos e privacidade"
   },
   "SETUP": {
     "TITLE": "Definições",

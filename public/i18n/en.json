@@ -87,7 +87,8 @@
     "THEME_MANGA_DESC": "Retro comic style in grayscale and red",
     "INCLUDES_AVATARS": "5 Avatars",
     "INCLUDES_FRAME": "1 Frame",
-    "COLORS": "Colors"
+    "COLORS": "Colors",
+    "LEGAL": "Terms & Privacy"
   },
   "SETUP": {
     "HOST_CONFIGURING": "The host is configuring the next game...",

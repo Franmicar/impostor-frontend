@@ -87,7 +87,8 @@
     "THEME_MANGA_DESC": "Estilo cómic retro en escala de grises y rojo",
     "INCLUDES_AVATARS": "5 Avatares",
     "INCLUDES_FRAME": "1 Marco",
-    "COLORS": "Colores"
+    "COLORS": "Colores",
+    "LEGAL": "Condiciones y política"
   },
   "SETUP": {
     "HOST_CONFIGURING": "El anfitrión está configurando la siguiente partida...",

@@ -141,22 +141,22 @@ import packageJson from '../../../../package.json';
           </button>
         </div>
       </div>
+    </section>
 
-      <!-- CONTENT PREFERENCES -->
-      <div class="py-4 border-t border-slate-700/50">
-        <span class="text-textPrimary block mb-3 font-medium">{{ 'SETTINGS.CONTENT' | translate }}</span>
-        <button (click)="goToCustomPackage()" class="relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
-          <span class="text-textPrimary text-sm flex items-center gap-2">
-            {{ 'SETTINGS.CUSTOM_PACKAGES' | translate }}
-            @if (!billing.isPremium) {
-              <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO</span>
-            }
-          </span>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-textMuted">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-          </svg>
-        </button>
-      </div>
+    <!-- CONTENT PREFERENCES -->
+    <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border">
+      <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-4 border-b border-glass-border pb-2">{{ 'SETTINGS.CONTENT' | translate }}</h3>
+      <button (click)="goToCustomPackage()" class="relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between cursor-pointer">
+        <span class="text-textPrimary text-sm flex items-center gap-2">
+          {{ 'SETTINGS.CUSTOM_PACKAGES' | translate }}
+          @if (!billing.isPremium) {
+            <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO</span>
+          }
+        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-textMuted">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
     </section>
 
     <!-- SUPPORT & CONTACT -->
@@ -180,6 +180,7 @@ import packageJson from '../../../../package.json';
 
     <!-- LEGAL -->
     <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border">
+      <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-4 border-b border-glass-border pb-2">{{ 'SETTINGS.LEGAL' | translate }}</h3>
       <div class="flex flex-col gap-2">
         <button (click)="openLink('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')" class="w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between cursor-pointer">
           <span class="text-textPrimary text-sm flex items-center gap-2">

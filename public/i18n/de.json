@@ -76,7 +76,8 @@
     "SUCCESS_MSG": "Danke für dein Feedback. Wir haben deinen Bericht erfolgreich gespeichert.",
     "ERROR_TITLE": "Fehler",
     "ERROR_MSG": "Der Bericht konnte nicht gesendet werden. Bitte überprüfe deine Internetverbindung.",
-    "CLOSE": "Schließen"
+    "CLOSE": "Schließen",
+    "LEGAL": "Rechtliches"
   },
   "SETUP": {
     "TITLE": "Einstellungen",

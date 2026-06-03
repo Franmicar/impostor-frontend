@@ -76,7 +76,8 @@
     "SUCCESS_MSG": "Grazie per il tuo feedback. Abbiamo salvato il tuo rapporto con successo.",
     "ERROR_TITLE": "Errore",
     "ERROR_MSG": "Impossibile inviare il rapporto. Controlla la tua connessione internet.",
-    "CLOSE": "Chiudi"
+    "CLOSE": "Chiudi",
+    "LEGAL": "Termini e privacy"
   },
   "SETUP": {
     "TITLE": "Configurazione",
