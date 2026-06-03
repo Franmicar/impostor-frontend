@@ -433,5 +433,7 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Navegación e Inicio de Sesión de Apple**: Configuración de FirebaseAuthentication para el proveedor `"apple.com"` en `capacitor.config.ts`, y habilitación del botón en local/web para posibilitar las pruebas integradas.
 - **Enlaces Legales en Ajustes**: Añadido el apartado de enlaces para EULA y Política de Privacidad de forma nativa en la pantalla de Ajustes (Settings), entre soporte e información de versión.
 - **Privacidad Multilingüe (Backend)**: Soporte completo en la función de Vercel del backend (`privacy.ts`) para renderizar la política de privacidad de forma localizada en los 10 idiomas de la aplicación mediante el parámetro dinámico `?lang=`.
+- **Corrección de Errores en Tiempo de Ejecución (NG0100)**: Deferida la actualización de `profileSignal` en `ProfileService` y del BehaviorSubject `_isPremiumTester` en `BillingService` utilizando `setTimeout` para evitar el error `ExpressionChangedAfterItHasBeenCheckedError` en el ciclo de comprobación de Angular. Adicionalmente, se aisló el componente `Settings` mediante un signal local `isPremium` sincronizado asíncronamente con `billing.isPremium$` para evitar colisiones de lectura síncrona en el renderizado de los `@if` condicionales de la vista.
 - **Control de Versiones y Distribución**: Versión establecida en `2.1.4` (Android `versionCode 20`, iOS Xcode `CURRENT_PROJECT_VERSION = 20`).
+
 

@@ -34,7 +34,7 @@ export class BillingService {
       if (user) {
         this.checkTesterStatus(user.uid);
       } else {
-        this._isPremiumTester.next(false);
+        setTimeout(() => this._isPremiumTester.next(false));
       }
     });
   }
@@ -44,13 +44,13 @@ export class BillingService {
       const docRef = doc(this.db, `users/${uid}`);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists() && docSnap.data()['isPremiumTester']) {
-        this._isPremiumTester.next(true);
+        setTimeout(() => this._isPremiumTester.next(true));
       } else {
-        this._isPremiumTester.next(false);
+        setTimeout(() => this._isPremiumTester.next(false));
       }
     } catch (e) {
       console.error('Error checking tester status', e);
-      this._isPremiumTester.next(false);
+      setTimeout(() => this._isPremiumTester.next(false));
     }
   }
 

@@ -95,11 +95,11 @@ import packageJson from '../../../../package.json';
               class="ring-yellow-400 relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between">
             <span class="text-textPrimary text-sm flex items-center gap-2">
               {{ 'SETTINGS.THEME_NEON_2' | translate }}
-              @if (!billing.isPremium) {
+              @if (!isPremium()) {
                 <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO</span>
               }
             </span>
-            @if (!billing.isPremium) {
+            @if (!isPremium()) {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-textMuted">
                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
               </svg>
@@ -149,7 +149,7 @@ import packageJson from '../../../../package.json';
       <button (click)="goToCustomPackage()" class="relative w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between cursor-pointer">
         <span class="text-textPrimary text-sm flex items-center gap-2">
           {{ 'SETTINGS.CUSTOM_PACKAGES' | translate }}
-          @if (!billing.isPremium) {
+          @if (!isPremium()) {
             <span class="text-[0.6rem] bg-gradient-to-r from-primary to-secondary text-white px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">PRO</span>
           }
         </span>
@@ -382,6 +382,7 @@ export class Settings implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   // Modals signals
+  isPremium = signal(false);
   isReportModalOpen = signal(false);
   reportType = signal<'bug' | 'suggestion'>('bug');
   isSendingReport = signal(false);
@@ -402,6 +403,11 @@ export class Settings implements OnInit {
 
   ngOnInit() {
     this.currentLang = this.translate.getCurrentLang() || this.translate.getFallbackLang() || 'es';
+    this.billing.isPremium$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(status => {
+      setTimeout(() => this.isPremium.set(status));
+    });
   }
 
   async openLink(url: string) {
@@ -449,7 +455,7 @@ export class Settings implements OnInit {
 
   isThemeOwned(theme: Theme): boolean {
     if (theme === 'neon' || theme === 'infantil') return true;
-    if (theme === 'neon2') return this.billing.isPremium;
+    if (theme === 'neon2') return this.isPremium();
     if (theme === 'alien') return this.billing.isThemeAlienOwned;
     if (theme === 'manga') return this.billing.isThemeMangaOwned;
     return false;
@@ -542,7 +548,7 @@ export class Settings implements OnInit {
   }
 
   goToCustomPackage() {
-    if (!this.billing.isPremium) {
+    if (!this.isPremium()) {
       this.router.navigate(['/premium']);
       return;
     }

@@ -29,6 +29,13 @@ export class ProfileService {
   // Reactive signal containing the complete user profile and statistics
   public profileSignal = signal<CompleteUserProfile | null>(null);
 
+  // Helper to update profileSignal deferred to avoid ExpressionChangedAfterItHasBeenCheckedError
+  private setProfileSignal(value: CompleteUserProfile | null) {
+    setTimeout(() => {
+      this.profileSignal.set(value);
+    });
+  }
+
   // Offline sync queue for profile updates
   private pendingQueue: Partial<UserProfile>[] = [];
   private isSyncing = false;
@@ -40,7 +47,7 @@ export class ProfileService {
       if (user) {
         this.initializeProfile(user.uid, user.displayName, user.photoURL);
       } else {
-        this.profileSignal.set(null);
+        this.setProfileSignal(null);
         this.pendingQueue = [];
       }
     });
@@ -64,7 +71,7 @@ export class ProfileService {
     try {
       const { value } = await Preferences.get({ key: cacheKey });
       if (value) {
-        this.profileSignal.set(JSON.parse(value));
+        this.setProfileSignal(JSON.parse(value));
       }
     } catch (e) {
       console.error('Error reading local profile cache', e);
@@ -92,7 +99,7 @@ export class ProfileService {
           progression: data['progression'] || this.createDefaultProgression(),
           stats: data['stats'] || this.createDefaultStats()
         };
-        this.profileSignal.set(completeProfile);
+        this.setProfileSignal(completeProfile);
         await Preferences.set({ key: cacheKey, value: JSON.stringify(completeProfile) });
 
         // If online, flush any pending updates that might have queued
@@ -110,7 +117,7 @@ export class ProfileService {
           progression: defaultProfile.progression,
           stats: defaultProfile.stats
         });
-        this.profileSignal.set(defaultProfile);
+        this.setProfileSignal(defaultProfile);
         await Preferences.set({ key: cacheKey, value: JSON.stringify(defaultProfile) });
       }
     }, async (error) => {
@@ -124,7 +131,7 @@ export class ProfileService {
           progression: this.createDefaultProgression(),
           stats: this.createDefaultStats()
         };
-        this.profileSignal.set(defaultProfile);
+        this.setProfileSignal(defaultProfile);
         try {
           await Preferences.set({ key: cacheKey, value: JSON.stringify(defaultProfile) });
         } catch (e) {
