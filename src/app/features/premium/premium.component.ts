@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BillingService } from '../../core/services/billing.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { Browser } from '@capacitor/browser';
+import { Capacitor } from '@capacitor/core';
 
 import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { HeaderComponent } from '../../shared/components/ui/header.component';
@@ -93,6 +95,9 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
 
         <div>
          <h3 class="text-lg font-bold text-textPrimary">{{ 'PREMIUM.PLAN_' + plan.packageType | translate }}</h3>
+         <span class="text-xs text-textMuted font-medium block mt-0.5">
+           {{ 'PREMIUM.PLAN_' + plan.packageType + '_DETAILS' | translate }}
+         </span>
         </div>
         <div class="text-right">
          <div class="text-xl font-black text-secondary drop-shadow-[0_0_8px_rgb(var(--color-secondary)/0.4)]">{{ plan.product.priceString }}</div>
@@ -102,11 +107,16 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
      </div>
     }
     
+    <!-- Subscription note -->
+    <div class="text-[9px] text-textMuted leading-normal mt-6 text-center px-4 max-w-sm mx-auto select-none">
+      {{ 'PREMIUM.SUB_NOTE' | translate }}
+    </div>
+
     <!-- EULA & Privacy Policy Links -->
-    <div class="flex justify-center gap-4 text-[10px] text-textMuted mt-8 mb-4 px-2 select-none">
-     <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" class="hover:underline hover:text-textPrimary transition-colors">{{ 'PREMIUM.EULA' | translate }}</a>
+    <div class="flex justify-center gap-4 text-[10px] text-textMuted mt-6 mb-4 px-2 select-none">
+     <button (click)="openLink('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')" class="hover:underline hover:text-textPrimary transition-colors cursor-pointer bg-transparent border-none p-0 text-[10px] text-textMuted">{{ 'PREMIUM.EULA' | translate }}</button>
      <span>•</span>
-     <a href="https://impostor-backend.vercel.app/api/privacy" target="_blank" class="hover:underline hover:text-textPrimary transition-colors">{{ 'PREMIUM.PRIVACY_POLICY' | translate }}</a>
+     <button (click)="openLink('https://impostor-backend-eight.vercel.app/api/privacy?lang=' + translate.currentLang)" class="hover:underline hover:text-textPrimary transition-colors cursor-pointer bg-transparent border-none p-0 text-[10px] text-textMuted">{{ 'PREMIUM.PRIVACY_POLICY' | translate }}</button>
     </div>
    </div>
 
@@ -164,6 +174,19 @@ export class PremiumComponent implements OnInit {
  alertModal = signal({show: false, title: '', message: '', success: false});
  showSuccessToast = signal(false);
  toastMessage = signal('');
+
+ async openLink(url: string) {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        await Browser.open({ url });
+      } catch (e) {
+        console.error('Error opening native browser link', e);
+        window.open(url, '_blank');
+      }
+    } else {
+      window.open(url, '_blank');
+    }
+  }
 
  async ngOnInit() {
   this.isLoading.set(true);

@@ -367,7 +367,12 @@
     "PLAN_THREE_MONTH": "Plan Trimestral",
     "PLAN_ANNUAL": "Plan Anual",
     "EULA": "Condiciones de uso (EULA)",
-    "PRIVACY_POLICY": "Política de privacidad"
+    "PRIVACY_POLICY": "Política de privacidad",
+    "SUB_NOTE": "La suscripción se renovará automáticamente a menos que se desactive la renovación automática al menos 24 horas antes del final del período actual. Se cobrará la renovación en la cuenta dentro de las 24 horas anteriores al final del período actual. Las suscripciones se pueden gestionar y la renovación automática se puede desactivar en la configuración de la cuenta del App Store después de la compra.",
+    "PLAN_MONTHLY_DETAILS": "1 mes (renovación mensual)",
+    "PLAN_THREE_MONTH_DETAILS": "3 meses (renovación cada 3 meses)",
+    "PLAN_ANNUAL_DETAILS": "1 año (renovación anual)",
+    "RESTORE_PLAN": "Restaurar Compras"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "Paquete personalizado",

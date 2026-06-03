@@ -21,7 +21,7 @@ import { BillingService } from '../../../core/services/billing.service';
 
     <!-- Espacio reservado para el banner nativo de AdMob -->
     @if (!billing.isPremium) {
-      <div class="w-full h-[70px] sm:h-[90px]"></div>
+      <div class="w-full h-[85px] sm:h-[120px]"></div>
     } @else {
       <!-- Pequeño margen si es premium para que no quede pegado al ras -->
       <div class="w-full h-[15px]"></div>

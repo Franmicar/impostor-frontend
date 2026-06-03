@@ -367,7 +367,12 @@
     "PLAN_THREE_MONTH": "Quarterly Plan",
     "PLAN_ANNUAL": "Annual Plan",
     "EULA": "Terms of Use (EULA)",
-    "PRIVACY_POLICY": "Privacy Policy"
+    "PRIVACY_POLICY": "Privacy Policy",
+    "SUB_NOTE": "Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Account will be charged for renewal within 24-hours prior to the end of the current period. Subscriptions may be managed and auto-renewal may be turned off in your App Store Account Settings after purchase.",
+    "PLAN_MONTHLY_DETAILS": "1 month (monthly renewal)",
+    "PLAN_THREE_MONTH_DETAILS": "3 months (renews every 3 months)",
+    "PLAN_ANNUAL_DETAILS": "1 year (annual renewal)",
+    "RESTORE_PLAN": "Restore Purchases"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "Custom Package",

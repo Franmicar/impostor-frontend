@@ -343,7 +343,14 @@
     "RESTORE_ERROR_MSG": "No s'han trobat compres actives.",
     "PLAN_MONTHLY": "Pla Mensual",
     "PLAN_THREE_MONTH": "Pla Trimestral",
-    "PLAN_ANNUAL": "Pla Anual"
+    "PLAN_ANNUAL": "Pla Anual",
+    "SUB_NOTE": "La subscripció es renovarà automàticament a menys que es desactivi la renovació automàtica almenys 24 hores abans del final del període actual. Es cobrarà la renovació al compte dins de les 24 hores anteriors al final del període actual. Les subscripcions es poden gestionar i la renovació automàtica es pot desactivar a la configuració del compte de l'App Store després de la compra.",
+    "PLAN_MONTHLY_DETAILS": "1 mes (renovació mensual)",
+    "PLAN_THREE_MONTH_DETAILS": "3 mesos (renovació cada 3 mesos)",
+    "PLAN_ANNUAL_DETAILS": "1 any (renovació anual)",
+    "RESTORE_PLAN": "Restaurar Compres",
+    "EULA": "Condicions d'ús (EULA)",
+    "PRIVACY_POLICY": "Política de privacitat"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "Paquet personalitzat",

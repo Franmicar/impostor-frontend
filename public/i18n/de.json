@@ -343,7 +343,14 @@
     "RESTORE_ERROR_MSG": "Keine aktiven Käufe gefunden.",
     "PLAN_MONTHLY": "Monatsplan",
     "PLAN_THREE_MONTH": "Quartalsplan",
-    "PLAN_ANNUAL": "Jahresplan"
+    "PLAN_ANNUAL": "Jahresplan",
+    "SUB_NOTE": "Das Abonnement verlängert sich automatisch, es sei denn, die automatische Verlängerung wird mindestens 24 Stunden vor dem Ende des aktuellen Zeitraums deaktiviert. Die Verlängerung wird dem Konto innerhalb von 24 Stunden vor dem Ende des aktuellen Zeitraums in Rechnung gestellt. Abonnements können verwaltet und die automatische Verlängerung nach dem Kauf in den App Store-Kontoeinstellungen deaktiviert werden.",
+    "PLAN_MONTHLY_DETAILS": "1 Monat (monatliche Verlängerung)",
+    "PLAN_THREE_MONTH_DETAILS": "3 Monate (Verlängerung alle 3 Monate)",
+    "PLAN_ANNUAL_DETAILS": "1 Jahr (jährliche Verlängerung)",
+    "RESTORE_PLAN": "Käufe wiederherstellen",
+    "EULA": "Nutzungsbedingungen (EULA)",
+    "PRIVACY_POLICY": "Datenschutzerklärung"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "Benutzerdefiniertes Paket",

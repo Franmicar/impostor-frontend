@@ -343,7 +343,14 @@
     "RESTORE_ERROR_MSG": "Nessun acquisto attivo trovato.",
     "PLAN_MONTHLY": "Piano Mensile",
     "PLAN_THREE_MONTH": "Piano Trimestrale",
-    "PLAN_ANNUAL": "Piano Annuale"
+    "PLAN_ANNUAL": "Piano Annuale",
+    "SUB_NOTE": "L'abbonamento si rinnova automaticamente a meno che il rinnovo automatico non venga disattivato almeno 24 ore prima della fine del periodo corrente. Il rinnovo verrà addebitato sul conto entro le 24 ore precedenti la fine del periodo corrente. Gli abbonamenti possono essere gestiti e il rinnovo automatico può essere disattivato nelle impostazioni dell'account App Store dopo l'acquisto.",
+    "PLAN_MONTHLY_DETAILS": "1 mese (rinnovo mensile)",
+    "PLAN_THREE_MONTH_DETAILS": "3 mesi (rinnovo ogni 3 mesi)",
+    "PLAN_ANNUAL_DETAILS": "1 anno (rinnovo annuale)",
+    "RESTORE_PLAN": "Ripristina acquisti",
+    "EULA": "Condizioni d'uso (EULA)",
+    "PRIVACY_POLICY": "Informativa sulla privacy"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "Pacchetto Personalizzato",

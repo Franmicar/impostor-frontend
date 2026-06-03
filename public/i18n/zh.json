@@ -343,7 +343,14 @@
     "RESTORE_ERROR_MSG": "未找到有效的购买记录。",
     "PLAN_MONTHLY": "月度计划",
     "PLAN_THREE_MONTH": "季度计划",
-    "PLAN_ANNUAL": "年度计划"
+    "PLAN_ANNUAL": "年度计划",
+    "SUB_NOTE": "除非在当前周期结束前至少 24 小时关闭自动续订，否则订阅会自动续订。帐户将在当前周期结束前的 24 小时内收取续订费用。购买后，您可以在 App Store 帐户设置中管理订阅并关闭自动续订。",
+    "PLAN_MONTHLY_DETAILS": "1个月（按月续订）",
+    "PLAN_THREE_MONTH_DETAILS": "3个月（每3个月续订）",
+    "PLAN_ANNUAL_DETAILS": "1年（按年续订）",
+    "RESTORE_PLAN": "恢复购买",
+    "EULA": "使用条款 (EULA)",
+    "PRIVACY_POLICY": "隐私政策"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "自定义词包",

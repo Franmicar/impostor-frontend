@@ -343,7 +343,14 @@
     "RESTORE_ERROR_MSG": "Nenhuma compra ativa encontrada.",
     "PLAN_MONTHLY": "Plano Mensal",
     "PLAN_THREE_MONTH": "Plano Trimestral",
-    "PLAN_ANNUAL": "Plano Anual"
+    "PLAN_ANNUAL": "Plano Anual",
+    "SUB_NOTE": "A subscrição é renovada automaticamente, a menos que a renovação automática seja desativada pelo menos 24 horas antes do final del período atual. O valor da renovação será debitado na conta dentro das 24 horas anteriores ao final do período atual. As subscrições podem ser geridas e a renovação automática pode ser desativada nas definições da conta da App Store após a compra.",
+    "PLAN_MONTHLY_DETAILS": "1 mês (renovação mensal)",
+    "PLAN_THREE_MONTH_DETAILS": "3 meses (renovação a cada 3 meses)",
+    "PLAN_ANNUAL_DETAILS": "1 ano (renovação anual)",
+    "RESTORE_PLAN": "Restaurar compras",
+    "EULA": "Termos de uso (EULA)",
+    "PRIVACY_POLICY": "Política de privacidade"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "Pacote Personalizado",

@@ -343,7 +343,14 @@
     "RESTORE_ERROR_MSG": "有効な購入が見つかりませんでした。",
     "PLAN_MONTHLY": "月間プラン",
     "PLAN_THREE_MONTH": "3ヶ月プラン",
-    "PLAN_ANNUAL": "年間プラン"
+    "PLAN_ANNUAL": "年間プラン",
+    "SUB_NOTE": "現在の期間が終了する少なくとも24時間前に自動更新をオフにしない限り、購読は自動的に更新されます。現在の期間が終了する前の24時間以内に更新料がアカウントに請求されます。購入後、App Storeのアカウント設定でサブスクリプションを管理し、自動更新をオフにすることができます。",
+    "PLAN_MONTHLY_DETAILS": "1ヶ月（月間更新）",
+    "PLAN_THREE_MONTH_DETAILS": "3ヶ月（3ヶ月ごとの更新）",
+    "PLAN_ANNUAL_DETAILS": "1年（年間更新）",
+    "RESTORE_PLAN": "購入履歴を復元",
+    "EULA": "利用規約 (EULA)",
+    "PRIVACY_POLICY": "プライバシーポリシー"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "カスタムパック",

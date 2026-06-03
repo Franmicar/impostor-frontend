@@ -343,7 +343,14 @@
     "RESTORE_ERROR_MSG": "Aucun achat actif trouvé.",
     "PLAN_MONTHLY": "Plan Mensuel",
     "PLAN_THREE_MONTH": "Plan Trimestriel",
-    "PLAN_ANNUAL": "Plan Annuel"
+    "PLAN_ANNUAL": "Plan Annuel",
+    "SUB_NOTE": "L'abonnement se renouvelle automatiquement à moins que le renouvellement automatique ne soit désactivé au moins 24 heures avant la fin de la période en cours. Le compte sera débité pour le renouvellement dans les 24 heures précédant la fin de la période en cours. Les abonnements peuvent être gérés et le renouvellement automatique peut être désactivé dans les paramètres du compte App Store après l'achat.",
+    "PLAN_MONTHLY_DETAILS": "1 mois (renouvellement mensuel)",
+    "PLAN_THREE_MONTH_DETAILS": "3 mois (renouvellement tous les 3 mois)",
+    "PLAN_ANNUAL_DETAILS": "1 an (renouvellement annuel)",
+    "RESTORE_PLAN": "Restaurer les achats",
+    "EULA": "Conditions d'utilisation (EULA)",
+    "PRIVACY_POLICY": "Politique de confidentialité"
   },
   "CUSTOM_PACKAGE": {
     "TITLE": "Forfait personnalisé",

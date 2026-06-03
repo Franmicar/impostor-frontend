@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
 import { ThemeService, Theme } from '../../../core/services/theme.service';
+import { BillingService } from '../../../core/services/billing.service';
 import { ModalComponent } from './modal.component';
 import { ButtonPrimaryComponent } from './button-primary.component';
 import { ButtonSecondaryComponent } from './button-secondary.component';
@@ -228,6 +229,7 @@ import { AvatarComponent } from './avatar.component';
 })
 export class AvatarPickerModalComponent {
   themeService = inject(ThemeService);
+  billing = inject(BillingService);
 
   @ViewChild('photoInput') photoInput!: ElementRef<HTMLInputElement>;
 
@@ -272,11 +274,21 @@ export class AvatarPickerModalComponent {
 
   getAvailableAvatars(): { key: string; url: string }[] {
     const themes: Theme[] = ['neon', 'neon2', 'infantil', 'alien', 'manga'];
-    const downloaded = this.themeService.downloadedThemes();
     const list: { key: string; url: string }[] = [];
 
     for (const t of themes) {
-      if (t === 'neon' || t === 'neon2' || downloaded[t]) {
+      let isAvailable = false;
+      if (t === 'neon' || t === 'infantil') {
+        isAvailable = true;
+      } else if (t === 'neon2') {
+        isAvailable = this.billing.isPremium;
+      } else if (t === 'alien') {
+        isAvailable = this.billing.isThemeAlienOwned;
+      } else if (t === 'manga') {
+        isAvailable = this.billing.isThemeMangaOwned;
+      }
+
+      if (isAvailable) {
         const avatars = this.themeService.getThemeAvatars(t);
         for (const key of avatars) {
           list.push({
@@ -291,11 +303,21 @@ export class AvatarPickerModalComponent {
 
   getAvailableFrames(): { theme: string; url: string }[] {
     const themes: Theme[] = ['neon', 'neon2', 'infantil', 'alien', 'manga'];
-    const downloaded = this.themeService.downloadedThemes();
     const list: { theme: string; url: string }[] = [];
 
     for (const t of themes) {
-      if (t === 'neon' || t === 'neon2' || downloaded[t]) {
+      let isAvailable = false;
+      if (t === 'neon' || t === 'infantil') {
+        isAvailable = true;
+      } else if (t === 'neon2') {
+        isAvailable = this.billing.isPremium;
+      } else if (t === 'alien') {
+        isAvailable = this.billing.isThemeAlienOwned;
+      } else if (t === 'manga') {
+        isAvailable = this.billing.isThemeMangaOwned;
+      }
+
+      if (isAvailable) {
         list.push({
           theme: t,
           url: this.themeService.getFrameAsset(t)

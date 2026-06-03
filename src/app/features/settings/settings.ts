@@ -4,6 +4,8 @@ import { Preferences } from '@capacitor/preferences';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Browser } from '@capacitor/browser';
+import { Capacitor } from '@capacitor/core';
 
 import { AuthService } from '../../core/services/auth/auth.service';
 import { ThemeService, Theme } from '../../core/services/theme.service';
@@ -12,13 +14,14 @@ import { ReportService } from '../../core/services/report.service';
 import { ModalComponent } from '../../shared/components/ui/modal.component';
 import { HeaderComponent } from '../../shared/components/ui/header.component';
 import { AuthProfileComponent } from '../../shared/components/ui/auth-profile.component';
+import { ButtonSecondaryComponent } from '../../shared/components/ui/button-secondary.component';
 import { UiService } from '../../core/services/ui/ui.service';
 import packageJson from '../../../../package.json';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ModalComponent, HeaderComponent, AuthProfileComponent],
+  imports: [CommonModule, TranslateModule, ModalComponent, HeaderComponent, AuthProfileComponent, ButtonSecondaryComponent],
   template: `
   <div class="flex flex-col min-h-dvh bg-transparent text-textPrimary">
    
@@ -175,6 +178,31 @@ import packageJson from '../../../../package.json';
       </button>
     </section>
 
+    <!-- LEGAL -->
+    <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border">
+      <div class="flex flex-col gap-2">
+        <button (click)="openLink('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')" class="w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between cursor-pointer">
+          <span class="text-textPrimary text-sm flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-textMuted"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9z" /></svg>
+            {{ 'PREMIUM.EULA' | translate }}
+          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-textMuted">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+
+        <button (click)="openLink('https://impostor-backend-eight.vercel.app/api/privacy?lang=' + translate.currentLang)" class="w-full text-left px-4 py-3 bg-glass hover:bg-glass-hover border border-glass-border rounded-xl transition-all flex items-center justify-between cursor-pointer">
+          <span class="text-textPrimary text-sm flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-textMuted"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+            {{ 'PREMIUM.PRIVACY_POLICY' | translate }}
+          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-textMuted">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
     <!-- ABOUT -->
     <section class="bg-glass backdrop-blur-md rounded-2xl p-5 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-glass-border text-center">
       <h1 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-1 uppercase tracking-wider">
@@ -202,9 +230,9 @@ import packageJson from '../../../../package.json';
      <div class="text-xs text-textMuted text-right mb-4">{{ reportText.value.length || 0 }} / 1000</div>
      
      <div modal-footer class="w-full flex gap-3">
-       <button (click)="closeReportModal()" class="flex-1 py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest text-xs">
+       <app-button-secondary (onClick)="closeReportModal()" class="flex-1">
          {{ 'COMMON.CANCEL' | translate }}
-       </button>
+       </app-button-secondary>
        <button (click)="sendReport(reportText.value); reportText.value = ''" [disabled]="isSendingReport()" class="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgb(var(--color-secondary)/0.4)] active:scale-95 uppercase tracking-widest text-xs disabled:opacity-50">
          {{ isSendingReport() ? ('SETTINGS.SENDING' | translate) : ('SETTINGS.SEND' | translate) }}
        </button>
@@ -315,27 +343,27 @@ import packageJson from '../../../../package.json';
 
       <!-- Footer actions -->
       <div modal-footer class="w-full flex flex-col gap-2">
-        @if (selectedUnlockTheme() === 'infantil') {
-          <button (click)="themeService.setTheme('infantil'); closeThemeUnlockModal()" class="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(var(--color-secondary),0.4)] active:scale-[0.98] uppercase tracking-wider text-xs flex items-center justify-center cursor-pointer">
+        @if (selectedUnlockTheme() === 'infantil' || isThemeOwned(selectedUnlockTheme())) {
+          <button (click)="themeService.setTheme(selectedUnlockTheme()); closeThemeUnlockModal()" class="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(var(--color-secondary),0.4)] active:scale-[0.98] uppercase tracking-wider text-xs flex items-center justify-center cursor-pointer">
             {{ 'SETTINGS.APPLY_THEME' | translate }}
           </button>
-          <button (click)="closeThemeUnlockModal()" class="w-full py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-textMuted hover:text-textPrimary rounded-xl font-bold transition-all active:scale-[0.98] uppercase tracking-wider text-[10px] cursor-pointer">
+          <app-button-secondary (onClick)="closeThemeUnlockModal()" class="w-full">
             {{ 'COMMON.CANCEL' | translate }}
-          </button>
+          </app-button-secondary>
         } @else if (selectedUnlockTheme() === 'neon2') {
           <button (click)="goToPremiumPlans()" class="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(var(--color-secondary),0.4)] active:scale-[0.98] uppercase tracking-wider text-xs flex items-center justify-center cursor-pointer">
             {{ 'PREMIUM.SUBSCRIBE' | translate }}
           </button>
-          <button (click)="closeThemeUnlockModal()" class="w-full py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-textMuted hover:text-textPrimary rounded-xl font-bold transition-all active:scale-[0.98] uppercase tracking-wider text-[10px] cursor-pointer">
+          <app-button-secondary (onClick)="closeThemeUnlockModal()" class="w-full">
             {{ 'COMMON.CANCEL' | translate }}
-          </button>
+          </app-button-secondary>
         } @else {
           <button (click)="buyTheme()" class="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(var(--color-secondary),0.4)] active:scale-[0.98] uppercase tracking-wider text-xs flex items-center justify-center cursor-pointer">
             {{ 'SETTINGS.BUY_THEME' | translate }} (4.99€)
           </button>
-          <button (click)="closeThemeUnlockModal()" class="w-full py-3 bg-white/5 hover:bg-white/10 border border-glass-border text-textMuted hover:text-textPrimary rounded-xl font-bold transition-all active:scale-[0.98] uppercase tracking-wider text-[10px] cursor-pointer">
+          <app-button-secondary (onClick)="closeThemeUnlockModal()" class="w-full">
             {{ 'COMMON.CANCEL' | translate }}
-          </button>
+          </app-button-secondary>
         }
       </div>
     </app-modal>
@@ -344,7 +372,7 @@ import packageJson from '../../../../package.json';
 })
 export class Settings implements OnInit {
   private router = inject(Router);
-  private translate = inject(TranslateService);
+  public translate = inject(TranslateService);
   authService = inject(AuthService);
   public themeService = inject(ThemeService);
   public billing = inject(BillingService);
@@ -373,6 +401,19 @@ export class Settings implements OnInit {
 
   ngOnInit() {
     this.currentLang = this.translate.getCurrentLang() || this.translate.getFallbackLang() || 'es';
+  }
+
+  async openLink(url: string) {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        await Browser.open({ url });
+      } catch (e) {
+        console.error('Error opening native browser link', e);
+        window.open(url, '_blank');
+      }
+    } else {
+      window.open(url, '_blank');
+    }
   }
 
   goBack() {
@@ -405,31 +446,23 @@ export class Settings implements OnInit {
     this.options[key] = !this.options[key];
   }
 
+  isThemeOwned(theme: Theme): boolean {
+    if (theme === 'neon' || theme === 'infantil') return true;
+    if (theme === 'neon2') return this.billing.isPremium;
+    if (theme === 'alien') return this.billing.isThemeAlienOwned;
+    if (theme === 'manga') return this.billing.isThemeMangaOwned;
+    return false;
+  }
+
   selectTheme(theme: Theme) {
-    if (theme === 'infantil') {
-      this.openThemeUnlockModal('infantil');
-      return;
-    }
-    if (theme === 'neon2') {
-      if (!this.billing.isPremium) {
-        this.openThemeUnlockModal('neon2');
-        return;
+    if (this.isThemeOwned(theme)) {
+      if ((theme === 'alien' || theme === 'manga' || theme === 'infantil') && !this.themeService.downloadedThemes()[theme]) {
+        this.openThemeUnlockModal(theme);
+      } else {
+        this.themeService.setTheme(theme);
       }
-      this.themeService.setTheme(theme);
-    } else if (theme === 'alien') {
-      if (!this.billing.isThemeAlienOwned) {
-        this.openThemeUnlockModal('alien');
-        return;
-      }
-      this.themeService.setTheme(theme);
-    } else if (theme === 'manga') {
-      if (!this.billing.isThemeMangaOwned) {
-        this.openThemeUnlockModal('manga');
-        return;
-      }
-      this.themeService.setTheme(theme);
     } else {
-      this.themeService.setTheme(theme);
+      this.openThemeUnlockModal(theme as any);
     }
   }
 

@@ -24,11 +24,13 @@ export class AuthService {
 
     // Signal reactivo para saber si hay un usuario logueado en la app
     public userSignal = signal<User | null>(null);
+    public isInitialized = signal<boolean>(false);
     private ui = inject(UiService);
 
     constructor() {
         onAuthStateChanged(this.auth, (user) => {
             this.userSignal.set(user);
+            this.isInitialized.set(true);
         });
     }
 
