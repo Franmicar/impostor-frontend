@@ -426,3 +426,12 @@ Toda la lógica de *El Impostor* está empaquetada centralmente en el Singleton 
 - **Diseño del Inicio de Sesión**: Rediseñado el botón de Google Sign-in para alinearse con los estilos premium del de Apple (fondo blanco, bordes y sombreados, con logotipo SVG a la izquierda y textos estilizados).
 - **Limpieza de Contenedores de Login**: Eliminación del contenedor `<app-card>` del formulario de inicio de sesión requerido, y aumento de espaciados de los textos/iconos para una interfaz más elegante y fluida.
 - **Control de Versiones y Distribución**: Versión establecida en `2.1.3` (Android `versionCode 19`, iOS Xcode `CURRENT_PROJECT_VERSION = 19`).
+
+### Versión 2.1.4
+- **Correcciones Críticas en Temas (Android)**: Eliminación del prefijo de metadatos Base64 para evitar descargas de activos corruptos en local, descarga explícita de marcos y avatares complementarios del tema y persistencia para evitar el re-lanzamiento continuo del modal de descarga de temas ya guardados.
+- **Suscripciones y Privacidad (iOS App Review)**: Integración nativa mediante `@capacitor/browser` para abrir EULA y Política de Privacidad, desglose detallado de precios/duración de los planes de RevenueCat, y aviso legal explicativo de renovación automática (`PREMIUM.SUB_NOTE`).
+- **Navegación e Inicio de Sesión de Apple**: Configuración de FirebaseAuthentication para el proveedor `"apple.com"` en `capacitor.config.ts`, y habilitación del botón en local/web para posibilitar las pruebas integradas.
+- **Enlaces Legales en Ajustes**: Añadido el apartado de enlaces para EULA y Política de Privacidad de forma nativa en la pantalla de Ajustes (Settings), entre soporte e información de versión.
+- **Privacidad Multilingüe (Backend)**: Soporte completo en la función de Vercel del backend (`privacy.ts`) para renderizar la política de privacidad de forma localizada en los 10 idiomas de la aplicación mediante el parámetro dinámico `?lang=`.
+- **Control de Versiones y Distribución**: Versión establecida en `2.1.4` (Android `versionCode 20`, iOS Xcode `CURRENT_PROJECT_VERSION = 20`).
+
