@@ -370,6 +370,6 @@ export class DrawComponent implements AfterViewInit, OnDestroy {
     if (this.canvasRef) {
       this.engine.addDrawing(this.canvasRef.nativeElement.toDataURL());
     }
-    this.router.navigate(['/vote'], { state: { intentional: true } });
+    this.router.navigate(['/vote'], { state: { intentional: true }, replaceUrl: true });
   }
 }

@@ -440,9 +440,9 @@ export class Play implements OnInit {
     }
 
     if (this.engine.currentSettings()?.gameTypeId === 'draw') {
-      this.router.navigate(['/draw'], { state: { intentional: true } });
+      this.router.navigate(['/draw'], { state: { intentional: true }, replaceUrl: true });
     } else {
-      this.router.navigate(['/vote'], { state: { intentional: true } });
+      this.router.navigate(['/vote'], { state: { intentional: true }, replaceUrl: true });
     }
   }
 }

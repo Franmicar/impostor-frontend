@@ -78,6 +78,8 @@ export class App {
           if (confirmed) {
             this.router.navigate(['/']);
           }
+        } else if (url.startsWith('/results')) {
+          this.router.navigate(['/']);
         } else {
           this.location.back();
         }

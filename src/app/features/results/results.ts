@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, DestroyRef, computed, effect } from '@angular/core';
+import { Component, inject, OnInit, signal, DestroyRef, computed, effect, OnDestroy } from '@angular/core';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
@@ -256,7 +256,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
   }
  `
 })
-export class Results implements OnInit {
+export class Results implements OnInit, OnDestroy {
   engine = inject(GameEngineService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -268,6 +268,8 @@ export class Results implements OnInit {
   socketService = inject(SocketService);
 
   translate = inject(TranslateService);
+
+  private isLeavingComponentViaButtons = false;
 
   alertModal = signal<{ show: boolean, title: string, message: string, isError: boolean }>({
     show: false, title: '', message: '', isError: false
@@ -411,6 +413,7 @@ export class Results implements OnInit {
   }
 
   async playAgain() {
+    this.isLeavingComponentViaButtons = true;
     this.ui.setLoading(true);
     try {
       await this.adsService.showInterstitial();
@@ -432,6 +435,7 @@ export class Results implements OnInit {
   }
 
   async goToSetupLocal() {
+    this.isLeavingComponentViaButtons = true;
     this.ui.setLoading(true);
     try {
       await this.adsService.showInterstitial();
@@ -448,6 +452,7 @@ export class Results implements OnInit {
   }
 
   async requestRematch() {
+    this.isLeavingComponentViaButtons = true;
     this.ui.setLoading(true);
     try {
       if (this.adsService.shouldShowRematchAd()) {
@@ -460,6 +465,7 @@ export class Results implements OnInit {
   }
 
   async playerReady() {
+    this.isLeavingComponentViaButtons = true;
     this.ui.setLoading(true);
     try {
       if (this.adsService.shouldShowRematchAd()) {
@@ -472,6 +478,7 @@ export class Results implements OnInit {
   }
 
   async goToSetup() {
+    this.isLeavingComponentViaButtons = true;
     this.ui.setLoading(true);
     try {
       await this.adsService.showInterstitial();
@@ -482,6 +489,7 @@ export class Results implements OnInit {
   }
 
   startRematch() {
+    this.isLeavingComponentViaButtons = true;
     this.engine.startRematch();
   }
 
@@ -584,6 +592,7 @@ export class Results implements OnInit {
   }
 
   async exitGame() {
+    this.isLeavingComponentViaButtons = true;
     this.ui.setLoading(true);
     try {
       await this.adsService.showInterstitial();
@@ -594,6 +603,15 @@ export class Results implements OnInit {
       await this.router.navigate(['/']);
     } finally {
       this.ui.setLoading(false);
+    }
+  }
+
+  ngOnDestroy() {
+    if (!this.isLeavingComponentViaButtons) {
+      if (this.engine.isOnline()) {
+        this.socketService.disconnect();
+      }
+      this.engine.resetGame();
     }
   }
 }

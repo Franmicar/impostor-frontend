@@ -83,7 +83,8 @@ export class SocketService {
               guess: results.guess,
               detectiveId: results.detectiveId
             },
-            state: { intentional: true }
+            state: { intentional: true },
+            replaceUrl: true
           });
         }
       }
