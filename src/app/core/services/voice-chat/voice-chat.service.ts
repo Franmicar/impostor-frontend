@@ -81,8 +81,13 @@ export class VoiceChatService {
       this.isConnected.set(true);
 
       // Enable local microphone by default
-      await this.room.localParticipant.setMicrophoneEnabled(true);
-      this.isMuted.set(false);
+      try {
+        await this.room.localParticipant.setMicrophoneEnabled(true);
+        this.isMuted.set(false);
+      } catch (micErr) {
+        console.warn('LiveKit: No se pudo activar el micrófono (quizás falten permisos o estén denegados):', micErr);
+        this.isMuted.set(true);
+      }
 
       // Initialize status of current participants
       this.updateAllParticipantsStatus();

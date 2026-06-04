@@ -186,80 +186,82 @@ import { AvatarComponent } from '../../shared/components/ui/avatar.component';
 
    <!-- HEADER & TIMER & ACTIONS -->
    <div class="w-full max-w-md flex flex-col items-center mb-8">
-      @if (isOnline()) {
-       <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
-          [class.border-primary]="onlineTimeSeconds <= 10 && onlineTimeSeconds > 0"
-          [class.text-primary]="onlineTimeSeconds <= 10 && onlineTimeSeconds > 0"
-          [class.border-red-500]="onlineTimeSeconds === 0"
-          [class.text-red-500]="onlineTimeSeconds === 0">
-        <span class="text-5xl font-black font-mono tracking-wider drop-shadow-md">{{ onlineFormattedTime() }}</span>
-        <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">{{ 'VOTE.TIME_REMAINING' | translate }}</span>
-       </div>
+       @if (isOnline()) {
+        @if (roomState()?.votingState?.totalTime && roomState()?.votingState!.totalTime > 0) {
+          <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
+             [class.border-primary]="onlineTimeSeconds <= 10 && onlineTimeSeconds > 0"
+             [class.text-primary]="onlineTimeSeconds <= 10 && onlineTimeSeconds > 0"
+             [class.border-red-500]="onlineTimeSeconds === 0"
+             [class.text-red-500]="onlineTimeSeconds === 0">
+           <span class="text-5xl font-black font-mono tracking-wider drop-shadow-md">{{ onlineFormattedTime() }}</span>
+           <span class="text-xs uppercase tracking-widest font-bold mt-1 text-textMuted">{{ 'VOTE.TIME_REMAINING' | translate }}</span>
+          </div>
+        }
 
-       <!-- VOICE CHAT FLOATING CARD -->
-       <div class="w-full mt-4 bg-glass border border-glass-border rounded-2xl p-3 flex items-center justify-between shadow-lg backdrop-blur-lg animate-in fade-in duration-300">
-         <div class="flex items-center gap-2.5">
-           <!-- Connected/Connecting pulsing indicator -->
-           <div class="relative flex h-3 w-3">
-             @if (voiceChatService.isConnected()) {
-               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-               <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-             } @else {
-               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
-               <span class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
-             }
-           </div>
-           
-           <div class="flex flex-col">
-             <span class="text-[10px] text-textMuted font-bold uppercase tracking-wider">Chat de Voz</span>
-             <span class="text-xs font-semibold">
-               @if (voiceChatService.isConnected()) {
-                 {{ voiceChatService.isMuted() ? 'Silenciado' : 'Hablando...' }}
-               } @else {
-                 Conectando...
-               }
-             </span>
-           </div>
-         </div>
+        <!-- VOICE CHAT FLOATING CARD -->
+        <div class="w-full mt-4 bg-glass border border-glass-border rounded-2xl p-3 flex items-center justify-between shadow-lg backdrop-blur-lg animate-in fade-in duration-300">
+          <div class="flex items-center gap-2.5">
+            <!-- Connected/Connecting pulsing indicator -->
+            <div class="relative flex h-3 w-3">
+              @if (voiceChatService.isConnected()) {
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              } @else {
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
+              }
+            </div>
+            
+            <div class="flex flex-col">
+              <span class="text-[10px] text-textMuted font-bold uppercase tracking-wider">Chat de Voz</span>
+              <span class="text-xs font-semibold">
+                @if (voiceChatService.isConnected()) {
+                  {{ voiceChatService.isMuted() ? 'Silenciado' : 'Hablando...' }}
+                } @else {
+                  Conectando...
+                }
+              </span>
+            </div>
+          </div>
 
-         <!-- Controls: Mute Toggle + Push to Talk -->
-         <div class="flex items-center gap-2">
-           <!-- Toggle mute button -->
-           <button 
-             (click)="voiceChatService.toggleMute()"
-             [disabled]="!voiceChatService.isConnected()"
-             class="w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
-             [class.bg-red-500/20]="voiceChatService.isMuted()"
-             [class.text-red-400]="voiceChatService.isMuted()"
-             [class.border-red-500/30]="voiceChatService.isMuted()"
-             [class.border]="true"
-             [class.bg-primary/20]="!voiceChatService.isMuted()"
-             [class.text-primary]="!voiceChatService.isMuted()"
-             [class.border-primary/30]="!voiceChatService.isMuted()"
-             [title]="voiceChatService.isMuted() ? 'Activar Micrófono' : 'Silenciar Micrófono'">
-             @if (voiceChatService.isMuted()) {
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18" /></svg>
-             } @else {
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" /></svg>
-             }
-           </button>
+          <!-- Controls: Mute Toggle + Push to Talk -->
+          <div class="flex items-center gap-2">
+            <!-- Toggle mute button -->
+            <button 
+              (click)="voiceChatService.toggleMute()"
+              [disabled]="!voiceChatService.isConnected()"
+              class="w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+              [class.bg-red-500/20]="voiceChatService.isMuted()"
+              [class.text-red-400]="voiceChatService.isMuted()"
+              [class.border-red-500/30]="voiceChatService.isMuted()"
+              [class.border]="true"
+              [class.bg-primary/20]="!voiceChatService.isMuted()"
+              [class.text-primary]="!voiceChatService.isMuted()"
+              [class.border-primary/30]="!voiceChatService.isMuted()"
+              [title]="voiceChatService.isMuted() ? 'Activar Micrófono' : 'Silenciar Micrófono'">
+              @if (voiceChatService.isMuted()) {
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18" /></svg>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" /></svg>
+              }
+            </button>
 
-           <!-- Push to talk button -->
-           <button 
-             (mousedown)="startPushToTalk($event)"
-             (mouseup)="stopPushToTalk($event)"
-             (mouseleave)="stopPushToTalk($event)"
-             (touchstart)="startPushToTalk($event)"
-             (touchend)="stopPushToTalk($event)"
-             [disabled]="!voiceChatService.isConnected()"
-             class="px-2.5 h-9 rounded-xl bg-glass border border-glass-border flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest active:bg-primary/20 active:border-primary/50 transition-all select-none disabled:opacity-50 disabled:pointer-events-none text-textPrimary"
-             title="Mantener para hablar (Push to Talk)">
-             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" /></svg>
-             <span>PTT</span>
-           </button>
-         </div>
-       </div>
-      } @else if (timer.isActive() || timer.timeLeftInSeconds() > 0) {
+            <!-- Push to talk button -->
+            <button 
+              (mousedown)="startPushToTalk($event)"
+              (mouseup)="stopPushToTalk($event)"
+              (mouseleave)="stopPushToTalk($event)"
+              (touchstart)="startPushToTalk($event)"
+              (touchend)="stopPushToTalk($event)"
+              [disabled]="!voiceChatService.isConnected()"
+              class="px-2.5 h-9 rounded-xl bg-glass border border-glass-border flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest active:bg-primary/20 active:border-primary/50 transition-all select-none disabled:opacity-50 disabled:pointer-events-none text-textPrimary"
+              title="Mantener para hablar (Push to Talk)">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" /></svg>
+              <span>PTT</span>
+            </button>
+          </div>
+        </div>
+       } @else if (timer.isActive() || timer.timeLeftInSeconds() > 0) {
       <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] flex flex-col items-center transition-colors"
          [class.border-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
          [class.text-primary]="timer.timeLeftInSeconds() <= 30 && timer.timeLeftInSeconds() > 0"
@@ -279,10 +281,6 @@ import { AvatarComponent } from '../../shared/components/ui/avatar.component';
           </app-icon-button>
          }
        </div>
-      </div>
-     } @else {
-      <div class="bg-glass backdrop-blur-xl border border-glass-border px-8 py-4 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.05)] text-center">
-       <span class="text-xl font-bold text-textMuted drop-shadow-sm">{{ 'VOTE.NO_TIME_LIMIT' | translate }}</span>
       </div>
      }
 

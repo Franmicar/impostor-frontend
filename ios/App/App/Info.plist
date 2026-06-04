@@ -75,5 +75,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Necesitamos acceso al micrófono para el chat de voz en las partidas multijugador.</string>
 </dict>
 </plist>

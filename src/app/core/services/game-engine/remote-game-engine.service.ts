@@ -10,13 +10,27 @@ export class RemoteGameEngineService implements IGameEngine {
 
   // Espejo local del estado remoto del servidor
   players = signal<Player[]>([]);
-  secretWord = signal<{ word: string; hint: string; fakeWord?: string } | null>(null);
   currentPlayerIndex = signal<number>(0);
   gameStarted = signal<boolean>(false);
   currentSettings = signal<GameSettings | null>(null);
   startingPlayerId = signal<number | string | null>(null);
   eliminationsCount = signal<number>(0);
   drawings = signal<string[]>([]);
+
+  secretWord = computed(() => {
+    const state = this.socketService.roomState();
+    if (state && state.status === 'results' && state.secretWord) {
+      return state.secretWord;
+    }
+    const payload = this.socketService.rolePayload();
+    if (payload) {
+      return {
+        word: payload.word,
+        hint: payload.hint,
+      };
+    }
+    return null;
+  });
 
   // Propiedades Computadas
   currentPlayer = computed(() => {
@@ -71,24 +85,10 @@ export class RemoteGameEngineService implements IGameEngine {
         this.resetLocalSignals();
       }
     });
-
-    // Sincronizar el payload del rol (seguridad autoritaria del servidor)
-    effect(() => {
-      const payload = this.socketService.rolePayload();
-      if (payload) {
-        this.secretWord.set({
-          word: payload.word,
-          hint: payload.hint,
-        });
-      } else {
-        this.secretWord.set(null);
-      }
-    });
   }
 
   private resetLocalSignals() {
     this.players.set([]);
-    this.secretWord.set(null);
     this.currentPlayerIndex.set(0);
     this.gameStarted.set(false);
     this.currentSettings.set(null);
