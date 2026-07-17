@@ -9,7 +9,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+    env:
+      ANDROID_KEYSTORE_PATH: release.jks
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
     steps:
       - name: Checkout repository
@@ -37,18 +42,9 @@ jobs:
       - name: Sync Capacitor Android
         run: npx cap sync android
 
-      - name: Generate Keystore (Si no existe)
+      - name: Decode Release Keystore (desde GitHub Secret, nunca en el repo)
         working-directory: ./android/app
-        run: |
-          if [ ! -f "release.jks" ]; then
-            keytool -genkey -v -keystore release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias impostor -dname "CN=dj_ra, OU=Impostor, O=Impostor, L=Madrid, ST=Madrid, C=ES" -storepass Imp0storReleaseKey2026XpQ -keypass Imp0storReleaseKey2026XpQ
-            git config --global user.name "antigravity[bot]"
-            git config --global user.email "bot@antigravity.io"
-            git add release.jks
-            git commit -m "chore: Auto-generate Android App Keystore"
-            git push origin HEAD:main
-            git push origin HEAD:develop || true
-          fi
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > release.jks
 
       - name: Build APK (Debug)
         working-directory: ./android
@@ -62,15 +58,10 @@ jobs:
           ./gradlew bundleRelease
           mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/bundle/release/DECEPTRA-OFICIAL-PLAY-STORE.aab
 
-
-
-      - name: Upload Security Keystore Backup
-        uses: actions/upload-artifact@v4
-        with:
-          name: deceptra-keystore-backup
-          path: android/app/release.jks
-
-
+      - name: Remove decoded keystore from runner
+        if: always()
+        working-directory: ./android/app
+        run: rm -f release.jks
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4

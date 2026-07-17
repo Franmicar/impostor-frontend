@@ -18,11 +18,12 @@ android {
     }
     signingConfigs {
         release {
-            // Generada por GitHub Actions si no existe
-            storeFile file("release.jks")
-            storePassword "Imp0storReleaseKey2026XpQ"
-            keyAlias "impostor"
-            keyPassword "Imp0storReleaseKey2026XpQ"
+            // Keystore y credenciales inyectados por CI (GitHub Secrets) o variables de entorno locales.
+            // Nunca hardcodear aqui: release.jks esta en .gitignore.
+            storeFile file(System.getenv("ANDROID_KEYSTORE_PATH") ?: "release.jks")
+            storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD") ?: ""
+            keyAlias System.getenv("ANDROID_KEY_ALIAS") ?: ""
+            keyPassword System.getenv("ANDROID_KEY_PASSWORD") ?: ""
         }
     }
     buildTypes {
