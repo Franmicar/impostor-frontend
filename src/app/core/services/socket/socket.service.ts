@@ -23,7 +23,6 @@ export class SocketService {
 
   // Streams de Eventos
   stroke$ = new Subject<any>();
-  playerVoted$ = new Subject<any>();
   guessResult$ = new Subject<any>();
   voiceToken$ = new ReplaySubject<{ token: string; serverUrl: string }>(1);
 
@@ -128,10 +127,6 @@ export class SocketService {
 
     this.socket.on('stroke', (stroke) => {
       this.stroke$.next(stroke);
-    });
-
-    this.socket.on('player-voted', (vote) => {
-      this.playerVoted$.next(vote);
     });
 
     this.socket.on('guess-result', (result) => {

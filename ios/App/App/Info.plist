@@ -77,5 +77,7 @@
 	</array>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Necesitamos acceso al micrófono para el chat de voz en las partidas multijugador.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Necesitamos acceso a tus fotos para que puedas elegir una imagen de perfil.</string>
 </dict>
 </plist>

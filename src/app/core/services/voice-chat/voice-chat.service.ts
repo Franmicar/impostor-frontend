@@ -1,4 +1,4 @@
-import { Injectable, signal, effect } from '@angular/core';
+import { Injectable, signal, effect, inject } from '@angular/core';
 import {
   Room,
   RoomEvent,
@@ -9,6 +9,11 @@ import {
   Participant
 } from 'livekit-client';
 import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
+import { ConfirmService } from '../confirm/confirm.service';
+
+const MIC_RATIONALE_SHOWN_KEY = 'deceptra_mic_rationale_shown';
 
 export interface ParticipantVoiceState {
   isMuted: boolean;
@@ -21,6 +26,7 @@ export interface ParticipantVoiceState {
   providedIn: 'root'
 })
 export class VoiceChatService {
+  private confirmService = inject(ConfirmService);
   private room: Room | null = null;
   private lastToken: string | null = null;
   private lastServerUrl: string | null = null;
@@ -82,6 +88,7 @@ export class VoiceChatService {
 
       // Enable local microphone by default
       try {
+        await this.ensureMicRationaleShown();
         await this.room.localParticipant.setMicrophoneEnabled(true);
         this.isMuted.set(false);
       } catch (micErr) {
@@ -185,6 +192,22 @@ export class VoiceChatService {
         (pub.track as any).setVolume(volume);
       }
     });
+  }
+
+  /**
+   * Muestra una explicación previa al permiso de micrófono en Android la primera vez
+   * (iOS ya tiene su propio texto de sistema vía NSMicrophoneUsageDescription).
+   */
+  private async ensureMicRationaleShown(): Promise<void> {
+    if (Capacitor.getPlatform() !== 'android') return;
+
+    const { value } = await Preferences.get({ key: MIC_RATIONALE_SHOWN_KEY });
+    if (value === 'true') return;
+
+    await this.confirmService.requestConfirmation(
+      'Deceptra necesita acceso a tu micrófono para el chat de voz durante las partidas multijugador. A continuación Android te pedirá el permiso.'
+    );
+    await Preferences.set({ key: MIC_RATIONALE_SHOWN_KEY, value: 'true' });
   }
 
   // --- PRIVATE HELPERS AND EVENT HANDLERS ---
