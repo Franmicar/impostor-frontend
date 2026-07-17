@@ -398,7 +398,10 @@
     "LOGOUT_TITLE": "Log Out",
     "LOGOUT_CONFIRM": "Are you sure you want to log out of your current session?",
     "LOGOUT_BTN": "Log Out",
-    "ACCOUNT_OPTIONS": "Account Options"
+    "ACCOUNT_OPTIONS": "Account Options",
+    "DELETE_ACCOUNT_BTN": "Delete my account",
+    "DELETE_ACCOUNT_TITLE": "Delete account",
+    "DELETE_ACCOUNT_CONFIRM": "This action is irreversible. Your profile, stats, saved presets and custom package will be deleted. Are you sure you want to continue?"
   },
   "PROFILE": {
     "CUSTOMIZE_AVATAR": "Customize Avatar",
@@ -434,6 +437,7 @@
     "ERR_TAKEN": "This nickname is already registered by another player.",
     "ERR_NO_SESSION": "Session expired. Please log in.",
     "ERR_DEFAULT": "Error validating nickname. Please try again.",
+    "DELETE_ACCOUNT_ERROR": "Couldn't delete your account. Please sign in again and retry.",
     "ACH_1_TITLE": "First Victory",
     "ACH_1_DESC": "Win your first game of Deceptra.",
     "ACH_2_TITLE": "The Great Impostor",

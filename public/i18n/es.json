@@ -398,7 +398,10 @@
     "LOGOUT_TITLE": "Cerrar Sesión",
     "LOGOUT_CONFIRM": "¿Estás seguro de que quieres cerrar tu sesión actual?",
     "LOGOUT_BTN": "Salir",
-    "ACCOUNT_OPTIONS": "Opciones de cuenta"
+    "ACCOUNT_OPTIONS": "Opciones de cuenta",
+    "DELETE_ACCOUNT_BTN": "Eliminar mi cuenta",
+    "DELETE_ACCOUNT_TITLE": "Eliminar cuenta",
+    "DELETE_ACCOUNT_CONFIRM": "Esta acción es irreversible. Se eliminarán tu perfil, estadísticas, presets guardados y paquete personalizado. ¿Seguro que quieres continuar?"
   },
   "PROFILE": {
     "CUSTOMIZE_AVATAR": "Personalizar Avatar",
@@ -434,6 +437,7 @@
     "ERR_TAKEN": "Este apodo ya está registrado por otro jugador.",
     "ERR_NO_SESSION": "Sesión expirada. Por favor, inicia sesión.",
     "ERR_DEFAULT": "Error al validar el apodo. Inténtalo de nuevo.",
+    "DELETE_ACCOUNT_ERROR": "No se pudo eliminar la cuenta. Vuelve a iniciar sesión e inténtalo de nuevo.",
     "ACH_1_TITLE": "Primera Victoria",
     "ACH_1_DESC": "Gana tu primera partida de Deceptra.",
     "ACH_2_TITLE": "El Gran Impostor",

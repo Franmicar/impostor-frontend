@@ -239,6 +239,12 @@ import { CompleteUserProfile } from '../../core/models/profile.model';
               {{ 'AUTH_PROFILE.LOGOUT_BTN' | translate }}
             </button>
 
+            <!-- BOTÓN DE BORRAR CUENTA -->
+            <button (click)="openDeleteAccountModal()"
+                    class="w-full py-3 text-textMuted hover:text-rose-400 transition-all text-center cursor-pointer underline underline-offset-4 text-xs mb-10">
+              {{ 'AUTH_PROFILE.DELETE_ACCOUNT_BTN' | translate }}
+            </button>
+
           } @else {
             <div class="flex-1 flex flex-col items-center justify-center py-20 text-center">
               <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-secondary mb-4"></div>
@@ -349,6 +355,28 @@ import { CompleteUserProfile } from '../../core/models/profile.model';
           </button>
         </div>
       </app-modal>
+
+      <!-- MODAL DE BORRADO DE CUENTA -->
+      <app-modal
+        [isOpen]="isDeleteAccountModalOpen()"
+        [title]="'AUTH_PROFILE.DELETE_ACCOUNT_TITLE' | translate"
+        icon="error"
+        (onClose)="isDeleteAccountModalOpen.set(false)">
+
+        <p class="text-sm text-textMuted mb-4 w-full text-center">
+          {{ 'AUTH_PROFILE.DELETE_ACCOUNT_CONFIRM' | translate }}
+        </p>
+
+        <div modal-footer class="w-full flex gap-3">
+          <app-button-secondary (onClick)="isDeleteAccountModalOpen.set(false)" class="flex-1" [disabled]="isDeletingAccount()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+            {{ 'COMMON.CANCEL' | translate }}
+          </app-button-secondary>
+          <button (click)="confirmDeleteAccount()" [disabled]="isDeletingAccount()" class="flex-1 py-3 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(244,63,94,0.3)] active:scale-95 uppercase tracking-widest text-xs cursor-pointer disabled:opacity-50">
+            {{ isDeletingAccount() ? ('PROFILE.SAVING' | translate) : ('AUTH_PROFILE.DELETE_ACCOUNT_BTN' | translate) }}
+          </button>
+        </div>
+      </app-modal>
     </div>
   `,
   styles: [`
@@ -395,6 +423,8 @@ export class ProfileComponent {
   isNicknameSaving = signal(false);
   nicknameError = signal<string | null>(null);
   isLogoutModalOpen = signal(false);
+  isDeleteAccountModalOpen = signal(false);
+  isDeletingAccount = signal(false);
   alertModal = signal({ show: false, title: '', message: '', isError: false });
   showSuccessToast = signal(false);
 
@@ -595,6 +625,31 @@ export class ProfileComponent {
   confirmLogout() {
     this.isLogoutModalOpen.set(false);
     this.authService.logout();
+  }
+
+  // --- Account Deletion ---
+
+  openDeleteAccountModal() {
+    this.isDeleteAccountModalOpen.set(true);
+  }
+
+  async confirmDeleteAccount() {
+    const uid = this.authService.currentUser?.uid;
+    if (!uid) return;
+
+    this.isDeletingAccount.set(true);
+    try {
+      await this.profileService.deleteAllUserData(uid);
+      await this.authService.deleteAccount();
+      this.isDeleteAccountModalOpen.set(false);
+      this.router.navigate(['/']);
+    } catch (error) {
+      console.error('Account deletion failed', error);
+      this.isDeleteAccountModalOpen.set(false);
+      this.showAlert('ALERTS.TITLE_ERROR', 'PROFILE.DELETE_ACCOUNT_ERROR', true);
+    } finally {
+      this.isDeletingAccount.set(false);
+    }
   }
 
   async signInWithGoogle() {

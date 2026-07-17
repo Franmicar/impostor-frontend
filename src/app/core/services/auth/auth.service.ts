@@ -5,6 +5,9 @@ import {
     getAuth,
     signInWithPopup,
     signInWithCredential,
+    reauthenticateWithCredential,
+    reauthenticateWithPopup,
+    deleteUser,
     GoogleAuthProvider,
     OAuthProvider,
     onAuthStateChanged,
@@ -104,5 +107,52 @@ export class AuthService {
 
     get currentUser(): User | null {
         return this.auth.currentUser;
+    }
+
+    /**
+     * Elimina permanentemente la cuenta de Firebase Auth del usuario actual.
+     * Si Firebase exige un login reciente, reautentica con el mismo proveedor
+     * (Google/Apple) y reintenta una vez.
+     */
+    async deleteAccount(): Promise<void> {
+        const user = this.auth.currentUser;
+        if (!user) throw new Error('No hay usuario autenticado');
+
+        try {
+            await deleteUser(user);
+        } catch (error: any) {
+            if (error?.code === 'auth/requires-recent-login') {
+                await this.reauthenticate(user);
+                await deleteUser(user);
+            } else {
+                throw error;
+            }
+        }
+    }
+
+    private async reauthenticate(user: User): Promise<void> {
+        const providerId = user.providerData[0]?.providerId;
+        const isApple = providerId === 'apple.com';
+
+        if (Capacitor.isNativePlatform()) {
+            if (isApple) {
+                const result = await FirebaseAuthentication.signInWithApple();
+                const idToken = (result.credential as any)?.idToken;
+                const rawNonce = (result.credential as any)?.nonce;
+                if (!idToken) throw new Error('No idToken found reauthenticating with Apple');
+                const provider = new OAuthProvider('apple.com');
+                const credential = provider.credential({ idToken, rawNonce });
+                await reauthenticateWithCredential(user, credential);
+            } else {
+                const result = await FirebaseAuthentication.signInWithGoogle();
+                const idToken = result.credential?.idToken;
+                if (!idToken) throw new Error('No idToken found reauthenticating with Google');
+                const credential = GoogleAuthProvider.credential(idToken);
+                await reauthenticateWithCredential(user, credential);
+            }
+        } else {
+            const provider = isApple ? new OAuthProvider('apple.com') : new GoogleAuthProvider();
+            await reauthenticateWithPopup(user, provider);
+        }
     }
 }

@@ -6,11 +6,15 @@ import {
   getFirestore,
   doc,
   setDoc,
+  getDoc,
+  deleteDoc,
+  getDocs,
+  collection,
   runTransaction,
   onSnapshot,
   DocumentSnapshot
 } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { CompleteUserProfile, UserProfile, UserStats, GameStats } from '../../models/profile.model';
@@ -362,6 +366,62 @@ export class ProfileService {
     } finally {
       this.isSyncing = false;
     }
+  }
+
+  /**
+   * Borra permanentemente todos los datos del usuario en Firestore/Storage
+   * (perfil, presets, paquete personalizado, reserva de nickname) y la cache
+   * local. No borra la cuenta de Firebase Auth en si (ver AuthService.deleteAccount).
+   * Cada paso es best-effort: si uno falla, se registra y se continua con el resto.
+   */
+  async deleteAllUserData(uid: string): Promise<void> {
+    const userDocRef = doc(this.db, `users/${uid}`);
+
+    // 1. Liberar la reserva de nickname, si existe
+    try {
+      const userSnap = await getDoc(userDocRef);
+      const nickname = userSnap.exists() ? userSnap.data()['profile']?.nickname?.trim().toLowerCase() : null;
+      if (nickname) {
+        await deleteDoc(doc(this.db, `nicknames/${nickname}`));
+      }
+    } catch (e) {
+      console.error('Error liberando nickname al borrar cuenta', e);
+    }
+
+    // 2. Borrar todos los presets guardados
+    try {
+      const presetsSnap = await getDocs(collection(this.db, `users/${uid}/presets`));
+      await Promise.all(presetsSnap.docs.map(d => deleteDoc(d.ref)));
+    } catch (e) {
+      console.error('Error borrando presets al borrar cuenta', e);
+    }
+
+    // 3. Borrar el paquete personalizado (premium)
+    try {
+      await deleteDoc(doc(this.db, `users/${uid}/custom_packages/main`));
+    } catch (e) {
+      console.error('Error borrando paquete personalizado al borrar cuenta', e);
+    }
+
+    // 4. Borrar la foto de avatar en Storage, si la hay
+    try {
+      await deleteObject(ref(this.storage, `users/${uid}/avatar.jpg`));
+    } catch (e) {
+      // Normal si el usuario nunca subio una foto propia
+    }
+
+    // 5. Borrar el documento principal de perfil
+    try {
+      await deleteDoc(userDocRef);
+    } catch (e) {
+      console.error('Error borrando el documento de perfil al borrar cuenta', e);
+      throw e; // Este si es critico: si no se borra, dejamos datos huerfanos identificables
+    }
+
+    // 6. Limpiar cache local
+    await Preferences.remove({ key: `impostor_profile_${uid}` });
+    await Preferences.remove({ key: `impostor_pending_profile_${uid}` });
+    this.setProfileSignal(null);
   }
 
   // --- Factory Helpers for Default Schemas ---
