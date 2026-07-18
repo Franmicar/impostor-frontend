@@ -4,6 +4,10 @@ export const environment = {
     backendApiKey: "f3c9d7a8b1e64f2aa7d93c5e8f104b7c6a2d91ef5b84c73fa9e2160db4c8a571",
     revenueCatAndroidKey: "goog_wzmKXIzHpxpbxcPSmLIAevDjxtD",
     revenueCatIosKey: "appl_oluTSHNzbYXkQiXaXQKFVEDEuxB",
+    // Pega aqui tus IDs reales de unidad de anuncio de AdMob (ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY).
+    // Si se dejan vacios, se usan los IDs de prueba oficiales de Google solo en modo desarrollo.
+    admobBannerId: "",
+    admobInterstitialId: "",
     firebase: {
         apiKey: "AIzaSyCKkebNdh-QNMS6wMJZqbr1gCbZh9v5Hpk",
         authDomain: "impostor-a35f2.firebaseapp.com",

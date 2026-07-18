@@ -91,7 +91,7 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
         [class.ring-primary]="selectedPlan()?.identifier === plan.identifier"
         class="bg-glass border border-glass-border hover:bg-white/10 rounded-2xl p-5 flex items-center justify-between cursor-pointer transition-all relative overflow-hidden">
         
-        @if (plan.packageType === 'ANNUAL') {
+        @if (plan.packageType === 'LIFETIME') {
          <div class="absolute top-0 right-0 bg-primary text-white text-[0.6rem] font-bold px-2 py-1 rounded-bl-lg">
           {{ 'PREMIUM.BEST_VALUE' | translate }}
          </div>
@@ -104,17 +104,24 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
          </span>
         </div>
         <div class="text-right">
-         <div class="text-xl font-black text-secondary drop-shadow-[0_0_8px_rgb(var(--color-secondary)/0.4)]">{{ plan.product.priceString }}</div>
+         @if (plan.product.introPrice) {
+          <div class="text-xl font-black text-secondary drop-shadow-[0_0_8px_rgb(var(--color-secondary)/0.4)]">{{ plan.product.introPrice.priceString }}</div>
+          <div class="text-[10px] text-textMuted line-through">{{ plan.product.priceString }}</div>
+         } @else {
+          <div class="text-xl font-black text-secondary drop-shadow-[0_0_8px_rgb(var(--color-secondary)/0.4)]">{{ plan.product.priceString }}</div>
+         }
         </div>
        </div>
       }
      </div>
     }
     
-    <!-- Subscription note -->
-    <div class="text-[9px] text-textMuted leading-normal mt-6 text-center px-4 max-w-sm mx-auto select-none">
-      {{ 'PREMIUM.SUB_NOTE' | translate }}
-    </div>
+    <!-- Subscription note: solo aplica si el plan seleccionado es una suscripcion, no al pago unico -->
+    @if (selectedPlan()?.packageType === 'MONTHLY') {
+     <div class="text-[9px] text-textMuted leading-normal mt-6 text-center px-4 max-w-sm mx-auto select-none">
+       {{ 'PREMIUM.SUB_NOTE' | translate }}
+     </div>
+    }
 
     <!-- EULA & Privacy Policy Links -->
     <div class="flex justify-center gap-4 text-[10px] text-textMuted mt-6 mb-4 px-2 select-none">
@@ -196,16 +203,15 @@ export class PremiumComponent implements OnInit {
   this.isLoading.set(true);
   const packages = await this.billing.getOfferings();
   
-  // Keep only subscription packages (Monthly, Quarterly, Annual)
-  const subscriptionPackages = packages.filter(p => 
-    p.packageType === 'MONTHLY' || 
-    p.packageType === 'THREE_MONTH' || 
-    p.packageType === 'ANNUAL'
+  // Keep only the two plans reales: suscripcion mensual y pago unico de por vida
+  const subscriptionPackages = packages.filter(p =>
+    p.packageType === 'MONTHLY' ||
+    p.packageType === 'LIFETIME'
   );
 
-  // Sort packages: Monthly, Quarterly, Annual
+  // Sort packages: Monthly, Lifetime
   const sorted = [...subscriptionPackages].sort((a, b) => {
-    const order: any = { 'MONTHLY': 1, 'THREE_MONTH': 2, 'ANNUAL': 3 };
+    const order: any = { 'MONTHLY': 1, 'LIFETIME': 2 };
     const orderA = order[a.packageType] || 9;
     const orderB = order[b.packageType] || 9;
     return orderA - orderB;

@@ -1,17 +1,25 @@
-import { Injectable, DestroyRef, inject } from '@angular/core';
+import { Injectable, DestroyRef, inject, isDevMode } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Capacitor } from '@capacitor/core';
 import { Keyboard } from '@capacitor/keyboard';
 import { AdMob, BannerAdOptions, BannerAdSize, BannerAdPosition, InterstitialAdPluginEvents } from '@capacitor-community/admob';
 import { BillingService } from './billing.service';
+import { environment } from '../../../environments/environment';
+
+// IDs de prueba oficiales de Google (fallback SOLO para desarrollo). En
+// produccion se usan environment.admobBannerId/admobInterstitialId, que
+// deben apuntar a tus unidades de anuncio reales de AdMob.
+const TEST_BANNER_AD_ID = 'ca-app-pub-3940256099942544/6300978111';
+const TEST_INTERSTITIAL_AD_ID = 'ca-app-pub-3940256099942544/1033173712';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdsService {
   private isAdMobInitialized = false;
-  private readonly bannerAdId = 'ca-app-pub-3940256099942544/6300978111'; // ID Test de Banner
-  private readonly interstitialAdId = 'ca-app-pub-3940256099942544/1033173712'; // ID Test de Interstitial
+  private readonly isTesting = isDevMode();
+  private readonly bannerAdId = (environment as any).admobBannerId || TEST_BANNER_AD_ID;
+  private readonly interstitialAdId = (environment as any).admobInterstitialId || TEST_INTERSTITIAL_AD_ID;
   private destroyRef = inject(DestroyRef);
   private rematchAdCounter = 0;
 
@@ -73,7 +81,7 @@ export class AdsService {
         adSize: BannerAdSize.ADAPTIVE_BANNER,
         position: BannerAdPosition.BOTTOM_CENTER,
         margin: 0,
-        isTesting: true,
+        isTesting: this.isTesting,
       };
       await AdMob.showBanner(options);
     } catch (e) {
@@ -96,7 +104,7 @@ export class AdsService {
 
     return new Promise(async (resolve) => {
       try {
-        await AdMob.prepareInterstitial({ adId: this.interstitialAdId, isTesting: true });
+        await AdMob.prepareInterstitial({ adId: this.interstitialAdId, isTesting: this.isTesting });
 
         const listener = await AdMob.addListener(InterstitialAdPluginEvents.Dismissed, () => {
           listener.remove();

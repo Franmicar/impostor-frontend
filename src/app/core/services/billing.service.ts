@@ -125,9 +125,13 @@ export class BillingService {
 
     // Fallback simulado SOLO para navegador web (ahi no hay StoreKit real)
     return [
-      { identifier: 'monthly', packageType: 'MONTHLY', product: { identifier: 'sub_monthly', title: 'Plan Mensual', priceString: '4.99€' } },
-      { identifier: 'quarterly', packageType: 'THREE_MONTH', product: { identifier: 'sub_quarterly', title: 'Plan Trimestral', priceString: '11.99€' } },
-      { identifier: 'annual', packageType: 'ANNUAL', product: { identifier: 'sub_annual', title: 'Plan Anual', priceString: '39.99€' } }
+      {
+        identifier: 'monthly', packageType: 'MONTHLY', product: {
+          identifier: 'sub_monthly', title: 'Plan Mensual', priceString: '2.99€',
+          introPrice: { price: 1.99, priceString: '1.99€', cycles: 1, period: 'P1M', periodUnit: 'MONTH', periodNumberOfUnits: 1 }
+        }
+      },
+      { identifier: 'lifetime', packageType: 'LIFETIME', product: { identifier: 'lifetime_pro', title: 'Pago Único', priceString: '9.99€', introPrice: null } }
     ] as any[];
   }
 
