@@ -111,13 +111,19 @@ export class BillingService {
         if (offerings.current !== null && offerings.current.availablePackages.length !== 0) {
           return offerings.current.availablePackages;
         } else {
-          console.warn('RevenueCat: offerings.current es null o no tiene paquetes disponibles. Asegúrate de configurar la Oferta Activa (Current Offering) en el panel de RevenueCat.');
+          console.error('RevenueCat: offerings.current es null o no tiene paquetes disponibles. Revisa la Oferta Activa (Current Offering) en el panel de RevenueCat y que los productos esten aprobados en App Store Connect.');
         }
       } catch (e) {
         console.error('Error fetching offerings', e);
       }
+      // En nativo NUNCA se devuelven paquetes simulados: no son comprables de
+      // verdad (sin presentedOfferingContext) y provocan que la compra falle
+      // silenciosamente con una UI que parece funcionar. Mejor mostrar que no
+      // hay planes disponibles que fingir unos que van a fallar al comprar.
+      return [];
     }
-    // Fallback simulado para web o si falla (Mock data based on requirements)
+
+    // Fallback simulado SOLO para navegador web (ahi no hay StoreKit real)
     return [
       { identifier: 'monthly', packageType: 'MONTHLY', product: { identifier: 'sub_monthly', title: 'Plan Mensual', priceString: '4.99€' } },
       { identifier: 'quarterly', packageType: 'THREE_MONTH', product: { identifier: 'sub_quarterly', title: 'Plan Trimestral', priceString: '11.99€' } },

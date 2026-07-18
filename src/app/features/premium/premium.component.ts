@@ -78,6 +78,10 @@ import { ModalComponent } from '../../shared/components/ui/modal.component';
      <div class="flex items-center justify-center p-8">
       <div class="w-8 h-8 border-4 border-secondary/30 border-t-secondary rounded-full animate-spin"></div>
      </div>
+    } @else if (plans().length === 0) {
+     <div class="text-center text-textMuted text-sm p-8">
+      {{ 'PREMIUM.NO_PLANS_AVAILABLE' | translate }}
+     </div>
     } @else {
      <div class="space-y-4">
       @for (plan of plans(); track plan.identifier) {
